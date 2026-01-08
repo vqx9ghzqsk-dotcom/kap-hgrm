@@ -52,9 +52,6 @@
                     <label><input type="radio" name="consent" value="Oui" required> J’accepte de participer</label>
                     <label><input type="radio" name="consent" value="Non"> Je refuse de participer</label>
                 </div>
-                <label>Signature / Date : <input type="text" name="signature"></label>
-            </div>
-
             <h3>II. DONNÉES SOCIODÉMOGRAPHIQUES (LE PROFIL)</h3>
             <div class="form-section">
                 <label class="question">1. Sexe :</label>
