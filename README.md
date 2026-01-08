@@ -300,8 +300,6 @@
         if(confirm("Effacer toutes les données récoltées ?")) {
             localStorage.removeItem('cap_makala_db');
             location.reload();
-        }
-    }
 </script>
 
 </body>
