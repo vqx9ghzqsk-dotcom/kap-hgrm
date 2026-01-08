@@ -213,9 +213,10 @@
             </div>
 
             <button type="button" class="btn-save" onclick="saveRecord()">ENREGISTRER LA FICHE</button>
-</form>
-</div>
- <div id="analyse" class="tab-content">
+        </form>
+    </div>
+
+    <div id="analyse" class="tab-content">
         <h1>Analyse Statistique CAP (Temps Réel)</h1>
         
         <div class="card">
@@ -299,6 +300,9 @@
         if(confirm("Effacer toutes les données récoltées ?")) {
             localStorage.removeItem('cap_makala_db');
             location.reload();
+        }
+    }
 </script>
+
 </body>
 </html>
