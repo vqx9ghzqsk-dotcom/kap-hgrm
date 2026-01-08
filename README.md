@@ -83,3 +83,11 @@ function exportCSV(){
     a.click();
 }
 </script>
+<button onclick="accederAnalyse()">📊 ANALYSE DES DONNÉES</button>
+
+<div id="analyse" style="display:none;">
+    <h2>Analyse statistique</h2>
+    <div id="resultats"></div>
+
+    <button onclick="exportCSV()">📁 Export SPSS / Excel</button>
+</div>
