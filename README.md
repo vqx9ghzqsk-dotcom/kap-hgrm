@@ -2,114 +2,211 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Application CAP Complète - HGRM Makala</title>
+    <title>Système Expert CAP Intégral - HGRM Makala</title>
     <style>
-        :root { --primary: #be185d; --bg: #f8fafc; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 10px; }
-        .container { max-width: 1100px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .tab-btn { padding: 10px 20px; border: none; background: #eee; cursor: pointer; border-radius: 5px; font-weight: bold; }
-        .tab-btn.active { background: var(--primary); color: white; }
+        :root { --primary: #be185d; --secondary: #1e293b; --success: #059669; --bg: #f8fafc; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 15px; color: var(--secondary); }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        
+        /* Navigation */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 15px; position: sticky; top: 0; background: white; z-index: 100; }
+        .nav-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn { padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-nav { background: #e2e8f0; color: var(--secondary); }
+        .btn-nav.active { background: var(--primary); color: white; }
+        .btn-export { background: var(--success); color: white; }
+
         .page { display: none; }
         .page.active { display: block; }
-        h2 { color: var(--primary); border-left: 5px solid var(--primary); padding-left: 10px; font-size: 1.1em; margin-top: 20px; background: #fff1f2; padding-top: 5px; padding-bottom: 5px; }
+
+        /* Formulaire */
+        h2 { color: var(--primary); font-size: 1.1em; border-left: 5px solid var(--primary); padding-left: 12px; margin-top: 25px; background: #fff1f2; padding-block: 8px; text-transform: uppercase; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
-        .field { border: 1px solid #ddd; padding: 12px; border-radius: 8px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9em; }
-        input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .btn-save { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-size: 1.1em; cursor: pointer; margin-top: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .field { border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; background: #fff; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.85em; }
+        input, select, textarea { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
+        
+        /* Tableau Likert */
+        .likert-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
+        .likert-table th, .likert-table td { border: 1px solid #e2e8f0; padding: 10px; text-align: center; }
+        .text-left { text-align: left; }
+
+        /* Badges Niveau */
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; }
+        .badge-good { background: #dcfce7; color: #166534; }
+        .badge-mid { background: #fef9c3; color: #854d0e; }
+        .badge-bad { background: #fee2e2; color: #991b1b; }
+
+        .btn-submit { background: var(--primary); color: white; width: 100%; margin-top: 30px; padding: 20px; font-size: 1.2em; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="tabs">
-        <button class="tab-btn active" onclick="nav('recolte')">1. RÉCOLTE DES DONNÉES</button>
-        <button class="tab-btn" onclick="nav('analyse')">2. ANALYSE & RÉSULTATS</button>
+    <div class="top-bar">
+        <div class="nav-btns">
+            <button class="btn btn-nav active" onclick="show('recolte')">1. COLLECTE</button>
+            <button class="btn btn-nav" onclick="show('data')">2. BASE DE DONNÉES</button>
+            <button class="btn btn-nav" onclick="show('stats')">3. ANALYSE CAP</button>
+        </div>
+        <button class="btn btn-export" onclick="exportExcel()">⬇️ EXPORT EXCEL (CSV)</button>
     </div>
 
     <div id="recolte" class="page active">
-        <form id="capForm">
-            <h2>I. IDENTIFICATION & CONSENTEMENT</h2>
+        <form id="masterForm">
+            <h2>I. IDENTIFICATION ET CONSENTEMENT</h2>
             <div class="grid">
-                [span_9](start_span)[span_10](start_span)<div class="field"><label>Code :</label><input type="text" name="code" required>[span_9](end_span)[span_10](end_span)</div>
-                [span_11](start_span)[span_12](start_span)<div class="field"><label>Service :</label><input type="text" name="service">[span_11](end_span)[span_12](end_span)</div>
-                [span_13](start_span)[span_14](start_span)<div class="field"><label>Consentement :</label><select name="consent"><option value="1">Accepté</option><option value="0">Refusé</option></select>[span_13](end_span)[span_14](end_span)</div>
+                <div class="field"><label>Code de l'enquêtée *</label><input type="text" name="id" required></div>
+                <div class="field"><label>Date *</label><input type="date" name="date" required></div>
+                <div class="field"><label>Service d'affectation *</label><input type="text" name="service" required></div>
+                <div class="field"><label>Enquêteur(trice)</label><input type="text" name="enqueteur"></div>
+                <div class="field"><label>Consentement *</label>
+                    <select name="consent" required><option value="Oui">J'accepte de participer</option><option value="Non">Je refuse</option></select>
+                </div>
             </div>
 
-            <h2>II. DONNÉES SOCIODÉMOGRAPHIQUES</h2>
+            <h2>II. DONNÉES SOCIODÉMOGRAPHIQUES (Le Profil)</h2>
             <div class="grid">
-                [span_15](start_span)[span_16](start_span)<div class="field"><label>Sexe :</label><select name="sexe"><option>Femme</option><option>Homme</option></select>[span_15](end_span)[span_16](end_span)</div>
-                [span_17](start_span)[span_18](start_span)<div class="field"><label>Âge :</label><input type="number" name="age">[span_17](end_span)[span_18](end_span)</div>
-                [span_19](start_span)[span_20](start_span)<div class="field"><label>État Civil :</label><select name="ecivil"><option>Célibataire</option><option>Mariée</option><option>Veuve</option><option>Autre</option></select>[span_19](end_span)[span_20](end_span)</div>
-                [span_21](start_span)[span_22](start_span)<div class="field"><label>Niveau d'études :</label><select name="etude"><option>A2</option><option>A1</option><option>A0</option><option>Master</option></select>[span_21](end_span)[span_22](end_span)</div>
-                [span_23](start_span)[span_24](start_span)<div class="field"><label>Anciennété (ans) :</label><input type="number" name="exp">[span_23](end_span)[span_24](end_span)</div>
-                [span_25](start_span)[span_26](start_span)<div class="field"><label>Statut :</label><select name="statut"><option>Titulaire</option><option>Contractuelle</option><option>Stagiaire</option><option>Autre</option></select>[span_25](end_span)[span_26](end_span)</div>
-                [span_27](start_span)[span_28](start_span)<div class="field"><label>Antécédents Familiaux :</label><select name="anteced"><option value="1">Oui</option><option value="0">Non</option></select>[span_27](end_span)[span_28](end_span)</div>
+                <div class="field"><label>Sexe</label><select name="sexe"><option>Femme</option><option>Homme</option></select></div>
+                <div class="field"><label>Âge (ans)</label><input type="number" name="age"></div>
+                <div class="field"><label>État civil</label><select name="ecivil"><option>Célibataire</option><option>Mariée</option><option>Veuve</option><option>Autre</option></select></div>
+                <div class="field"><label>Niveau d'études</label><select name="niveau"><option value="A2">A2</option><option value="A1">A1</option><option value="A0">A0</option><option value="Master">Master+</option></select></div>
+                <div class="field"><label>Expérience (ans)</label><input type="number" name="exp"></div>
+                <div class="field"><label>Statut</label><select name="statut"><option>Titulaire</option><option>Contractuelle</option><option>Stagiaire</option><option>Autre</option></select></div>
+                <div class="field"><label>Antécédents Familiaux</label><select name="anteced"><option value="0">Non</option><option value="1">Oui</option></select></div>
             </div>
 
-            <h2>III. CONNAISSANCES (SAVOIRS)</h2>
+            <h2>III. ÉVALUATION DES CONNAISSANCES (Scoring Scientifique)</h2>
             <div class="grid">
-                [span_29](start_span)[span_30](start_span)<div class="field"><label>Risque augmente avec l'âge ?</label><select name="c_age"><option value="1">Vrai</option><option value="0">Faux</option></select>[span_29](end_span)[span_30](end_span)</div>
-                [span_31](start_span)[span_32](start_span)<div class="field"><label>Obésité = Facteur de risque ?</label><select name="c_obese"><option value="1">Vrai</option><option value="0">Faux</option></select>[span_31](end_span)[span_32](end_span)</div>
-                [span_33](start_span)<div class="field"><label>Allaitement maternel protecteur ?</label><select name="c_allait"><option value="1">Vrai</option><option value="0">Faux</option></select>[span_33](end_span)</div>
-                [span_34](start_span)[span_35](start_span)<div class="field"><label>Mammographie remplace l'examen clinique ?</label><select name="c_remplace"><option value="1">Vrai</option><option value="0">Faux</option></select>[span_34](end_span)[span_35](end_span)</div>
-                [span_36](start_span)[span_37](start_span)<div class="field"><label>Âge conseillé mammographie (Makala) :</label><input type="number" name="age_mammo">[span_36](end_span)[span_37](end_span)</div>
-                [span_38](start_span)[span_39](start_span)<div class="field"><label>Usage Échographie :</label><select name="c_echo"><option>En complément</option><option>1ère intention (jeunes)</option><option>NSP</option></select>[span_38](end_span)[span_39](end_span)</div>
+                <div class="field"><label>Risque augmente avec l'âge ?</label><select name="c1"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select></div>
+                <div class="field"><label>Obésité/Sédentarité = Risque ?</label><select name="c2"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select></div>
+                <div class="field"><label>Allaitement maternel protecteur ?</label><select name="c3"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select></div>
+                <div class="field"><label>L'AES détecte les anomalies ?</label><select name="c4"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select></div>
+                <div class="field"><label>Mammographie = Dépistage Secondaire ?</label><select name="c5"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select></div>
+                <div class="field"><label>Méthode de référence :</label><select name="c6"><option value="0">---</option><option value="1">Mammographie</option><option value="0">Échographie</option></select></div>
+            </div>
+            <div class="field" style="margin-top:10px;">
+                <label>Signes d'alerte connus (Cochez tout) :</label>
+                <input type="checkbox" name="signe" value="masse"> Masse/Nodule | 
+                <input type="checkbox" name="signe" value="peau"> Peau d'orange | 
+                <input type="checkbox" name="signe" value="sang"> Écoulement sanglant | 
+                <input type="checkbox" name="signe" value="retract"> Rétraction mamelon
             </div>
 
-            <h2>IV. ATTITUDES (LIKERT 1-5)</h2>
+            <h2>IV. ÉVALUATION DES ATTITUDES (Échelle 1 à 5)</h2>
+            <table class="likert-table">
+                <thead><tr><th class="text-left">Énoncés</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
+                <tbody>
+                    <tr><td class="text-left">La prévention est une priorité.</td><td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5"></td></tr>
+                    <tr><td class="text-left">Le cancer est forcément mortel en RDC.</td><td><input type="radio" name="att2" value="1"></td><td><input type="radio" name="att2" value="2"></td><td><input type="radio" name="att2" value="3"></td><td><input type="radio" name="att2" value="4"></td><td><input type="radio" name="att2" value="5"></td></tr>
+                </tbody>
+            </table>
+
+            <h2>V. ÉVALUATION DES PRATIQUES</h2>
+            <div class="grid">
+                <div class="field"><label>Pratique personnelle AES ?</label><select name="p1"><option value="1">Oui</option><option value="0">Non</option></select></div>
+                <div class="field"><label>Fréquence :</label><select name="p2"><option>Mensuelle</option><option>Occasionnelle</option><option>Rare</option></select></div>
+                <div class="field"><label>Examen clinique patientes :</label><select name="p3"><option value="1">Toujours</option><option value="0.5">Parfois</option><option value="0">Jamais</option></select></div>
+                <div class="field"><label>Enseignez-vous l'AES ?</label><select name="p4"><option value="1">Oui</option><option value="0">Non</option></select></div>
+            </div>
+
+            <h2>VI. OBSTACLES ET RECOMMANDATIONS</h2>
             <div class="field">
-                <label>Le cancer du sein est forcément mortel en RDC ?</label>
-                [span_40](start_span)<input type="range" name="att_mortel" min="1" max="5" step="1">[span_40](end_span)
+                <label>Obstacles à l'HGRM :</label>
+                <input type="checkbox" name="obs" value="Formation"> Formation | 
+                <input type="checkbox" name="obs" value="Matériel"> Matériel | 
+                <input type="checkbox" name="obs" value="Temps"> Temps | 
+                <input type="checkbox" name="obs" value="Tabous"> Tabous
+            </div>
+            <div class="grid" style="margin-top:10px;">
+                <div class="field"><label>Type formation souhaitée :</label><select name="type_f"><option>Continue</option><option>Licence</option><option>Master</option></select></div>
+                <div class="field"><label>Suggestions libres :</label><textarea name="sugg"></textarea></div>
             </div>
 
-            <h2>V. PRATIQUES</h2>
-            <div class="grid">
-                [span_41](start_span)[span_42](start_span)<div class="field"><label>Enseignez-vous l'AES ?</label><select name="p_aes"><option value="1">Oui</option><option value="0">Non</option></select>[span_41](end_span)[span_42](end_span)</div>
-                [span_43](start_span)[span_44](start_span)<div class="field"><label>Examen clinique systématique ?</label><select name="p_clin"><option>Toujours</option><option>Parfois</option><option>Jamais</option></select>[span_43](end_span)[span_44](end_span)</div>
-                [span_45](start_span)<div class="field"><label>Participé à une sensibilisation ?</label><select name="p_sensib"><option value="1">Oui</option><option value="0">Non</option></select>[span_45](end_span)</div>
-            </div>
-
-            <h2>VI. OBSTACLES</h2>
-            <div class="field">
-                <label>Cochez les obstacles :</label>
-                [span_46](start_span)[span_47](start_span)<input type="checkbox" name="obs" value="Matériel"> Manque de matériel[span_46](end_span)[span_47](end_span)<br>
-                [span_48](start_span)[span_49](start_span)<input type="checkbox" name="obs" value="Formation"> Manque de formation[span_48](end_span)[span_49](end_span)<br>
-                [span_50](start_span)[span_51](start_span)<input type="checkbox" name="obs" value="Distance"> Distance vers les centres[span_50](end_span)[span_51](end_span)<br>
-                [span_52](start_span)[span_53](start_span)<input type="checkbox" name="obs" value="Surcharge"> Surcharge de travail[span_52](end_span)[span_53](end_span)
-            </div>
-
-            <button type="button" class="btn-save" onclick="save()">ENREGISTRER LA FICHE</button>
+            <button type="button" class="btn-submit" onclick="saveEntry()">ENREGISTRER LA FICHE ET CALCULER LE SCORE</button>
         </form>
     </div>
 
-    <div id="analyse" class="page">
-        <h2>Résultats et Analyse</h2>
-        <div id="stats">Collectez des données pour voir les statistiques.</div>
+    <div id="data" class="page">
+        <h2>Matrice de Dépouillement (Données Brutes)</h2>
+        <div style="overflow-x:auto;">
+            <table id="dataTable" style="width:100%; border-collapse: collapse; font-size: 0.85em;">
+                <thead style="background:#f1f5f9;">
+                    <tr><th>ID</th><th>Service</th><th>Score C.</th><th>Niveau</th><th>Pratique</th><th>Obstacles</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="stats" class="page">
+        <h2>Indicateurs CAP Globaux</h2>
+        <div class="grid">
+            <div style="text-align:center; padding:30px; border: 1px solid #eee;"><h3>Échantillon (N)</h3><div id="sn" style="font-size:3em; color:var(--primary);">0</div></div>
+            <div style="text-align:center; padding:30px; border: 1px solid #eee;"><h3>Moyenne Savoir</h3><div id="sc" style="font-size:3em; color:var(--primary);">0%</div></div>
+        </div>
     </div>
 </div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('db_cap')) || [];
-    function nav(id) {
+    let db = JSON.parse(localStorage.getItem('cap_makala_expert')) || [];
+
+    function show(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         event.currentTarget.classList.add('active');
-        if(id === 'analyse') showStats();
+        if(id === 'data') refreshTable();
+        if(id === 'stats') refreshStats();
     }
-    function save() {
-        const data = Object.fromEntries(new FormData(document.getElementById('capForm')).entries());
+
+    function saveEntry() {
+        const form = document.getElementById('masterForm');
+        const data = Object.fromEntries(new FormData(form).entries());
+        
+        // Calcul du score de connaissances (sur 6 questions de C1 à C6)
+        let score = 0;
+        for(let i=1; i<=6; i++) { score += parseInt(data['c'+i] || 0); }
+        data.score = score;
+        data.niveau = score >= 5 ? 'Bon' : (score >= 3 ? 'Moyen' : 'Faible');
+        
         db.push(data);
-        localStorage.setItem('db_cap', JSON.stringify(db));
-        alert("Fiche enregistrée !");
-        document.getElementById('capForm').reset();
+        localStorage.setItem('cap_makala_expert', JSON.stringify(db));
+        alert("Données enregistrées ! Niveau de cette fiche : " + data.niveau);
+        form.reset();
     }
-    function showStats() {
-        document.getElementById('stats').innerHTML = "Nombre de fiches : " + db.length;
+
+    function refreshTable() {
+        const tbody = document.querySelector('#dataTable tbody');
+        tbody.innerHTML = db.map(d => `
+            <tr style="border-bottom:1px solid #eee;">
+                <td>${d.id}</td><td>${d.service}</td><td>${d.score}/6</td>
+                <td><span class="badge ${d.niveau==='Bon'?'badge-good':d.niveau==='Moyen'?'badge-mid':'badge-bad'}">${d.niveau}</span></td>
+                <td>${d.p3 === '1' ? 'Systématique' : 'Irrégulier'}</td>
+                <td>${d.obs || 'N/A'}</td>
+            </tr>
+        `).join('');
+    }
+
+    function refreshStats() {
+        const n = db.length;
+        if(n === 0) return;
+        const totalScore = db.reduce((acc, curr) => acc + parseInt(curr.score), 0);
+        document.getElementById('sn').innerText = n;
+        document.getElementById('sc').innerText = ((totalScore / (n * 6)) * 100).toFixed(1) + "%";
+    }
+
+    function exportExcel() {
+        if(db.length === 0) return alert("Base vide.");
+        let csv = "ID,Date,Service,Age,NiveauEtude,ScoreConnaissance,NiveauLabel,PratiqueClinique,Obstacles\n";
+        db.forEach(d => {
+            csv += `${d.id},${d.date},${d.service},${d.age},${d.niveau},${d.score},${d.niveau},${d.p3},${d.obs}\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const a = document.createElement('a');
+        a.href = window.URL.createObjectURL(blob);
+        a.download = 'CAP_HGRM_Makala_Export.csv';
+        a.click();
     }
 </script>
 </body>
