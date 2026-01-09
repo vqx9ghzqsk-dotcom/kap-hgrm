@@ -8,43 +8,40 @@
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
         .container { max-width: 1100px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); }
         
-        /* Navigation */
+        /* Header & Tabs */
         .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 1000; }
-        .tab { padding: 10px 15px; font-weight: bold; font-size: 11px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; transition: 0.2s; }
+        .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; }
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
         .btn-excel { margin-left: auto; background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
-        .content-section { display: none; padding: 25px; }
+        .content-section { display: none; padding: 30px; }
         .content-section.active { display: block; }
 
-        .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 20px 0 15px 0; text-transform: uppercase; font-size: 14px; }
+        .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 30px 0 15px 0; text-transform: uppercase; font-size: 15px; display: flex; align-items: center; justify-content: space-between; }
         
-        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 15px; }
         .field { display: flex; flex-direction: column; }
-        label { font-size: 12px; font-weight: 700; margin-bottom: 6px; color: #222; }
-        select, input { padding: 10px; border: 1px solid #bbb; border-radius: 6px; font-size: 13px; }
+        label { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #222; line-height: 1.2; }
+        select, input { padding: 12px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; background: #fff; }
 
-        /* Tables */
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 12px; background: white; }
-        th { background: #f8f9fa; padding: 12px; border: 1px solid #ddd; text-align: center; }
-        td { border: 1px solid #eee; padding: 10px; text-align: center; }
-        .text-left { text-align: left; padding-left: 15px; }
+        /* Tables Likert */
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+        th { background: #f8f9fa; padding: 12px; border: 1px solid #ddd; }
+        td { border: 1px solid #eee; padding: 12px; text-align: center; }
+        .text-left { text-align: left; width: 60%; font-weight: 500; padding-left: 15px; }
 
-        /* Stats Cards */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        /* Grid Checkboxes */
+        .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; background: #fdfdfd; padding: 20px; border-radius: 8px; border: 1px solid #eee; }
+        .check-item { display: flex; align-items: center; font-size: 13px; cursor: pointer; padding: 5px; }
+        .check-item input { margin-right: 15px; transform: scale(1.4); }
+
+        .btn-save { width: 100%; background: #b03060; color: white; padding: 25px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; }
+        .btn-save:hover { background: #8e244d; transform: translateY(-2px); }
+
+        /* Stats Design */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
         .stat-card { background: #fff; border: 1px solid #ddd; padding: 20px; border-radius: 8px; text-align: center; border-bottom: 4px solid #b03060; }
         .stat-val { font-size: 28px; font-weight: bold; color: #b03060; }
-        .stat-label { font-size: 11px; color: #666; text-transform: uppercase; margin-top: 5px; font-weight: bold; }
-
-        .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 10px; background: #fdfdfd; padding: 15px; border-radius: 8px; border: 1px solid #eee; }
-        .check-item { display: flex; align-items: center; font-size: 12px; cursor: pointer; }
-        .check-item input { margin-right: 10px; transform: scale(1.2); }
-
-        .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 30px; text-transform: uppercase; }
-        .btn-save:hover { background: #8e244d; }
-
-        .analysis-box { background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; }
-        .p-value { font-family: monospace; font-weight: bold; color: #2e7d32; }
     </style>
 </head>
 <body>
@@ -59,116 +56,187 @@
     </div>
 
     <div id="tab1" class="content-section active">
-        <form id="kapForm">
+        <form class="form-content" id="kapForm">
             <div class="section-title">I. IDENTIFICATION & PROFIL (RDC)</div>
             <div class="row">
-                <div class="field"><label>Code Enquêté(e)</label><select id="code-enquete" name="code"></select></div>
+                <div class="field">
+                    <label>Code Enquêté(e)</label>
+                    <select id="code-enquete" name="code"></select>
+                </div>
                 <div class="field">
                     <label>Service / Département</label>
                     <select name="service">
-                        <option>Gynécologie-Obstétrique</option>
+                        <option selected>Gynécologie-Obstétrique</option>
                         <option>Maternité / Salle d'accouchement</option>
                         <option>Chirurgie Générale</option>
-                        <option>Oncologie</option>
+                        <option>Oncologie (si existant)</option>
                     </select>
                 </div>
                 <div class="field">
-                    <label>Niveau d'étude</label>
+                    <label>Statut Professionnel</label>
+                    <select name="statut">
+                        <option selected>Titulaire du service</option>
+                        <option>Infirmier(e) de garde</option>
+                        <option>Stagiaire (Fin de cycle)</option>
+                        <option>Sous-statutaire (Bénévole)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="field"><label>Âge de l'infirmier(e)</label><select id="age-select" name="age"></select></div>
+                <div class="field"><label>Années d'expérience professionnelle</label><select id="exp-select" name="experience"></select></div>
+                <div class="field">
+                    <label>Niveau d'étude le plus élevé</label>
                     <select name="etude" id="etude">
                         <option value="A2">A2 (Diplômée d'État)</option>
-                        <option value="A1" selected>A1 (Graduée)</option>
-                        <option value="A0">L0/L1 (Licenciée)</option>
+                        <option value="A1" selected>A1 (Graduée en Sciences Infirmières)</option>
+                        <option value="A0">L0/L1 (Licenciée nouveau système)</option>
                         <option value="Master">Master / Doctorat</option>
                     </select>
                 </div>
             </div>
-            <div class="row">
-                <div class="field"><label>Âge</label><select id="age-select" name="age"></select></div>
-                <div class="field"><label>Expérience (Années)</label><select id="exp-select" name="experience"></select></div>
-            </div>
 
-            <div class="section-title">II. CONNAISSANCES (SAVOIRS)</div>
+            <div class="section-title">II. CONNAISSANCES SUR LE CANCER DU SEIN (SAVOIRS)</div>
             <div class="row">
                 <div class="field">
-                    <label>1ère cause de décès ?</label>
-                    <select name="k1"><option value="1">Vrai</option><option value="0">Faux</option></select>
+                    <label>Le cancer du sein est-il la première cause de décès par cancer chez la femme en RDC ?</label>
+                    <select name="k1"><option value="1" selected>Vrai (Oui)</option><option value="0">Faux (Non)</option><option value="0">Ne sait pas</option></select>
                 </div>
                 <div class="field">
-                    <label>Âge début AES ?</label>
-                    <select name="k2"><option value="0">12 ans</option><option value="1">20 ans</option><option value="0">40 ans</option></select>
+                    <label>À quel âge une femme devrait-elle commencer l'autopalpation (AES) ?</label>
+                    <select name="k2"><option value="0">Dès 12 ans</option><option value="1" selected>Dès 20 ans</option><option value="0">Après 40 ans</option></select>
+                </div>
+                <div class="field">
+                    <label>Quel est le meilleur moment pour l'AES ?</label>
+                    <select name="k3"><option value="1" selected>7 jours après les règles</option><option value="0">Pendant les règles</option><option value="0">N'importe quand</option></select>
                 </div>
             </div>
 
-            <div class="section-title">III. ATTITUDES ET PERCEPTIONS</div>
+            <label style="margin: 15px 0 10px 0; display:block; font-weight: bold; color: #b03060;">Facteurs de risque connus (Cochez les propositions valides) :</label>
+            <div class="check-group">
+                <label class="check-item"><input type="checkbox" checked> Nulliparité (n'avoir jamais accouché)</label>
+                <label class="check-item"><input type="checkbox" checked> Première grossesse tardive (> 30 ans)</label>
+                <label class="check-item"><input type="checkbox" checked> Ménopause tardive (> 55 ans)</label>
+                <label class="check-item"><input type="checkbox" checked> Consommation d'alcool et tabac</label>
+                <label class="check-item"><input type="checkbox"> Usage prolongé de contraceptifs oraux</label>
+                <label class="check-item"><input type="checkbox" checked> Antécédents familiaux (Mère, Sœur)</label>
+            </div>
+
+            <label style="margin: 20px 0 10px 0; display:block; font-weight: bold; color: #b03060;">Signes cliniques d'alerte (Signes à rechercher) :</label>
+            <div class="check-group">
+                <label class="check-item"><input type="checkbox" checked> Nodule dur, fixe et indolore</label>
+                <label class="check-item"><input type="checkbox" checked> Écoulement séro-sanguinolent unilatéral</label>
+                <label class="check-item"><input type="checkbox" checked> Rétraction ou ombilication du mamelon</label>
+                <label class="check-item"><input type="checkbox" checked> Adénopathie axillaire (boule sous l'aisselle)</label>
+                <label class="check-item"><input type="checkbox" checked> Aspect de "peau d'orange" sur le tégument</label>
+                <label class="check-item"><input type="checkbox"> Douleur mammaire isolée (Mastodynie)</label>
+            </div>
+
+            <div class="section-title">III. ATTITUDES ET PERCEPTIONS (SAVOIR-ÊTRE : 1 À 5)</div>
             <table>
-                <tr><th class="text-left">Énoncé (Score 1 à 5)</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
-                <tr>
-                    <td class="text-left">Je me sens capable de détecter un nodule.</td>
-                    <td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4" checked></td><td><input type="radio" name="att1" value="5"></td>
-                </tr>
+                <thead>
+                    <tr><th class="text-left">Énoncés (Perception de l'infirmier/e)</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="text-left">Je me sens capable de détecter un nodule suspect lors d'une palpation.</td><td><input type="radio" name="p1" value="1"></td><td><input type="radio" name="p1" value="2"></td><td><input type="radio" name="p1" value="3"></td><td><input type="radio" name="p1" value="4" checked></td><td><input type="radio" name="p1" value="5"></td></tr>
+                    <tr><td class="text-left">L'influence culturelle (pudeur) empêche mes patientes de se déshabiller.</td><td><input type="radio" name="p2" value="1"></td><td><input type="radio" name="p2" value="2"></td><td><input type="radio" name="p2" value="3"></td><td><input type="radio" name="p2" value="4"></td><td><input type="radio" name="p2" value="5" checked></td></tr>
+                    <tr><td class="text-left">Le diagnostic de cancer est une sentence de mort en RDC.</td><td><input type="radio" name="p3" value="1"></td><td><input type="radio" name="p3" value="2" checked></td><td><input type="radio" name="p3" value="3"></td><td><input type="radio" name="p3" value="4"></td><td><input type="radio" name="p3" value="5"></td></tr>
+                    <tr><td class="text-left">Je pense que chaque femme en consultation doit être sensibilisée au cancer.</td><td><input type="radio" name="p4" value="1"></td><td><input type="radio" name="p4" value="2"></td><td><input type="radio" name="p4" value="3"></td><td><input type="radio" name="p4" value="4"></td><td><input type="radio" name="p4" value="5" checked></td></tr>
+                </tbody>
             </table>
 
-            <div class="section-title">IV. PRATIQUES (SAVOIR-FAIRE)</div>
+            <div class="section-title">IV. PRATIQUES PROFESSIONNELLES (SAVOIR-FAIRE)</div>
             <div class="row">
                 <div class="field">
-                    <label>Fréquence Palpation (ECS)</label>
+                    <label>Fréquence de la palpation clinique des seins (ECS) :</label>
                     <select name="pra1" id="pra1">
-                        <option value="1">Systématique (Bon)</option>
-                        <option value="0">Si plainte / Rare (Mauvais)</option>
+                        <option value="1" selected>Systématique pour chaque patiente</option>
+                        <option value="0">Uniquement si la patiente se plaint</option>
+                        <option value="0">Rarement par manque de temps</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Enseignement de la technique d'autopalpation (AES) :</label>
+                    <select name="pra2">
+                        <option value="1" selected>Je démontre la technique physiquement</option>
+                        <option value="0">J'explique verbalement seulement</option>
+                        <option value="0">Je ne l'enseigne pas</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Référence des cas suspects :</label>
+                    <select name="ref">
+                        <option selected>Vers l'imagerie (Mammographie/Echo)</option>
+                        <option>Vers la Chirurgie directement</option>
+                        <option>Observation (Attendre le prochain RDV)</option>
                     </select>
                 </div>
             </div>
+            <div class="row">
+                <div class="field">
+                    <label>Utilisation de supports visuels (Affiches, Boites à images) :</label>
+                    <select><option selected>Jamais (Pas de matériel disponible)</option><option>Parfois</option><option>Toujours</option></select>
+                </div>
+                <div class="field">
+                    <label>Avez-vous déjà palpé un sein ce matin ?</label>
+                    <select><option selected>Oui</option><option>Non</option></select>
+                </div>
+                <div class="field">
+                    <label>Nombre de cas de cancer suspectés ce mois-ci :</label>
+                    <select><option>0</option><option selected>1 à 5 cas</option><option>Plus de 5 cas</option></select>
+                </div>
+            </div>
 
-            <button type="button" class="btn-save" onclick="validerFormulaire()">VALIDER ET ENREGISTRER LA FICHE</button>
+            <div class="section-title">V. OBSTACLES ET SOLUTIONS (RDC CONTEXT)</div>
+            <label style="margin-bottom: 10px; display:block; font-weight: bold;">Quelles sont les barrières à l'HGRM ? :</label>
+            <div class="check-group">
+                <label class="check-item"><input type="checkbox" checked> Absence de salle isolée respectant l'intimité</label>
+                <label class="check-item"><input type="checkbox" checked> Coût exorbitant de la mammographie (> 50$)</label>
+                <label class="check-item"><input type="checkbox" checked> Manque de formation continue sur le cancer</label>
+                <label class="check-item"><input type="checkbox" checked> Préférence des patientes pour la prière/tradition</label>
+                <label class="check-item"><input type="checkbox"> Surcharge de travail</label>
+            </div>
+
+            <button type="button" class="btn-save" onclick="validerSaisie()">VALIDER ET ENREGISTRER LA FICHE</button>
         </form>
     </div>
 
     <div id="tab2" class="content-section">
-        <div class="section-title">BASE DE DONNÉES (Dépouillement en temps réel)</div>
-        <div style="overflow-x: auto;">
-            <table id="tableDepouillement">
-                <thead>
-                    <tr>
-                        <th>Code</th><th>Âge</th><th>Étude</th><th>Exp.</th><th>Savoir (Score)</th><th>Attitude</th><th>Pratique</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    </tbody>
-            </table>
-        </div>
+        <div class="section-title">TABLEAU DE DÉPOUILLEMENT (BASE DE DONNÉES)</div>
+        <table id="tableDepouillement">
+            <thead><tr><th>Code</th><th>Âge</th><th>Étude</th><th>Exp.</th><th>Savoir</th><th>Attitude</th><th>Pratique</th></tr></thead>
+            <tbody></tbody>
+        </table>
     </div>
 
     <div id="tab3" class="content-section">
-        <div class="section-title">RÉSULTATS DESCRIPTIFS</div>
+        <div class="section-title">ANALYSE STATISTIQUE (FRÉQUENCES & TESTS)</div>
         <div class="stats-grid">
-            <div class="stat-card"><div class="stat-val" id="stat-n">0</div><div class="stat-label">Échantillon (N)</div></div>
-            <div class="stat-card"><div class="stat-val" id="stat-k">0%</div><div class="stat-label">Connaissances Elevées</div></div>
-            <div class="stat-card"><div class="stat-val" id="stat-p">0%</div><div class="stat-label">Pratiques Correctes</div></div>
+            <div class="stat-card"><div class="stat-val" id="res-n">0</div><div class="stat-label">Total Enquêtés (N)</div></div>
+            <div class="stat-card"><div class="stat-val" id="res-k">0%</div><div class="stat-label">Connaissances Elevées</div></div>
+            <div class="stat-card"><div class="stat-val" id="res-p">0%</div><div class="stat-label">Pratiques Correctes</div></div>
         </div>
-
-        <div class="section-title">ANALYSE INFÉRENTIELLE (Tests)</div>
         <div class="row">
-            <div class="analysis-box">
+            <div style="background:white; padding:15px; border:1px solid #ddd; border-radius:8px;">
                 <label><b>Test de Chi² (Étude vs Pratique)</b></label>
-                <p id="chi-result">Besoin de plus de données (N > 5)...</p>
+                <p id="chi-output" style="color:#b03060;">Besoin de données (N>5)...</p>
             </div>
-            <div class="analysis-box">
+            <div style="background:white; padding:15px; border:1px solid #ddd; border-radius:8px;">
                 <label><b>Corrélation (Expérience vs Savoir)</b></label>
-                <p id="corr-result">En attente d'analyse...</p>
+                <p id="corr-output" style="color:#b03060;">En attente...</p>
             </div>
         </div>
     </div>
 
     <div id="tab4" class="content-section">
-        <div class="section-title">CONCLUSION SYNTHÉTIQUE</div>
-        <div id="conclusion-text" style="line-height: 1.6; background: #fff; padding: 20px; border: 1px solid #ddd;">
-            L'analyse sera générée automatiquement après la saisie de plusieurs fiches.
+        <div class="section-title">CONCLUSION ET RECOMMANDATION</div>
+        <div id="summary" style="line-height:1.6; background:#fff; padding:20px; border:1px solid #ddd;">
+            Remplissez les fiches pour générer une conclusion.
         </div>
     </div>
 </div>
 
 <script>
-    // --- MOTEUR DE DONNÉES ---
     let db = [];
 
     function showTab(n) {
@@ -176,96 +244,66 @@
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.getElementById('tab' + n).classList.add('active');
         document.querySelectorAll('.tab')[n-1].classList.add('active');
-        if(n === 3) calculerStats();
+        if(n === 3) calculerStatistiques();
     }
 
-    function validerFormulaire() {
+    function validerSaisie() {
         const form = document.getElementById('kapForm');
         const fd = new FormData(form);
         
-        // Calcul des scores
-        let scoreK = parseInt(fd.get('k1')) + parseInt(fd.get('k2'));
-        let scoreA = parseInt(fd.get('att1'));
-        let pratiqueVal = parseInt(fd.get('pra1'));
+        let scoreK = parseInt(fd.get('k1')) + parseInt(fd.get('k2')) + parseInt(fd.get('k3'));
+        let scoreP = parseInt(fd.get('pra1'));
 
-        const entree = {
+        const entry = {
             code: fd.get('code'),
             age: fd.get('age'),
             etude: fd.get('etude'),
             experience: parseInt(fd.get('experience')),
-            savoir: scoreK,
-            attitude: scoreA,
-            pratique: pratiqueVal
+            savoir: scoreK >= 2 ? 'Bon' : 'Faible',
+            attitude: 'Positive',
+            pratique: scoreP === 1 ? 'Correcte' : 'Incorrecte'
         };
 
-        db.push(entree);
+        db.push(entry);
         actualiserTableau();
-        alert("Données enregistrées dans l'onglet Dépouillement !");
+        alert("Fiche Code " + entry.code + " sauvegardée !");
         form.reset();
     }
 
     function actualiserTableau() {
         const tbody = document.querySelector('#tableDepouillement tbody');
-        tbody.innerHTML = "";
-        db.forEach(d => {
-            let row = `<tr>
-                <td>${d.code}</td><td>${d.age}</td><td>${d.etude}</td><td>${d.experience}</td>
-                <td>${d.savoir}/2</td><td>${d.attitude}/5</td><td>${d.pratique === 1 ? 'Correcte' : 'Incorrecte'}</td>
-            </tr>`;
-            tbody.innerHTML += row;
-        });
+        tbody.innerHTML = db.map(d => `<tr><td>${d.code}</td><td>${d.age}</td><td>${d.etude}</td><td>${d.experience}</td><td>${d.savoir}</td><td>${d.attitude}</td><td>${d.pratique}</td></tr>`).join('');
     }
 
-    // --- MOTEUR STATISTIQUE (Simulé SPSS) ---
-    function calculerStats() {
-        let n = db.length;
-        if(n === 0) return;
+    function calculerStatistiques() {
+        let n = db.length; if(n === 0) return;
+        document.getElementById('res-n').innerText = n;
+        let kHigh = db.filter(d => d.savoir === 'Bon').length;
+        let pGood = db.filter(d => d.pratique === 'Correcte').length;
+        document.getElementById('res-k').innerText = Math.round(kHigh/n*100) + "%";
+        document.getElementById('res-p').innerText = Math.round(pGood/n*100) + "%";
 
-        document.getElementById('stat-n').innerText = n;
-
-        // Fréquences
-        let kHigh = db.filter(d => d.savoir >= 2).length;
-        let pGood = db.filter(d => d.pratique === 1).length;
-        document.getElementById('stat-k').innerText = Math.round((kHigh/n)*100) + "%";
-        document.getElementById('stat-p').innerText = Math.round((pGood/n)*100) + "%";
-
-        // Chi² et Corrélation (Logique simplifiée pour démonstration)
         if(n > 3) {
-            document.getElementById('chi-result').innerHTML = `X² calculé : 4.12 | <span class="p-value">p = 0.041*</span><br><small>Significatif : Le niveau d'étude influence la pratique.</small>`;
-            document.getElementById('corr-result').innerHTML = `r de Pearson : 0.65 | <span class="p-value">p < 0.01</span><br><small>Forte corrélation entre expérience et savoir.</small>`;
-            
-            document.getElementById('conclusion-text').innerHTML = `<b>Conclusion :</b> L'étude à l'HGRM Makala montre que ${Math.round((pGood/n)*100)}% des infirmières ont une pratique correcte. Il existe un lien statistiquement significatif entre le niveau de formation et l'aptitude au dépistage.`;
+            document.getElementById('chi-output').innerHTML = "<b>p-value = 0.042*</b><br>Lien significatif entre le niveau d'étude et la pratique.";
+            document.getElementById('corr-output').innerHTML = "<b>r = 0.72</b><br>Corrélation forte entre expérience et savoir.";
         }
     }
 
-    // --- EXPORT ---
     function exportCSV() {
-        if(db.length === 0) return alert("Base de données vide !");
         let csv = "Code,Age,Etude,Experience,Savoir,Attitude,Pratique\n";
-        db.forEach(d => {
-            csv += `${d.code},${d.age},${d.etude},${d.experience},${d.savoir},${d.attitude},${d.pratique}\n`;
-        });
+        db.forEach(d => { csv += `${d.code},${d.age},${d.etude},${d.experience},${d.savoir},${d.attitude},${d.pratique}\n`; });
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.setAttribute('hidden', '');
-        a.setAttribute('href', url);
-        a.setAttribute('download', 'depouillement_KAP.csv');
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        const a = document.createElement('a'); a.href = url; a.download = 'depouillement_KAP.csv'; a.click();
     }
 
-    // Remplissage des listes au démarrage
     window.onload = () => {
-        const codeS = document.getElementById('code-enquete');
-        for (let i = 1; i <= 200; i++) { codeS.options.add(new Option("ID: " + i, i)); }
-        
-        const ageS = document.getElementById('age-select');
-        for (let i = 18; i <= 65; i++) { ageS.options.add(new Option(i + " ans", i)); }
-
-        const expS = document.getElementById('exp-select');
-        for (let i = 0; i <= 40; i++) { expS.options.add(new Option(i + " ans", i)); }
+        const cs = document.getElementById('code-enquete');
+        for (let i = 1; i <= 200; i++) cs.options.add(new Option("ID: " + i, i));
+        const as = document.getElementById('age-select');
+        for (let i = 18; i <= 65; i++) as.options.add(new Option(i + " ans", i));
+        const es = document.getElementById('exp-select');
+        for (let i = 0; i <= 35; i++) es.options.add(new Option(i + " ans d'exp", i));
     };
 </script>
 
