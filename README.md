@@ -42,8 +42,9 @@
 <div class="container">
     <div class="header-tabs">
         <a href="#" class="tab active">1. COLLECTE</a>
-        <a href="#" class="tab">2. BASE DE DONNÉES</a>
-        <a href="#" class="tab">3. ANALYSE CAP</a>
+        <a href="#" class="tab">2. DÉPOUILLEMENT ET CODAGE</a>
+        <a href="#" class="tab">3. RÉSULTAT ET ANALYSE</a>
+        <a href="#" class="tab">4. CONCLUSION ET RECOMMANDATION</a>
         <button type="button" class="btn-excel">📊 EXPORT EXCEL (CSV)</button>
     </div>
 
