@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -51,7 +52,7 @@
         <div class="row">
             <div class="field">
                 <label>Code Enquêté(e)</label>
-                <select><option>HGRM-2026-01</option><option>HGRM-2026-02</option><option>HGRM-2026-03</option></select>
+                <select id="code-enquete"></select>
             </div>
             <div class="field">
                 <label>Service / Département</label>
@@ -205,6 +206,14 @@
 </div>
 
 <script>
+    // Remplissage automatique du Code Enquêté (0 à 200)
+    const codeSelect = document.getElementById('code-enquete');
+    for (let i = 0; i <= 200; i++) {
+        let opt = document.createElement('option');
+        opt.value = i; opt.text = "Code: " + i;
+        codeSelect.appendChild(opt);
+    }
+
     // Remplissage automatique de l'Âge (18 à 60)
     const ageSelect = document.getElementById('age-select');
     for (let i = 18; i <= 60; i++) {
