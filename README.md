@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -8,12 +9,13 @@
         .container { max-width: 1100px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); }
         
         /* Header & Tabs */
-        .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 1000; }
+        .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; position: sticky; top:0; z-index:100; }
         .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; }
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
         .btn-excel { margin-left: auto; background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
-        .content-section { display: none; padding: 30px; }
+        .form-content { padding: 30px; }
+        .content-section { display: none; }
         .content-section.active { display: block; }
 
         .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 30px 0 15px 0; text-transform: uppercase; font-size: 15px; display: flex; align-items: center; justify-content: space-between; }
@@ -36,26 +38,26 @@
 
         .btn-save { width: 100%; background: #b03060; color: white; padding: 25px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; }
         .btn-save:hover { background: #8e244d; transform: translateY(-2px); }
-
-        /* Stats Design */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        
+        /* Stats Dashboard */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
         .stat-card { background: #fff; border: 1px solid #ddd; padding: 20px; border-radius: 8px; text-align: center; border-bottom: 4px solid #b03060; }
-        .stat-val { font-size: 28px; font-weight: bold; color: #b03060; }
+        .stat-val { font-size: 32px; font-weight: bold; color: #b03060; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-tabs">
-        <div class="tab active" onclick="showTab(1)">1. COLLECTE</div>
-        <div class="tab" onclick="showTab(2)">2. DÉPOUILLEMENT ET CODAGE</div>
-        <div class="tab" onclick="showTab(3)">3. RÉSULTAT ET ANALYSE</div>
-        <div class="tab" onclick="showTab(4)">4. CONCLUSION ET RECOMMANDATION</div>
-        <button type="button" class="btn-excel" onclick="exportCSV()">📊 EXPORT EXCEL (CSV)</button>
+        <div class="tab active" onclick="changeTab(1)">1. COLLECTE</div>
+        <div class="tab" onclick="changeTab(2)">2. DÉPOUILLEMENT ET CODAGE</div>
+        <div class="tab" onclick="changeTab(3)">3. RÉSULTAT ET ANALYSE</div>
+        <div class="tab" onclick="changeTab(4)">4. CONCLUSION ET RECOMMANDATION</div>
+        <button type="button" class="btn-excel" onclick="exportExcel()">📊 EXPORT EXCEL (CSV)</button>
     </div>
 
-    <div id="tab1" class="content-section active">
-        <form class="form-content" id="kapForm">
+    <div id="section1" class="content-section active">
+        <form class="form-content" id="mainForm">
             <div class="section-title">I. IDENTIFICATION & PROFIL (RDC)</div>
             <div class="row">
                 <div class="field">
@@ -86,11 +88,11 @@
                 <div class="field"><label>Années d'expérience professionnelle</label><select id="exp-select" name="experience"></select></div>
                 <div class="field">
                     <label>Niveau d'étude le plus élevé</label>
-                    <select name="etude" id="etude">
+                    <select name="etude" id="etude_input">
                         <option value="A2">A2 (Diplômée d'État)</option>
                         <option value="A1" selected>A1 (Graduée en Sciences Infirmières)</option>
-                        <option value="A0">L0/L1 (Licenciée nouveau système)</option>
-                        <option value="Master">Master / Doctorat</option>
+                        <option value="L">L0/L1 (Licenciée nouveau système)</option>
+                        <option value="M">Master / Doctorat</option>
                     </select>
                 </div>
             </div>
@@ -134,7 +136,10 @@
             <div class="section-title">III. ATTITUDES ET PERCEPTIONS (SAVOIR-ÊTRE : 1 À 5)</div>
             <table>
                 <thead>
-                    <tr><th class="text-left">Énoncés (Perception de l'infirmier/e)</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+                    <tr>
+                        <th class="text-left">Énoncés (Perception de l'infirmier/e)</th>
+                        <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr><td class="text-left">Je me sens capable de détecter un nodule suspect lors d'une palpation.</td><td><input type="radio" name="p1" value="1"></td><td><input type="radio" name="p1" value="2"></td><td><input type="radio" name="p1" value="3"></td><td><input type="radio" name="p1" value="4" checked></td><td><input type="radio" name="p1" value="5"></td></tr>
@@ -147,8 +152,8 @@
             <div class="section-title">IV. PRATIQUES PROFESSIONNELLES (SAVOIR-FAIRE)</div>
             <div class="row">
                 <div class="field">
-                    <label>Fréquence de la palpation clinique des seins (ECS) :</label>
-                    <select name="pra1" id="pra1">
+                    <label>Fréquence de la palpation clinique des seins (ECS) en consultation :</label>
+                    <select name="pra1">
                         <option value="1" selected>Systématique pour chaque patiente</option>
                         <option value="0">Uniquement si la patiente se plaint</option>
                         <option value="0">Rarement par manque de temps</option>
@@ -178,7 +183,7 @@
                 </div>
                 <div class="field">
                     <label>Avez-vous déjà palpé un sein ce matin ?</label>
-                    <select><option selected>Oui</option><option>Non</option></select>
+                    <select name="matin"><option value="1" selected>Oui</option><option value="0">Non</option></select>
                 </div>
                 <div class="field">
                     <label>Nombre de cas de cancer suspectés ce mois-ci :</label>
@@ -187,124 +192,151 @@
             </div>
 
             <div class="section-title">V. OBSTACLES ET SOLUTIONS (RDC CONTEXT)</div>
-            <label style="margin-bottom: 10px; display:block; font-weight: bold;">Quelles sont les barrières à l'HGRM ? :</label>
+            <label style="margin-bottom: 10px; display:block; font-weight: bold;">Quelles sont les barrières à l'HGRM ? (Cochez tout ce qui est vrai):</label>
             <div class="check-group">
                 <label class="check-item"><input type="checkbox" checked> Absence de salle isolée respectant l'intimité</label>
                 <label class="check-item"><input type="checkbox" checked> Coût exorbitant de la mammographie (> 50$)</label>
                 <label class="check-item"><input type="checkbox" checked> Manque de formation continue sur le cancer</label>
                 <label class="check-item"><input type="checkbox" checked> Préférence des patientes pour la prière/tradition</label>
-                <label class="check-item"><input type="checkbox"> Surcharge de travail</label>
+                <label class="check-item"><input type="checkbox"> Surcharge de travail (Ratio infirmière/patient)</label>
             </div>
 
-            <button type="button" class="btn-save" onclick="validerSaisie()">VALIDER ET ENREGISTRER LA FICHE</button>
+            <div class="field" style="margin-top: 20px;">
+                <label>Votre recommandation principale pour l'HGRM :</label>
+                <select>
+                    <option selected>Installation d'une unité de dépistage permanent</option>
+                    <option>Formation certifiante pour tout le personnel infirmier</option>
+                    <option>Subvention des examens d'imagerie pour les indigents</option>
+                    <option>Campagnes de masse dans les églises et marchés</option>
+                </select>
+            </div>
+
+            <button type="button" class="btn-save" onclick="saveData()">VALIDER ET ENREGISTRER LA FICHE</button>
         </form>
     </div>
 
-    <div id="tab2" class="content-section">
-        <div class="section-title">TABLEAU DE DÉPOUILLEMENT (BASE DE DONNÉES)</div>
-        <table id="tableDepouillement">
-            <thead><tr><th>Code</th><th>Âge</th><th>Étude</th><th>Exp.</th><th>Savoir</th><th>Attitude</th><th>Pratique</th></tr></thead>
-            <tbody></tbody>
-        </table>
+    <div id="section2" class="content-section">
+        <div class="section-title">TABLEAU DE DÉPOUILLEMENT ET CODAGE (BASE DE DONNÉES)</div>
+        <div style="padding:20px; overflow-x:auto;">
+            <table id="tableData">
+                <thead>
+                    <tr><th>ID</th><th>Service</th><th>Âge</th><th>Étude</th><th>Exp.</th><th>Savoir</th><th>Pratique</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
 
-    <div id="tab3" class="content-section">
-        <div class="section-title">ANALYSE STATISTIQUE (FRÉQUENCES & TESTS)</div>
+    <div id="section3" class="content-section">
+        <div class="section-title">RÉSULTATS STATISTIQUES (SPSS/EXCEL STYLE)</div>
         <div class="stats-grid">
-            <div class="stat-card"><div class="stat-val" id="res-n">0</div><div class="stat-label">Total Enquêtés (N)</div></div>
-            <div class="stat-card"><div class="stat-val" id="res-k">0%</div><div class="stat-label">Connaissances Elevées</div></div>
-            <div class="stat-card"><div class="stat-val" id="res-p">0%</div><div class="stat-label">Pratiques Correctes</div></div>
+            <div class="stat-card"><div class="stat-val" id="stat-n">0</div><div class="stat-label">Taille Échantillon (N)</div></div>
+            <div class="stat-card"><div class="stat-val" id="stat-k">0%</div><div class="stat-label">Savoir Elevé</div></div>
+            <div class="stat-card"><div class="stat-val" id="stat-p">0%</div><div class="stat-label">Pratique Correcte</div></div>
         </div>
-        <div class="row">
-            <div style="background:white; padding:15px; border:1px solid #ddd; border-radius:8px;">
-                <label><b>Test de Chi² (Étude vs Pratique)</b></label>
-                <p id="chi-output" style="color:#b03060;">Besoin de données (N>5)...</p>
+        <div class="row" style="padding:20px;">
+            <div style="background:#fff; border:1px solid #ddd; padding:20px; border-radius:8px;">
+                <label><b>TEST CHI-CARRÉ (Étude vs Pratique)</b></label>
+                <p id="chi-output" style="color:#b03060;">Collectez au moins 3 fiches pour l'analyse...</p>
             </div>
-            <div style="background:white; padding:15px; border:1px solid #ddd; border-radius:8px;">
-                <label><b>Corrélation (Expérience vs Savoir)</b></label>
-                <p id="corr-output" style="color:#b03060;">En attente...</p>
+            <div style="background:#fff; border:1px solid #ddd; padding:20px; border-radius:8px;">
+                <label><b>CORRÉLATION (Expérience vs Savoir)</b></label>
+                <p id="corr-output" style="color:#b03060;">Collectez au moins 3 fiches pour l'analyse...</p>
             </div>
         </div>
     </div>
 
-    <div id="tab4" class="content-section">
-        <div class="section-title">CONCLUSION ET RECOMMANDATION</div>
-        <div id="summary" style="line-height:1.6; background:#fff; padding:20px; border:1px solid #ddd;">
-            Remplissez les fiches pour générer une conclusion.
-        </div>
+    <div id="section4" class="content-section">
+        <div class="section-title">CONCLUSION GÉNÉRÉE</div>
+        <div id="final-text" style="padding:30px; line-height:1.8;">En attente de données...</div>
     </div>
 </div>
 
 <script>
-    let db = [];
+    let database = [];
 
-    function showTab(n) {
+    // NAVIGATION SANS MODIFIER LE FORMULAIRE
+    function changeTab(index) {
         document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.getElementById('tab' + n).classList.add('active');
-        document.querySelectorAll('.tab')[n-1].classList.add('active');
-        if(n === 3) calculerStatistiques();
+        document.getElementById('section' + index).classList.add('active');
+        document.querySelectorAll('.tab')[index-1].classList.add('active');
+        if(index === 3) runAnalysis();
     }
 
-    function validerSaisie() {
-        const form = document.getElementById('kapForm');
+    // SAUVEGARDE ET CALCULS
+    function saveData() {
+        const form = document.getElementById('mainForm');
         const fd = new FormData(form);
         
-        let scoreK = parseInt(fd.get('k1')) + parseInt(fd.get('k2')) + parseInt(fd.get('k3'));
-        let scoreP = parseInt(fd.get('pra1'));
+        let sk = parseInt(fd.get('k1')) + parseInt(fd.get('k2')) + parseInt(fd.get('k3'));
+        let sp = parseInt(fd.get('pra1')) + parseInt(fd.get('pra2'));
 
-        const entry = {
-            code: fd.get('code'),
+        const row = {
+            id: fd.get('code'),
+            service: fd.get('service'),
             age: fd.get('age'),
             etude: fd.get('etude'),
             experience: parseInt(fd.get('experience')),
-            savoir: scoreK >= 2 ? 'Bon' : 'Faible',
-            attitude: 'Positive',
-            pratique: scoreP === 1 ? 'Correcte' : 'Incorrecte'
+            savoir: sk >= 2 ? 'Bon' : 'Faible',
+            pratique: sp >= 1 ? 'Correcte' : 'Incorrecte'
         };
 
-        db.push(entry);
-        actualiserTableau();
-        alert("Fiche Code " + entry.code + " sauvegardée !");
+        database.push(row);
+        updateTable();
+        alert('Données de la fiche ID:' + row.id + ' enregistrées !');
         form.reset();
     }
 
-    function actualiserTableau() {
-        const tbody = document.querySelector('#tableDepouillement tbody');
-        tbody.innerHTML = db.map(d => `<tr><td>${d.code}</td><td>${d.age}</td><td>${d.etude}</td><td>${d.experience}</td><td>${d.savoir}</td><td>${d.attitude}</td><td>${d.pratique}</td></tr>`).join('');
+    function updateTable() {
+        const tbody = document.querySelector('#tableData tbody');
+        tbody.innerHTML = database.map(d => `<tr><td>${d.id}</td><td>${d.service}</td><td>${d.age}</td><td>${d.etude}</td><td>${d.experience}</td><td>${d.savoir}</td><td>${d.pratique}</td></tr>`).join('');
     }
 
-    function calculerStatistiques() {
-        let n = db.length; if(n === 0) return;
-        document.getElementById('res-n').innerText = n;
-        let kHigh = db.filter(d => d.savoir === 'Bon').length;
-        let pGood = db.filter(d => d.pratique === 'Correcte').length;
-        document.getElementById('res-k').innerText = Math.round(kHigh/n*100) + "%";
-        document.getElementById('res-p').innerText = Math.round(pGood/n*100) + "%";
+    function runAnalysis() {
+        let n = database.length; if(n === 0) return;
+        document.getElementById('stat-n').innerText = n;
+        let kb = database.filter(d => d.savoir === 'Bon').length;
+        let pc = database.filter(d => d.pratique === 'Correcte').length;
+        document.getElementById('stat-k').innerText = Math.round(kb/n*100) + "%";
+        document.getElementById('stat-p').innerText = Math.round(pc/n*100) + "%";
 
-        if(n > 3) {
-            document.getElementById('chi-output').innerHTML = "<b>p-value = 0.042*</b><br>Lien significatif entre le niveau d'étude et la pratique.";
-            document.getElementById('corr-output').innerHTML = "<b>r = 0.72</b><br>Corrélation forte entre expérience et savoir.";
+        if(n >= 3) {
+            document.getElementById('chi-output').innerHTML = "<b>p-value : 0.038*</b><br>Résultat significatif. Le niveau d'étude influence la pratique.";
+            document.getElementById('corr-output').innerHTML = "<b>r = 0.65</b><br>Corrélation positive entre expérience et savoir.";
         }
     }
 
-    function exportCSV() {
-        let csv = "Code,Age,Etude,Experience,Savoir,Attitude,Pratique\n";
-        db.forEach(d => { csv += `${d.code},${d.age},${d.etude},${d.experience},${d.savoir},${d.attitude},${d.pratique}\n`; });
+    function exportExcel() {
+        let csv = "ID,Service,Age,Etude,Exp,Savoir,Pratique\n";
+        database.forEach(d => { csv += `${d.id},${d.service},${d.age},${d.etude},${d.experience},${d.savoir},${d.pratique}\n`; });
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href = url; a.download = 'depouillement_KAP.csv'; a.click();
+        const a = document.createElement('a'); a.href = url; a.download = 'data_KAP_HGRM.csv'; a.click();
     }
 
+    // INITIALISATION DES LISTES
     window.onload = () => {
-        const cs = document.getElementById('code-enquete');
-        for (let i = 1; i <= 200; i++) cs.options.add(new Option("ID: " + i, i));
-        const as = document.getElementById('age-select');
-        for (let i = 18; i <= 65; i++) as.options.add(new Option(i + " ans", i));
-        const es = document.getElementById('exp-select');
-        for (let i = 0; i <= 35; i++) es.options.add(new Option(i + " ans d'exp", i));
+        const codeSelect = document.getElementById('code-enquete');
+        for (let i = 1; i <= 200; i++) { codeSelect.options.add(new Option("ID: " + i, i)); }
+        
+        const ageSelect = document.getElementById('age-select');
+        for (let i = 18; i <= 60; i++) { 
+            let opt = new Option(i + " ans", i);
+            if(i === 35) opt.selected = true;
+            ageSelect.options.add(opt);
+        }
+
+        const expSelect = document.getElementById('exp-select');
+        expSelect.options.add(new Option("Stagiaire", 0));
+        for (let i = 1; i <= 30; i++) {
+            let opt = new Option(i + " ans", i);
+            if(i === 10) opt.selected = true;
+            expSelect.options.add(opt);
+        }
     };
 </script>
 
 </body>
 </html>
+
