@@ -3,197 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAP-HGRM : Logiciel de Collecte & Base de Données</title>
+    <title>Système Expert CAP - HGRM Makala</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
-        .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 90vh; }
+        :root { --primary: #be185d; --secondary: #1e293b; --accent: #db2777; --bg: #f8fafc; --text: #334155; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; }
+        .container { max-width: 1100px; margin: 20px auto; padding: 20px; }
         
-        /* Navigation */
-        .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 100; }
-        .tab { padding: 10px 20px; font-weight: bold; font-size: 13px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; }
-        .tab.active { background: #b03060; color: white; border-color: #b03060; }
-        .btn-excel { margin-left: auto; background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        /* Navigation par onglets */
+        .nav-tabs { display: flex; flex-wrap: wrap; gap: 5px; background: #e2e8f0; padding: 5px; border-radius: 10px; sticky; top: 0; z-index: 100; }
+        .tab-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; color: #475569; }
+        .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
 
-        .content-section { display: none; padding: 30px; }
-        .content-section.active { display: block; }
+        /* Sections */
+        .page { display: none; background: white; padding: 30px; border-radius: 12px; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .page.active { display: block; }
+        
+        h1, h2 { color: var(--secondary); border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
+        h3 { color: var(--primary); margin-top: 25px; border-left: 4px solid var(--primary); padding-left: 10px; background: #fff1f2; padding-top: 5px; padding-bottom: 5px; }
 
-        /* Styles Formulaire Collecte */
-        .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 25px 0 15px 0; text-transform: uppercase; font-size: 14px; }
-        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 15px; }
-        .field { display: flex; flex-direction: column; }
-        label { font-size: 12px; font-weight: 700; margin-bottom: 6px; color: #222; }
-        select, input { padding: 12px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; background: #fff; }
+        /* Formulaire Collecte */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .field { margin-bottom: 15px; }
+        label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.9em; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
+        .radio-group { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 5px; }
+        
+        /* Analyse & Résultats */
+        .stats-card { background: #f1f5f9; border-radius: 8px; padding: 20px; margin-bottom: 20px; border-top: 4px solid var(--primary); }
+        .metric { font-size: 2em; font-weight: bold; color: var(--primary); }
+        .chart-sim { height: 20px; background: #e2e8f0; border-radius: 10px; margin-top: 10px; overflow: hidden; }
+        .chart-bar { height: 100%; background: var(--primary); }
 
-        /* Tableaux Base de Données */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
-        th { background: #f8f9fa; padding: 12px; border: 1px solid #ddd; color: #b03060; position: sticky; top: 0; }
-        td { border: 1px solid #eee; padding: 10px; text-align: center; }
-
-        /* Checkboxes */
-        .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 10px; background: #fdfdfd; padding: 15px; border-radius: 8px; border: 1px solid #eee; }
-        .check-item { display: flex; align-items: center; cursor: pointer; font-size: 13px; }
-        .check-item input { margin-right: 12px; transform: scale(1.3); }
-
-        .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 30px; text-transform: uppercase; }
+        .btn-action { background: var(--primary); color: white; border: none; padding: 15px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1.1em; }
+        .btn-action:hover { background: var(--accent); }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #e2e8f0; padding: 10px; text-align: left; }
+        th { background: #f8fafc; color: var(--secondary); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header-tabs">
-        <div class="tab active" onclick="showSection('collecte', this)">1. COLLECTE</div>
-        <div class="tab" onclick="showSection('database', this)">2. BASE DE DONNÉES</div>
-        <div class="tab" onclick="showSection('analyse', this)">3. ANALYSE CAP</div>
-        <button type="button" class="btn-excel" onclick="exportCSV()">📊 EXPORT EXCEL (CSV)</button>
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="openPage('recolte')">1. RÉCOLTE DES DONNÉES</button>
+        <button class="tab-btn" onclick="openPage('traitement')">2. DÉPOUILLEMENT & TRAITEMENT</button>
+        <button class="tab-btn" onclick="openPage('resultats')">3. PRÉSENTATION DES RÉSULTATS</button>
+        <button class="tab-btn" onclick="openPage('discussion')">4. ANALYSE & DISCUSSION</button>
+        <button class="tab-btn" onclick="openPage('conclusion')">5. CONCLUSION & RECOMMANDATIONS</button>
     </div>
 
-    <div id="collecte" class="content-section active">
-        <form id="formKAP">
-            <div class="section-title">I. IDENTIFICATION DU PROFIL (RDC)</div>
-            <div class="row">
-                <div class="field"><label>ID Enquêté(e)</label><select id="id_enq"><option>ENQ-001</option><option>ENQ-002</option><option>ENQ-003</option><option>ENQ-004</option></select></div>
-                <div class="field"><label>Âge (18-60 ans)</label><select id="age-select"></select></div>
-                <div class="field"><label>Niveau d'étude</label><select id="etude"><option>A2 (Diplômée)</option><option selected>A1 (Graduée)</option><option>L1 (Licenciée)</option></select></div>
-            </div>
-            <div class="row">
-                <div class="field"><label>Expérience Pro (1-30 ans)</label><select id="exp-select"></select></div>
-                <div class="field"><label>Statut Professionnel</label><select id="statut"><option selected>Titulaire</option><option>Stagiaire</option><option>Contractuelle</option></select></div>
-                <div class="field"><label>Service Affectation</label><select id="service"><option>Maternité</option><option>Gynécologie</option><option>Chirurgie</option></select></div>
-            </div>
-
-            <div class="section-title">II. CONNAISSANCES MÉDICALES (SAVOIRS)</div>
-            <div class="row">
-                <div class="field"><label>Risque augmente avec l'âge ?</label><select id="k1"><option selected>Vrai</option><option>Faux</option></select></div>
-                <div class="field"><label>Allaitement est protecteur ?</label><select id="k2"><option selected>Vrai</option><option>Faux</option></select></div>
-                <div class="field"><label>Moment idéal AES</label><select id="k3"><option selected>7j après règles</option><option>Pendant règles</option></select></div>
-            </div>
-            <label style="font-size: 12px; font-weight: bold; margin-bottom: 10px; display: block;">Signes d'alerte (Cochez les propositions) :</label>
-            <div class="check-group">
-                <label class="check-item"><input type="checkbox" class="signe" value="Nodule" checked> Nodule dur/indolore</label>
-                <label class="check-item"><input type="checkbox" class="signe" value="Peau Orange" checked> Peau d'orange</label>
-                <label class="check-item"><input type="checkbox" class="signe" value="Ecoulement" checked> Écoulement sanglant</label>
-                <label class="check-item"><input type="checkbox" class="signe" value="Rétraction"> Rétraction mamelon</label>
+    <div id="recolte" class="page active">
+        <h1>Collecte de Données (HGRM Makala)</h1>
+        <form id="formCollecte">
+            <h3>I. Identification & Consentement</h3>
+            <div class="grid">
+                <div class="field"><label>Code :</label><input type="text" name="code" placeholder="Ex: INF-01"></div>
+                <div class="field"><label>Date :</label><input type="date" name="date_recolte"></div>
+                <div class="field"><label>Service :</label><input type="text" name="service"></div>
+                <div class="field"><label>Consentement :</label>
+                    <select name="consentement"><option value="Oui">Accepté</option><option value="Non">Refusé</option></select>
+                </div>
             </div>
 
-            <div class="section-title">III. ATTITUDES & PRATIQUES (LIKERT / ACTIONS)</div>
-            <div class="row">
-                <div class="field"><label>Enseignez-vous l'AES ?</label><select id="p1"><option selected>Oui, systématiquement</option><option>Rarement</option><option>Jamais</option></select></div>
-                <div class="field"><label>Référence mammographie</label><select id="p2"><option selected>Oui, si suspect</option><option>Non</option></select></div>
-                <div class="field"><label>Sentiment d'efficacité (1-5)</label><select id="a1"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select></div>
+            <h3>II. Profil Sociodémographique</h3>
+            <div class="grid">
+                <div class="field"><label>Sexe :</label><select name="sexe"><option>Femme</option><option>Homme</option></select></div>
+                <div class="field"><label>Âge :</label><input type="number" name="age"></div>
+                <div class="field"><label>Niveau d'études :</label>
+                    <select name="niveau"><option value="A2">A2</option><option value="A1">A1</option><option value="A0">A0</option><option value="Master">Master</option></select>
+                </div>
+                <div class="field"><label>Expérience (Années) :</label><input type="number" name="experience"></div>
             </div>
 
-            <button type="button" class="btn-save" onclick="saveToDatabase()">VALIDER ET AJOUTER À LA BASE DE DONNÉES</button>
+            <h3>III. Connaissances (Exemple Variables)</h3>
+            <div class="field">
+                <label>Le risque augmente avec l'âge ?</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="c_age" value="Vrai"> Vrai</label>
+                    <label><input type="radio" name="c_age" value="Faux"> Faux</label>
+                    <label><input type="radio" name="c_age" value="NSP"> NSP</label>
+                </div>
+            </div>
+            
+            <h3>IV. Pratiques</h3>
+            <div class="field">
+                <label>Enseignez-vous l'autopalpation aux patientes ?</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="p_enseigne" value="Oui"> Oui</label>
+                    <label><input type="radio" name="p_enseigne" value="Non"> Non</label>
+                </div>
+            </div>
+
+            <button type="button" class="btn-action" onclick="sauvegarderDonnees()">ENREGISTRER LA FICHE</button>
         </form>
     </div>
 
-    <div id="database" class="content-section">
-        <div class="section-title">BASE DE DONNÉES DES INFIRMIÈRES (HGRM)</div>
-        <div style="overflow-x: auto;">
-            <table id="dbTable">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>ID</th>
-                        <th>Âge</th>
-                        <th>Étude</th>
-                        <th>Exp.</th>
-                        <th>Service</th>
-                        <th>K (Savoir)</th>
-                        <th>P (Pratique)</th>
-                        <th>Signes cochés</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    </tbody>
-            </table>
+    <div id="traitement" class="page">
+        <h1>Dépouillement & Codage</h1>
+        <div class="stats-card">
+            <h3>Base de données brute</h3>
+            <div id="tableContainer">Aucune donnée saisie.</div>
+        </div>
+        <div class="stats-card">
+            <h3>Codage des variables (Matrice)</h3>
+            <p><i>Transformation : Oui=1, Non=0 | A0=3, A1=2, A2=1</i></p>
+            <div id="codageContainer"></div>
         </div>
     </div>
 
-    <div id="analyse" class="content-section">
-        <div class="section-title">ANALYSE STATISTIQUE CAP</div>
-        <p>Cette section calcule automatiquement les pourcentages de réussite pour votre mémoire après enregistrement.</p>
+    <div id="resultats" class="page">
+        <h1>Présentation des Résultats</h1>
+        <div class="grid">
+            <div class="stats-card">
+                <h3>Niveau de Connaissances</h3>
+                <div class="metric" id="res_con">0%</div>
+                <p>Taux de réponses correctes (Savoir)</p>
+                <div class="chart-sim"><div id="bar_con" class="chart-bar" style="width: 0%;"></div></div>
+            </div>
+            <div class="stats-card">
+                <h3>Pratiques Effectives</h3>
+                <div class="metric" id="res_prat">0%</div>
+                <p>Application de l'enseignement AES</p>
+                <div class="chart-sim"><div id="bar_prat" class="chart-bar" style="width: 0%;"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="discussion" class="page">
+        <h1>Analyse et Discussion</h1>
+        <div class="stats-card">
+            <h3>Analyse Bivariée (Croisement)</h3>
+            <p id="analyse_texte">En attente de données pour corréler le <b>Niveau d'étude</b> avec la <b>Pratique</b>.</p>
+        </div>
+        <div class="stats-card">
+            <h3>Discussion théorique</h3>
+            <p><i>Comparaison avec les données de la littérature (OMS, Etudes RDC)...</i></p>
+            <textarea style="height:150px" placeholder="Saisissez vos commentaires ici..."></textarea>
+        </div>
+    </div>
+
+    <div id="conclusion" class="page">
+        <h1>Conclusion & Recommandations</h1>
+        <div class="stats-card" style="border-top-color: #10b981;">
+            <h3>Conclusion Générale</h3>
+            <p id="concl_gen">Le diagnostic montre un écart entre...</p>
+        </div>
+        <div class="stats-card" style="border-top-color: #f59e0b;">
+            <h3>Recommandations Spécifiques (HGRM)</h3>
+            <ul id="reco_list">
+                <li>Renforcer la formation continue du personnel infirmier.</li>
+                <li>Mettre à disposition des outils didactiques.</li>
+            </ul>
+        </div>
     </div>
 </div>
 
 <script>
-    let database = [];
+    let database = JSON.parse(localStorage.getItem('memo_makala_db')) || [];
 
-    // Gestion de la navigation
-    function showSection(id, element) {
-        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    function openPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        element.classList.add('active');
-    }
-
-    // Génération automatique Âge (18-60)
-    const ageSelect = document.getElementById('age-select');
-    for (let i = 18; i <= 60; i++) { ageSelect.add(new Option(i + " ans", i)); }
-    ageSelect.value = 30;
-
-    // Génération automatique Expérience (1-30)
-    const expSelect = document.getElementById('exp-select');
-    for (let i = 1; i <= 30; i++) { expSelect.add(new Option(i + " ans", i)); }
-    expSelect.value = 5;
-
-    // Fonction de sauvegarde
-    function saveToDatabase() {
-        const signes = Array.from(document.querySelectorAll('.signe:checked')).map(c => c.value).join('|');
+        event.currentTarget.classList.add('active');
         
-        const entry = {
-            date: new Date().toLocaleDateString(),
-            id: document.getElementById('id_enq').value,
-            age: document.getElementById('age-select').value,
-            etude: document.getElementById('etude').value,
-            exp: document.getElementById('exp-select').value,
-            service: document.getElementById('service').value,
-            savoir: document.getElementById('k1').value === "Vrai" ? "Bon" : "Faible",
-            pratique: document.getElementById('p1').value,
-            signes: signes
-        };
-
-        database.push(entry);
-        updateTable();
-        alert("Fiche enregistrée ! Consultez l'onglet Base de Données.");
-        showSection('database', document.querySelectorAll('.tab')[1]);
+        if(id === 'traitement') afficherDépouillement();
+        if(id === 'resultats') calculerResultats();
+        if(id === 'discussion') genererAnalyse();
     }
 
-    // Mise à jour du tableau
-    function updateTable() {
-        const tbody = document.querySelector('#dbTable tbody');
-        tbody.innerHTML = "";
-        database.forEach(item => {
-            const row = `<tr>
-                <td>${item.date}</td>
-                <td><b>${item.id}</b></td>
-                <td>${item.age}</td>
-                <td>${item.etude}</td>
-                <td>${item.exp} ans</td>
-                <td>${item.service}</td>
-                <td>${item.savoir}</td>
-                <td>${item.pratique}</td>
-                <td>${item.signes}</td>
-            </tr>`;
-            tbody.innerHTML += row;
-        });
+    function sauvegarderDonnees() {
+        const form = document.getElementById('formCollecte');
+        const data = Object.fromEntries(new FormData(form).entries());
+        database.push(data);
+        localStorage.setItem('memo_makala_db', JSON.stringify(database));
+        alert("Fiche ajoutée au dépouillement !");
+        form.reset();
     }
 
-    // Export CSV pour Excel
-    function exportCSV() {
-        if(database.length === 0) return alert("Aucune donnée à exporter.");
-        let csv = "Date,ID,Age,Etude,Experience,Service,Savoir,Pratique,Signes\n";
-        database.forEach(r => {
-            csv += `${r.date},${r.id},${r.age},${r.etude},${r.exp},${r.service},${r.savoir},${r.pratique},${r.signes}\n`;
+    function afficherDépouillement() {
+        let html = "<table><tr><th>Code</th><th>Age</th><th>Niveau</th><th>C_Age</th><th>P_Ens</th></tr>";
+        database.forEach(d => {
+            html += `<tr><td>${d.code}</td><td>${d.age}</td><td>${d.niveau}</td><td>${d.c_age}</td><td>${d.p_enseigne}</td></tr>`;
         });
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'Base_Donnees_Memoire.csv';
-        a.click();
+        html += "</table>";
+        document.getElementById('tableContainer').innerHTML = html;
+    }
+
+    function calculerResultats() {
+        const total = database.length;
+        if(total === 0) return;
+
+        const correctCon = database.filter(d => d.c_age === 'Vrai').length;
+        const correctPrat = database.filter(d => d.p_enseigne === 'Oui').length;
+
+        const pourcCon = (correctCon / total * 100).toFixed(1);
+        const pourcPrat = (correctPrat / total * 100).toFixed(1);
+
+        document.getElementById('res_con').innerText = pourcCon + "%";
+        document.getElementById('bar_con').style.width = pourcCon + "%";
+        document.getElementById('res_prat').innerText = pourcPrat + "%";
+        document.getElementById('bar_prat').style.width = pourcPrat + "%";
+    }
+
+    function genererAnalyse() {
+        const total = database.length;
+        if(total < 2) return;
+        document.getElementById('analyse_texte').innerHTML = `Sur un échantillon de <b>${total}</b> infirmières, le croisement des données suggère que le niveau de pratique est de ${document.getElementById('res_prat').innerText}.`;
     }
 </script>
-
 </body>
-</html>
 </html>
