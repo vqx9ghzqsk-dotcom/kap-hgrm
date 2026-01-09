@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -85,6 +86,25 @@
                 </select>
             </div>
         </div>
+        <div class="row">
+            <div class="field">
+                <label>État civil</label>
+                <select>
+                    <option>Célibataire</option>
+                    <option>Mariée</option>
+                    <option>Veuve</option>
+                    <option>Divorcée</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Antécédents familiaux de cancer du sein</label>
+                <select><option>Oui</option><option selected>Non</option></select>
+            </div>
+            <div class="field">
+                <label>Sexe</label>
+                <select><option selected>Femme</option><option>Homme</option></select>
+            </div>
+        </div>
 
         <div class="section-title">II. CONNAISSANCES SUR LE CANCER DU SEIN (SAVOIRS)</div>
         <div class="row">
@@ -99,6 +119,20 @@
             <div class="field">
                 <label>Quel est le meilleur moment pour l'AES ?</label>
                 <select><option selected>7 jours après les règles</option><option>Pendant les règles</option><option>N'importe quand</option></select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="field">
+                <label>L'allaitement maternel est-il un facteur protecteur ?</label>
+                <select><option selected>Vrai</option><option>Faux</option><option>Ne sait pas</option></select>
+            </div>
+            <div class="field">
+                <label>L'obésité et la sédentarité augmentent-elles le risque ?</label>
+                <select><option selected>Vrai</option><option>Faux</option><option>Ne sait pas</option></select>
+            </div>
+            <div class="field">
+                <label>Le risque de cancer augmente-t-il avec l'âge ?</label>
+                <select><option selected>Vrai</option><option>Faux</option><option>Ne sait pas</option></select>
             </div>
         </div>
 
@@ -135,6 +169,8 @@
                 <tr><td class="text-left">L'influence culturelle (pudeur) empêche mes patientes de se déshabiller.</td><td><input type="radio" name="p2"></td><td><input type="radio" name="p2"></td><td><input type="radio" name="p2"></td><td><input type="radio" name="p2"></td><td><input type="radio" name="p2" checked></td></tr>
                 <tr><td class="text-left">Le diagnostic de cancer est une sentence de mort en RDC.</td><td><input type="radio" name="p3"></td><td><input type="radio" name="p3" checked></td><td><input type="radio" name="p3"></td><td><input type="radio" name="p3"></td><td><input type="radio" name="p3"></td></tr>
                 <tr><td class="text-left">Je pense que chaque femme en consultation doit être sensibilisée au cancer.</td><td><input type="radio" name="p4"></td><td><input type="radio" name="p4"></td><td><input type="radio" name="p4"></td><td><input type="radio" name="p4"></td><td><input type="radio" name="p4" checked></td></tr>
+                <tr><td class="text-left">La prévention du cancer est une priorité dans mon service.</td><td><input type="radio" name="p5"></td><td><input type="radio" name="p5"></td><td><input type="radio" name="p5"></td><td><input type="radio" name="p5" checked></td><td><input type="radio" name="p5"></td></tr>
+                <tr><td class="text-left">Je me sens capable d'enseigner l'autopalpation aux patientes.</td><td><input type="radio" name="p6"></td><td><input type="radio" name="p6"></td><td><input type="radio" name="p6"></td><td><input type="radio" name="p6" checked></td><td><input type="radio" name="p6"></td></tr>
             </tbody>
         </table>
 
@@ -146,6 +182,7 @@
                     <option selected>Systématique pour chaque patiente</option>
                     <option>Uniquement si la patiente se plaint</option>
                     <option>Rarement par manque de temps</option>
+                    <option>Jamais</option>
                 </select>
             </div>
             <div class="field">
@@ -163,6 +200,28 @@
                     <option>Vers la Chirurgie directement</option>
                     <option>Observation (Attendre le prochain RDV)</option>
                 </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="field">
+                <label>Pratiquez-vous l'autopalpation (AES) sur vous-même ?</label>
+                <select>
+                    <option selected>Oui, chaque mois</option>
+                    <option>Parfois</option>
+                    <option>Jamais</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Informez-vous les patientes sur les signes précoces ?</label>
+                <select>
+                    <option selected>Oui</option>
+                    <option>Parfois</option>
+                    <option>Non</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Participation à une activité de sensibilisation :</label>
+                <select><option selected>Oui</option><option>Non</option></select>
             </div>
         </div>
         <div class="row">
@@ -188,6 +247,7 @@
             <label class="check-item"><input type="checkbox" checked> Manque de formation continue sur le cancer</label>
             <label class="check-item"><input type="checkbox" checked> Préférence des patientes pour la prière/tradition</label>
             <label class="check-item"><input type="checkbox"> Surcharge de travail (Ratio infirmière/patient)</label>
+            <label class="check-item"><input type="checkbox"> Distance vers les centres équipés</label>
         </div>
 
         <div class="field" style="margin-top: 20px;">
