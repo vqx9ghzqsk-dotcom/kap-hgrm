@@ -3,36 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAP-HGRM - Collecte Expert RDC</title>
+    <title>KAP-HGRM - Expert Breast Cancer RDC</title>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
-        .container { max-width: 1000px; margin: auto; background: white; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); overflow: hidden; }
+        .container { max-width: 1100px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); }
         
-        /* Navigation Style Image */
-        .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 10px; align-items: center; gap: 8px; }
+        /* Header & Tabs */
+        .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; sticky: top; }
         .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; }
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
         .btn-excel { margin-left: auto; background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
-        .form-content { padding: 25px; }
-        .section-title { background: #fce4ec; color: #b03060; padding: 12px; font-weight: bold; border-left: 6px solid #b03060; margin: 25px 0 15px 0; text-transform: uppercase; font-size: 14px; }
+        .form-content { padding: 30px; }
+        .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 30px 0 15px 0; text-transform: uppercase; font-size: 15px; display: flex; align-items: center; justify-content: space-between; }
         
-        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-bottom: 10px; }
+        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 15px; }
         .field { display: flex; flex-direction: column; }
-        label { font-size: 12px; font-weight: 700; margin-bottom: 5px; color: #333; }
-        select, input { padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; background: #fff; color: #2c3e50; }
+        label { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #222; line-height: 1.2; }
+        select, input { padding: 12px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; background: #fff; }
 
         /* Tables Likert */
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 13px; }
-        th, td { border: 1px solid #eee; padding: 12px; text-align: center; }
-        .text-left { text-align: left; width: 50%; font-weight: 500; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+        th { background: #f8f9fa; padding: 12px; border: 1px solid #ddd; }
+        td { border: 1px solid #eee; padding: 12px; text-align: center; }
+        .text-left { text-align: left; width: 60%; font-weight: 500; padding-left: 15px; }
 
-        /* Checkboxes Custom */
-        .checkbox-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; }
-        .check-item { display: flex; align-items: center; font-size: 12px; cursor: pointer; font-weight: 500; }
-        .check-item input { margin-right: 12px; transform: scale(1.3); }
+        /* Grid Checkboxes */
+        .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; background: #fdfdfd; padding: 20px; border-radius: 8px; border: 1px solid #eee; }
+        .check-item { display: flex; align-items: center; font-size: 13px; cursor: pointer; padding: 5px; }
+        .check-item input { margin-right: 15px; transform: scale(1.4); }
 
-        .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 30px; text-transform: uppercase; box-shadow: 0 4px 6px rgba(176, 48, 96, 0.3); }
+        .btn-save { width: 100%; background: #b03060; color: white; padding: 25px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; }
+        .btn-save:hover { background: #8e244d; transform: translateY(-2px); }
     </style>
 </head>
 <body>
@@ -46,165 +48,180 @@
     </div>
 
     <form class="form-content">
-        <div class="section-title">I. IDENTIFICATION ET CONSENTEMENT ÉCLAIRÉ</div>
+        <div class="section-title">I. IDENTIFICATION & PROFIL (RDC)</div>
         <div class="row">
             <div class="field">
-                <label>Code de l'enquêté(e)</label>
+                <label>Code Enquêté(e)</label>
+                <select><option>HGRM-2026-01</option><option>HGRM-2026-02</option><option>HGRM-2026-03</option></select>
+            </div>
+            <div class="field">
+                <label>Service / Département</label>
                 <select>
-                    <option>HGRM-INF-001</option><option>HGRM-INF-002</option>
-                    <option>HGRM-INF-003</option><option>HGRM-INF-004</option>
+                    <option selected>Gynécologie-Obstétrique</option>
+                    <option>Maternité / Salle d'accouchement</option>
+                    <option>Chirurgie Générale</option>
+                    <option>Oncologie (si existant)</option>
                 </select>
             </div>
             <div class="field">
-                <label>Consentement Éclairé</label>
-                <select><option selected>Oui, j'accepte de participer</option><option>Non, je refuse</option></select>
-            </div>
-            <div class="field">
-                <label>Service d'affectation</label>
+                <label>Statut Professionnel</label>
                 <select>
-                    <option>Maternité / Accouchement</option>
-                    <option>Gynécologie-Obstétrique</option>
-                    <option>Chirurgie Femme</option>
-                    <option>Médecine Interne</option>
-                    <option>Urgences / Tri</option>
+                    <option selected>Titulaire du service</option>
+                    <option>Infirmier(e) de garde</option>
+                    <option>Stagiaire (Fin de cycle)</option>
+                    <option>Sous-statutaire (Bénévole)</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="field"><label>Âge de l'infirmier(e)</label><select id="age-select"></select></div>
+            <div class="field"><label>Années d'expérience professionnelle</label><select id="exp-select"></select></div>
+            <div class="field">
+                <label>Niveau d'étude le plus élevé</label>
+                <select>
+                    <option>A2 (Diplômée d'État)</option>
+                    <option selected>A1 (Graduée en Sciences Infirmières)</option>
+                    <option>L0/L1 (Licenciée nouveau système)</option>
+                    <option>Master / Doctorat</option>
                 </select>
             </div>
         </div>
 
-        <div class="section-title">II. DONNÉES SOCIODÉMOGRAPHIQUES (LE PROFIL)</div>
+        <div class="section-title">II. CONNAISSANCES SUR LE CANCER DU SEIN (SAVOIRS)</div>
         <div class="row">
             <div class="field">
-                <label>Sexe</label>
-                <select><option selected>Femme</option><option>Homme</option></select>
+                <label>Le cancer du sein est-il la première cause de décès par cancer chez la femme en RDC ?</label>
+                <select><option selected>Vrai (Oui)</option><option>Faux (Non)</option><option>Ne sait pas</option></select>
             </div>
             <div class="field">
-                <label>Âge (Propositions)</label>
-                <select id="age-select"></select>
+                <label>À quel âge une femme devrait-elle commencer l'autopalpation (AES) ?</label>
+                <select><option>Dès 12 ans</option><option selected>Dès 20 ans</option><option>Après 40 ans</option></select>
             </div>
             <div class="field">
-                <label>État civil</label>
-                <select><option>Célibataire</option><option selected>Mariée</option><option>Veuve</option><option>Divorcée</option></select>
-            </div>
-        </div>
-        <div class="row">
-            <div class="field">
-                <label>Niveau d'études</label>
-                <select>
-                    <option>Infirmière diplômée (A2)</option>
-                    <option selected>Infirmière graduée (A1)</option>
-                    <option>Licenciée en Sciences Infirmières (L0/L1)</option>
-                    <option>Médecin Généraliste</option>
-                </select>
-            </div>
-            <div class="field">
-                <label>Années d'expérience</label>
-                <select id="exp-select"></select>
-            </div>
-            <div class="field">
-                <label>Statut professionnel</label>
-                <select><option selected>Titulaire</option><option>Contractuelle</option><option>Stagiaire</option><option>Sous-statutaire</option></select>
-            </div>
-        </div>
-        <div class="row">
-            <div class="field">
-                <label>Antécédents familiaux de cancer ?</label>
-                <select><option>Non</option><option>Oui (Mère/Sœur)</option><option>Oui (Autres)</option></select>
+                <label>Quel est le meilleur moment pour l'AES ?</label>
+                <select><option selected>7 jours après les règles</option><option>Pendant les règles</option><option>N'importe quand</option></select>
             </div>
         </div>
 
-        <div class="section-title">III. ÉVALUATION DES CONNAISSANCES (LE SAVOIR)</div>
-        <div class="row">
-            <div class="field"><label>Le risque augmente avec l'âge ?</label><select><option selected>Vrai</option><option>Faux</option><option>Ne sait pas</option></select></div>
-            <div class="field"><label>L'obésité est un facteur de risque ?</label><select><option selected>Vrai</option><option>Faux</option></select></div>
-            <div class="field"><label>L'allaitement est protecteur ?</label><select><option selected>Vrai</option><option>Faux</option></select></div>
-        </div>
-        <div class="row">
-            <div class="field"><label>Le cancer est-il contagieux ? (Mythe)</label><select><option selected>Faux (Correct)</option><option>Vrai</option></select></div>
-            <div class="field"><label>L'échographie est utile chez la femme < 35 ans ?</label><select><option selected>Vrai</option><option>Faux</option></select></div>
-            <div class="field"><label>Méthode de référence dépistage organisé :</label><select><option selected>Mammographie</option><option>Échographie</option></select></div>
+        <label style="margin: 15px 0 10px 0; display:block; font-weight: bold; color: #b03060;">Facteurs de risque connus (Cochez les propositions valides) :</label>
+        <div class="check-group">
+            <label class="check-item"><input type="checkbox" checked> Nulliparité (n'avoir jamais accouché)</label>
+            <label class="check-item"><input type="checkbox" checked> Première grossesse tardive (> 30 ans)</label>
+            <label class="check-item"><input type="checkbox" checked> Ménopause tardive (> 55 ans)</label>
+            <label class="check-item"><input type="checkbox" checked> Consommation d'alcool et tabac</label>
+            <label class="check-item"><input type="checkbox"> Usage prolongé de contraceptifs oraux</label>
+            <label class="check-item"><input type="checkbox" checked> Antécédents familiaux (Mère, Sœur)</label>
         </div>
 
-        <label style="margin: 10px 0; display:block;">Signes d'alerte identifiés (Cochez les propositions):</label>
-        <div class="checkbox-group">
-            <label class="check-item"><input type="checkbox" checked> Présence d'une masse ou nodule dur</label>
-            <label class="check-item"><input type="checkbox" checked> Aspect 'peau d'orange' sur le sein</label>
-            <label class="check-item"><input type="checkbox" checked> Écoulement sanglant par le mamelon</label>
-            <label class="check-item"><input type="checkbox" checked> Rétraction du mamelon</label>
-            <label class="check-item"><input type="checkbox"> Changement de taille du sein</label>
-            <label class="check-item"><input type="checkbox"> Rougeur ou chaleur locale</label>
+        <label style="margin: 20px 0 10px 0; display:block; font-weight: bold; color: #b03060;">Signes cliniques d'alerte (Signes à rechercher) :</label>
+        <div class="check-group">
+            <label class="check-item"><input type="checkbox" checked> Nodule dur, fixe et indolore</label>
+            <label class="check-item"><input type="checkbox" checked> Écoulement séro-sanguinolent unilatéral</label>
+            <label class="check-item"><input type="checkbox" checked> Rétraction ou ombilication du mamelon</label>
+            <label class="check-item"><input type="checkbox" checked> Adénopathie axillaire (boule sous l'aisselle)</label>
+            <label class="check-item"><input type="checkbox" checked> Aspect de "peau d'orange" sur le tégument</label>
+            <label class="check-item"><input type="checkbox"> Douleur mammaire isolée (Mastodynie)</label>
         </div>
 
-        <div class="section-title">IV. ÉVALUATION DES ATTITUDES (LE SAVOIR-ÊTRE : DE 1 À 5)</div>
+        <div class="section-title">III. ATTITUDES ET PERCEPTIONS (SAVOIR-ÊTRE : 1 À 5)</div>
         <table>
-            <thead><tr><th class="text-left">Énoncés</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
+            <thead>
+                <tr>
+                    <th class="text-left">Énoncés (Perception de l'infirmier/e)</th>
+                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                </tr>
+            </thead>
             <tbody>
-                <tr><td class="text-left">La prévention est une priorité dans mon travail.</td><td><input type="radio" name="att1"></td><td><input type="radio" name="att1"></td><td><input type="radio" name="att1"></td><td><input type="radio" name="att1" checked></td><td><input type="radio" name="att1"></td></tr>
-                <tr><td class="text-left">Je suis à l'aise pour enseigner l'autopalpation.</td><td><input type="radio" name="att2"></td><td><input type="radio" name="att2"></td><td><input type="radio" name="att2"></td><td><input type="radio" name="att2"></td><td><input type="radio" name="att2" checked></td></tr>
-                <tr><td class="text-left">Le coût des examens est le principal frein en RDC.</td><td><input type="radio" name="att3"></td><td><input type="radio" name="att3"></td><td><input type="radio" name="att3"></td><td><input type="radio" name="att3"></td><td><input type="radio" name="att3" checked></td></tr>
-                <tr><td class="text-left">Le cancer du sein est forcément mortel en RDC.</td><td><input type="radio" name="att4"></td><td><input type="radio" name="att4" checked></td><td><input type="radio" name="att4"></td><td><input type="radio" name="att4"></td><td><input type="radio" name="att4"></td></tr>
+                <tr><td class="text-left">Je me sens capable de détecter un nodule suspect lors d'une palpation.</td><td><input type="radio" name="p1"></td><td><input type="radio" name="p1"></td><td><input type="radio" name="p1"></td><td><input type="radio" name="p1" checked></td><td><input type="radio" name="p1"></td></tr>
+                <tr><td class="text-left">L'influence culturelle (pudeur) empêche mes patientes de se déshabiller.</td><td><input type="radio" name="p2"></td><td><input type="radio" name="p2"></td><td><input type="radio" name="p2"></td><td><input type="radio" name="p2"></td><td><input type="radio" name="p2" checked></td></tr>
+                <tr><td class="text-left">Le diagnostic de cancer est une sentence de mort en RDC.</td><td><input type="radio" name="p3"></td><td><input type="radio" name="p3" checked></td><td><input type="radio" name="p3"></td><td><input type="radio" name="p3"></td><td><input type="radio" name="p3"></td></tr>
+                <tr><td class="text-left">Je pense que chaque femme en consultation doit être sensibilisée au cancer.</td><td><input type="radio" name="p4"></td><td><input type="radio" name="p4"></td><td><input type="radio" name="p4"></td><td><input type="radio" name="p4"></td><td><input type="radio" name="p4" checked></td></tr>
             </tbody>
         </table>
 
-        <div class="section-title">V. ÉVALUATION DES PRATIQUES (LE SAVOIR-FAIRE)</div>
+        <div class="section-title">IV. PRATIQUES PROFESSIONNELLES (SAVOIR-FAIRE)</div>
         <div class="row">
-            <div class="field"><label>Pratique personnelle de l'AES :</label><select><option selected>Mensuelle</option><option>Occasionnelle</option><option>Jamais</option></select></div>
-            <div class="field"><label>Examen clinique lors des consultations ?</label><select><option selected>Toujours (systématique)</option><option>Parfois</option></select></div>
-            <div class="field"><label>Enseignez-vous l'AES aux patientes ?</label><select><option selected>Oui</option><option>Non</option></select></div>
+            <div class="field">
+                <label>Fréquence de la palpation clinique des seins (ECS) en consultation :</label>
+                <select>
+                    <option selected>Systématique pour chaque patiente</option>
+                    <option>Uniquement si la patiente se plaint</option>
+                    <option>Rarement par manque de temps</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Enseignement de la technique d'autopalpation (AES) :</label>
+                <select>
+                    <option selected>Je démontre la technique physiquement</option>
+                    <option>J'explique verbalement seulement</option>
+                    <option>Je ne l'enseigne pas</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Référence des cas suspects :</label>
+                <select>
+                    <option selected>Vers l'imagerie (Mammographie/Echo)</option>
+                    <option>Vers la Chirurgie directement</option>
+                    <option>Observation (Attendre le prochain RDV)</option>
+                </select>
+            </div>
         </div>
         <div class="row">
-            <div class="field"><label>Référez-vous pour une mammographie ?</label><select><option selected>Oui</option><option>Non</option></select></div>
-            <div class="field"><label>Participé à une activité de sensibilisation ?</label><select><option selected>Oui</option><option>Non</option></select></div>
-            <div class="field"><label>Palpations effectuées ce mois (Proposé) :</label><select><option>0-5</option><option selected>5-15</option><option>+ de 15</option></select></div>
+            <div class="field">
+                <label>Utilisation de supports visuels (Affiches, Boites à images) :</label>
+                <select><option selected>Jamais (Pas de matériel disponible)</option><option>Parfois</option><option>Toujours</option></select>
+            </div>
+            <div class="field">
+                <label>Avez-vous déjà palpé un sein ce matin ?</label>
+                <select><option selected>Oui</option><option>Non</option></select>
+            </div>
+            <div class="field">
+                <label>Nombre de cas de cancer suspectés ce mois-ci :</label>
+                <select><option>0</option><option selected>1 à 5 cas</option><option>Plus de 5 cas</option></select>
+            </div>
         </div>
 
-        <div class="section-title">VI. OBSTACLES & RECOMMANDATIONS</div>
-        <label>Obstacles à la prévention à l'HGRM (Cochez tout) :</label>
-        <div class="checkbox-group">
-            <label class="check-item"><input type="checkbox" checked> Manque de formation du personnel</label>
-            <label class="check-item"><input type="checkbox" checked> Manque de matériel (affiches, outils)</label>
-            <label class="check-item"><input type="checkbox" checked> Coût élevé des examens</label>
-            <label class="check-item"><input type="checkbox"> Tabous culturels ou religieux</label>
-            <label class="check-item"><input type="checkbox" checked> Manque de temps / Surcharge de travail</label>
-            <label class="check-item"><input type="checkbox"> Distance vers les centres équipés</label>
-        </div>
-        
-        <div class="row" style="margin-top:15px;">
-            <div class="field"><label>Besoin de formation supplémentaire ?</label><select><option selected>Oui</option><option>Non</option></select></div>
-            <div class="field"><label>Type souhaité :</label><select><option selected>Formation continue / Atelier</option><option>Séminaire</option></select></div>
+        <div class="section-title">V. OBSTACLES ET SOLUTIONS (RDC CONTEXT)</div>
+        <label style="margin-bottom: 10px; display:block; font-weight: bold;">Quelles sont les barrières à l'HGRM ? (Cochez tout ce qui est vrai):</label>
+        <div class="check-group">
+            <label class="check-item"><input type="checkbox" checked> Absence de salle isolée respectant l'intimité</label>
+            <label class="check-item"><input type="checkbox" checked> Coût exorbitant de la mammographie (> 50$)</label>
+            <label class="check-item"><input type="checkbox" checked> Manque de formation continue sur le cancer</label>
+            <label class="check-item"><input type="checkbox" checked> Préférence des patientes pour la prière/tradition</label>
+            <label class="check-item"><input type="checkbox"> Surcharge de travail (Ratio infirmière/patient)</label>
         </div>
 
-        <div class="field" style="margin-top:10px;">
-            <label>Suggestions pour améliorer la lutte à l'HGRM :</label>
+        <div class="field" style="margin-top: 20px;">
+            <label>Votre recommandation principale pour l'HGRM :</label>
             <select>
-                <option selected>Organiser des campagnes de dépistage gratuit</option>
-                <option>Mettre en place des protocoles écrits de dépistage</option>
-                <option>Équiper le service en imagerie spécialisée</option>
+                <option selected>Installation d'une unité de dépistage permanent</option>
+                <option>Formation certifiante pour tout le personnel infirmier</option>
+                <option>Subvention des examens d'imagerie pour les indigents</option>
+                <option>Campagnes de masse dans les églises et marchés</option>
             </select>
         </div>
 
-        <button type="button" class="btn-save" onclick="alert('Fiche HGRM enregistrée avec succès !')">ENREGISTRER LA FICHE COMPLÈTE</button>
+        <button type="button" class="btn-save" onclick="alert('Données KAP-HGRM sauvegardées !')">VALIDER ET ENREGISTRER LA FICHE</button>
     </form>
 </div>
 
 <script>
-    // Génération automatique des âges de 18 à 60 ans
+    // Remplissage automatique de l'Âge (18 à 60)
     const ageSelect = document.getElementById('age-select');
     for (let i = 18; i <= 60; i++) {
         let opt = document.createElement('option');
-        opt.value = i;
-        opt.innerHTML = i + " ans";
-        if(i === 32) opt.selected = true; 
+        opt.value = i; opt.text = i + " ans";
+        if(i === 35) opt.selected = true;
         ageSelect.appendChild(opt);
     }
 
-    // Génération des années d'expérience (1 mois à 30 ans)
+    // Remplissage automatique Expérience (1 mois à 30 ans)
     const expSelect = document.getElementById('exp-select');
-    let m = document.createElement('option'); m.innerHTML = "Moins d'un an"; expSelect.appendChild(m);
+    let m = document.createElement('option'); m.text = "Stagiaire / Moins d'un an"; expSelect.appendChild(m);
     for (let i = 1; i <= 30; i++) {
         let opt = document.createElement('option');
-        opt.value = i;
-        opt.innerHTML = i + (i === 1 ? " an d'expérience" : " ans d'expérience");
-        if(i === 7) opt.selected = true; 
+        opt.value = i; opt.text = i + (i === 1 ? " an" : " ans") + " d'expérience";
+        if(i === 10) opt.selected = true;
         expSelect.appendChild(opt);
     }
 </script>
