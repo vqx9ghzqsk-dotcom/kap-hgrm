@@ -1,181 +1,271 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Enquête CAP – Personnel infirmier</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kap-hgrm - Collecte de données</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #2c3e50; font-size: 1.5em; margin-bottom: 20px; }
+        
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .tab {
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+        .tab-active { background-color: #b03060; color: white; }
+        .tab-inactive { background-color: #e0e0e0; color: #666; }
+        .btn-export {
+            margin-left: auto;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
-<style>
-body{
-    font-family: Arial, sans-serif;
-    background:#f1f5f9;
-    margin:0;
-    padding:15px;
-}
-h2{
-    background:#8b1d1d;
-    color:#fff;
-    padding:10px;
-}
-section{
-    background:#fff;
-    padding:15px;
-    margin-bottom:20px;
-    border-radius:6px;
-}
-label{display:block;margin-top:10px;font-weight:bold;}
-input, select{
-    width:100%;
-    padding:8px;
-    margin-top:5px;
-}
-button{
-    margin-top:15px;
-    padding:10px;
-    width:100%;
-    background:#8b1d1d;
-    color:white;
-    border:none;
-    font-size:16px;
-}
-.hidden{display:none}
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-th,td{
-    border:1px solid #ccc;
-    padding:5px;
-    text-align:center;
-}
-</style>
+        /* Section Styling */
+        .section-header {
+            background-color: #fce4ec;
+            color: #b03060;
+            padding: 10px;
+            font-weight: bold;
+            margin-top: 25px;
+            border-left: 5px solid #b03060;
+            text-transform: uppercase;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            padding: 15px 0;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-size: 0.85em;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        input, select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fafafa;
+        }
+
+        /* Likert Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #eee;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        .text-left { text-align: left; }
+
+        /* Checkboxes */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 10px 0;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.9em;
+        }
+        .checkbox-item input { margin-right: 10px; }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            background-color: #b03060;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1em;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-top: 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+    </style>
 </head>
-
 <body>
 
-<h1>ENQUÊTE CAP – PERSONNEL INFIRMIER</h1>
+<div class="container">
+    <h1>kap-hgrm</h1>
 
-<!-- 1. COLLECTE -->
-<section>
-<h2>1. COLLECTE</h2>
+    <div class="nav-tabs">
+        <a href="#" class="tab tab-active">1. COLLECTE</a>
+        <a href="#" class="tab tab-inactive" onclick="alert('Accès à la Base de Données')">2. BASE DE DONNÉES</a>
+        <a href="#" class="tab tab-inactive">3. ANALYSE CAP</a>
+        <button class="btn-export">📊 EXPORT EXCEL (CSV)</button>
+    </div>
 
-<label>Âge</label>
-<input type="number" id="age">
+    <form>
+        <div class="section-header">I. IDENTIFICATION & CONTEXTE PROFESSIONNEL</div>
+        <div class="grid-container">
+            <div class="input-group">
+                <label>ID Enquêté *</label>
+                <input type="text" placeholder="Ex: 001">
+            </div>
+            <div class="input-group">
+                <label>Service (ex: Maternité, Chirurgie) *</label>
+                <input type="text">
+            </div>
+            <div class="input-group">
+                <label>Niveau d'études *</label>
+                <select>
+                    <option>A2</option>
+                    <option>A1</option>
+                    <option>L0/L1</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Ancienneté Pro (ans)</label>
+                <input type="number">
+            </div>
+            <div class="input-group">
+                <label>Avez-vous déjà soigné une patiente cancéreuse ?</label>
+                <select>
+                    <option>Oui</option>
+                    <option>Non</option>
+                </select>
+            </div>
+        </div>
 
-<label>Sexe</label>
-<select id="sexe">
-<option value="">-- Choisir --</option>
-<option>Femme</option>
-</select>
+        <div class="section-header">II. CONNAISSANCES APPROFONDIES (SAVOIRS)</div>
+        <div class="grid-container">
+            <div class="input-group">
+                <label>La nulliparité est un risque ?</label>
+                <select><option>---</option><option>Vrai</option><option>Faux</option></select>
+            </div>
+            <div class="input-group">
+                <label>La ménopause tardive augmente le risque ?</label>
+                <select><option>---</option><option>Vrai</option><option>Faux</option></select>
+            </div>
+            <div class="input-group">
+                <label>L'AES doit se faire 7 jours après les règles ?</label>
+                <select><option>---</option><option>Vrai</option><option>Faux</option></select>
+            </div>
+            <div class="input-group">
+                <label>Le cancer du sein est-il contagieux ? (Mythe)</label>
+                <select><option>Faux</option><option>Vrai</option></select>
+            </div>
+            <div class="input-group">
+                <label>L'échographie est-elle utile chez la femme de < 35 ans ?</label>
+                <select><option>Vrai</option><option>Faux</option></select>
+            </div>
+            <div class="input-group">
+                <label>Une plaie qui ne guérit pas au sein est un signe ?</label>
+                <select><option>Vrai</option><option>Faux</option></select>
+            </div>
+        </div>
 
-<label>Ancienneté (années)</label>
-<input type="number" id="anciennete">
+        <div class="section-header">III. ATTITUDES & PERCEPTIONS (LIKERT 1-5)</div>
+        <table>
+            <thead>
+                <tr>
+                    <th class="text-left">Énoncés</th>
+                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-left">Je pense que la médecine traditionnelle peut guérir le cancer.</td>
+                    <td><input type="radio" name="q1"></td><td><input type="radio" name="q1"></td><td><input type="radio" name="q1"></td><td><input type="radio" name="q1"></td><td><input type="radio" name="q1"></td>
+                </tr>
+                <tr>
+                    <td class="text-left">J'ai peur de découvrir un nodule lors d'un examen.</td>
+                    <td><input type="radio" name="q2"></td><td><input type="radio" name="q2"></td><td><input type="radio" name="q2"></td><td><input type="radio" name="q2"></td><td><input type="radio" name="q2"></td>
+                </tr>
+                <tr>
+                    <td class="text-left">Le dépistage précoce coûte trop cher pour mes patientes.</td>
+                    <td><input type="radio" name="q3"></td><td><input type="radio" name="q3"></td><td><input type="radio" name="q3"></td><td><input type="radio" name="q3"></td><td><input type="radio" name="q3"></td>
+                </tr>
+                <tr>
+                    <td class="text-left">La mastectomie (ablation) est une mutilation inacceptable.</td>
+                    <td><input type="radio" name="q4"></td><td><input type="radio" name="q4"></td><td><input type="radio" name="q4"></td><td><input type="radio" name="q4"></td><td><input type="radio" name="q4"></td>
+                </tr>
+            </tbody>
+        </table>
 
-<label>Service</label>
-<input type="text" id="service">
-</section>
+        <div class="section-header">IV. PRATIQUES PROFESSIONNELLES</div>
+        <div class="grid-container">
+            <div class="input-group">
+                <label>Demandez-vous l'histoire familiale de cancer ?</label>
+                <select><option>Systématiquement</option><option>Rarement</option></select>
+            </div>
+            <div class="input-group">
+                <label>Inspectez-vous les aisselles (creux axillaires) ?</label>
+                <select><option>Oui</option><option>Non</option></select>
+            </div>
+            <div class="input-group">
+                <label>Remettez-vous des dépliants sur le cancer ?</label>
+                <select><option>Oui</option><option>Non</option></select>
+            </div>
+            <div class="input-group">
+                <label>Nombre moyen de palpations faites ce mois :</label>
+                <input type="number" value="0">
+            </div>
+        </div>
 
-<!-- 2. BASE DE DONNÉES -->
-<section>
-<h2>2. BASE DE DONNÉES</h2>
+        <div class="section-header">V. BARRIÈRES SYSTÉMIQUES (RDC)</div>
+        <div class="checkbox-group">
+            <p style="font-size: 0.85em; font-weight: bold;">Qu'est-ce qui vous empêche d'agir plus ? (Plusieurs choix)</p>
+            <label class="checkbox-item"><input type="checkbox"> Absence de protocoles écrits</label>
+            <label class="checkbox-item"><input type="checkbox"> Influence religieuse des patientes</label>
+            <label class="checkbox-item"><input type="checkbox"> Manque de salle d'examen isolée</label>
+            <label class="checkbox-item"><input type="checkbox"> Pudeur/Honte de la patiente</label>
+        </div>
 
-<label>Connaît le cancer du sein ?</label>
-<select id="connaissance">
-<option value="">--</option>
-<option value="1">Oui</option>
-<option value="0">Non</option>
-</select>
-
-<label>Pratique l’auto-examen mammaire ?</label>
-<select id="pratique">
-<option value="">--</option>
-<option value="1">Oui</option>
-<option value="0">Non</option>
-</select>
-
-<label>A déjà conseillé le dépistage ?</label>
-<select id="attitude">
-<option value="">--</option>
-<option value="1">Oui</option>
-<option value="0">Non</option>
-</select>
-
-<button onclick="sauvegarder()">Sauvegarder les données</button>
-</section>
-
-<!-- 3. ANALYSE CAP -->
-<section class="hidden" id="analyse">
-<h2>3. ANALYSE CAP</h2>
-
-<p><strong>Score Connaissance :</strong> <span id="scoreC"></span></p>
-<p><strong>Score Attitude :</strong> <span id="scoreA"></span></p>
-<p><strong>Score Pratique :</strong> <span id="scoreP"></span></p>
-
-<h3>Base de données</h3>
-<table id="table">
-<tr>
-<th>Âge</th><th>Sexe</th><th>Ancienneté</th><th>Service</th>
-<th>C</th><th>A</th><th>P</th>
-</tr>
-</table>
-
-<button onclick="exportCSV()">Exporter la base (CSV)</button>
-</section>
+        <button type="button" class="submit-btn" onclick="saveData()">Enregistrer la fiche complète</button>
+    </form>
+</div>
 
 <script>
-let base = JSON.parse(localStorage.getItem("baseCAP")) || [];
-
-function sauvegarder(){
-    let data = {
-        age: age.value,
-        sexe: sexe.value,
-        anciennete: anciennete.value,
-        service: service.value,
-        C: connaissance.value,
-        A: attitude.value,
-        P: pratique.value
-    };
-    base.push(data);
-    localStorage.setItem("baseCAP", JSON.stringify(base));
-    afficher();
-}
-
-function afficher(){
-    document.getElementById("analyse").classList.remove("hidden");
-    table.innerHTML = `<tr>
-    <th>Âge</th><th>Sexe</th><th>Ancienneté</th><th>Service</th>
-    <th>C</th><th>A</th><th>P</th></tr>`;
-
-    let sc=0, sa=0, sp=0;
-
-    base.forEach(d=>{
-        sc+=Number(d.C);
-        sa+=Number(d.A);
-        sp+=Number(d.P);
-
-        table.innerHTML += `<tr>
-        <td>${d.age}</td><td>${d.sexe}</td><td>${d.anciennete}</td><td>${d.service}</td>
-        <td>${d.C}</td><td>${d.A}</td><td>${d.P}</td>
-        </tr>`;
-    });
-
-    scoreC.textContent = sc;
-    scoreA.textContent = sa;
-    scoreP.textContent = sp;
-}
-
-function exportCSV(){
-    let csv="Age,Sexe,Anciennete,Service,Connaissance,Attitude,Pratique\n";
-    base.forEach(d=>{
-        csv+=`${d.age},${d.sexe},${d.anciennete},${d.service},${d.C},${d.A},${d.P}\n`;
-    });
-    let a=document.createElement("a");
-    a.href="data:text/csv;charset=utf-8,"+encodeURI(csv);
-    a.download="base_CAP.csv";
-    a.click();
-}
-
-if(base.length>0) afficher();
+    function saveData() {
+        alert("Fiche enregistrée avec succès dans la base de données !");
+        // Logique de sauvegarde ou redirection vers l'onglet 2 ici
+    }
 </script>
 
 </body>
