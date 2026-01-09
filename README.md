@@ -2,13 +2,12 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Système Expert CAP Intégral - HGRM Makala</title>
+    <title>Système Expert CAP Complet - HGRM Makala</title>
     <style>
         :root { --primary: #be185d; --secondary: #1e293b; --success: #059669; --bg: #f8fafc; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 15px; color: var(--secondary); }
-        .container { max-width: 1200px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .container { max-width: 1250px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         
-        /* Navigation */
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 15px; position: sticky; top: 0; background: white; z-index: 100; }
         .nav-btns { display: flex; gap: 8px; flex-wrap: wrap; }
         .btn { padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
@@ -19,23 +18,15 @@
         .page { display: none; }
         .page.active { display: block; }
 
-        /* Formulaire */
         h2 { color: var(--primary); font-size: 1.1em; border-left: 5px solid var(--primary); padding-left: 12px; margin-top: 25px; background: #fff1f2; padding-block: 8px; text-transform: uppercase; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
         .field { border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; background: #fff; }
         label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.85em; }
         input, select, textarea { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
         
-        /* Tableau Likert */
-        .likert-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
-        .likert-table th, .likert-table td { border: 1px solid #e2e8f0; padding: 10px; text-align: center; }
-        .text-left { text-align: left; }
-
-        /* Badges Niveau */
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; }
-        .badge-good { background: #dcfce7; color: #166534; }
-        .badge-mid { background: #fef9c3; color: #854d0e; }
-        .badge-bad { background: #fee2e2; color: #991b1b; }
+        .likert-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85em; }
+        .likert-table th, .likert-table td { border: 1px solid #e2e8f0; padding: 8px; text-align: center; }
+        .text-left { text-align: left; background: #f8fafc; font-weight: bold; }
 
         .btn-submit { background: var(--primary); color: white; width: 100%; margin-top: 30px; padding: 20px; font-size: 1.2em; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
     </style>
@@ -54,85 +45,87 @@
 
     <div id="recolte" class="page active">
         <form id="masterForm">
-            <h2>I. IDENTIFICATION ET CONSENTEMENT</h2>
+            <h2>I. IDENTIFICATION & CONTEXTE PROFESSIONNEL</h2>
             <div class="grid">
-                <div class="field"><label>Code de l'enquêtée *</label><input type="text" name="id" required></div>
-                <div class="field"><label>Date *</label><input type="date" name="date" required></div>
-                <div class="field"><label>Service d'affectation *</label><input type="text" name="service" required></div>
-                <div class="field"><label>Enquêteur(trice)</label><input type="text" name="enqueteur"></div>
-                <div class="field"><label>Consentement *</label>
-                    <select name="consent" required><option value="Oui">J'accepte de participer</option><option value="Non">Je refuse</option></select>
+                <div class="field"><label>ID Enquêtée *</label><input type="text" name="id" required></div>
+                <div class="field"><label>Service (ex: Maternité, Chirurgie) *</label><input type="text" name="service" required></div>
+                <div class="field"><label>Niveau d'études *</label>
+                    <select name="etude"><option>A2</option><option>A1/Graduée</option><option>A0/Licenciée</option><option>Master/DS</option></select>
+                </div>
+                <div class="field"><label>Ancienneté Pro (ans)</label><input type="number" name="exp"></div>
+                <div class="field"><label>Avez-vous déjà soigné une patiente cancéreuse ?</label>
+                    <select name="soin_connais"><option value="Oui">Oui</option><option value="Non">Non</option></select>
                 </div>
             </div>
 
-            <h2>II. DONNÉES SOCIODÉMOGRAPHIQUES (Le Profil)</h2>
+            <h2>II. CONNAISSANCES APPROFONDIES (SAVOIRS)</h2>
             <div class="grid">
-                <div class="field"><label>Sexe</label><select name="sexe"><option>Femme</option><option>Homme</option></select></div>
-                <div class="field"><label>Âge (ans)</label><input type="number" name="age"></div>
-                <div class="field"><label>État civil</label><select name="ecivil"><option>Célibataire</option><option>Mariée</option><option>Veuve</option><option>Autre</option></select></div>
-                <div class="field"><label>Niveau d'études</label><select name="niveau"><option value="A2">A2</option><option value="A1">A1</option><option value="A0">A0</option><option value="Master">Master+</option></select></div>
-                <div class="field"><label>Expérience (ans)</label><input type="number" name="exp"></div>
-                <div class="field"><label>Statut</label><select name="statut"><option>Titulaire</option><option>Contractuelle</option><option>Stagiaire</option><option>Autre</option></select></div>
-                <div class="field"><label>Antécédents Familiaux</label><select name="anteced"><option value="0">Non</option><option value="1">Oui</option></select></div>
+                <div class="field"><label>La nulliparité (ne pas avoir d'enfant) est un risque ?</label>
+                    <select name="c1"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select>
+                </div>
+                <div class="field"><label>La ménopause tardive augmente le risque ?</label>
+                    <select name="c2"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select>
+                </div>
+                <div class="field"><label>L'AES doit se faire 7 jours après les règles ?</label>
+                    <select name="c3"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select>
+                </div>
+                <div class="field"><label>Le cancer du sein est-il contagieux ? (Mythe)</label>
+                    <select name="c4"><option value="1">Faux</option><option value="0">Vrai</option></select>
+                </div>
+                <div class="field"><label>L'échographie est-elle utile chez la femme de <35 ans ?</label>
+                    <select name="c5"><option value="1">Vrai</option><option value="0">Faux</option></select>
+                </div>
+                <div class="field"><label>Une plaie qui ne guérit pas au sein est un signe ?</label>
+                    <select name="c6"><option value="1">Vrai</option><option value="0">Faux</option></select>
+                </div>
             </div>
 
-            <h2>III. ÉVALUATION DES CONNAISSANCES (Scoring Scientifique)</h2>
-            <div class="grid">
-                <div class="field"><label>Risque augmente avec l'âge ?</label><select name="c1"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select></div>
-                <div class="field"><label>Obésité/Sédentarité = Risque ?</label><select name="c2"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select></div>
-                <div class="field"><label>Allaitement maternel protecteur ?</label><select name="c3"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select></div>
-                <div class="field"><label>L'AES détecte les anomalies ?</label><select name="c4"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select></div>
-                <div class="field"><label>Mammographie = Dépistage Secondaire ?</label><select name="c5"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select></div>
-                <div class="field"><label>Méthode de référence :</label><select name="c6"><option value="0">---</option><option value="1">Mammographie</option><option value="0">Échographie</option></select></div>
-            </div>
-            <div class="field" style="margin-top:10px;">
-                <label>Signes d'alerte connus (Cochez tout) :</label>
-                <input type="checkbox" name="signe" value="masse"> Masse/Nodule | 
-                <input type="checkbox" name="signe" value="peau"> Peau d'orange | 
-                <input type="checkbox" name="signe" value="sang"> Écoulement sanglant | 
-                <input type="checkbox" name="signe" value="retract"> Rétraction mamelon
-            </div>
-
-            <h2>IV. ÉVALUATION DES ATTITUDES (Échelle 1 à 5)</h2>
+            <h2>III. ATTITUDES & PERCEPTIONS (LIKERT 1-5)</h2>
             <table class="likert-table">
                 <thead><tr><th class="text-left">Énoncés</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
                 <tbody>
-                    <tr><td class="text-left">La prévention est une priorité.</td><td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5"></td></tr>
-                    <tr><td class="text-left">Le cancer est forcément mortel en RDC.</td><td><input type="radio" name="att2" value="1"></td><td><input type="radio" name="att2" value="2"></td><td><input type="radio" name="att2" value="3"></td><td><input type="radio" name="att2" value="4"></td><td><input type="radio" name="att2" value="5"></td></tr>
+                    <tr><td class="text-left">Je pense que la médecine traditionnelle peut guérir le cancer.</td><td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5"></td></tr>
+                    <tr><td class="text-left">J'ai peur de découvrir un nodule lors d'un examen.</td><td><input type="radio" name="att2" value="1"></td><td><input type="radio" name="att2" value="2"></td><td><input type="radio" name="att2" value="3"></td><td><input type="radio" name="att2" value="4"></td><td><input type="radio" name="att2" value="5"></td></tr>
+                    <tr><td class="text-left">Le dépistage précoce coûte trop cher pour mes patientes.</td><td><input type="radio" name="att3" value="1"></td><td><input type="radio" name="att3" value="2"></td><td><input type="radio" name="att3" value="3"></td><td><input type="radio" name="att3" value="4"></td><td><input type="radio" name="att3" value="5"></td></tr>
+                    <tr><td class="text-left">La mastectomie (ablation) est une mutilation inacceptable.</td><td><input type="radio" name="att4" value="1"></td><td><input type="radio" name="att4" value="2"></td><td><input type="radio" name="att4" value="3"></td><td><input type="radio" name="att4" value="4"></td><td><input type="radio" name="att4" value="5"></td></tr>
                 </tbody>
             </table>
 
-            <h2>V. ÉVALUATION DES PRATIQUES</h2>
+            <h2>IV. PRATIQUES PROFESSIONNELLES</h2>
             <div class="grid">
-                <div class="field"><label>Pratique personnelle AES ?</label><select name="p1"><option value="1">Oui</option><option value="0">Non</option></select></div>
-                <div class="field"><label>Fréquence :</label><select name="p2"><option>Mensuelle</option><option>Occasionnelle</option><option>Rare</option></select></div>
-                <div class="field"><label>Examen clinique patientes :</label><select name="p3"><option value="1">Toujours</option><option value="0.5">Parfois</option><option value="0">Jamais</option></select></div>
-                <div class="field"><label>Enseignez-vous l'AES ?</label><select name="p4"><option value="1">Oui</option><option value="0">Non</option></select></div>
+                <div class="field"><label>Demandez-vous l'histoire familiale de cancer ?</label>
+                    <select name="p1"><option>Systématiquement</option><option>Parfois</option><option>Jamais</option></select>
+                </div>
+                <div class="field"><label>Inspectez-vous les aisselles (creux axillaires) ?</label>
+                    <select name="p2"><option>Oui</option><option>Non</option></select>
+                </div>
+                <div class="field"><label>Remettez-vous des dépliants sur le cancer ?</label>
+                    <select name="p3"><option>Oui</option><option>Non (Manque de supports)</option></select>
+                </div>
+                <div class="field"><label>Nombre moyen de palpations faites ce mois :</label>
+                    <input type="number" name="p4" placeholder="0">
+                </div>
             </div>
 
-            <h2>VI. OBSTACLES ET RECOMMANDATIONS</h2>
+            <h2>V. BARRIÈRES SYSTÉMIQUES (RDC)</h2>
             <div class="field">
-                <label>Obstacles à l'HGRM :</label>
-                <input type="checkbox" name="obs" value="Formation"> Formation | 
-                <input type="checkbox" name="obs" value="Matériel"> Matériel | 
-                <input type="checkbox" name="obs" value="Temps"> Temps | 
-                <input type="checkbox" name="obs" value="Tabous"> Tabous
-            </div>
-            <div class="grid" style="margin-top:10px;">
-                <div class="field"><label>Type formation souhaitée :</label><select name="type_f"><option>Continue</option><option>Licence</option><option>Master</option></select></div>
-                <div class="field"><label>Suggestions libres :</label><textarea name="sugg"></textarea></div>
+                <label>Qu'est-ce qui vous empêche d'agir plus ? (Plusieurs choix)</label>
+                <input type="checkbox" name="bar" value="Formation"> Absence de protocoles écrits<br>
+                <input type="checkbox" name="bar" value="Religion"> Influence religieuse des patientes<br>
+                <input type="checkbox" name="bar" value="Materiel"> Manque de salle d'examen isolée<br>
+                <input type="checkbox" name="bar" value="Honte"> Pudeur/Honte de la patiente
             </div>
 
-            <button type="button" class="btn-submit" onclick="saveEntry()">ENREGISTRER LA FICHE ET CALCULER LE SCORE</button>
+            <button type="button" class="btn-submit" onclick="saveEntry()">ENREGISTRER LA FICHE COMPLÈTE</button>
         </form>
     </div>
 
     <div id="data" class="page">
-        <h2>Matrice de Dépouillement (Données Brutes)</h2>
+        <h2>Matrice de Dépouillement avec Variables Croisées</h2>
         <div style="overflow-x:auto;">
-            <table id="dataTable" style="width:100%; border-collapse: collapse; font-size: 0.85em;">
+            <table id="dataTable" style="width:100%; border-collapse: collapse; font-size: 0.8em;">
                 <thead style="background:#f1f5f9;">
-                    <tr><th>ID</th><th>Service</th><th>Score C.</th><th>Niveau</th><th>Pratique</th><th>Obstacles</th></tr>
+                    <tr><th>ID</th><th>Sexe</th><th>Etude</th><th>Score Savoir</th><th>Attitude (Moy)</th><th>Pratique</th></tr>
                 </thead>
                 <tbody></tbody>
             </table>
@@ -140,16 +133,16 @@
     </div>
 
     <div id="stats" class="page">
-        <h2>Indicateurs CAP Globaux</h2>
+        <h2>Statistiques de Recherche</h2>
         <div class="grid">
-            <div style="text-align:center; padding:30px; border: 1px solid #eee;"><h3>Échantillon (N)</h3><div id="sn" style="font-size:3em; color:var(--primary);">0</div></div>
-            <div style="text-align:center; padding:30px; border: 1px solid #eee;"><h3>Moyenne Savoir</h3><div id="sc" style="font-size:3em; color:var(--primary);">0%</div></div>
+            <div class="field" style="text-align:center;"><h3>N Total</h3><div id="sn" style="font-size:2em; font-weight:bold;">0</div></div>
+            <div class="field" style="text-align:center;"><h3>Niveau de Savoir Moyen</h3><div id="sc" style="font-size:2em; font-weight:bold;">0%</div></div>
         </div>
     </div>
 </div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('cap_makala_expert')) || [];
+    let db = JSON.parse(localStorage.getItem('cap_makala_expert_final')) || [];
 
     function show(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -164,15 +157,14 @@
         const form = document.getElementById('masterForm');
         const data = Object.fromEntries(new FormData(form).entries());
         
-        // Calcul du score de connaissances (sur 6 questions de C1 à C6)
+        // Calcul du score de savoir sur 6 questions
         let score = 0;
         for(let i=1; i<=6; i++) { score += parseInt(data['c'+i] || 0); }
-        data.score = score;
-        data.niveau = score >= 5 ? 'Bon' : (score >= 3 ? 'Moyen' : 'Faible');
+        data.scoreSavoir = score;
         
         db.push(data);
-        localStorage.setItem('cap_makala_expert', JSON.stringify(db));
-        alert("Données enregistrées ! Niveau de cette fiche : " + data.niveau);
+        localStorage.setItem('cap_makala_expert_final', JSON.stringify(db));
+        alert("Fiche ajoutée avec succès !");
         form.reset();
     }
 
@@ -180,10 +172,10 @@
         const tbody = document.querySelector('#dataTable tbody');
         tbody.innerHTML = db.map(d => `
             <tr style="border-bottom:1px solid #eee;">
-                <td>${d.id}</td><td>${d.service}</td><td>${d.score}/6</td>
-                <td><span class="badge ${d.niveau==='Bon'?'badge-good':d.niveau==='Moyen'?'badge-mid':'badge-bad'}">${d.niveau}</span></td>
-                <td>${d.p3 === '1' ? 'Systématique' : 'Irrégulier'}</td>
-                <td>${d.obs || 'N/A'}</td>
+                <td>${d.id}</td><td>${d.sexe || 'F'}</td><td>${d.etude}</td>
+                <td>${d.scoreSavoir}/6</td>
+                <td>${d.att1 || 0}/5</td>
+                <td>${d.p1}</td>
             </tr>
         `).join('');
     }
@@ -191,21 +183,21 @@
     function refreshStats() {
         const n = db.length;
         if(n === 0) return;
-        const totalScore = db.reduce((acc, curr) => acc + parseInt(curr.score), 0);
+        const total = db.reduce((acc, curr) => acc + parseInt(curr.scoreSavoir), 0);
         document.getElementById('sn').innerText = n;
-        document.getElementById('sc').innerText = ((totalScore / (n * 6)) * 100).toFixed(1) + "%";
+        document.getElementById('sc').innerText = ((total / (n * 6)) * 100).toFixed(1) + "%";
     }
 
     function exportExcel() {
         if(db.length === 0) return alert("Base vide.");
-        let csv = "ID,Date,Service,Age,NiveauEtude,ScoreConnaissance,NiveauLabel,PratiqueClinique,Obstacles\n";
+        let csv = "ID,Service,Etude,Exp,ScoreSavoir,Attitude1,Pratique1,Barriere\n";
         db.forEach(d => {
-            csv += `${d.id},${d.date},${d.service},${d.age},${d.niveau},${d.score},${d.niveau},${d.p3},${d.obs}\n`;
+            csv += `${d.id},${d.service},${d.etude},${d.exp},${d.scoreSavoir},${d.att1},${d.p1},${d.bar}\n`;
         });
         const blob = new Blob([csv], { type: 'text/csv' });
         const a = document.createElement('a');
         a.href = window.URL.createObjectURL(blob);
-        a.download = 'CAP_HGRM_Makala_Export.csv';
+        a.download = 'CAP_CancerSein_RDC.csv';
         a.click();
     }
 </script>
