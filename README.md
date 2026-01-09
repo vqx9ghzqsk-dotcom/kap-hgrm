@@ -1,153 +1,182 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Expert CAP - HGRM Makala (Version Finale)</title>
-    <style>
-        :root { --primary: #be185d; --secondary: #1e293b; --bg: #f8fafc; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 10px; }
-        .container { max-width: 1100px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
-        
-        /* Menu */
-        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #eee; margin-bottom: 20px; padding-bottom: 10px; position: sticky; top: 0; background: white; z-index: 100; }
-        .btn { padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .btn-tab { background: #e2e8f0; margin-right: 5px; }
-        .btn-tab.active { background: var(--primary); color: white; }
-        .btn-export { background: #059669; color: white; }
+<meta charset="UTF-8">
+<title>Enquête CAP – Personnel infirmier</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .page { display: none; }
-        .page.active { display: block; }
-
-        /* Formulaire */
-        h2 { color: var(--primary); font-size: 1em; border-left: 5px solid var(--primary); padding: 8px; margin-top: 25px; background: #fff1f2; text-transform: uppercase; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
-        .box { border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; background: #fff; }
-        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.85em; color: #334155; }
-        select, input { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; }
-
-        /* Tableau Likert */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85em; }
-        th, td { border: 1px solid #e2e8f0; padding: 8px; text-align: center; }
-        .text-left { text-align: left; background: #f8fafc; font-weight: 500; }
-
-        .save-bar { background: var(--primary); color: white; width: 100%; margin-top: 30px; padding: 15px; border: none; border-radius: 8px; font-size: 1.1em; cursor: pointer; font-weight: bold; }
-    </style>
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f1f5f9;
+    margin:0;
+    padding:15px;
+}
+h2{
+    background:#8b1d1d;
+    color:#fff;
+    padding:10px;
+}
+section{
+    background:#fff;
+    padding:15px;
+    margin-bottom:20px;
+    border-radius:6px;
+}
+label{display:block;margin-top:10px;font-weight:bold;}
+input, select{
+    width:100%;
+    padding:8px;
+    margin-top:5px;
+}
+button{
+    margin-top:15px;
+    padding:10px;
+    width:100%;
+    background:#8b1d1d;
+    color:white;
+    border:none;
+    font-size:16px;
+}
+.hidden{display:none}
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+th,td{
+    border:1px solid #ccc;
+    padding:5px;
+    text-align:center;
+}
+</style>
 </head>
+
 <body>
 
-<div class="container">
-    <div class="header">
-        <div>
-            <button class="btn btn-tab active" onclick="nav('saisie')">NOUVELLE FICHE</button>
-            <button class="btn btn-tab" onclick="nav('view')">BASE DE DONNÉES</button>
-        </div>
-        <button class="btn btn-export" onclick="exportExcel()">EXPORTER VERS EXCEL</button>
-    </div>
+<h1>ENQUÊTE CAP – PERSONNEL INFIRMIER</h1>
 
-    <div id="saisie" class="page active">
-        <form id="capForm">
-            <h2>I. Profil de l'Infirmier(ère)</h2>
-            <div class="grid">
-                <div class="box"><label>ID / Code *</label><input type="text" name="id" required></div>
-                <div class="box"><label>Service (ex: Chirurgie)</label><input type="text" name="service"></div>
-                <div class="box"><label>Niveau d'études</label><select name="etude"><option>A2</option><option>A1</option><option>A0</option><option>Master</option></select></div>
-                <div class="box"><label>Expérience (Années)</label><input type="number" name="exp"></div>
-            </div>
+<!-- 1. COLLECTE -->
+<section>
+<h2>1. COLLECTE</h2>
 
-            <h2>II. Connaissances (Vrai/Faux/NSP)</h2>
-            <div class="grid">
-                <div class="box"><label>Le risque augmente avec l'âge ?</label><select name="c1"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select></div>
-                <div class="box"><label>La nulliparité est un risque ?</label><select name="c2"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select></div>
-                <div class="box"><label>L'allaitement est protecteur ?</label><select name="c3"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select></div>
-                <div class="box"><label>L'examen clinique doit inclure l'aisselle ?</label><select name="c4"><option value="0">---</option><option value="1">Vrai</option><option value="0">Faux</option></select></div>
-            </div>
+<label>Âge</label>
+<input type="number" id="age">
 
-            <h2>III. Attitudes (Échelle de 1 à 5)</h2>
-            <table>
-                <thead><tr><th class="text-left">Énoncés</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
-                <tbody>
-                    <tr><td class="text-left">Le cancer est une fatalité en RDC.</td><td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5"></td></tr>
-                    <tr><td class="text-left">Je me sens capable de dépister une masse.</td><td><input type="radio" name="att2" value="1"></td><td><input type="radio" name="att2" value="2"></td><td><input type="radio" name="att2" value="3"></td><td><input type="radio" name="att2" value="4"></td><td><input type="radio" name="att2" value="5"></td></tr>
-                </tbody>
-            </table>
+<label>Sexe</label>
+<select id="sexe">
+<option value="">-- Choisir --</option>
+<option>Femme</option>
+</select>
 
-            <h2>IV. Pratiques Professionnelles</h2>
-            <div class="grid">
-                <div class="box"><label>Palpation systématique ?</label><select name="p1"><option>Toujours</option><option>Si plainte</option><option>Jamais</option></select></div>
-                <div class="box"><label>Démonstration de l'AES ?</label><select name="p2"><option>Oui</option><option>Non</option></select></div>
-                <div class="box"><label>Référence mammographie ?</label><select name="p3"><option>Souvent</option><option>Rarement</option></select></div>
-            </div>
+<label>Ancienneté (années)</label>
+<input type="number" id="anciennete">
 
-            <button type="button" class="save-bar" onclick="enregistrer()">ENREGISTRER LA FICHE</button>
-        </form>
-    </div>
+<label>Service</label>
+<input type="text" id="service">
+</section>
 
-    <div id="view" class="page">
-        <h2>Données collectées (Total: <span id="compteur">0</span>)</h2>
-        <div style="overflow-x:auto;">
-            <table id="tableMain">
-                <thead><tr style="background:#f1f5f9;"><th>ID</th><th>Service</th><th>Score</th><th>Niveau</th><th>Action</th></tr></thead>
-                <tbody></tbody>
-            </table>
-        </div>
-    </div>
-</div>
+<!-- 2. BASE DE DONNÉES -->
+<section>
+<h2>2. BASE DE DONNÉES</h2>
+
+<label>Connaît le cancer du sein ?</label>
+<select id="connaissance">
+<option value="">--</option>
+<option value="1">Oui</option>
+<option value="0">Non</option>
+</select>
+
+<label>Pratique l’auto-examen mammaire ?</label>
+<select id="pratique">
+<option value="">--</option>
+<option value="1">Oui</option>
+<option value="0">Non</option>
+</select>
+
+<label>A déjà conseillé le dépistage ?</label>
+<select id="attitude">
+<option value="">--</option>
+<option value="1">Oui</option>
+<option value="0">Non</option>
+</select>
+
+<button onclick="sauvegarder()">Sauvegarder les données</button>
+</section>
+
+<!-- 3. ANALYSE CAP -->
+<section class="hidden" id="analyse">
+<h2>3. ANALYSE CAP</h2>
+
+<p><strong>Score Connaissance :</strong> <span id="scoreC"></span></p>
+<p><strong>Score Attitude :</strong> <span id="scoreA"></span></p>
+<p><strong>Score Pratique :</strong> <span id="scoreP"></span></p>
+
+<h3>Base de données</h3>
+<table id="table">
+<tr>
+<th>Âge</th><th>Sexe</th><th>Ancienneté</th><th>Service</th>
+<th>C</th><th>A</th><th>P</th>
+</tr>
+</table>
+
+<button onclick="exportCSV()">Exporter la base (CSV)</button>
+</section>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('makala_db_expert')) || [];
+let base = JSON.parse(localStorage.getItem("baseCAP")) || [];
 
-    function nav(p) {
-        document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
-        document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
-        document.getElementById(p).classList.add('active');
-        event.target.classList.add('active');
-        if(p === 'view') rafraichir();
-    }
+function sauvegarder(){
+    let data = {
+        age: age.value,
+        sexe: sexe.value,
+        anciennete: anciennete.value,
+        service: service.value,
+        C: connaissance.value,
+        A: attitude.value,
+        P: pratique.value
+    };
+    base.push(data);
+    localStorage.setItem("baseCAP", JSON.stringify(base));
+    afficher();
+}
 
-    function enregistrer() {
-        const f = document.getElementById('capForm');
-        const d = Object.fromEntries(new FormData(f).entries());
-        
-        let score = (parseInt(d.c1)||0) + (parseInt(d.c2)||0) + (parseInt(d.c3)||0) + (parseInt(d.c4)||0);
-        d.score = score;
-        d.niveau = score >= 3 ? 'Bon' : (score == 2 ? 'Moyen' : 'Faible');
+function afficher(){
+    document.getElementById("analyse").classList.remove("hidden");
+    table.innerHTML = `<tr>
+    <th>Âge</th><th>Sexe</th><th>Ancienneté</th><th>Service</th>
+    <th>C</th><th>A</th><th>P</th></tr>`;
 
-        db.push(d);
-        localStorage.setItem('makala_db_expert', JSON.stringify(db));
-        alert("Fiche " + d.id + " enregistrée avec succès !");
-        f.reset();
-    }
+    let sc=0, sa=0, sp=0;
 
-    function rafraichir() {
-        document.getElementById('compteur').innerText = db.length;
-        const body = document.querySelector('#tableMain tbody');
-        body.innerHTML = db.map((d, index) => `
-            <tr>
-                <td>${d.id}</td><td>${d.service}</td><td>${d.score}/4</td>
-                <td style="font-weight:bold; color:${d.niveau==='Bon'?'green':'red'}">${d.niveau}</td>
-                <td><button onclick="supprimer(${index})" style="color:red; border:none; background:none; cursor:pointer;">Supprimer</button></td>
-            </tr>
-        `).join('');
-    }
+    base.forEach(d=>{
+        sc+=Number(d.C);
+        sa+=Number(d.A);
+        sp+=Number(d.P);
 
-    function supprimer(i) {
-        if(confirm("Supprimer cette fiche ?")) {
-            db.splice(i, 1);
-            localStorage.setItem('makala_db_expert', JSON.stringify(db));
-            rafraichir();
-        }
-    }
+        table.innerHTML += `<tr>
+        <td>${d.age}</td><td>${d.sexe}</td><td>${d.anciennete}</td><td>${d.service}</td>
+        <td>${d.C}</td><td>${d.A}</td><td>${d.P}</td>
+        </tr>`;
+    });
 
-    function exportExcel() {
-        if(db.length === 0) return alert("Base vide !");
-        let csv = "ID,Service,Etude,Exp,Score,Niveau,Pratique,DemontreAES\n";
-        db.forEach(d => { csv += `${d.id},${d.service},${d.etude},${d.exp},${d.score},${d.niveau},${d.p1},${d.p2}\n`; });
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = 'Resultats_CAP_Makala.csv'; a.click();
-    }
+    scoreC.textContent = sc;
+    scoreA.textContent = sa;
+    scoreP.textContent = sp;
+}
+
+function exportCSV(){
+    let csv="Age,Sexe,Anciennete,Service,Connaissance,Attitude,Pratique\n";
+    base.forEach(d=>{
+        csv+=`${d.age},${d.sexe},${d.anciennete},${d.service},${d.C},${d.A},${d.P}\n`;
+    });
+    let a=document.createElement("a");
+    a.href="data:text/csv;charset=utf-8,"+encodeURI(csv);
+    a.download="base_CAP.csv";
+    a.click();
+}
+
+if(base.length>0) afficher();
 </script>
+
 </body>
 </html>
-
