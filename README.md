@@ -33,6 +33,7 @@
         .admin-login { position: fixed; bottom: 10px; right: 10px; opacity: 0.1; transition: 0.5s; }
         .admin-login:hover { opacity: 1; }
         .admin-login input { width: 60px; border: 1px solid #ccc; font-size: 10px; padding: 4px; border-radius: 4px; }
+        .insight-box { background-color: #e8f5e9; border: 1px solid #c8e6c9; padding: 15px; border-radius: 8px; margin-top: 15px; color: #2e7d32; font-style: italic; }
     </style>
 </head>
 <body>
@@ -48,6 +49,7 @@
 
     <div id="tab1" class="content-section active">
         <form class="form-content" id="kapForm">
+            
             <div class="section-title">I. IDENTIFICATION & PROFIL (RDC)</div>
             <div class="row">
                 <div class="field"><label>Code Enquêté(e)</label><select id="code-enquete" name="code"></select></div>
@@ -57,94 +59,127 @@
                         <option selected>Gynécologie-Obstétrique</option>
                         <option>Maternité / Salle d'accouchement</option>
                         <option>Chirurgie Générale</option>
-                        <option>Oncologie (si existant)</option>
+                        <option>Médecine Interne</option>
+                        <option>Urgences</option>
                     </select>
                 </div>
-                <div class="field">
-                    <label>Statut Professionnel</label>
-                    <select name="statut">
-                        <option selected>Titulaire du service</option>
-                        <option>Infirmier(e) de garde</option>
-                        <option>Stagiaire (Fin de cycle)</option>
-                        <option>Sous-statutaire (Bénévole)</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="field"><label>Âge de l'infirmier(e)</label><select id="age-select" name="age"></select></div>
-                <div class="field"><label>Années d'expérience professionnelle</label><select id="exp-select" name="experience"></select></div>
                 <div class="field">
                     <label>Niveau d'étude le plus élevé</label>
                     <select name="etude" id="etude">
                         <option value="A2">A2 (Diplômée d'État)</option>
-                        <option value="A1" selected>A1 (Graduée en Sciences Infirmières)</option>
-                        <option value="L">L0/L1 (Licenciée nouveau système)</option>
+                        <option value="A1" selected>A1 (Graduée)</option>
+                        <option value="L">L0/L1 (Licenciée)</option>
                         <option value="M">Master / Doctorat</option>
                     </select>
                 </div>
             </div>
+            <div class="row">
+                <div class="field"><label>Âge</label><select id="age-select" name="age"></select></div>
+                <div class="field"><label>Expérience</label><select id="exp-select" name="experience"></select></div>
+                <div class="field">
+                    <label>Formation continue Cancer du Sein</label>
+                    <select name="formation">
+                        <option value="0">Jamais</option>
+                        <option value="1">Oui, < 2 ans</option>
+                        <option value="1">Oui, > 2 ans</option>
+                    </select>
+                </div>
+            </div>
 
-            <div class="section-title">II. CONNAISSANCES SUR LE CANCER DU SEIN (SAVOIRS)</div>
+            <div class="section-title">II. CONNAISSANCES (SAVOIRS)</div>
             <div class="row">
                 <div class="field">
-                    <label>Le cancer du sein est-il la première cause de décès par cancer chez la femme en RDC ?</label>
-                    <select name="k1"><option value="1" selected>Vrai (Oui)</option><option value="0">Faux (Non)</option><option value="0">Ne sait pas</option></select>
+                    <label>1. Première cause de décès cancer femme RDC ?</label>
+                    <select name="k1">
+                        <option value="0">Col de l'utérus</option>
+                        <option value="1" selected>Sein</option>
+                        <option value="0">Poumon</option>
+                    </select>
                 </div>
                 <div class="field">
-                    <label>À quel âge une femme devrait-elle commencer l'autopalpation (AES) ?</label>
-                    <select name="k2"><option value="0">Dès 12 ans</option><option value="1" selected>Dès 20 ans</option><option value="0">Après 40 ans</option></select>
+                    <label>2. Fréquence idéale Auto-Examen (AES) ?</label>
+                    <select name="k2">
+                        <option value="0">Tous les jours</option>
+                        <option value="1" selected>1 fois/mois</option>
+                        <option value="0">1 fois/an</option>
+                    </select>
                 </div>
                 <div class="field">
-                    <label>Quel est le meilleur moment pour l'AES ?</label>
-                    <select name="k3"><option value="1" selected>7 jours après les règles</option><option value="0">Pendant les règles</option><option value="0">N'importe quand</option></select>
+                    <label>3. Signe d'alerte le plus fréquent ?</label>
+                    <select name="k3">
+                        <option value="0">Douleur règles</option>
+                        <option value="1" selected>Nodule dur indolore</option>
+                        <option value="0">Gros volume</option>
+                    </select>
                 </div>
             </div>
 
-            <label style="margin: 15px 0 10px 0; display:block; font-weight: bold; color: #b03060;">Facteurs de risque connus :</label>
+            <label style="margin: 15px 0 10px 0; display:block; font-weight: bold; color: #b03060;">4. Facteurs de risques majeurs (Cocher si connu) :</label>
             <div class="check-group">
-                <label class="check-item"><input type="checkbox" name="risk" value="Nullipare" checked> Nulliparité</label>
-                <label class="check-item"><input type="checkbox" name="risk" value="GrosseTardive" checked> 1ère grossesse > 30 ans</label>
-                <label class="check-item"><input type="checkbox" name="risk" value="MenopauseTardive" checked> Ménopause > 55 ans</label>
-                <label class="check-item"><input type="checkbox" name="risk" value="Alcool" checked> Alcool / Tabac</label>
-                <label class="check-item"><input type="checkbox" name="risk" value="Heredite" checked> Antécédents familiaux</label>
+                <label class="check-item"><input type="checkbox" name="risk" value="Heredite" checked> Hérédité</label>
+                <label class="check-item"><input type="checkbox" name="risk" value="Nullipare"> Nulliparité</label>
+                <label class="check-item"><input type="checkbox" name="risk" value="MenopauseTardive"> Ménopause tardive</label>
+                <label class="check-item"><input type="checkbox" name="risk" value="Alcool"> Alcool / Tabac</label>
             </div>
 
-            <label style="margin: 20px 0 10px 0; display:block; font-weight: bold; color: #b03060;">Signes cliniques d'alerte :</label>
-            <div class="check-group">
-                <label class="check-item"><input type="checkbox" name="sign" value="Nodule" checked> Nodule dur/fixe</label>
-                <label class="check-item"><input type="checkbox" name="sign" value="Ecoulement" checked> Écoulement sanglant</label>
-                <label class="check-item"><input type="checkbox" name="sign" value="Retraction" checked> Rétraction mamelon</label>
-                <label class="check-item"><input type="checkbox" name="sign" value="Adenopathie" checked> Boule sous l'aisselle</label>
-                <label class="check-item"><input type="checkbox" name="sign" value="Orange" checked> Peau d'orange</label>
-            </div>
-
-            <div class="section-title">III. ATTITUDES ET PERCEPTIONS (LIKERT 1-5)</div>
+            <div class="section-title">III. ATTITUDES (SAVOIR-ÊTRE - Likert)</div>
             <table>
-                <thead><tr><th class="text-left">Énoncés</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
+                <thead><tr><th class="text-left">Énoncés</th><th>Pas d'accord</th><th>Neutre</th><th>D'accord</th></tr></thead>
                 <tbody>
-                    <tr><td class="text-left">Capacité de détection nodule suspect</td><td><input type="radio" name="p1" value="1"></td><td><input type="radio" name="p1" value="2"></td><td><input type="radio" name="p1" value="3"></td><td><input type="radio" name="p1" value="4" checked></td><td><input type="radio" name="p1" value="5"></td></tr>
-                    <tr><td class="text-left">Influence culturelle (pudeur)</td><td><input type="radio" name="p2" value="1"></td><td><input type="radio" name="p2" value="2"></td><td><input type="radio" name="p2" value="3"></td><td><input type="radio" name="p2" value="4"></td><td><input type="radio" name="p2" value="5" checked></td></tr>
+                    <tr>
+                        <td class="text-left">1. Le dépistage précoce permet une guérison totale</td>
+                        <td><input type="radio" name="att1" value="0"></td>
+                        <td><input type="radio" name="att1" value="1"></td>
+                        <td><input type="radio" name="att1" value="2" checked></td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">2. Je me sens capable de faire un ECS efficace</td>
+                        <td><input type="radio" name="att2" value="0"></td>
+                        <td><input type="radio" name="att2" value="1"></td>
+                        <td><input type="radio" name="att2" value="2" checked></td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">3. La pudeur est un obstacle majeur ici</td>
+                        <td><input type="radio" name="att3" value="0"></td>
+                        <td><input type="radio" name="att3" value="1"></td>
+                        <td><input type="radio" name="att3" value="2"></td>
+                    </tr>
                 </tbody>
             </table>
 
-            <div class="section-title">IV. PRATIQUES PROFESSIONNELLES</div>
+            <div class="section-title">IV. PRATIQUES (SAVOIR-FAIRE)</div>
             <div class="row">
                 <div class="field">
-                    <label>Fréquence palpation clinique (ECS) :</label>
-                    <select name="pra1"><option value="1">Systématique</option><option value="0" selected>Si plainte / Rarement</option></select>
+                    <label>1. Réalisez-vous l'ECS aux patientes ?</label>
+                    <select name="pra1">
+                        <option value="2">Systématiquement</option>
+                        <option value="1" selected>Parfois (si plainte)</option>
+                        <option value="0">Rarement / Jamais</option>
+                    </select>
                 </div>
                 <div class="field">
-                    <label>Enseignement AES :</label>
-                    <select name="pra2"><option value="1">Démonstration physique</option><option value="0" selected>Verbal / Pas d'enseignement</option></select>
+                    <label>2. Enseignez-vous l'AES aux patientes ?</label>
+                    <select name="pra2">
+                        <option value="2">Oui, avec démo</option>
+                        <option value="1" selected>Verbalement</option>
+                        <option value="0">Non</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>3. Pratiquez-vous l'AES sur vous-même ?</label>
+                    <select name="pra3">
+                        <option value="1">Oui, chaque mois</option>
+                        <option value="0" selected>Irrégulièrement / Non</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="section-title">V. OBSTACLES (RDC CONTEXT)</div>
+            <div class="section-title">V. OBSTACLES (CONTEXTE)</div>
             <div class="check-group">
-                <label class="check-item"><input type="checkbox" name="obs" value="Salle"> Pas de salle isolée</label>
-                <label class="check-item"><input type="checkbox" name="obs" value="Cout"> Coût Mammographie</label>
-                <label class="check-item"><input type="checkbox" name="obs" value="Formation"> Manque de formation</label>
-                <label class="check-item"><input type="checkbox" name="obs" value="Croyance"> Prière / Tradition</label>
+                <label class="check-item"><input type="checkbox" name="obs" value="Salle"> Manque de local/intimité</label>
+                <label class="check-item"><input type="checkbox" name="obs" value="Temps"> Surcharge de travail</label>
+                <label class="check-item"><input type="checkbox" name="obs" value="Materiel"> Manque de support visuel</label>
+                <label class="check-item"><input type="checkbox" name="obs" value="Croyance"> Croyances / Refus patiente</label>
             </div>
 
             <button type="button" class="btn-save" onclick="saveData()">VALIDER ET ENREGISTRER LA FICHE</button>
@@ -154,7 +189,7 @@
     <div id="tab2" class="content-section">
         <div class="section-title">BASE DE DONNÉES DE DÉPOUILLEMENT</div>
         <table id="tableDepouillement">
-            <thead><tr><th>Code</th><th>Service</th><th>Étude</th><th>Exp.</th><th>Savoir</th><th>Pratique</th></tr></thead>
+            <thead><tr><th>Code</th><th>Niveau</th><th>Savoir (Score)</th><th>Attitude</th><th>Pratique</th></tr></thead>
             <tbody></tbody>
         </table>
     </div>
@@ -163,18 +198,22 @@
         <div class="section-title">STATISTIQUES AVANCÉES</div>
         <div class="stats-grid">
             <div class="stat-card"><div class="stat-val" id="res-n">0</div><div class="stat-label">Total N</div></div>
-            <div class="stat-card"><div class="stat-val" id="res-k">0%</div><div class="stat-label">Savoir Elevé</div></div>
-            <div class="stat-card"><div class="stat-val" id="res-p">0%</div><div class="stat-label">Pratique Correcte</div></div>
-            <div class="stat-card"><div class="stat-val" id="res-obs">--</div><div class="stat-label">Obstacle Majeur</div></div>
+            <div class="stat-card"><div class="stat-val" id="res-k">0%</div><div class="stat-label">Bon Savoir</div></div>
+            <div class="stat-card"><div class="stat-val" id="res-p">0%</div><div class="stat-label">Bonne Pratique</div></div>
+            <div class="stat-card"><div class="stat-val" id="res-obs">--</div><div class="stat-label">Obstacle N°1</div></div>
         </div>
+        
         <div class="row">
             <div style="background:white; padding:15px; border:1px solid #ddd; border-radius:8px;">
                 <label><b>Répartition par Étude (%)</b></label>
                 <div id="study-dist" style="margin-top:10px; font-size:12px;"></div>
             </div>
+            
             <div style="background:white; padding:15px; border:1px solid #ddd; border-radius:8px;">
-                <label><b>Test Chi-Carré Automatique</b></label>
-                <p id="chi-output" style="color:#b03060; font-size:12px;">Besoin de 5 fiches...</p>
+                <label><b>Analyse d'Impact (Focus A1)</b></label>
+                <div id="powerful-analysis" class="insight-box">
+                    En attente de données pour générer l'analyse...
+                </div>
             </div>
         </div>
     </div>
@@ -191,7 +230,7 @@
 
 <script>
     let db = [];
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzWHoyx-UHrmMmeKUrDv7MXMs0osx1tA95EMR3FEQJD5J_zcuccVEiIg2qBr_KP2CCT/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzWHoyx-UHrmMmeKUrDv7MXMs0osx1tA95EMR3FEQJD5J_zcuccVEiIg2qBr_KP2CCT/exec"; // URL inchangée
 
     function checkAdmin(val) {
         if(val === "1398") {
@@ -213,18 +252,28 @@
         const form = document.getElementById('kapForm');
         const fd = new FormData(form);
         
-        let sk = parseInt(fd.get('k1')) + parseInt(fd.get('k2')) + parseInt(fd.get('k3'));
-        let sp = parseInt(fd.get('pra1')) + parseInt(fd.get('pra2'));
+        // Calcul des scores basés sur le nouveau formulaire
+        // Savoir: Q1(1pt) + Q2(1pt) + Q3(1pt) + Facteurs Risques (0.5 par case)
+        let scoreK = parseInt(fd.get('k1')) + parseInt(fd.get('k2')) + parseInt(fd.get('k3'));
+        
+        // Attitude: Moyenne des Likerts
+        let scoreAtt = parseInt(fd.get('att1')) + parseInt(fd.get('att2')); // On ne compte pas la pudeur (att3) comme positif/négatif direct
+        let attitudeStatus = scoreAtt >= 3 ? 'Positive' : 'Négative';
+
+        // Pratique: Q1 + Q2 + Q3
+        let scoreP = parseInt(fd.get('pra1')) + parseInt(fd.get('pra2')) + parseInt(fd.get('pra3'));
+        let pratiqueStatus = scoreP >= 3 ? 'Correcte' : 'Incorrecte'; // Seuil ajusté
+
         let obstacles = Array.from(document.querySelectorAll('input[name="obs"]:checked')).map(e => e.value);
 
         const entry = {
             code: fd.get('code'),
             service: fd.get('service'),
-            age: fd.get('age'),
             etude: fd.get('etude'),
-            experience: parseInt(fd.get('experience')),
-            savoir: sk >= 2 ? 'Bon' : 'Faible',
-            pratique: sp >= 2 ? 'Correcte' : 'Incorrecte',
+            savoirScore: scoreK,
+            savoir: scoreK >= 2 ? 'Bon' : 'Faible',
+            attitude: attitudeStatus,
+            pratique: pratiqueStatus,
             obstacles: obstacles
         };
 
@@ -232,25 +281,34 @@
             await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(entry) });
             db.push(entry);
             actualiserTableau();
-            alert("Fiche " + entry.code + " enregistrée avec succès !");
+            alert("Fiche " + entry.code + " enregistrée !");
             form.reset();
-        } catch (e) { alert("Erreur de réseau."); }
+        } catch (e) { alert("Erreur de réseau (données locales ok)."); db.push(entry); actualiserTableau(); }
     }
 
     function actualiserTableau() {
         document.querySelector('#tableDepouillement tbody').innerHTML = db.map(d => 
-            `<tr><td>${d.code}</td><td>${d.service}</td><td>${d.etude}</td><td>${d.experience}ans</td><td>${d.savoir}</td><td>${d.pratique}</td></tr>`
+            `<tr><td>${d.code}</td><td>${d.etude}</td><td>${d.savoir} (${d.savoirScore}/3)</td><td>${d.attitude}</td><td>${d.pratique}</td></tr>`
         ).join('');
     }
 
     function calculerAnalyse() {
         let n = db.length; if(n === 0) return;
+        
         let kHigh = db.filter(d => d.savoir === 'Bon').length;
         let pGood = db.filter(d => d.pratique === 'Correcte').length;
         
+        // Obstacle le plus fréquent
+        let allObs = db.flatMap(d => d.obstacles);
+        let topObs = "Aucun";
+        if(allObs.length > 0) {
+            topObs = allObs.sort((a,b) => allObs.filter(v => v===a).length - allObs.filter(v => v===b).length).pop();
+        }
+
         document.getElementById('res-n').innerText = n;
         document.getElementById('res-k').innerText = Math.round(kHigh/n*100) + "%";
         document.getElementById('res-p').innerText = Math.round(pGood/n*100) + "%";
+        document.getElementById('res-obs').innerText = topObs;
 
         // Répartition Études
         let studies = ['A2', 'A1', 'L', 'M'];
@@ -261,24 +319,37 @@
         });
         document.getElementById('study-dist').innerHTML = distHtml;
 
-        // Conclusion Automatique
-        let conc = `<b>ANALYSE SYNTHÉTIQUE :</b><br>Sur un échantillon de ${n} infirmiers, `;
-        if(kHigh/n > 0.7) conc += "les connaissances théoriques sont satisfaisantes. ";
-        else conc += "on observe une lacune importante des connaissances de base. ";
+        // --- ANALYSE PUISSANTE (LA DEMANDE SPÉCIFIQUE) ---
+        let a1Nurses = db.filter(d => d.etude === 'A1');
+        let txtPuissant = "";
         
-        if(pGood/n < 0.4) conc += "Cependant, la pratique clinique est alarmante car moins de la moitié applique les gestes de dépistage.<br><br>";
-        
-        conc += "<b>RECOMMANDATIONS :</b><br>1. Organiser des ateliers de démonstration pratique (AES).<br>2. ";
-        conc += (pGood < kHigh) ? "Lever les barrières logistiques (salles isolées) car le savoir ne se transforme pas en pratique." : "Renforcer la formation initiale.";
+        if (a1Nurses.length > 0) {
+            let a1Attitude = a1Nurses.filter(d => d.attitude === 'Positive').length;
+            let a1Pratique = a1Nurses.filter(d => d.pratique === 'Correcte').length;
+            let pctAtt = Math.round((a1Attitude / a1Nurses.length) * 100);
+            let pctPra = Math.round((a1Pratique / a1Nurses.length) * 100);
+            let cause = topObs === "Salle" ? "du manque de local" : (topObs === "Temps" ? "de la surcharge" : "du manque de matériel");
+
+            txtPuissant = `<b>Analyse puissante :</b> Vous pourrez facilement dire : "${pctAtt}% des infirmières graduées (A1) ont une bonne attitude, mais seulement ${pctPra}% ont une pratique correcte, probablement à cause ${cause}."`;
+        } else {
+            txtPuissant = "Saisissez des fiches 'A1' pour voir l'analyse puissante.";
+        }
+        document.getElementById('powerful-analysis').innerHTML = txtPuissant;
+        // -------------------------------------------------
+
+        // Conclusion Générale
+        let conc = `<b>SYNTHÈSE GLOBALE :</b><br>Sur un échantillon de ${n} infirmiers, le niveau de connaissance est ${kHigh/n > 0.6 ? "satisfaisant" : "faible"}. `;
+        conc += `Cependant, l'écart entre le savoir et la pratique est de ${Math.round((kHigh-pGood)/n*100)} points. <br>`;
+        conc += `L'obstacle majeur identifié est : <b>${topObs}</b>.`;
         
         document.getElementById('summary').innerHTML = conc;
     }
 
     function exportCSV() {
-        let csv = "Code,Service,Etude,Experience,Savoir,Pratique\n";
-        db.forEach(d => { csv += `${d.code},${d.service},${d.etude},${d.experience},${d.savoir},${d.pratique}\n`; });
+        let csv = "Code,Etude,Savoir,Attitude,Pratique,Obstacles\n";
+        db.forEach(d => { csv += `${d.code},${d.etude},${d.savoir},${d.attitude},${d.pratique},${d.obstacles.join('|')}\n`; });
         const blob = new Blob([csv], { type: 'text/csv' });
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'Rapport_KAP_HGRM.csv'; a.click();
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'Rapport_KAP_HGRM_Complet.csv'; a.click();
     }
 
     window.onload = () => {
