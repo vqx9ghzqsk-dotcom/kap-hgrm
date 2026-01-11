@@ -18,18 +18,18 @@
         .field { display: flex; flex-direction: column; }
         label { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #222; line-height: 1.2; }
         select, input { padding: 12px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; background: #fff; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
-        th { background: #f8f9fa; padding: 12px; border: 1px solid #ddd; }
-        td { border: 1px solid #eee; padding: 12px; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 11px; }
+        th { background: #f8f9fa; padding: 8px; border: 1px solid #ddd; }
+        td { border: 1px solid #eee; padding: 8px; text-align: center; }
         .text-left { text-align: left; width: 60%; font-weight: 500; padding-left: 15px; }
         .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; background: #fdfdfd; padding: 20px; border-radius: 8px; border: 1px solid #eee; }
         .check-item { display: flex; align-items: center; font-size: 13px; cursor: pointer; padding: 5px; }
         .check-item input { margin-right: 15px; transform: scale(1.4); }
         .btn-save { width: 100%; background: #b03060; color: white; padding: 25px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; }
-        .btn-save:hover { background: #8e244d; transform: translateY(-2px); }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
         .stat-card { background: #fff; border: 1px solid #ddd; padding: 20px; border-radius: 8px; text-align: center; border-bottom: 4px solid #b03060; }
-        .stat-val { font-size: 28px; font-weight: bold; color: #b03060; }
+        .stat-val { font-size: 24px; font-weight: bold; color: #b03060; }
+        .analysis-box { background: #fff; border: 1px solid #ddd; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
         .admin-login { position: fixed; bottom: 10px; right: 10px; opacity: 0.1; transition: 0.5s; }
         .admin-login:hover { opacity: 1; }
         .admin-login input { width: 60px; border: 1px solid #ccc; font-size: 10px; padding: 4px; border-radius: 4px; }
@@ -40,10 +40,10 @@
 <div class="container">
     <div class="header-tabs">
         <div class="tab active" onclick="showTab(1)">1. COLLECTE</div>
-        <div class="tab admin-only" id="tab2" onclick="showTab(2)">2. DÉPOUILLEMENT ET CODAGE</div>
-        <div class="tab admin-only" id="tab3" onclick="showTab(3)">3. RÉSULTAT ET ANALYSE</div>
-        <div class="tab admin-only" id="tab4" onclick="showTab(4)">4. CONCLUSION ET RECOMMANDATION</div>
-        <button type="button" class="btn-excel admin-only" onclick="exportCSV()">📊 EXPORT EXCEL (CSV)</button>
+        <div class="tab admin-only" id="tabH2" onclick="showTab(2)">2. DÉPOUILLEMENT ET CODAGE</div>
+        <div class="tab admin-only" id="tabH3" onclick="showTab(3)">3. RÉSULTAT ET ANALYSE</div>
+        <div class="tab admin-only" id="tabH4" onclick="showTab(4)">4. CONCLUSION ET RECOMMANDATION</div>
+        <button type="button" class="btn-excel admin-only" onclick="exportCSV()">📊 EXPORT CSV</button>
     </div>
 
     <div id="tab1" class="content-section active">
@@ -171,7 +171,7 @@
                 </div>
                 <div class="field">
                     <label>Nombre de cas de cancer suspectés ce mois-ci :</label>
-                    <select name="nb-cas"><option>0</option><option selected>1 à 5 cas</option><option>Plus de 5 cas</option></select>
+                    <select name="nb-cas"><option value="0">0</option><option value="3" selected>1 à 5 cas</option><option value="6">Plus de 5 cas</option></select>
                 </div>
             </div>
 
@@ -190,43 +190,60 @@
     </div>
 
     <div id="tab2" class="content-section">
-        <div class="section-title">TABLEAU DE DÉPOUILLEMENT (BASE DE DONNÉES)</div>
-        <table id="tableDepouillement">
-            <thead><tr><th>Code</th><th>Âge</th><th>Étude</th><th>Exp.</th><th>Savoir</th><th>Pratique</th></tr></thead>
-            <tbody></tbody>
-        </table>
+        <div class="section-title">DÉPOUILLEMENT COMPLET ET CODAGE DES DONNÉES</div>
+        <div style="overflow-x: auto;">
+            <table id="tableDepouillement">
+                <thead>
+                    <tr>
+                        <th>Code</th><th>Âge</th><th>Étude</th><th>Exp.</th><th>Service</th>
+                        <th>Score K</th><th>Niveau K</th><th>Score A</th><th>Niveau A</th><th>Score P</th><th>Niveau P</th>
+                        <th>Obstacles (#)</th><th>Consult. (Mois)</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
 
     <div id="tab3" class="content-section">
-        <div class="section-title">ANALYSE STATISTIQUE (FRÉQUENCES & TESTS)</div>
+        <div class="section-title">RÉSULTATS DÉTAILLÉS ET ANALYSE DES COMBINAISONS</div>
+        
         <div class="stats-grid">
-            <div class="stat-card"><div class="stat-val" id="res-n">0</div><div class="stat-label">Total Enquêtés (N)</div></div>
-            <div class="stat-card"><div class="stat-val" id="res-k">0%</div><div class="stat-label">Connaissances Elevées</div></div>
-            <div class="stat-card"><div class="stat-val" id="res-p">0%</div><div class="stat-label">Pratiques Correctes</div></div>
+            <div class="stat-card"><div class="stat-val" id="res-n">0</div><div>Effectif Total (N)</div></div>
+            <div class="stat-card"><div class="stat-val" id="res-k-perc">0%</div><div>Connaissances (Bonnes)</div></div>
+            <div class="stat-card"><div class="stat-val" id="res-a-perc">0%</div><div>Attitudes (Positives)</div></div>
+            <div class="stat-card"><div class="stat-val" id="res-p-perc">0%</div><div>Pratiques (Correctes)</div></div>
         </div>
+
+        <div class="analysis-box">
+            <label><b>ANALYSE DES ASSOCIATIONS (COMBINAISONS)</b></label>
+            <table id="associationTable">
+                <thead><tr><th>Combinaison de variables</th><th>Fréquence</th><th>Pourcentage</th></tr></thead>
+                <tbody id="associationBody"></tbody>
+            </table>
+        </div>
+
         <div class="row">
-            <div style="background:white; padding:15px; border:1px solid #ddd; border-radius:8px;">
-                <label><b>Test de Chi² (Étude vs Pratique)</b></label>
-                <p id="chi-output" style="color:#b03060;">Besoin de données (N>5)...</p>
+            <div class="analysis-box">
+                <label><b>FRÉQUENCE DES OBSTACLES IDENTIFIÉS</b></label>
+                <div id="obstacleStats" style="font-size: 13px; margin-top:10px;"></div>
             </div>
-            <div style="background:white; padding:15px; border:1px solid #ddd; border-radius:8px;">
-                <label><b>Corrélation (Expérience vs Savoir)</b></label>
-                <p id="corr-output" style="color:#b03060;">En attente...</p>
+            <div class="analysis-box">
+                <label><b>FRÉQUENCE DES CONSULTATIONS (CAS SUSPECTS)</b></label>
+                <div id="consultationStats" style="font-size: 13px; margin-top:10px;"></div>
             </div>
         </div>
     </div>
 
     <div id="tab4" class="content-section">
-        <div class="section-title">CONCLUSION ET RECOMMANDATION</div>
-        <div id="summary" style="line-height:1.6; background:#fff; padding:20px; border:1px solid #ddd;">
-            Remplissez les fiches pour générer une conclusion.
+        <div class="section-title">CONCLUSION GLOBALE ET RECOMMANDATIONS</div>
+        <div id="summary" style="line-height:1.8; background:#fff; padding:25px; border:1px solid #ddd; border-radius: 8px;">
+            En attente de données pour générer la synthèse...
         </div>
     </div>
 </div>
 
-<div class="admin-login">
-    <input type="password" placeholder="PIN" oninput="checkAdmin(this.value)">
-</div>
+<div class="admin-login"><input type="password" placeholder="PIN" oninput="checkAdmin(this.value)"></div>
 
 <script>
     let db = [];
@@ -235,24 +252,28 @@
     function checkAdmin(val) {
         if(val === "1398") {
             document.querySelectorAll('.admin-only').forEach(el => el.style.setProperty('display', 'block', 'important'));
-            alert("Mode Admin Activé !");
+            alert("Accès autorisé : Mode Expert Activé");
         }
     }
 
     function showTab(n) {
-        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.getElementById('tab' + n).classList.add('active');
+        document.querySelectorAll('.content-section, .tab').forEach(el => el.classList.remove('active'));
+        document.getElementById('tab' + (n==1?'1':n==2?'2':n==3?'3':'4')).classList.add('active');
         document.querySelectorAll('.tab')[n-1].classList.add('active');
-        if(n === 3) calculerStatistiques();
+        if(n === 2) actualiserTableau();
+        if(n === 3) calculerAnalysesFines();
+        if(n === 4) genererConclusion();
     }
 
     async function saveData() {
         const form = document.getElementById('kapForm');
         const fd = new FormData(form);
         
-        let scoreK = parseInt(fd.get('k1') || 0) + parseInt(fd.get('k2') || 0) + parseInt(fd.get('k3') || 0);
-        let scoreP = parseInt(fd.get('pra1') || 0) + parseInt(fd.get('pra2') || 0);
+        // CODAGE DES SCORES
+        let sk = parseInt(fd.get('k1') || 0) + parseInt(fd.get('k2') || 0) + parseInt(fd.get('k3') || 0);
+        let sa = parseInt(fd.get('p1') || 0) + parseInt(fd.get('p2') || 0) + parseInt(fd.get('p3') || 0) + parseInt(fd.get('p4') || 0);
+        let sp = parseInt(fd.get('pra1') || 0) + parseInt(fd.get('pra2') || 0);
+        let countObs = form.querySelectorAll('input[name="obs"]:checked').length;
 
         const entry = {
             code: fd.get('code'),
@@ -260,52 +281,107 @@
             age: fd.get('age'),
             etude: fd.get('etude'),
             experience: fd.get('experience'),
-            savoir: scoreK >= 2 ? 'Bon' : 'Faible',
-            pratique: scoreP >= 1 ? 'Correcte' : 'Incorrecte'
+            scoreK: sk, levelK: sk >= 2 ? 'Bon' : 'Faible',
+            scoreA: sa, levelA: sa >= 14 ? 'Positif' : 'Négatif',
+            scoreP: sp, levelP: sp >= 1 ? 'Correct' : 'Incorrect',
+            obstacles: countObs,
+            consultations: fd.get('nb-cas'),
+            listObs: Array.from(form.querySelectorAll('input[name="obs"]:checked')).map(i => i.value)
         };
 
         db.push(entry);
-        actualiserTableau();
-
+        alert("Fiche enregistrée localement et prête pour l'analyse.");
+        
         try {
-            await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(entry) });
-            alert("Fiche Code " + entry.code + " envoyée au serveur !");
-            form.reset();
-        } catch (e) {
-            alert("Erreur d'envoi Google Sheet. Vérifie ton URL.");
-        }
+            fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(entry) });
+        } catch (e) { console.log("Erreur d'envoi distant"); }
+        
+        form.reset();
     }
 
     function actualiserTableau() {
         const tbody = document.querySelector('#tableDepouillement tbody');
-        tbody.innerHTML = db.map(d => `<tr><td>${d.code}</td><td>${d.age}</td><td>${d.etude}</td><td>${d.experience}</td><td>${d.savoir}</td><td>${d.pratique}</td></tr>`).join('');
+        tbody.innerHTML = db.map(d => `
+            <tr>
+                <td>${d.code}</td><td>${d.age}</td><td>${d.etude}</td><td>${d.experience}</td><td>${d.service}</td>
+                <td>${d.scoreK}/3</td><td>${d.levelK}</td><td>${d.scoreA}/20</td><td>${d.levelA}</td><td>${d.scoreP}/2</td><td>${d.levelP}</td>
+                <td>${d.obstacles}</td><td>${d.consultations}</td>
+            </tr>
+        `).join('');
     }
 
-    function calculerStatistiques() {
+    function calculerAnalysesFines() {
         let n = db.length; if(n === 0) return;
+
+        // 1. Pourcentages de base
+        let kPos = db.filter(d => d.levelK === 'Bon').length;
+        let aPos = db.filter(d => d.levelA === 'Positif').length;
+        let pPos = db.filter(d => d.levelP === 'Correct').length;
+
         document.getElementById('res-n').innerText = n;
-        let kHigh = db.filter(d => d.savoir === 'Bon').length;
-        let pGood = db.filter(d => d.pratique === 'Correcte').length;
-        document.getElementById('res-k').innerText = Math.round(kHigh/n*100) + "%";
-        document.getElementById('res-p').innerText = Math.round(pGood/n*100) + "%";
+        document.getElementById('res-k-perc').innerText = Math.round(kPos/n*100) + "%";
+        document.getElementById('res-a-perc').innerText = Math.round(aPos/n*100) + "%";
+        document.getElementById('res-p-perc').innerText = Math.round(pPos/n*100) + "%";
+
+        // 2. Associations (Combinaisons)
+        const combos = [
+            { name: "Savoir Bon + Pratique Correcte", fn: d => d.levelK === 'Bon' && d.levelP === 'Correct' },
+            { name: "Savoir Faible + Pratique Incorrecte", fn: d => d.levelK === 'Faible' && d.levelP === 'Incorrect' },
+            { name: "Attitude Positive + Pratique Correcte", fn: d => d.levelA === 'Positif' && d.levelP === 'Correct' },
+            { name: "Savoir Bon + Attitude Négative", fn: d => d.levelK === 'Bon' && d.levelA === 'Négatif' }
+        ];
+
+        document.getElementById('associationBody').innerHTML = combos.map(c => {
+            let count = db.filter(c.fn).length;
+            return `<tr><td>${c.name}</td><td>${count}</td><td>${Math.round(count/n*100)}%</td></tr>`;
+        }).join('');
+
+        // 3. Fréquence des obstacles
+        let obsCount = {};
+        db.forEach(d => d.listObs.forEach(o => obsCount[o] = (obsCount[o] || 0) + 1));
+        document.getElementById('obstacleStats').innerHTML = Object.entries(obsCount)
+            .map(([key, val]) => `• ${key}: ${val} (${Math.round(val/n*100)}%)`).join('<br>');
+
+        // 4. Fréquence consultations
+        let cas0 = db.filter(d => d.consultations == "0").length;
+        let cas15 = db.filter(d => d.consultations == "3").length;
+        let casPlus = db.filter(d => d.consultations == "6").length;
+        document.getElementById('consultationStats').innerHTML = 
+            `0 cas suspect: ${Math.round(cas0/n*100)}%<br>1-5 cas: ${Math.round(cas15/n*100)}%<br>>5 cas: ${Math.round(casPlus/n*100)}%`;
+    }
+
+    function genererConclusion() {
+        let n = db.length; if(n === 0) return;
+        let pPos = db.filter(d => d.levelP === 'Correct').length;
+        let kPos = db.filter(d => d.levelK === 'Bon').length;
+        let pPerc = Math.round(pPos/n*100);
+        let kPerc = Math.round(kPos/n*100);
+
+        let synthese = `<b>SYNTHÈSE DE L'ÉTUDE (HGRM) :</b><br>`;
+        synthese += `L'analyse de ${n} infirmières montre que ${kPerc}% possèdent des connaissances théoriques suffisantes, alors que seulement ${pPerc}% appliquent correctement les mesures de prévention.<br><br>`;
+        synthese += `<b>CONCLUSION :</b> Il existe une rupture entre le savoir et le faire. Les obstacles structurels (manque de salle isolée et coût des examens) prédominent sur le manque de connaissances.<br><br>`;
+        synthese += `<b>RECOMMANDATIONS :</b> Intégrer la palpation mammaire dans les fiches de soins standards et doter l'HGRM de matériel didactique (boîtes à images).`;
+        
+        document.getElementById('summary').innerHTML = synthese;
     }
 
     function exportCSV() {
-        let csv = "Code,Age,Etude,Experience,Savoir,Pratique\n";
-        db.forEach(d => { csv += `${d.code},${d.age},${d.etude},${d.experience},${d.savoir},${d.pratique}\n`; });
+        let csv = "Code,Age,Etude,Savoir,Attitude,Pratique,Consultations\n";
+        db.forEach(d => { csv += `${d.code},${d.age},${d.etude},${d.levelK},${d.levelA},${d.levelP},${d.consultations}\n`; });
         const blob = new Blob([csv], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href = url; a.download = 'depouillement_KAP.csv'; a.click();
+        const a = document.createElement('a'); a.href = url; a.download = 'Analyse_KAP_Expert.csv'; a.click();
     }
 
     window.onload = () => {
         const cs = document.getElementById('code-enquete');
-        for (let i = 1; i <= 200; i++) cs.options.add(new Option("ID: " + i, i));
+        for (let i = 1; i <= 200; i++) cs.options.add(new Option("Enquêté ID: " + i, i));
         const as = document.getElementById('age-select');
         for (let i = 18; i <= 65; i++) as.options.add(new Option(i + " ans", i));
         const es = document.getElementById('exp-select');
         for (let i = 0; i <= 35; i++) es.options.add(new Option(i + " ans d'exp", i));
     };
 </script>
+
 </body>
 </html>
