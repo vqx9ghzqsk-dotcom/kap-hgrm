@@ -65,112 +65,71 @@ td { border: 1px solid #eee; padding: 12px; text-align: center; }
 
     <div id="tab1" class="content-section active">
         <form class="form-content" id="kapForm">
-            
             <div class="section-title">I. IDENTIFICATION DE L'ENQUÊTÉ</div>
             <div class="row">
-                <div class="field">
-                    <label>Code de l'enquête</label>
-                    <select name="code" id="code-enquete"></select>
-                </div>
-                <div class="field">
-                    <label>Service d'Attache</label>
+                <div class="field"><label>Code Fiche</label><select name="code" id="code-enquete"></select></div>
+                <div class="field"><label>Service d'Attache</label>
                     <select name="service">
-                        <option>Médecine Interne</option>
-                        <option>Chirurgie</option>
-                        <option>Gynéco-Obstétrique</option>
-                        <option>Pédiatrie</option>
+                        <option>Médecine Interne</option><option>Chirurgie</option>
+                        <option>Gynéco-Obstétrique</option><option>Pédiatrie</option>
                         <option>Urgences / Soins Intensifs</option>
                     </select>
                 </div>
             </div>
             <div class="row">
-                <div class="field">
-                    <label>Âge de l'enquêté</label>
-                    <select name="age" id="age-select"></select>
-                </div>
-                <div class="field">
-                    <label>Niveau d'Étude (Qualification)</label>
+                <div class="field"><label>Âge (ans)</label><select name="age" id="age-select"></select></div>
+                <div class="field"><label>Niveau d'Étude</label>
                     <select name="etude">
-                        <option value="A1">Infirmier A1 (Gradué)</option>
-                        <option value="A0">Infirmier A0 (Licencié)</option>
+                        <option value="A1">Gradué (A1)</option>
+                        <option value="A0">Licencié (A0)</option>
                         <option value="Doc">Médecin / Spécialiste</option>
                     </select>
                 </div>
-                <div class="field">
-                    <label>Ancienneté (Expérience professionnelle)</label>
-                    <select name="experience" id="exp-select"></select>
-                </div>
+                <div class="field"><label>Ancienneté / Expérience</label><select name="experience" id="exp-select"></select></div>
             </div>
 
-            <div class="section-title">II. CONNAISSANCES (SAVOIR SUR LE CANCER DU SEIN)</div>
+            <div class="section-title">II. CONNAISSANCES (SAVOIR)</div>
             <table>
-                <thead>
-                    <tr>
-                        <th>Questions posées</th>
-                        <th>Oui (1)</th>
-                        <th>Non (0)</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>Questions de Connaissances</th><th>Oui (1)</th><th>Non (0)</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <td class="text-left">Le cancer du sein est-il la première cause de mortalité par cancer chez la femme en RDC ?</td>
-                        <td><input type="radio" name="k1" value="1" required></td>
-                        <td><input type="radio" name="k1" value="0"></td>
-                    </tr>
-                    <tr>
-                        <td class="text-left">L'autopalpation mammaire doit-elle être pratiquée chaque mois après les règles ?</td>
-                        <td><input type="radio" name="k2" value="1"></td>
-                        <td><input type="radio" name="k2" value="0"></td>
-                    </tr>
-                    <tr>
-                        <td class="text-left">Une masse indolore au sein est-elle un signe d'alerte majeur ?</td>
-                        <td><input type="radio" name="k3" value="1"></td>
-                        <td><input type="radio" name="k3" value="0"></td>
-                    </tr>
+                    <tr><td class="text-left">Le cancer du sein est-il la première cause de mortalité par cancer chez la femme en RDC ?</td>
+                        <td><input type="radio" name="k1" value="1" required></td><td><input type="radio" name="k1" value="0"></td></tr>
+                    <tr><td class="text-left">L'autopalpation mammaire doit-elle être pratiquée chaque mois après les règles ?</td>
+                        <td><input type="radio" name="k2" value="1"></td><td><input type="radio" name="k2" value="0"></td></tr>
+                    <tr><td class="text-left">Une masse indolore au sein est-elle un signe d'alerte majeur ?</td>
+                        <td><input type="radio" name="k3" value="1"></td><td><input type="radio" name="k3" value="0"></td></tr>
                 </tbody>
             </table>
 
-            <div class="section-title">III. PRATIQUES (PROFESSIONNELLES DANS LE SERVICE)</div>
+            <div class="section-title">III. PRATIQUES PROFESSIONNELLES</div>
             <table>
-                <thead>
-                    <tr>
-                        <th>Questions sur la pratique clinique</th>
-                        <th>Régulier (1)</th>
-                        <th>Rarement/Jamais (0)</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>Pratiques Cliniques</th><th>Régulier (1)</th><th>Rarement/Jamais (0)</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <td class="text-left">Réalisez-vous systématiquement l'examen physique des seins lors d'une consultation ?</td>
-                        <td><input type="radio" name="pra1" value="1" required></td>
-                        <td><input type="radio" name="pra1" value="0"></td>
-                    </tr>
-                    <tr>
-                        <td class="text-left">Apprenez-vous aux patientes la technique d'autopalpation des seins ?</td>
-                        <td><input type="radio" name="pra2" value="1"></td>
-                        <td><input type="radio" name="pra2" value="0"></td>
-                    </tr>
+                    <tr><td class="text-left">Réalisez-vous systématiquement l'examen physique des seins lors d'une consultation ?</td>
+                        <td><input type="radio" name="pra1" value="1" required></td><td><input type="radio" name="pra1" value="0"></td></tr>
+                    <tr><td class="text-left">Apprenez-vous aux patientes la technique d'autopalpation des seins ?</td>
+                        <td><input type="radio" name="pra2" value="1"></td><td><input type="radio" name="pra2" value="0"></td></tr>
                 </tbody>
             </table>
 
-            <div class="section-title">IV. FACTEURS ET OBSTACLES (ÉVALUATION DU MILIEU)</div>
-            <label>Selon vous, quels sont les facteurs de risque les plus fréquents ? (Plusieurs choix possibles)</label>
+            <div class="section-title">IV. FACTEURS ET OBSTACLES (MULTIPLE)</div>
+            <label>Quels sont les facteurs de risque que vous identifiez le plus ?</label>
             <div class="check-group">
-                <label class="check-item"><input type="checkbox" name="f1"> Nulliparité / Première grossesse tardive</label>
-                <label class="check-item"><input type="checkbox" name="f2"> Ménopause tardive (après 55 ans)</label>
-                <label class="check-item"><input type="checkbox" name="f3"> Consommation d'alcool et tabac</label>
-                <label class="check-item"><input type="checkbox" name="f4"> Utilisation prolongée de contraceptifs oraux</label>
-                <label class="check-item"><input type="checkbox" name="f5"> Antécédents familiaux de cancer du sein</label>
+                <label class="check-item"><input type="checkbox" name="f1"> Nulliparité / Grossesse tardive</label>
+                <label class="check-item"><input type="checkbox" name="f2"> Ménopause tardive (>55 ans)</label>
+                <label class="check-item"><input type="checkbox" name="f3"> Tabagisme / Alcoolisme</label>
+                <label class="check-item"><input type="checkbox" name="f4"> Utilisation prolongée de contraceptifs</label>
+                <label class="check-item"><input type="checkbox" name="f5"> Antécédents familiaux directs</label>
             </div>
 
             <br>
-            <label>Quels sont les obstacles au dépistage précoce à l'HGRM ? (Plusieurs choix possibles)</label>
+            <label>Obstacles majeurs au dépistage précoce à l'HGRM :</label>
             <div class="check-group">
-                <label class="check-item"><input type="checkbox" name="o1"> Absence de local isolé pour l'examen physique</label>
-                <label class="check-item"><input type="checkbox" name="o2"> Coût élevé des examens (Mammographie/Echo)</label>
-                <label class="check-item"><input type="checkbox" name="o3"> Manque de formation continue du personnel</label>
-                <label class="check-item"><input type="checkbox" name="o4"> Pratiques et croyances culturelles des patientes</label>
-                <label class="check-item"><input type="checkbox" name="o5"> Surcharge de travail au quotidien</label>
+                <label class="check-item"><input type="checkbox" name="o1"> Absence de local isolé pour examen</label>
+                <label class="check-item"><input type="checkbox" name="o2"> Coût élevé de la mammographie</label>
+                <label class="check-item"><input type="checkbox" name="o3"> Manque de formation continue</label>
+                <label class="check-item"><input type="checkbox" name="o4"> Croyances culturelles des patientes</label>
+                <label class="check-item"><input type="checkbox" name="o5"> Surcharge de travail</label>
             </div>
 
             <button type="button" class="btn-save" onclick="saveData()">VALIDER ET ENREGISTRER LA FICHE</button>
@@ -227,6 +186,7 @@ td { border: 1px solid #eee; padding: 12px; text-align: center; }
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+// ====================== SCRIPT COMPLET ======================
 let db = [];
 const scriptURL = "https://script.google.com/macros/s/AKfycbzWHoyx-UHrmMmeKUrDv7MXMs0osx1tA95EMR3FEQJD5J_zcuccVEiIg2qBr_KP2CCT/exec";
 
@@ -249,10 +209,12 @@ async function saveData() {
     const form = document.getElementById('kapForm');
     const fd = new FormData(form);
 
-    let scoreK = (parseInt(fd.get('k1')) || 0) + (parseInt(fd.get('k2')) || 0) + (parseInt(fd.get('k3')) || 0);
-    let scoreP = (parseInt(fd.get('pra1')) || 0) + (parseInt(fd.get('pra2')) || 0);
-    const facteurs = Array.from(form.querySelectorAll('.check-group:first-of-type input')).map(c => c.checked);
-    const obstacles = Array.from(form.querySelectorAll('.check-group:last-of-type input')).map(c => c.checked);
+    let scoreK = parseInt(fd.get('k1')) + parseInt(fd.get('k2')) + parseInt(fd.get('k3'));
+    let scoreP = parseInt(fd.get('pra1')) + parseInt(fd.get('pra2'));
+    
+    // Récupération correcte des checkboxes
+    const facteurs = [fd.get('f1'), fd.get('f2'), fd.get('f3'), fd.get('f4'), fd.get('f5')].map(v => v === 'on');
+    const obstacles = [fd.get('o1'), fd.get('o2'), fd.get('o3'), fd.get('o4'), fd.get('o5')].map(v => v === 'on');
 
     const entry = {
         code: fd.get('code'),
@@ -270,10 +232,10 @@ async function saveData() {
         await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(entry) });
         db.push(entry);
         actualiserTableau();
-        alert("Fiche Code " + entry.code + " enregistrée !");
+        alert("Fiche Code " + entry.code + " envoyée et enregistrée !");
         form.reset();
     } catch(e) {
-        alert("Erreur de connexion.");
+        alert("Erreur de connexion. Réessayez.");
     }
 }
 
@@ -284,39 +246,47 @@ function actualiserTableau() {
 
 function calculerStatistiques() {
     if(db.length === 0) return;
+
     const n = db.length;
     document.getElementById('res-n').innerText = n;
+
     const kHigh = db.filter(d => d.savoir === 'Bon').length;
     const pGood = db.filter(d => d.pratique === 'Correcte').length;
+
     document.getElementById('res-k').innerText = Math.round(kHigh/n*100) + "%";
     document.getElementById('res-p').innerText = Math.round(pGood/n*100) + "%";
 
+    // Chi² simplifié
     const table = { "Bon-Correcte":0, "Bon-Incorrecte":0, "Faible-Correcte":0, "Faible-Incorrecte":0 };
     db.forEach(d => table[`${d.savoir}-${d.pratique}`]++);
     const chi = ((table["Bon-Correcte"]*table["Faible-Incorrecte"] - table["Bon-Incorrecte"]*table["Faible-Correcte"])**2) /
                 ((table["Bon-Correcte"]+table["Bon-Incorrecte"])*(table["Faible-Correcte"]+table["Faible-Incorrecte"]) || 1);
     document.getElementById('chi-output').innerHTML = `<b>Chi² ≈ ${chi.toFixed(2)}</b>`;
 
+    // Corrélation r
     const x = db.map(d => parseInt(d.experience));
     const y = db.map(d => d.savoir==="Bon"?1:0);
     const meanX = x.reduce((a,b)=>a+b,0)/n;
     const meanY = y.reduce((a,b)=>a+b,0)/n;
-    const r = x.map((xi,i)=> (xi-meanX)*(y[i]-meanY)).reduce((a,b)=>a+b,0) /
-              (Math.sqrt(x.map(xi=>(xi-meanX)**2).reduce((a,b)=>a+b,0) * y.map(yi=>(yi-meanY)**2).reduce((a,b)=>a+b,0)) || 1);
+    const num = x.map((xi,i)=> (xi-meanX)*(y[i]-meanY)).reduce((a,b)=>a+b,0);
+    const den = Math.sqrt(x.map(xi=>(xi-meanX)**2).reduce((a,b)=>a+b,0) * y.map(yi=>(yi-meanY)**2).reduce((a,b)=>a+b,0));
+    const r = den !== 0 ? num / den : 0;
     document.getElementById('corr-output').innerHTML = `<b>r ≈ ${r.toFixed(2)}</b>`;
 
+    // Graphiques
     const fData = [0,1,2,3,4].map(i => db.reduce((sum,d)=>sum+(d.facteurs[i]?1:0),0));
-    renderChart('facteursChart','Facteurs de risque',['Nulliparité','Ménopause','Alcool/Tabac','Contraceptifs','Hérédité'],fData);
+    renderChart('facteursChart','Facteurs de risque',['Nulliparité','Ménopause','Alcool/tabac','Contraceptifs','Famille'],fData);
+    
     const oData = [0,1,2,3,4].map(i => db.reduce((sum,d)=>sum+(d.obstacles[i]?1:0),0));
-    renderChart('obstaclesChart','Obstacles',['Local','Coût','Formation','Culture','Travail'],oData);
+    renderChart('obstaclesChart','Obstacles',["Salle","Coût","Formation","Culture","Charge"],oData);
 }
 
 function renderChart(id,title,labels,data) {
-    const ctx = document.getElementById(id);
-    if(ctx.chart) ctx.chart.destroy();
-    ctx.chart = new Chart(ctx,{
+    let canvas = document.getElementById(id);
+    if(canvas.chart) canvas.chart.destroy();
+    canvas.chart = new Chart(canvas,{
         type:'pie',
-        data:{ labels: labels, datasets:[{ label: title, data: data, backgroundColor:['#b03060','#f06292','#f8bbd0','#e91e63','#c2185b'] }]},
+        data:{ labels: labels, datasets:[{ label: title, data: data, backgroundColor:['#b03060','#f06292','#f8bbd0','#e91e63','#c2185b','#ec407a'] }]},
         options:{ responsive:true }
     });
 }
@@ -326,7 +296,7 @@ function exportCSV() {
     db.forEach(d=>{ csv += `${d.code},${d.age},${d.etude},${d.experience},${d.savoir},${d.pratique}\n`; });
     const blob = new Blob([csv],{type:'text/csv'});
     const url = window.URL.createObjectURL(blob);
-    const a=document.createElement('a'); a.href=url; a.download='kap_data.csv'; a.click();
+    const a=document.createElement('a'); a.href=url; a.download='depouillement_KAP.csv'; a.click();
 }
 
 window.onload = ()=>{
