@@ -3,188 +3,280 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KAP-HGRM Expert v3</title>
+<title>Étude KAP Intégrale - Cancer du Sein HGRM</title>
 <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f9; color: #333; line-height: 1.6; margin: 0; padding: 10px; }
-    .container { max-width: 1100px; margin: auto; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-    .header-tabs { display: flex; background: #b03060; padding: 10px; border-radius: 12px 12px 0 0; gap: 10px; overflow-x: auto; }
-    .tab { padding: 12px 20px; color: #fff; font-weight: bold; cursor: pointer; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3); white-space: nowrap; }
-    .tab.active { background: #fff; color: #b03060; }
-    .section-content { padding: 30px; display: none; }
-    .section-content.active { display: block; }
-    .section-title { color: #b03060; border-bottom: 2px solid #fce4ec; padding-bottom: 10px; margin: 30px 0 20px 0; text-transform: uppercase; font-size: 16px; display: flex; align-items: center; gap: 10px; }
-    .question-block { margin-bottom: 25px; padding: 15px; border-radius: 8px; background: #fafafa; border: 1px solid #eee; }
-    .question-label { font-weight: 700; display: block; margin-bottom: 15px; color: #111; }
-    .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
-    .option-item { display: flex; align-items: center; gap: 12px; background: #fff; padding: 12px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; transition: 0.2s; }
-    .option-item:hover { border-color: #b03060; background: #fff9fb; }
-    .option-item input { transform: scale(1.2); }
-    .btn-submit { width: 100%; padding: 20px; background: #b03060; color: #fff; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 10px; }
+    .container { max-width: 1350px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 5px 30px rgba(0,0,0,0.2); }
+    
+    .header-tabs { display: flex; background: #fff; border-bottom: 5px solid #b03060; padding: 15px; gap: 10px; position: sticky; top: 0; z-index: 1000; overflow-x: auto; }
+    .tab { padding: 12px 20px; font-weight: bold; font-size: 13px; border-radius: 6px; border: 1px solid #ddd; color: #555; background: #f9f9f9; cursor: pointer; white-space: nowrap; }
+    .tab.active { background: #b03060; color: white; border-color: #b03060; }
+    
+    .content-section { display: none; padding: 30px; }
+    .content-section.active { display: block; }
+    
+    .section-title { background: #fff0f5; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 35px 0 15px 0; text-transform: uppercase; font-size: 14px; }
+    .field { display: flex; flex-direction: column; margin-bottom: 25px; }
+    label { font-size: 14px; font-weight: 800; margin-bottom: 12px; color: #1a1a1a; }
+    select, input, textarea { padding: 14px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; }
+    
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 30px; }
+    th, td { border: 1px solid #ddd; padding: 12px; text-align: center; font-size: 13px; }
+    th { background-color: #b03060; color: white; }
+    
+    .check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 10px; background: #fafafa; padding: 20px; border-radius: 8px; border: 1px solid #eee; }
+    .btn-save { width: 100%; background: #b03060; color: white; padding: 25px; border: none; border-radius: 10px; font-size: 20px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin: 40px 0; }
+    
+    .stats-card { background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; margin-bottom: 20px; }
+    .big-num { font-size: 32px; font-weight: bold; color: #b03060; }
     .admin-only { display: none !important; }
-    textarea { width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #ddd; }
+    .chart-box { max-width: 600px; margin: auto; }
 </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-tabs">
-        <div class="tab active" onclick="switchTab(1)">1. COLLECTE</div>
-        <div class="tab admin-only" onclick="switchTab(2)">2. BASE DE DONNÉES</div>
-        <div class="tab admin-only" onclick="switchTab(3)">3. ANALYSE STATISTIQUE</div>
+        <div class="tab active" onclick="showTab(1)">1. COLLECTE</div>
+        <div class="tab admin-only" onclick="showTab(2)">2. DÉPOUILLEMENT & CODAGE</div>
+        <div class="tab admin-only" onclick="showTab(3)">3. ANALYSES & RÉSULTATS</div>
+        <div class="tab admin-only" onclick="showTab(4)">4. CONCLUSION & RECOMMANDATIONS</div>
     </div>
 
-    <div id="tab1" class="section-content active">
-        <form id="mainForm">
-            
-            <div class="section-title">I. Identification & Consentement</div>
-            <div class="options-grid">
-                <div class="question-block">
-                    <label class="question-label">Niveau d'Étude Professionnel</label>
-                    <select name="niveau" style="width:100%; padding:10px;" required>
-                        <option value="">Sélectionner...</option>
-                        <option value="A1">Infirmier Gradué (A1)</option>
-                        <option value="A0">Infirmier Licencié (A0)</option>
-                        <option value="Doc">Médecin Généraliste / Spécialiste</option>
+    <div id="tab1" class="content-section active">
+        <form id="masterForm">
+            <div class="section-title">I. IDENTIFICATION COMPLÈTE</div>
+            <div class="grid-4">
+                <div class="field"><label>Numéro d'enquête</label><input type="text" name="n_enquete" required></div>
+                <div class="field"><label>Nom de l'enquêteur</label><input type="text" name="enqueteur" required></div>
+                <div class="field"><label>Service d'affectation</label>
+                    <select name="service" required>
+                        <option value="Chirurgie">Chirurgie</option>
+                        <option value="Gynécologie">Gynécologie</option>
+                        <option value="Médecine Interne">Médecine Interne</option>
+                        <option value="Urgences">Urgences</option>
+                        <option value="Pédiatrie">Pédiatrie</option>
                     </select>
                 </div>
-                <div class="question-block">
-                    <label class="question-label">Ancienneté dans le métier</label>
-                    <select name="anciennete" id="select-exp" style="width:100%; padding:10px;"></select>
-                </div>
-            </div>
-            <div class="option-item" style="border: 2px solid #b03060;">
-                <input type="checkbox" required name="consent">
-                <span>Je confirme mon consentement libre et éclairé pour cette étude.</span>
+                <div class="field"><label>Date d'anniversaire du sujet</label><input type="date" name="anniv"></div>
             </div>
 
-            <div class="section-title">II. Évaluation des Connaissances</div>
-            
-            <div class="question-block">
-                <span class="question-label">1. Quel est l'examen de référence (Gold Standard) pour le dépistage du cancer du sein chez une femme de plus de 40 ans ?</span>
-                <div class="options-grid">
-                    <label class="option-item"><input type="radio" name="k_ref" value="0"> L'échographie mammaire simple</label>
-                    <label class="option-item"><input type="radio" name="k_ref" value="0"> La ponction à l'aiguille fine</label>
-                    <label class="option-item"><input type="radio" name="k_ref" value="2"> La mammographie bilatérale</label>
-                    <label class="option-item"><input type="radio" name="k_ref" value="0"> L'IRM mammaire systématique</label>
+            <div class="section-title">II. DONNÉES SOCIO-DÉMOGRAPHIQUES</div>
+            <div class="grid-4">
+                <div class="field"><label>Niveau d'Étude Professionnel</label>
+                    <select name="niveau" required>
+                        <option value="A1">Infirmier Gradué (A1)</option>
+                        <option value="A0">Infirmier Licencié (A0)</option>
+                        <option value="Doc">Médecin</option>
+                    </select>
                 </div>
+                <div class="field"><label>Âge actuel</label><input type="number" name="age"></div>
+                <div class="field"><label>Ancienneté (Années)</label><input type="number" name="experience"></div>
             </div>
 
-            <div class="question-block">
-                <span class="question-label">2. Quels sont les signes évocateurs d'un cancer du sein ? (Choisir la réponse la plus complète)</span>
-                <div class="options-grid">
-                    <label class="option-item"><input type="radio" name="k_signe" value="0"> Une douleur mammaire bilatérale pendant les règles</label>
-                    <label class="option-item"><input type="radio" name="k_signe" value="1"> Un écoulement de lait chez une femme allaitante</label>
-                    <label class="option-item"><input type="radio" name="k_signe" value="2"> Un nodule dur, fixe, indolore avec rétraction cutanée</label>
-                    <label class="option-item"><input type="radio" name="k_signe" value="0"> Une augmentation globale du volume des deux seins</label>
-                </div>
+            <div class="section-title">III. ÉVALUATION DES CONNAISSANCES</div>
+            <div class="field">
+                <label>1. Quel est l'examen de référence (Gold Standard) pour le dépistage ?</label>
+                <select name="k_ref">
+                    <option value="0">Échographie mammaire simple</option>
+                    <option value="0">La ponction à l'aiguille fine</option>
+                    <option value="2">La mammographie bilatérale</option>
+                    <option value="0">L'IRM mammaire systématique</option>
+                </select>
             </div>
             
-
-            <div class="section-title">III. Attitudes vis-à-vis du dépistage</div>
-            
-            <div class="question-block">
-                <span class="question-label">3. Selon votre conviction, quelle est la cause réelle du cancer du sein ?</span>
-                <div class="options-grid">
-                    <label class="option-item"><input type="radio" name="at_cause" value="0"> Une punition divine ou un mauvais sort</label>
-                    <label class="option-item"><input type="radio" name="at_cause" value="1"> Un choc ou un coup reçu sur le sein par mégarde</label>
-                    <label class="option-item"><input type="radio" name="at_cause" value="2"> Une mutation génétique et des facteurs environnementaux</label>
-                    <label class="option-item"><input type="radio" name="at_cause" value="0"> Une mauvaise hygiène de vie uniquement</label>
-                </div>
-            </div>
-
-            <div class="question-block">
-                <span class="question-label">4. Que pensez-vous du pronostic vital d'une femme diagnostiquée au stade 1 à Kinshasa ?</span>
-                <div class="options-grid">
-                    <label class="option-item"><input type="radio" name="at_pro" value="0"> La mort est inévitable peu importe le stade</label>
-                    <label class="option-item"><input type="radio" name="at_pro" value="1"> La guérison dépend surtout de la foi de la patiente</label>
-                    <label class="option-item"><input type="radio" name="at_pro" value="2"> La guérison est très probable avec un traitement médical précoce</label>
-                </div>
-            </div>
-
-            <div class="section-title">IV. Pratiques Professionnelles</div>
-            
-            <div class="question-block">
-                <span class="question-label">5. À quelle fréquence pratiquez-vous l'examen physique des seins lors d'une consultation ?</span>
-                <div class="options-grid">
-                    <label class="option-item"><input type="radio" name="pr_freq" value="0"> Jamais (Ce n'est pas mon rôle)</label>
-                    <label class="option-item"><input type="radio" name="pr_freq" value="1"> Seulement si la patiente se plaint d'une boule</label>
-                    <label class="option-item"><input type="radio" name="pr_freq" value="2"> Systématiquement pour toute femme en âge de procréer</label>
-                </div>
+            <div class="field">
+                <label>2. Quels sont les signes évocateurs d'un cancer du sein ?</label>
+                <select name="k_signe">
+                    <option value="0">Douleur mammaire bilatérale pendant les règles</option>
+                    <option value="1">Un écoulement de lait chez une femme allaitante</option>
+                    <option value="2">Un nodule dur, fixe, indolore avec rétraction cutanée</option>
+                    <option value="0">Augmentation globale du volume des deux seins</option>
+                </select>
             </div>
             
 
-            <div class="section-title">V. Obstacles au dépistage (Plusieurs choix possibles)</div>
-            <div class="question-block">
-                <span class="question-label">Quels sont les freins majeurs que vous rencontrez à l'HGRM ? (Cochez tout ce qui s'applique)</span>
-                <div class="options-grid">
-                    <label class="option-item"><input type="checkbox" name="obs" value="Formation"> Manque de formation continue sur le cancer</label>
-                    <label class="option-item"><input type="checkbox" name="obs" value="Temps"> Surcharge de travail / manque de temps</label>
-                    <label class="option-item"><input type="checkbox" name="obs" value="Intimite"> Absence de local isolé (respect de la pudeur)</label>
-                    <label class="option-item"><input type="checkbox" name="obs" value="Cout"> Coût élevé des examens pour les patientes</label>
-                    <label class="option-item"><input type="checkbox" name="obs" value="Culture"> Croyances culturelles et refus des patientes</label>
-                    <label class="option-item"><input type="checkbox" name="obs" value="Plateau"> Absence de plateau technique (Mammographe absent)</label>
-                </div>
+            <div class="section-title">IV. ATTITUDES VIS-À-VIS DU CANCER</div>
+            <div class="field">
+                <label>3. Selon votre conviction, quelle est la cause réelle ?</label>
+                <select name="at_cause">
+                    <option value="0">Une punition divine ou un mauvais sort</option>
+                    <option value="1">Un choc ou un coup reçu sur le sein</option>
+                    <option value="2">Une mutation génétique et facteurs environnementaux</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>4. Que pensez-vous du pronostic au stade 1 ?</label>
+                <select name="at_pro">
+                    <option value="0">La mort est inévitable peu importe le stade</option>
+                    <option value="1">La guérison dépend surtout de la foi</option>
+                    <option value="2">La guérison est très probable avec un traitement précoce</option>
+                </select>
             </div>
 
-            <div class="section-title">VI. Recommandations</div>
-            <textarea name="recom" rows="4" placeholder="Quelles solutions proposez-vous pour améliorer la situation à l'HGRM ?"></textarea>
+            <div class="section-title">V. PRATIQUES PROFESSIONNELLES</div>
+            <div class="field">
+                <label>5. À quelle fréquence pratiquez-vous l'examen physique des seins ?</label>
+                <select name="p_freq">
+                    <option value="0">Jamais (Ce n'est pas mon rôle)</option>
+                    <option value="1">Seulement si la patiente se plaint</option>
+                    <option value="2">Systématiquement pour toute femme en âge de procréer</option>
+                </select>
+            </div>
+            
 
-            <button type="button" class="btn-submit" onclick="processData()">ENREGISTRER LA FICHE DE COLLECTE</button>
+            <div class="section-title">VI. OBSTACLES AU DÉPISTAGE (PLUSIEURS CHOIX POSSIBLES)</div>
+            <div class="check-grid">
+                <label><input type="checkbox" name="obs" value="Formation"> Manque de formation</label>
+                <label><input type="checkbox" name="obs" value="Temps"> Surcharge de travail</label>
+                <label><input type="checkbox" name="obs" value="Intimité"> Manque de local isolé</label>
+                <label><input type="checkbox" name="obs" value="Coût"> Coût élevé des examens</label>
+                <label><input type="checkbox" name="obs" value="Culture"> Croyances culturelles / Refus</label>
+                <label><input type="checkbox" name="obs" value="Plateau"> Absence de plateau technique</label>
+            </div>
+
+            <div class="section-title">VII. RECOMMANDATIONS</div>
+            <textarea name="recom" rows="4" placeholder="Vos solutions pour l'HGRM..."></textarea>
+
+            <button type="button" class="btn-save" onclick="collectData()">Enregistrer la fiche d'enquête</button>
         </form>
     </div>
 
-    <div id="tab2" class="section-content">
-        <div class="section-title">Base de Données Cumulative</div>
-        <div id="db-view"></div>
+    <div id="tab2" class="content-section">
+        <div class="section-title">TABLEAU DE DÉPOUILLEMENT GÉNÉRAL (BASE DE DONNÉES)</div>
+        <div style="overflow-x:auto;">
+            <table id="tableDepouillement">
+                <thead>
+                    <tr>
+                        <th>N° Enquête</th><th>Enquêteur</th><th>Service</th><th>Niveau</th><th>Score Savoir</th><th>Score Attitude</th><th>Score Pratique</th><th>Obstacles</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="tab3" class="content-section">
+        <div class="section-title">ANALYSE DES FRÉQUENCES ET POURCENTAGES</div>
+        <div class="grid-4">
+            <div class="stats-card"><div>Effectif Total (N)</div><div class="big-num" id="stat-n">0</div></div>
+            <div class="stats-card"><div>Connaissances (%)</div><div class="big-num" id="stat-k">0%</div></div>
+            <div class="stats-card"><div>Attitudes Positives (%)</div><div class="big-num" id="stat-a">0%</div></div>
+            <div class="stats-card"><div>Pratiques Correctes (%)</div><div class="big-num" id="stat-p">0%</div></div>
+        </div>
+
+        <div class="section-title">TABLEAUX DES DONNÉES IMPORTANTES</div>
+        <div id="dynamic-tables"></div>
+
+        <div class="section-title">REPRÉSENTATIONS GRAPHIQUES</div>
+        <div class="chart-box"><canvas id="mainChart"></canvas></div>
+    </div>
+
+    <div id="tab4" class="content-section">
+        <div class="section-title">SYNTHÈSE ET CONCLUSION GÉNÉRALE</div>
+        <div id="finalConclusion" style="background:#fff; padding:20px; border:1px solid #ddd; line-height:1.6;"></div>
+        
+        <div class="section-title">RECOMMANDATIONS ISSUES DE L'ÉTUDE</div>
+        <ul id="finalRecoms" style="line-height:2;"></ul>
     </div>
 </div>
 
-<div style="position:fixed; bottom:10px; right:10px; opacity:0.2;">
-    <input type="password" placeholder="PIN" oninput="if(this.value==='1398') document.querySelectorAll('.admin-only').forEach(e=>e.style.setProperty('display','block','important'))">
+<div style="position:fixed; bottom:5px; right:5px; opacity:0.1;">
+    <input type="password" oninput="if(this.value==='1398') document.querySelectorAll('.admin-only').forEach(e=>e.style.setProperty('display','block','important'))">
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     let db = [];
+    let myChart = null;
 
-    function switchTab(n) {
-        document.querySelectorAll('.section-content, .tab').forEach(el => el.classList.remove('active'));
-        document.getElementById('tab'+n).classList.add('active');
+    function showTab(n) {
+        document.querySelectorAll('.content-section, .tab').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.content-section')[n-1].classList.add('active');
         document.querySelectorAll('.tab')[n-1].classList.add('active');
+        if(n === 3) runAnalysis();
     }
 
-    function processData() {
-        const form = document.getElementById('mainForm');
-        if(!form.checkValidity()) { alert("Veuillez remplir les champs obligatoires et accepter le consentement."); return; }
-        
+    function collectData() {
+        const form = document.getElementById('masterForm');
         const fd = new FormData(form);
         const data = Object.fromEntries(fd.entries());
-        
-        // Récupérer les obstacles multiples
-        data.obstacles = Array.from(document.querySelectorAll('input[name="obs"]:checked')).map(cb => cb.value);
+        data.obs_list = Array.from(document.querySelectorAll('input[name="obs"]:checked')).map(c => c.value);
         
         db.push(data);
-        alert("Enregistré ! Total fiches : " + db.length);
+        alert("Enquête n°" + data.n_enquete + " enregistrée avec succès.");
         form.reset();
-        refreshDB();
+        updateDepouillement();
     }
 
-    function refreshDB() {
-        let html = `<table border="1" style="width:100%; border-collapse:collapse;">
-            <tr style="background:#eee;"><th>Niveau</th><th>Savoir</th><th>Obstacles cités</th></tr>`;
-        db.forEach(f => {
-            html += `<tr>
-                <td>${f.niveau}</td>
-                <td>${f.k_ref == "2" ? "Correct" : "Incorrect"}</td>
-                <td>${f.obstacles.join(', ')}</td>
-            </tr>`;
+    function updateDepouillement() {
+        const tbody = document.querySelector('#tableDepouillement tbody');
+        tbody.innerHTML = db.map(d => `
+            <tr>
+                <td>${d.n_enquete}</td><td>${d.enqueteur}</td><td>${d.service}</td><td>${d.niveau}</td>
+                <td>${d.k_ref}/2</td><td>${d.at_cause}/2</td><td>${d.p_freq}/2</td><td>${d.obs_list.join(', ')}</td>
+            </tr>
+        `).join('');
+    }
+
+    function runAnalysis() {
+        const N = db.length;
+        if(N === 0) return;
+        document.getElementById('stat-n').innerText = N;
+
+        // Calculs KAP
+        let kGood = db.filter(d => d.k_ref == "2").length;
+        let aGood = db.filter(d => d.at_pro == "2").length;
+        let pGood = db.filter(d => d.p_freq == "2").length;
+
+        document.getElementById('stat-k').innerText = ((kGood/N)*100).toFixed(1) + "%";
+        document.getElementById('stat-a').innerText = ((aGood/N)*100).toFixed(1) + "%";
+        document.getElementById('stat-p').innerText = ((pGood/N)*100).toFixed(1) + "%";
+
+        // Génération des Tableaux de Fréquence
+        const generateTable = (title, field, options) => {
+            let html = `<h4>${title}</h4><table><tr><th>Option</th><th>f</th><th>%</th></tr>`;
+            options.forEach(opt => {
+                let f = db.filter(d => d[field] == opt.v || (Array.isArray(d[field]) && d[field].includes(opt.v))).length;
+                html += `<tr><td>${opt.l}</td><td>${f}</td><td>${((f/N)*100).toFixed(1)}%</td></tr>`;
+            });
+            return html + "</table>";
+        };
+
+        let tableHtml = generateTable("Répartition par Service", "service", [
+            {v:'Chirurgie', l:'Chirurgie'}, {v:'Gynécologie', l:'Gynécologie'}, 
+            {v:'Médecine Interne', l:'Médecine Interne'}, {v:'Urgences', l:'Urgences'}
+        ]);
+        
+        tableHtml += generateTable("Obstacles rencontrés", "obs_list", [
+            {v:'Formation', l:'Manque de formation'}, {v:'Temps', l:'Surcharge de travail'},
+            {v:'Intimité', l:'Manque de local'}, {v:'Coût', l:'Coût élevé'},
+            {v:'Culture', l:'Culture/Refus'}, {v:'Plateau', l:'Absence plateau technique'}
+        ]);
+
+        document.getElementById('dynamic-tables').innerHTML = tableHtml;
+
+        // Graphique
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        if(myChart) myChart.destroy();
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Connaissances Correctes', 'Attitudes Positives', 'Pratiques Systématiques'],
+                datasets: [{
+                    label: '% de réussite à l\'HGRM',
+                    data: [(kGood/N)*100, (aGood/N)*100, (pGood/N)*100],
+                    backgroundColor: ['#f8bbd0', '#f06292', '#b03060']
+                }]
+            },
+            options: { scales: { y: { beginAtZero: true, max: 100 } } }
         });
-        document.getElementById('db-view').innerHTML = html + "</table>";
-    }
 
-    window.onload = () => {
-        const exp = document.getElementById('select-exp');
-        for(let i=0; i<=40; i++) exp.options.add(new Option(i + (i<2?" an":" ans"), i));
-    };
+        // Conclusion & Recoms
+        document.getElementById('finalConclusion').innerText = `Sur un échantillon de ${N} personnels, l'étude révèle que la pratique systématique du dépistage reste faible (${((pGood/N)*100).toFixed(1)}%). Les obstacles logistiques et le manque de formation sont les freins majeurs identifiés.`;
+        document.getElementById('finalRecoms').innerHTML = db.map(d => d.recom ? `<li>${d.recom}</li>` : '').join('');
+    }
 </script>
 </body>
 </html>
