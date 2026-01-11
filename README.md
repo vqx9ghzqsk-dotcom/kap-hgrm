@@ -46,7 +46,7 @@ td { border: 1px solid #eee; padding: 12px; text-align: center; }
 .stat-card { background: #fff; border: 1px solid #ddd; padding: 20px; border-radius: 8px; text-align: center; border-bottom: 4px solid #b03060; }
 .stat-val { font-size: 28px; font-weight: bold; color: #b03060; }
 
-/* ZONE LOGIN DISCRÈTE */
+/* ZONE LOGIN */
 .admin-login { position: fixed; bottom: 10px; right: 10px; opacity: 0.1; transition: 0.5s; }
 .admin-login:hover { opacity: 1; }
 .admin-login input { width: 60px; border: 1px solid #ccc; font-size: 10px; padding: 4px; border-radius: 4px; }
@@ -63,18 +63,79 @@ td { border: 1px solid #eee; padding: 12px; text-align: center; }
         <button type="button" class="btn-excel admin-only" onclick="exportCSV()">📊 EXPORT EXCEL (CSV)</button>
     </div>
 
-    <!-- Onglet Collecte -->
     <div id="tab1" class="content-section active">
         <form class="form-content" id="kapForm">
-            <!-- FORMULAIRE IDENTIQUE AU TIEN -->
-            <!-- Je garde tout ton code de formulaire ici pour Collecte -->
-            <!-- ... tout le formulaire que tu as déjà ... -->
+            <div class="section-title">I. IDENTIFICATION DE L'ENQUÊTÉ</div>
+            <div class="row">
+                <div class="field"><label>Code Fiche</label><select name="code" id="code-enquete"></select></div>
+                <div class="field"><label>Service d'Attache</label>
+                    <select name="service">
+                        <option>Médecine Interne</option><option>Chirurgie</option>
+                        <option>Gynéco-Obstétrique</option><option>Pédiatrie</option>
+                        <option>Urgences / Soins Intensifs</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="field"><label>Âge (ans)</label><select name="age" id="age-select"></select></div>
+                <div class="field"><label>Niveau d'Étude</label>
+                    <select name="etude">
+                        <option value="A1">Gradué (A1)</option>
+                        <option value="A0">Licencié (A0)</option>
+                        <option value="Doc">Médecin / Spécialiste</option>
+                    </select>
+                </div>
+                <div class="field"><label>Ancienneté / Expérience</label><select name="experience" id="exp-select"></select></div>
+            </div>
+
+            <div class="section-title">II. CONNAISSANCES (SAVOIR)</div>
+            <table>
+                <thead><tr><th>Questions de Connaissances</th><th>Oui (1)</th><th>Non (0)</th></tr></thead>
+                <tbody>
+                    <tr><td class="text-left">Le cancer du sein est-il la première cause de mortalité par cancer chez la femme en RDC ?</td>
+                        <td><input type="radio" name="k1" value="1" required></td><td><input type="radio" name="k1" value="0"></td></tr>
+                    <tr><td class="text-left">L'autopalpation mammaire doit-elle être pratiquée chaque mois après les règles ?</td>
+                        <td><input type="radio" name="k2" value="1"></td><td><input type="radio" name="k2" value="0"></td></tr>
+                    <tr><td class="text-left">Une masse indolore au sein est-elle un signe d'alerte majeur ?</td>
+                        <td><input type="radio" name="k3" value="1"></td><td><input type="radio" name="k3" value="0"></td></tr>
+                </tbody>
+            </table>
+
+            <div class="section-title">III. PRATIQUES PROFESSIONNELLES</div>
+            <table>
+                <thead><tr><th>Pratiques Cliniques</th><th>Régulier (1)</th><th>Rarement/Jamais (0)</th></tr></thead>
+                <tbody>
+                    <tr><td class="text-left">Réalisez-vous systématiquement l'examen physique des seins lors d'une consultation ?</td>
+                        <td><input type="radio" name="pra1" value="1" required></td><td><input type="radio" name="pra1" value="0"></td></tr>
+                    <tr><td class="text-left">Apprenez-vous aux patientes la technique d'autopalpation des seins ?</td>
+                        <td><input type="radio" name="pra2" value="1"></td><td><input type="radio" name="pra2" value="0"></td></tr>
+                </tbody>
+            </table>
+
+            <div class="section-title">IV. FACTEURS ET OBSTACLES (MULTIPLE)</div>
+            <label>Quels sont les facteurs de risque que vous identifiez le plus ?</label>
+            <div class="check-group">
+                <label class="check-item"><input type="checkbox" name="f1"> Nulliparité / Grossesse tardive</label>
+                <label class="check-item"><input type="checkbox" name="f2"> Ménopause tardive (>55 ans)</label>
+                <label class="check-item"><input type="checkbox" name="f3"> Tabagisme / Alcoolisme</label>
+                <label class="check-item"><input type="checkbox" name="f4"> Utilisation prolongée de contraceptifs</label>
+                <label class="check-item"><input type="checkbox" name="f5"> Antécédents familiaux directs</label>
+            </div>
+
+            <br>
+            <label>Obstacles majeurs au dépistage précoce à l'HGRM :</label>
+            <div class="check-group">
+                <label class="check-item"><input type="checkbox" name="o1"> Absence de local isolé pour examen</label>
+                <label class="check-item"><input type="checkbox" name="o2"> Coût élevé de la mammographie</label>
+                <label class="check-item"><input type="checkbox" name="o3"> Manque de formation continue</label>
+                <label class="check-item"><input type="checkbox" name="o4"> Croyances culturelles des patientes</label>
+                <label class="check-item"><input type="checkbox" name="o5"> Surcharge de travail</label>
+            </div>
 
             <button type="button" class="btn-save" onclick="saveData()">VALIDER ET ENREGISTRER LA FICHE</button>
         </form>
     </div>
 
-    <!-- Dépouillement -->
     <div id="tab2" class="content-section">
         <div class="section-title">TABLEAU DE DÉPOUILLEMENT (BASE DE DONNÉES)</div>
         <table id="tableDepouillement">
@@ -83,7 +144,6 @@ td { border: 1px solid #eee; padding: 12px; text-align: center; }
         </table>
     </div>
 
-    <!-- Analyse -->
     <div id="tab3" class="content-section">
         <div class="section-title">ANALYSE STATISTIQUE (FRÉQUENCES & TESTS)</div>
         <div class="stats-grid">
@@ -111,7 +171,6 @@ td { border: 1px solid #eee; padding: 12px; text-align: center; }
         </div>
     </div>
 
-    <!-- Conclusion -->
     <div id="tab4" class="content-section">
         <div class="section-title">CONCLUSION ET RECOMMANDATION</div>
         <div id="summary" style="line-height:1.6; background:#fff; padding:20px; border:1px solid #ddd;">
@@ -124,11 +183,9 @@ td { border: 1px solid #eee; padding: 12px; text-align: center; }
     <input type="password" placeholder="PIN" oninput="checkAdmin(this.value)">
 </div>
 
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-// ====================== SCRIPT COMPLET ======================
 let db = [];
 const scriptURL = "https://script.google.com/macros/s/AKfycbzWHoyx-UHrmMmeKUrDv7MXMs0osx1tA95EMR3FEQJD5J_zcuccVEiIg2qBr_KP2CCT/exec";
 
@@ -151,8 +208,11 @@ async function saveData() {
     const form = document.getElementById('kapForm');
     const fd = new FormData(form);
 
-    let scoreK = parseInt(fd.get('k1')) + parseInt(fd.get('k2')) + parseInt(fd.get('k3'));
-    let scoreP = parseInt(fd.get('pra1')) + parseInt(fd.get('pra2'));
+    // Calcul des scores
+    let scoreK = (parseInt(fd.get('k1')) || 0) + (parseInt(fd.get('k2')) || 0) + (parseInt(fd.get('k3')) || 0);
+    let scoreP = (parseInt(fd.get('pra1')) || 0) + (parseInt(fd.get('pra2')) || 0);
+    
+    // Récupération des tableaux de cases à cocher
     const facteurs = Array.from(form.querySelectorAll('.check-group:first-of-type input')).map(c => c.checked);
     const obstacles = Array.from(form.querySelectorAll('.check-group:last-of-type input')).map(c => c.checked);
 
@@ -172,10 +232,10 @@ async function saveData() {
         await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(entry) });
         db.push(entry);
         actualiserTableau();
-        alert("Fiche Code " + entry.code + " envoyée et enregistrée !");
+        alert("Fiche Code " + entry.code + " enregistrée avec succès !");
         form.reset();
     } catch(e) {
-        alert("Erreur de connexion. Réessayez.");
+        alert("Erreur de connexion.");
     }
 }
 
@@ -186,49 +246,46 @@ function actualiserTableau() {
 
 function calculerStatistiques() {
     if(db.length === 0) return;
-
     const n = db.length;
     document.getElementById('res-n').innerText = n;
-
     const kHigh = db.filter(d => d.savoir === 'Bon').length;
     const pGood = db.filter(d => d.pratique === 'Correcte').length;
-
     document.getElementById('res-k').innerText = Math.round(kHigh/n*100) + "%";
     document.getElementById('res-p').innerText = Math.round(pGood/n*100) + "%";
 
-    // Chi² simplifié Étude vs Pratique
+    // Chi² simplifié
     const table = { "Bon-Correcte":0, "Bon-Incorrecte":0, "Faible-Correcte":0, "Faible-Incorrecte":0 };
     db.forEach(d => table[`${d.savoir}-${d.pratique}`]++);
     const chi = ((table["Bon-Correcte"]*table["Faible-Incorrecte"] - table["Bon-Incorrecte"]*table["Faible-Correcte"])**2) /
-                ((table["Bon-Correcte"]+table["Bon-Incorrecte"])*(table["Faible-Correcte"]+table["Faible-Incorrecte"]));
+                ((table["Bon-Correcte"]+table["Bon-Incorrecte"])*(table["Faible-Correcte"]+table["Faible-Incorrecte"]) || 1);
     document.getElementById('chi-output').innerHTML = `<b>Chi² ≈ ${chi.toFixed(2)}</b>`;
 
-    // Corrélation Expérience vs Savoir
+    // Corrélation r
     const x = db.map(d => parseInt(d.experience));
     const y = db.map(d => d.savoir==="Bon"?1:0);
     const meanX = x.reduce((a,b)=>a+b,0)/n;
     const meanY = y.reduce((a,b)=>a+b,0)/n;
-    const r = x.map((xi,i)=> (xi-meanX)*(y[i]-meanY)).reduce((a,b)=>a+b,0) /
-              Math.sqrt(x.map(xi=>(xi-meanX)**2).reduce((a,b)=>a+b,0) * y.map(yi=>(yi-meanY)**2).reduce((a,b)=>a+b,0));
+    const num = x.map((xi,i)=> (xi-meanX)*(y[i]-meanY)).reduce((a,b)=>a+b,0);
+    const den = Math.sqrt(x.map(xi=>(xi-meanX)**2).reduce((a,b)=>a+b,0) * y.map(yi=>(yi-meanY)**2).reduce((a,b)=>a+b,0));
+    const r = den !== 0 ? num / den : 0;
     document.getElementById('corr-output').innerHTML = `<b>r ≈ ${r.toFixed(2)}</b>`;
 
-    // Graphiques
-    const facteursCount = db[0].facteurs.map((_,i)=> db.reduce((sum,d)=>sum+(d.facteurs[i]?1:0),0));
-    renderChart('facteursChart','Facteurs de risque',['Nulliparité','Grossesse tardive','Ménopause tardive','Alcool/tabac','Contraceptifs','Antécédents familiaux'],facteursCount);
-    const obstaclesCount = db[0].obstacles.map((_,i)=> db.reduce((sum,d)=>sum+(d.obstacles[i]?1:0),0));
-    renderChart('obstaclesChart','Obstacles',["Salle isolée","Coût mammographie","Manque formation","Pratiques culturelles","Surcharge travail"],obstaclesCount);
+    // Graphes
+    const fLabels = ['Nulliparité','Ménopause','Alcool/tabac','Contraceptifs','Famille'];
+    const fData = [0,0,0,0,0].map((_,i)=> db.reduce((sum,d)=>sum+(d.facteurs[i]?1:0),0));
+    renderChart('facteursChart','Facteurs de Risque',fLabels,fData);
+
+    const oLabels = ["Salle","Coût","Formation","Culture","Charge"];
+    const oData = [0,0,0,0,0].map((_,i)=> db.reduce((sum,d)=>sum+(d.obstacles[i]?1:0),0));
+    renderChart('obstaclesChart','Obstacles au Dépistage',oLabels,oData);
 }
 
 function renderChart(id,title,labels,data) {
-    let canvas = document.getElementById(id);
-    if(!canvas) {
-        canvas = document.createElement('canvas'); canvas.id=id;
-        document.getElementById('tab3').appendChild(canvas);
-    }
-    if(canvas.chart) canvas.chart.destroy();
-    canvas.chart = new Chart(canvas,{
-        type:'pie',
-        data:{ labels: labels, datasets:[{ label: title, data: data, backgroundColor:['#b03060','#f06292','#f8bbd0','#e91e63','#c2185b','#ec407a'] }]},
+    const ctx = document.getElementById(id).getContext('2d');
+    if(document.getElementById(id).chart) document.getElementById(id).chart.destroy();
+    document.getElementById(id).chart = new Chart(ctx,{
+        type:'bar',
+        data:{ labels: labels, datasets:[{ label: title, data: data, backgroundColor:'#b03060' }]},
         options:{ responsive:true }
     });
 }
@@ -238,7 +295,7 @@ function exportCSV() {
     db.forEach(d=>{ csv += `${d.code},${d.age},${d.etude},${d.experience},${d.savoir},${d.pratique}\n`; });
     const blob = new Blob([csv],{type:'text/csv'});
     const url = window.URL.createObjectURL(blob);
-    const a=document.createElement('a'); a.href=url; a.download='depouillement_KAP.csv'; a.click();
+    const a=document.createElement('a'); a.href=url; a.download='donnees_KAP.csv'; a.click();
 }
 
 window.onload = ()=>{
@@ -247,9 +304,8 @@ window.onload = ()=>{
     const as = document.getElementById('age-select');
     for(let i=18;i<=65;i++) as.options.add(new Option(i+" ans",i));
     const es = document.getElementById('exp-select');
-    for(let i=0;i<=35;i++) es.options.add(new Option(i+" ans d'exp",i));
+    for(let i=0;i<=35;i++) es.options.add(new Option(i+" ans",i));
 };
 </script>
-
 </body>
 </html>
