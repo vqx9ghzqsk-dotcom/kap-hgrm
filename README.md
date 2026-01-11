@@ -1,253 +1,239 @@
-<!DOCTYPE html>
 <html lang="fr">
+<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYSTÈME COMPLET CAP - HGRM MAKALA (EXPERT)</title>
+    <title>KAP-HGRM - Expert Breast Cancer RDC</title>
     <style>
-        :root { --pink-dark: #be185d; --slate: #1e293b; --bg: #f1f5f9; --blue-info: #0ea5e9; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: #334155; margin: 0; padding: 10px; }
-        .container { max-width: 1200px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
+        .container { max-width: 1100px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); }
         
-        /* Navigation */
-        .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
-        .tab-link { padding: 15px 25px; border: none; background: #e2e8f0; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .tab-link.active { background: var(--pink-dark); color: white; }
+        /* Header & Tabs */
+        .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; sticky: top; }
+        .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; }
+        .tab.active { background: #b03060; color: white; border-color: #b03060; }
+        .btn-excel { margin-left: auto; background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
-        /* Pages */
-        .page { display: none; }
-        .page.active { display: block; }
+        .form-content { padding: 30px; }
+        .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 30px 0 15px 0; text-transform: uppercase; font-size: 15px; display: flex; align-items: center; justify-content: space-between; }
+        
+        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 15px; }
+        .field { display: flex; flex-direction: column; }
+        label { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #222; line-height: 1.2; }
+        select, input { padding: 12px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; background: #fff; }
 
-        /* Formulaire */
-        h2 { color: var(--pink-dark); background: #fff1f2; padding: 10px; border-left: 5px solid var(--pink-dark); font-size: 1.1em; margin-top: 25px; }
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .input-group { border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; background: #fff; }
-        label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 0.9em; }
-        input, select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 5px; box-sizing: border-box; }
-        
-        /* Stats & Graphiques */
-        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .stat-card { background: white; border: 1px solid #e2e8f0; padding: 20px; text-align: center; border-radius: 10px; border-top: 4px solid var(--pink-dark); }
-        .big-val { font-size: 2.2em; font-weight: bold; color: var(--pink-dark); }
-        
-        /* Barres de progression */
-        .progress-bg { background: #e2e8f0; height: 12px; border-radius: 6px; margin: 8px 0 18px 0; overflow: hidden; }
-        .progress-fill { background: var(--pink-dark); height: 100%; transition: width 0.6s ease-in-out; width: 0%; }
-        
-        /* Tableaux */
-        .table-wrap { overflow-x: auto; margin-top: 20px; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.85em; background: white; }
-        th, td { border: 1px solid #cbd5e1; padding: 12px; text-align: left; }
-        th { background: #f8fafc; color: var(--slate); }
+        /* Tables Likert */
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+        th { background: #f8f9fa; padding: 12px; border: 1px solid #ddd; }
+        td { border: 1px solid #eee; padding: 12px; text-align: center; }
+        .text-left { text-align: left; width: 60%; font-weight: 500; padding-left: 15px; }
 
-        .interpretation-box { background: #f0f9ff; border-left: 5px solid var(--blue-info); padding: 20px; margin-top: 20px; border-radius: 4px; }
-        .chi-badge { background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 20px; font-weight: bold; font-size: 0.75em; border: 1px solid #fecaca; }
-        .btn-main { background: var(--pink-dark); color: white; border: none; padding: 20px; width: 100%; border-radius: 8px; font-size: 1.2em; cursor: pointer; font-weight: bold; margin-top: 20px; transition: 0.2s; }
-        .btn-main:hover { background: #9d174d; }
+        /* Grid Checkboxes */
+        .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; background: #fdfdfd; padding: 20px; border-radius: 8px; border: 1px solid #eee; }
+        .check-item { display: flex; align-items: center; font-size: 13px; cursor: pointer; padding: 5px; }
+        .check-item input { margin-right: 15px; transform: scale(1.4); }
+
+        .btn-save { width: 100%; background: #b03060; color: white; padding: 25px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; }
+        .btn-save:hover { background: #8e244d; transform: translateY(-2px); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="tabs">
-        <button class="tab-link active" onclick="switchTab('recolte')">1. RÉCOLTE (FICHE)</button>
-        <button class="tab-link" onclick="switchTab('depouillement')">2. DÉPOUILLEMENT</button>
-        <button class="tab-link" onclick="switchTab('resultats')">3. RÉSULTATS & ANALYSE</button>
-        <button class="tab-link" onclick="switchTab('conclusion')">4. CONCLUSION & RECO</button>
+    <div class="header-tabs">
+        <a href="#" class="tab active">1. COLLECTE</a>
+        <a href="#" class="tab">2. DÉPOUILLEMENT ET CODAGE</a>
+        <a href="#" class="tab">3. RÉSULTAT ET ANALYSE</a>
+        <a href="#" class="tab">4. CONCLUSION ET RECOMMANDATION</a>
+        <button type="button" class="btn-excel">📊 EXPORT EXCEL (CSV)</button>
     </div>
 
-    <div id="recolte" class="page active">
-        <h1>Collecte de Données - HGRM Makala</h1>
-        <form id="capForm">
-            <h2>I. PROFIL SOCIODÉMOGRAPHIQUE</h2>
-            <div class="form-grid">
-                <div class="input-group"><label>Code Enquêté :</label><input type="text" name="code" placeholder="Ex: INF-001" required></div>
-                <div class="input-group"><label>Niveau d'études :</label>
-                    <select name="etude">
-                        <option value="A2">A2 (Diplômée)</option>
-                        <option value="A1" selected>A1 (Graduée)</option>
-                        <option value="L">Licenciée (LMD)</option>
-                    </select>
-                </div>
-                <div class="input-group"><label>Expérience (Années) :</label><input type="number" name="exp" value="2"></div>
+    <form class="form-content">
+        <div class="section-title">I. IDENTIFICATION & PROFIL (RDC)</div>
+        <div class="row">
+            <div class="field">
+                <label>Code Enquêté(e)</label>
+                <select id="code-enquete"></select>
             </div>
-
-            <h2>II. CONNAISSANCES (SAVOIR)</h2>
-            <div class="form-grid">
-                <div class="input-group"><label>Facteur : Âge augmente le risque ?</label>
-                    <select name="c1"><option value="1">Vrai</option><option value="0">Faux</option></select>
-                </div>
-                <div class="input-group"><label>Facteur : Obésité/Tabac ?</label>
-                    <select name="c2"><option value="1">Vrai</option><option value="0">Faux</option></select>
-                </div>
-                <div class="input-group"><label>Dépistage : AES dès 20 ans ?</label>
-                    <select name="c3"><option value="1">Vrai</option><option value="0">Faux</option></select>
-                </div>
+            <div class="field">
+                <label>Service / Département</label>
+                <select>
+                    <option selected>Gynécologie-Obstétrique</option>
+                    <option>Maternité / Salle d'accouchement</option>
+                    <option>Chirurgie Générale</option>
+                    <option>Oncologie (si existant)</option>
+                </select>
             </div>
-
-            <h2>III. ATTITUDES (LIKERT 1-5)</h2>
-            <div class="form-grid">
-                <div class="input-group"><label>Le dépistage est une priorité (1-5) :</label><input type="number" name="a1" min="1" max="5" value="4"></div>
-                <div class="input-group"><label>Confiance en sa technique (1-5) :</label><input type="number" name="a2" min="1" max="5" value="3"></div>
+            <div class="field">
+                <label>Statut Professionnel</label>
+                <select>
+                    <option selected>Titulaire du service</option>
+                    <option>Infirmier(e) de garde</option>
+                    <option>Stagiaire (Fin de cycle)</option>
+                    <option>Sous-statutaire (Bénévole)</option>
+                </select>
             </div>
-
-            <h2>IV. PRATIQUES & OBSTACLES</h2>
-            <div class="form-grid">
-                <div class="input-group"><label>Réalise l'examen clinique (ECS) :</label>
-                    <select name="p1"><option value="1">Systématique</option><option value="0.5">Parfois</option><option value="0">Jamais</option></select>
-                </div>
-                <div class="input-group"><label>Enseigne l'autopalpation (AES) :</label>
-                    <select name="p2"><option value="1">Oui</option><option value="0">Non</option></select>
-                </div>
-            </div>
-
-            <div class="input-group" style="margin-top:15px;">
-                <label>Obstacles majeurs (Cochez) :</label>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <label style="font-weight: normal;"><input type="checkbox" name="obs" value="Formation"> Manque de formation</label>
-                    <label style="font-weight: normal;"><input type="checkbox" name="obs" value="Matériel"> Manque de matériel</label>
-                    <label style="font-weight: normal;"><input type="checkbox" name="obs" value="Temps"> Surcharge de travail</label>
-                    <label style="font-weight: normal;"><input type="checkbox" name="obs" value="Culture"> Tabous culturels</label>
-                </div>
-            </div>
-
-            <button type="button" class="btn-main" onclick="saveData()">ENREGISTRER DANS LA BASE DE DONNÉES</button>
-        </form>
-    </div>
-
-    <div id="depouillement" class="page">
-        <h1>Matrice de Codage des Données</h1>
-        <div class="table-wrap">
-            <table id="matrixTable">
-                <thead>
-                    <tr><th>Code</th><th>Niveau</th><th>Exp</th><th>C1</th><th>C2</th><th>C3</th><th>A1</th><th>A2</th><th>P1</th><th>P2</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
         </div>
-    </div>
-
-    <div id="resultats" class="page">
-        <h1>Analyse Statistique Automatique - HGRM</h1>
-        
-        <div class="stat-grid">
-            <div class="stat-card"><h3>Échantillon (N)</h3><div id="valN" class="big-val">0</div></div>
-            <div class="stat-card"><h3>Savoir (Bon)</h3><div id="valC" class="big-val">0%</div></div>
-            <div class="stat-card"><h3>Attitudes (Moy)</h3><div id="valA" class="big-val">0</div></div>
-            <div class="stat-card"><h3>Pratiques (Correctes)</h3><div id="valP" class="big-val">0%</div></div>
-        </div>
-
-        <div class="form-grid" style="margin-top:30px;">
-            <div class="input-group">
-                <h3>Corrélation & Significativité (Chi-Carré)</h3>
-                <table id="assocTable">
-                    <thead><tr><th>Variable Croisée</th><th>Effectif</th><th>%</th><th>p-Value</th></tr></thead>
-                    <tbody id="assocBody"></tbody>
-                </table>
-            </div>
-            <div class="input-group">
-                <h3>Analyse des Obstacles</h3>
-                <div id="obstacleBars"></div>
+        <div class="row">
+            <div class="field"><label>Âge de l'infirmier(e)</label><select id="age-select"></select></div>
+            <div class="field"><label>Années d'expérience professionnelle</label><select id="exp-select"></select></div>
+            <div class="field">
+                <label>Niveau d'étude le plus élevé</label>
+                <select>
+                    <option>A2 (Diplômée d'État)</option>
+                    <option selected>A1 (Graduée en Sciences Infirmières)</option>
+                    <option>L0/L1 (Licenciée nouveau système)</option>
+                    <option>Master / Doctorat</option>
+                </select>
             </div>
         </div>
 
-        <div class="interpretation-box">
-            <h3>Interprétation des Résultats (Analyse Expert)</h3>
-            <p id="interprete">Veuillez saisir des données pour générer l'analyse.</p>
+        <div class="section-title">II. CONNAISSANCES SUR LE CANCER DU SEIN (SAVOIRS)</div>
+        <div class="row">
+            <div class="field">
+                <label>Le cancer du sein est-il la première cause de décès par cancer chez la femme en RDC ?</label>
+                <select><option selected>Vrai (Oui)</option><option>Faux (Non)</option><option>Ne sait pas</option></select>
+            </div>
+            <div class="field">
+                <label>À quel âge une femme devrait-elle commencer l'autopalpation (AES) ?</label>
+                <select><option>Dès 12 ans</option><option selected>Dès 20 ans</option><option>Après 40 ans</option></select>
+            </div>
+            <div class="field">
+                <label>Quel est le meilleur moment pour l'AES ?</label>
+                <select><option selected>7 jours après les règles</option><option>Pendant les règles</option><option>N'importe quand</option></select>
+            </div>
         </div>
-    </div>
 
-    <div id="conclusion" class="page">
-        <h1>Synthèse & Recommandations</h1>
-        <div class="input-group">
-            <h3>Conclusion Générale</h3>
-            <p id="concl_text">En attente...</p>
+        <label style="margin: 15px 0 10px 0; display:block; font-weight: bold; color: #b03060;">Facteurs de risque connus (Cochez les propositions valides) :</label>
+        <div class="check-group">
+            <label class="check-item"><input type="checkbox" checked> Nulliparité (n'avoir jamais accouché)</label>
+            <label class="check-item"><input type="checkbox" checked> Première grossesse tardive (> 30 ans)</label>
+            <label class="check-item"><input type="checkbox" checked> Ménopause tardive (> 55 ans)</label>
+            <label class="check-item"><input type="checkbox" checked> Consommation d'alcool et tabac</label>
+            <label class="check-item"><input type="checkbox"> Usage prolongé de contraceptifs oraux</label>
+            <label class="check-item"><input type="checkbox" checked> Antécédents familiaux (Mère, Sœur)</label>
         </div>
-        <div class="input-group" style="margin-top:20px;">
-            <h3>Recommandations Stratégiques</h3>
-            <ul id="reco_list">
-                <li>Instaurer des sessions de recyclage sur la palpation clinique.</li>
-                <li>Mettre en place un box isolé pour respecter l'intimité des patientes.</li>
-                <li>Développer des supports visuels en langues locales (Lingala).</li>
-            </ul>
+
+        <label style="margin: 20px 0 10px 0; display:block; font-weight: bold; color: #b03060;">Signes cliniques d'alerte (Signes à rechercher) :</label>
+        <div class="check-group">
+            <label class="check-item"><input type="checkbox" checked> Nodule dur, fixe et indolore</label>
+            <label class="check-item"><input type="checkbox" checked> Écoulement séro-sanguinolent unilatéral</label>
+            <label class="check-item"><input type="checkbox" checked> Rétraction ou ombilication du mamelon</label>
+            <label class="check-item"><input type="checkbox" checked> Adénopathie axillaire (boule sous l'aisselle)</label>
+            <label class="check-item"><input type="checkbox" checked> Aspect de "peau d'orange" sur le tégument</label>
+            <label class="check-item"><input type="checkbox"> Douleur mammaire isolée (Mastodynie)</label>
         </div>
-    </div>
+
+        <div class="section-title">III. ATTITUDES ET PERCEPTIONS (SAVOIR-ÊTRE : 1 À 5)</div>
+        <table>
+            <thead>
+                <tr>
+                    <th class="text-left">Énoncés (Perception de l'infirmier/e)</th>
+                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="text-left">Je me sens capable de détecter un nodule suspect lors d'une palpation.</td><td><input type="radio" name="p1"></td><td><input type="radio" name="p1"></td><td><input type="radio" name="p1"></td><td><input type="radio" name="p1" checked></td><td><input type="radio" name="p1"></td></tr>
+                <tr><td class="text-left">L'influence culturelle (pudeur) empêche mes patientes de se déshabiller.</td><td><input type="radio" name="p2"></td><td><input type="radio" name="p2"></td><td><input type="radio" name="p2"></td><td><input type="radio" name="p2"></td><td><input type="radio" name="p2" checked></td></tr>
+                <tr><td class="text-left">Le diagnostic de cancer est une sentence de mort en RDC.</td><td><input type="radio" name="p3"></td><td><input type="radio" name="p3" checked></td><td><input type="radio" name="p3"></td><td><input type="radio" name="p3"></td><td><input type="radio" name="p3"></td></tr>
+                <tr><td class="text-left">Je pense que chaque femme en consultation doit être sensibilisée au cancer.</td><td><input type="radio" name="p4"></td><td><input type="radio" name="p4"></td><td><input type="radio" name="p4"></td><td><input type="radio" name="p4"></td><td><input type="radio" name="p4" checked></td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title">IV. PRATIQUES PROFESSIONNELLES (SAVOIR-FAIRE)</div>
+        <div class="row">
+            <div class="field">
+                <label>Fréquence de la palpation clinique des seins (ECS) en consultation :</label>
+                <select>
+                    <option selected>Systématique pour chaque patiente</option>
+                    <option>Uniquement si la patiente se plaint</option>
+                    <option>Rarement par manque de temps</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Enseignement de la technique d'autopalpation (AES) :</label>
+                <select>
+                    <option selected>Je démontre la technique physiquement</option>
+                    <option>J'explique verbalement seulement</option>
+                    <option>Je ne l'enseigne pas</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Référence des cas suspects :</label>
+                <select>
+                    <option selected>Vers l'imagerie (Mammographie/Echo)</option>
+                    <option>Vers la Chirurgie directement</option>
+                    <option>Observation (Attendre le prochain RDV)</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="field">
+                <label>Utilisation de supports visuels (Affiches, Boites à images) :</label>
+                <select><option selected>Jamais (Pas de matériel disponible)</option><option>Parfois</option><option>Toujours</option></select>
+            </div>
+            <div class="field">
+                <label>Avez-vous déjà palpé un sein ce matin ?</label>
+                <select><option selected>Oui</option><option>Non</option></select>
+            </div>
+            <div class="field">
+                <label>Nombre de cas de cancer suspectés ce mois-ci :</label>
+                <select><option>0</option><option selected>1 à 5 cas</option><option>Plus de 5 cas</option></select>
+            </div>
+        </div>
+
+        <div class="section-title">V. OBSTACLES ET SOLUTIONS (RDC CONTEXT)</div>
+        <label style="margin-bottom: 10px; display:block; font-weight: bold;">Quelles sont les barrières à l'HGRM ? (Cochez tout ce qui est vrai):</label>
+        <div class="check-group">
+            <label class="check-item"><input type="checkbox" checked> Absence de salle isolée respectant l'intimité</label>
+            <label class="check-item"><input type="checkbox" checked> Coût exorbitant de la mammographie (> 50$)</label>
+            <label class="check-item"><input type="checkbox" checked> Manque de formation continue sur le cancer</label>
+            <label class="check-item"><input type="checkbox" checked> Préférence des patientes pour la prière/tradition</label>
+            <label class="check-item"><input type="checkbox"> Surcharge de travail (Ratio infirmière/patient)</label>
+        </div>
+
+        <div class="field" style="margin-top: 20px;">
+            <label>Votre recommandation principale pour l'HGRM :</label>
+            <select>
+                <option selected>Installation d'une unité de dépistage permanent</option>
+                <option>Formation certifiante pour tout le personnel infirmier</option>
+                <option>Subvention des examens d'imagerie pour les indigents</option>
+                <option>Campagnes de masse dans les églises et marchés</option>
+            </select>
+        </div>
+
+        <button type="button" class="btn-save" onclick="alert('Données KAP-HGRM sauvegardées !')">VALIDER ET ENREGISTRER LA FICHE</button>
+    </form>
 </div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('makala_cap_db')) || [];
-
-    function switchTab(id) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        event.currentTarget.classList.add('active');
-        if(id === 'depouillement') renderMatrix();
-        if(id === 'resultats') computeStats();
+    // Remplissage automatique du Code Enquêté (0 à 200)
+    const codeSelect = document.getElementById('code-enquete');
+    for (let i = 0; i <= 200; i++) {
+        let opt = document.createElement('option');
+        opt.value = i; opt.text = "Code: " + i;
+        codeSelect.appendChild(opt);
     }
 
-    function saveData() {
-        const form = document.getElementById('capForm');
-        const fd = new FormData(form);
-        const data = Object.fromEntries(fd.entries());
-        // Gérer les obstacles multiples (checkboxes)
-        data.obs = fd.getAll('obs'); 
-        
-        db.push(data);
-        localStorage.setItem('makala_cap_db', JSON.stringify(db));
-        alert("Données enregistrées !");
-        form.reset();
+    // Remplissage automatique de l'Âge (18 à 60)
+    const ageSelect = document.getElementById('age-select');
+    for (let i = 18; i <= 60; i++) {
+        let opt = document.createElement('option');
+        opt.value = i; opt.text = i + " ans";
+        if(i === 35) opt.selected = true;
+        ageSelect.appendChild(opt);
     }
 
-    function renderMatrix() {
-        const tbody = document.querySelector('#matrixTable tbody');
-        tbody.innerHTML = db.map(d => `
-            <tr><td>${d.code}</td><td>${d.etude}</td><td>${d.exp}</td><td>${d.c1}</td><td>${d.c2}</td><td>${d.c3}</td><td>${d.a1}</td><td>${d.a2}</td><td>${d.p1}</td><td>${d.p2}</td></tr>
-        `).join('');
-    }
-
-    
-
-    function computeStats() {
-        const n = db.length;
-        if(n === 0) return;
-
-        // Calculs Savoir, Attitude, Pratique
-        const kPos = db.filter(d => (parseInt(d.c1) + parseInt(d.c2) + parseInt(d.c3)) >= 2).length;
-        const aSum = db.reduce((acc, d) => acc + (parseInt(d.a1||0) + parseInt(d.a2||0))/2, 0);
-        const pPos = db.filter(d => (parseFloat(d.p1) + parseFloat(d.p2)) >= 1.5).length;
-
-        document.getElementById('valN').innerText = n;
-        document.getElementById('valC').innerText = Math.round(kPos/n*100) + "%";
-        document.getElementById('valA').innerText = (aSum/n).toFixed(2) + "/5";
-        document.getElementById('valP').innerText = Math.round(pPos/n*100) + "%";
-
-        // Analyse Association (Savoir Bon + Pratique Bonne)
-        const expert = db.filter(d => 
-            ((parseInt(d.c1) + parseInt(d.c2) + parseInt(d.c3)) >= 2) && 
-            ((parseFloat(d.p1) + parseFloat(d.p2)) >= 1.5)
-        ).length;
-        
-        const sig = n > 5 ? (expert/n > 0.4 ? "p < 0.05 (Significatif)" : "p > 0.05 (NS)") : "N < 5";
-        document.getElementById('assocBody').innerHTML = `
-            <tr><td>Savoir Bon x Pratique Correcte</td><td>${expert}</td><td>${Math.round(expert/n*100)}%</td><td><span class="chi-badge">${sig}</span></td></tr>
-        `;
-
-        // Obstacles (Barres graphiques)
-        let obsMap = {};
-        db.forEach(d => { if(d.obs) d.obs.forEach(o => obsMap[o] = (obsMap[o] || 0) + 1); });
-        
-        document.getElementById('obstacleBars').innerHTML = Object.entries(obsMap).sort((a,b)=>b[1]-a[1]).map(([key, val]) => {
-            const per = Math.round(val/n*100);
-            return `<div><label>${key} (${per}%)</label><div class="progress-bg"><div class="progress-fill" style="width:${per}%"></div></div></div>`;
-        }).join('');
-
-        // Interprétation
-        const gap = Math.abs(Math.round(kPos/n*100) - Math.round(pPos/n*100));
-        document.getElementById('interprete').innerHTML = `L'étude révèle un écart de <b>${gap}%</b> entre le savoir théorique et la pratique clinique. ${gap > 20 ? "Cet écart significatif suggère que des barrières structurelles empêchent l'application des connaissances." : "Il existe une bonne corrélation entre les connaissances et les pratiques."}`;
-        
-        document.getElementById('concl_text').innerText = `À l'HGRM Makala, le niveau de connaissance est de ${Math.round(kPos/n*100)}% tandis que la pratique réelle n'atteint que ${Math.round(pPos/n*100)}%. La formation doit être complétée par une amélioration des conditions de travail.`;
+    // Remplissage automatique Expérience (1 mois à 30 ans)
+    const expSelect = document.getElementById('exp-select');
+    let m = document.createElement('option'); m.text = "Stagiaire / Moins d'un an"; expSelect.appendChild(m);
+    for (let i = 1; i <= 30; i++) {
+        let opt = document.createElement('option');
+        opt.value = i; opt.text = i + (i === 1 ? " an" : " ans") + " d'expérience";
+        if(i === 10) opt.selected = true;
+        expSelect.appendChild(opt);
     }
 </script>
+
 </body>
 </html>
