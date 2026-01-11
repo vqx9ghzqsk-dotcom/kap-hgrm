@@ -3,228 +3,214 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Expert-KAP HGRM - Étude de Corrélation</title>
+<title>KAP-Expert Cancer du Sein HGRM</title>
 <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 10px; }
-    .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
-    .header-tabs { display: flex; background: #fff; border-bottom: 4px solid #b03060; padding: 12px; gap: 8px; position: sticky; top: 0; z-index: 1000; }
-    .tab { padding: 12px 20px; font-weight: bold; font-size: 13px; border-radius: 6px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 10px; }
+    .container { max-width: 1250px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 5px 30px rgba(0,0,0,0.15); }
+    .header-tabs { display: flex; background: #fff; border-bottom: 5px solid #b03060; padding: 15px; gap: 10px; position: sticky; top: 0; z-index: 1000; }
+    .tab { padding: 12px 20px; font-weight: bold; font-size: 13px; border-radius: 6px; border: 1px solid #ddd; color: #555; background: #f9f9f9; cursor: pointer; }
     .tab.active { background: #b03060; color: white; border-color: #b03060; }
+    .section-title { background: #fff0f5; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 30px 0 15px 0; text-transform: uppercase; font-size: 14px; }
+    .field { display: flex; flex-direction: column; margin-bottom: 25px; }
+    label { font-size: 14px; font-weight: 800; margin-bottom: 12px; color: #1a1a1a; background: #fdfdfd; padding: 5px; border-bottom: 1px solid #eee; }
+    select, input, textarea { padding: 14px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; transition: all 0.3s; }
+    select:focus { border-color: #b03060; box-shadow: 0 0 8px rgba(176, 48, 96, 0.2); }
+    .radio-group { display: flex; flex-direction: column; gap: 10px; padding-left: 10px; }
+    .radio-item { display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 8px; border-radius: 5px; transition: 0.2s; }
+    .radio-item:hover { background: #fce4ec; }
+    .btn-save { width: 100%; background: #b03060; color: white; padding: 25px; border: none; border-radius: 10px; font-size: 20px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin: 40px 0; }
     .admin-only { display: none !important; }
-    .content-section { display: none; padding: 30px; }
-    .content-section.active { display: block; }
-    .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 30px 0 15px 0; text-transform: uppercase; font-size: 14px; }
-    .field { display: flex; flex-direction: column; margin-bottom: 20px; }
-    label { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: #222; }
-    select, input, textarea { padding: 12px; border: 1.5px solid #bbb; border-radius: 8px; font-size: 14px; }
-    .grid-ans { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; background: #f9f9f9; padding: 20px; border-radius: 8px; }
-    .btn-save { width: 100%; background: #b03060; color: white; padding: 25px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-    .btn-save:hover { background: #8e244d; }
-    .corroboration-note { font-size: 11px; color: #d81b60; font-style: italic; margin-top: -5px; margin-bottom: 10px; display: block; }
 </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-tabs">
-        <div class="tab active" onclick="showTab(1)">1. COLLECTE</div>
-        <div class="tab admin-only" onclick="showTab(2)">2. DÉPOUILLEMENT</div>
-        <div class="tab admin-only" onclick="showTab(3)">3. ANALYSE STATISTIQUE</div>
+        <div class="tab active" onclick="showTab(1)">1. COLLECTE (QUESTIONNAIRE COMPLET)</div>
+        <div class="tab admin-only" onclick="showTab(2)">2. BASE DE DONNÉES</div>
+        <div class="tab admin-only" onclick="showTab(3)">3. ANALYSE COMPARATIVE</div>
+        <button class="admin-only" onclick="exportExcel()" style="margin-left:auto; background:#2e7d32; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;">📥 EXPORTER EXCEL</button>
     </div>
 
-    <div id="tab1" class="content-section active">
+    <div id="tab1" class="content-section active" style="padding: 30px;">
         <form id="kapForm">
-            <div class="section-title">I. IDENTIFICATION ET PROFIL (VARIABLES INDÉPENDANTES)</div>
-            <div class="grid-ans">
-                <div class="field"><label>Code de l'enquêté</label><input type="text" name="id_inf" required placeholder="Ex: INF-HGRM-01"></div>
-                <div class="field"><label>Niveau d'Étude</label>
-                    <select name="niveau" id="niveau-etude" required>
-                        <option value="A1">Gradué (A1)</option>
-                        <option value="A0">Licencié (A0)</option>
-                        <option value="Doc">Médecin</option>
+            
+            <div class="section-title">I. IDENTIFICATION ET DONNÉES SOCIO-DÉMOGRAPHIQUES</div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div class="field"><label>Code de l'Agent</label><input type="text" name="id_agent" required placeholder="Ex: INF-HGRM-01"></div>
+                <div class="field"><label>Âge du soignant</label><select name="age" id="age-select"></select></div>
+                <div class="field"><label>Niveau de formation</label>
+                    <select name="niveau" required>
+                        <option value="A1">Infirmier(e) Gradué(e) (A1)</option>
+                        <option value="A0">Infirmier(e) Licencié(e) (A0)</option>
+                        <option value="Doc">Médecin / Spécialiste</option>
+                        <option value="Autre">Autre personnel soignant</option>
                     </select>
                 </div>
-                <div class="field"><label>Ancienneté (Années)</label><select name="exp" id="exp-select"></select></div>
+                <div class="field"><label>Ancienneté à l'HGRM</label><select name="exp" id="exp-select"></select></div>
             </div>
 
-            <div class="section-title">II. CONNAISSANCES (CROISEMENT SCIENTIFIQUE)</div>
-            
-            <div class="field">
-                <label>1. Quel est l'âge moyen à partir duquel le risque augmente drastiquement ?</label>
-                <select name="k_age_risque">
-                    <option value="0">Dès la puberté (12-15 ans)</option>
-                    <option value="1">Vers 25 ans</option>
-                    <option value="2">À partir de 40-50 ans (Réponse correcte)</option>
-                </select>
-            </div>
+            <div class="section-title">II. CONNAISSANCES APPROFONDIES (SAVOIR)</div>
 
             <div class="field">
-                <label>2. [Corrélation] Si une patiente a une masse fixe, quel signe cutané recherchez-vous en priorité ?</label>
-                <span class="corroboration-note">Corrobore la capacité de diagnostic clinique différentiel.</span>
-                <select name="k_corr_signe">
-                    <option value="0">Une simple démangeaison</option>
-                    <option value="1">Une augmentation de la chaleur locale (Inflammation simple)</option>
-                    <option value="2">L'aspect en "peau d'orange" ou une ombilication du mamelon (Signe malin)</option>
-                </select>
-            </div>
-            
-
-            <div class="field">
-                <label>3. [Corrélation] Devant une suspicion clinique, quel est le premier examen à réaliser selon vous ?</label>
-                <span class="corroboration-note">Corrobore le choix du plateau technique (Écho vs Mammo).</span>
-                <select name="k_corr_examen">
-                    <option value="0">Une ponction à l'aveugle avec une seringue (Dangereux/Incomplet)</option>
-                    <option value="1">Échographie mammaire (Souvent seul choix disponible, mais insuffisant après 40 ans)</option>
-                    <option value="2">Mammographie bilatérale couplée à l'échographie (Standard expert)</option>
-                </select>
-            </div>
-
-            <div class="section-title">III. ATTITUDES ET CONVICTIONS (VARIABLES DE CROISEMENT)</div>
-            
-            <div class="field">
-                <label>1. [Corrélation] Pensez-vous que la mastectomie (ablation) est la seule issue pour tout cancer du sein ?</label>
-                <span class="corroboration-note">Évalue le degré d'optimisme thérapeutique et l'attitude face au traitement.</span>
-                <select name="att_conv_traitement">
-                    <option value="0">Oui, et c'est pour cela que les femmes refusent de venir (Attitude de peur)</option>
-                    <option value="1">Non, il existe des traitements conservateurs si on dépiste tôt (Attitude informée)</option>
-                    <option value="2">Le traitement dépend du stade TNM et du profil hormonal (Attitude experte)</option>
-                </select>
+                <label>1. Quelle est, selon vous, la prévalence du cancer du sein chez les femmes en RDC ?</label>
+                <div class="radio-group">
+                    <label class="radio-item"><input type="radio" name="k_prev" value="0"> C'est une maladie rare qui touche surtout les femmes occidentales</label>
+                    <label class="radio-item"><input type="radio" name="k_prev" value="1"> C'est le 2ème cancer après celui du col de l'utérus</label>
+                    <label class="radio-item"><input type="radio" name="k_prev" value="2"> C'est le 1er cancer en termes de fréquence et de mortalité féminine (Réponse experte)</label>
+                    <label class="radio-item"><input type="radio" name="k_prev" value="0"> Je ne connais pas les statistiques actuelles</label>
+                </div>
             </div>
 
             <div class="field">
-                <label>2. Que faites-vous si une amie vous confie avoir une boule au sein ?</label>
-                <select name="att_personnelle">
-                    <option value="0">Je la rassure en lui disant que c'est sûrement bénin (Attitude de déni)</option>
-                    <option value="1">Je lui conseille de prier et d'attendre (Attitude culturelle/religieuse)</option>
-                    <option value="2">Je l'oblige à consulter immédiatement en milieu hospitalier (Attitude proactive)</option>
-                </select>
+                <label>2. À quel moment une femme doit-elle idéalement pratiquer son autopalpation ?</label>
+                <div class="radio-group">
+                    <label class="radio-item"><input type="radio" name="k_moment" value="0"> N'importe quand, cela n'a pas d'importance</label>
+                    <label class="radio-item"><input type="radio" name="k_moment" value="1"> Pendant la période des règles (menstruations)</label>
+                    <label class="radio-item"><input type="radio" name="k_moment" value="2"> 2 à 3 jours après la fin des règles (période de souplesse mammaire)</label>
+                    <label class="radio-item"><input type="radio" name="k_moment" value="1"> Une fois par an seulement</label>
+                </div>
             </div>
 
-            <div class="section-title">IV. PRATIQUES (VÉRIFICATION DES ACTES)</div>
-            
             <div class="field">
-                <label>1. [Corrélation] Pendant la palpation, comment disposez-vous la patiente ?</label>
-                <span class="corroboration-note">Corrobore la réalité de la pratique (Vérification technique).</span>
-                <select name="pra_corr_pos">
-                    <option value="0">Uniquement assise sur une chaise</option>
-                    <option value="1">Debout, les mains sur les hanches</option>
-                    <option value="2">Position couchée (décubitus dorsal) avec le bras relevé (Position optimale de palpation)</option>
-                </select>
+                <label>3. Lesquels de ces éléments sont des facteurs de risque réels ? (Plusieurs choix possibles)</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #f9f9f9; padding: 15px; border-radius: 8px;">
+                    <label class="radio-item"><input type="checkbox" name="k_fr1"> Allaitement maternel prolongé (Facteur protecteur)</label>
+                    <label class="radio-item"><input type="checkbox" name="k_fr2"> Première grossesse après 35 ans</label>
+                    <label class="radio-item"><input type="checkbox" name="k_fr3"> Obésité et sédentarité après la ménopause</label>
+                    <label class="radio-item"><input type="checkbox" name="k_fr4"> Port de soutiens-gorge trop serrés (Mythe)</label>
+                    <label class="radio-item"><input type="checkbox" name="k_fr5"> Antécédent familial direct (Mère/Sœur)</label>
+                </div>
             </div>
+
             
 
             <div class="field">
-                <label>2. À quelle fréquence recommandez-vous l'autopalpation à vos patientes ?</label>
-                <select name="pra_recom">
-                    <option value="0">Jamais, je n'y pense pas</option>
-                    <option value="1">Rarement, seulement si elles ont des antécédents</option>
-                    <option value="2">À chaque contact infirmier-patiente (Pratique idéale)</option>
-                </select>
+                <label>4. Quel est le signe clinique le plus précoce d'une tumeur maligne ?</label>
+                <div class="radio-group">
+                    <label class="radio-item"><input type="radio" name="k_signe" value="0"> Une douleur vive et soudaine au sein</label>
+                    <label class="radio-item"><input type="radio" name="k_signe" value="2"> Un nodule indolore, dur, à contours irréguliers</label>
+                    <label class="radio-item"><input type="radio" name="k_signe" value="1"> Un écoulement de lait chez une femme qui n'allaite pas</label>
+                    <label class="radio-item"><input type="radio" name="k_signe" value="0"> Une rougeur sur toute la poitrine</label>
+                </div>
             </div>
 
-            <div class="section-title">V. OBSTACLES ET RECOMMANDATIONS (VARIABLES D'ACTION)</div>
+            <div class="section-title">III. ATTITUDES ET PERCEPTIONS (POSTURE)</div>
+
+            <div class="field">
+                <label>1. Face à une patiente de 45 ans sans symptômes, quelle est votre attitude ?</label>
+                <div class="radio-group">
+                    <label class="radio-item"><input type="radio" name="at_posture" value="0"> Je ne fais rien si elle ne se plaint pas</label>
+                    <label class="radio-item"><input type="radio" name="at_posture" value="1"> Je lui conseille de revenir si elle sent quelque chose</label>
+                    <label class="radio-item"><input type="radio" name="at_posture" value="2"> Je profite de la consultation pour faire un examen clinique des seins</label>
+                    <label class="radio-item"><input type="radio" name="at_posture" value="2"> Je l'éduque systématiquement sur l'autopalpation</label>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>2. Que pensez-vous de la mammographie à Kinshasa ?</label>
+                <div class="radio-group">
+                    <label class="radio-item"><input type="radio" name="at_mammo" value="0"> C'est un examen dangereux à cause des rayons</label>
+                    <label class="radio-item"><input type="radio" name="at_mammo" value="1"> C'est trop cher, inutile de le proposer aux patientes pauvres</label>
+                    <label class="radio-item"><input type="radio" name="at_mammo" value="2"> C'est l'examen clé que tout soignant devrait encourager malgré le coût</label>
+                </div>
+            </div>
+
+            <div class="section-title">IV. PRATIQUES ET APTITUDES (ACTION)</div>
+
+            <div class="field">
+                <label>1. Comment effectuez-vous la palpation mammaire en pratique ?</label>
+                <div class="radio-group">
+                    <label class="radio-item"><input type="radio" name="p_tech" value="0"> Avec la main entière en pressant le sein</label>
+                    <label class="radio-item"><input type="radio" name="p_tech" value="1"> Avec le bout de l'index uniquement</label>
+                    <label class="radio-item"><input type="radio" name="p_tech" value="2"> Avec la pulpe des 3 doigts moyens, par mouvements circulaires</label>
+                    <label class="radio-item"><input type="radio" name="p_tech" value="0"> Je délègue toujours cet examen au médecin</label>
+                </div>
+            </div>
+
             
+
             <div class="field">
-                <label>Quel est, selon vous, l'obstacle n°1 à l'HGRM ?</label>
-                <select name="obs_principal">
-                    <option value="cout">Le coût trop élevé pour la population</option>
-                    <option value="formation">Le manque de formation du personnel</option>
-                    <option value="tabou">Le tabou lié à la nudité et au corps</option>
-                    <option value="materiel">L'absence d'unité de mammographie sur place</option>
+                <label>2. Lors de l'examen, recherchez-vous les ganglions axillaires (sous l'aisselle) ?</label>
+                <div class="radio-group">
+                    <label class="radio-item"><input type="radio" name="p_gang" value="2"> Oui, systématiquement de chaque côté</label>
+                    <label class="radio-item"><input type="radio" name="p_gang" value="1"> Seulement si je trouve une boule dans le sein</label>
+                    <label class="radio-item"><input type="radio" name="p_gang" value="0"> Non, je ne savais pas que c'était lié</label>
+                </div>
+            </div>
+
+            <div class="section-title">V. OBSTACLES ET RECOMMANDATIONS</div>
+            <div class="field">
+                <label>Quel est l'obstacle majeur qui vous empêche de dépister à l'HGRM ?</label>
+                <select name="obstacle_principal">
+                    <option value="formation">Mon manque de formation technique</option>
+                    <option value="temps">La surcharge de travail (pas le temps)</option>
+                    <option value="espace">Le manque d'intimité (pas de rideaux/paravents)</option>
+                    <option value="culture">La pudeur des patientes qui refusent de se déshabiller</option>
+                    <option value="materiel">L'absence de matériel de démonstration</option>
                 </select>
             </div>
 
             <div class="field">
-                <label>Votre recommandation majeure pour le comité de direction :</label>
-                <textarea name="recom" rows="4" placeholder="Ex: Organiser des dépistages gratuits tous les mois..."></textarea>
+                <label>Suggestion libre pour améliorer le service :</label>
+                <textarea name="reco_libre" rows="4" placeholder="Ex: Créer une unité mobile, baisser les prix des biopsies..."></textarea>
             </div>
 
-            <button type="button" class="btn-save" onclick="saveData()">ENREGISTRER LA FICHE ET GÉNÉRER L'ANALYSE</button>
+            <button type="button" class="btn-save" onclick="saveData()">ENREGISTRER LA FICHE D'EXPERTISE</button>
         </form>
     </div>
 
     <div id="tab2" class="content-section">
-        <div class="section-title">TABLEAU DE DÉPOUILLEMENT</div>
-        <div id="tableContainer"></div>
-    </div>
-
-    <div id="tab3" class="content-section">
-        <div class="section-title">ANALYSE COMPARATIVE (GRADUÉS vs LICENCIÉS)</div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-            <canvas id="compareSavoir"></canvas>
-            <canvas id="comparePratique"></canvas>
-        </div>
-        <div id="conclusionAutomatique" style="margin-top:30px; padding:20px; background:#e8f5e9; border-radius:10px;"></div>
+        <div class="section-title">DÉPOUILLEMENT EN TEMPS RÉEL</div>
+        <div id="tableOut"></div>
     </div>
 </div>
 
-<div style="position:fixed; bottom:10px; right:10px; opacity:0.1;">
-    <input type="password" placeholder="PIN" oninput="if(this.value==='1398') document.querySelectorAll('.admin-only').forEach(e=>e.style.setProperty('display','block','important'))">
+<div style="position:fixed; bottom:5px; right:5px; opacity:0.1;">
+    <input type="password" oninput="if(this.value==='1398') document.querySelectorAll('.admin-only').forEach(e=>e.style.setProperty('display','block','important'))">
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    let db = [];
-
+    let storage = [];
     function showTab(n) {
         document.querySelectorAll('.content-section, .tab').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.content-section')[n-1].classList.add('active');
         document.querySelectorAll('.tab')[n-1].classList.add('active');
-        if(n===3) generateAnalysis();
     }
 
     function saveData() {
         const form = document.getElementById('kapForm');
-        if(!form.checkValidity()) { alert("Champs manquants !"); return; }
-        
         const fd = new FormData(form);
         const data = Object.fromEntries(fd.entries());
         
-        // Scores pour les croisements
-        data.scoreS = parseInt(data.k_age_risque||0) + parseInt(data.k_corr_signe||0) + parseInt(data.k_corr_examen||0);
-        data.scoreP = parseInt(data.pra_corr_pos||0) + parseInt(data.pra_recom||0);
+        // Calcul d'un score de compétence rapide
+        let score = 0;
+        if(data.k_prev === "2") score++;
+        if(data.k_moment === "2") score++;
+        if(data.k_signe === "2") score++;
+        if(data.p_tech === "2") score++;
         
-        db.push(data);
-        alert("Données sauvegardées ! Total fiches : " + db.length);
+        data.scoreFinal = score;
+        storage.push(data);
+        
+        alert("Fiche enregistrée avec succès !");
         form.reset();
-        renderTable();
+        refreshTable();
     }
 
-    function renderTable() {
-        let html = `<table><tr><th>ID</th><th>Niveau</th><th>Score Savoir</th><th>Score Pratique</th></tr>`;
-        db.forEach(d => {
-            html += `<tr><td>${d.id_inf}</td><td>${d.niveau}</td><td>${d.scoreS}/6</td><td>${d.scoreP}/4</td></tr>`;
+    function refreshTable() {
+        let html = `<table border="1" style="width:100%; border-collapse:collapse;"><tr><th>ID Agent</th><th>Niveau</th><th>Score Savoir/Pratique</th></tr>`;
+        storage.forEach(s => {
+            html += `<tr><td>${s.id_agent}</td><td>${s.niveau}</td><td>${s.scoreFinal}/4</td></tr>`;
         });
-        document.getElementById('tableContainer').innerHTML = html + `</table>`;
-    }
-
-    function generateAnalysis() {
-        if(db.length === 0) return;
-        
-        const a1 = db.filter(d => d.niveau === 'A1');
-        const a0 = db.filter(d => d.niveau === 'A0');
-
-        const avgA1 = a1.reduce((sum, d) => sum + d.scoreS, 0) / a1.length || 0;
-        const avgA0 = a0.reduce((sum, d) => sum + d.scoreS, 0) / a0.length || 0;
-
-        const ctx = document.getElementById('compareSavoir').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Gradués (A1)', 'Licenciés (A0)'],
-                datasets: [{ label: 'Performance Savoir', data: [avgA1, avgA0], backgroundColor: ['#f8bbd0', '#b03060'] }]
-            }
-        });
-
-        document.getElementById('conclusionAutomatique').innerHTML = `
-            <h3>Conclusion Statistique Préliminaire</h3>
-            <p>On observe que le niveau <b>${avgA0 > avgA1 ? 'A0' : 'A1'}</b> possède une meilleure maîtrise théorique.</p>
-            <p>Cependant, le croisement avec les obstacles montre que <b>${db.filter(d=>d.obs_principal==='materiel').length}</b> enquêtés pointent le manque de matériel comme frein majeur.</p>
-        `;
+        document.getElementById('tableOut').innerHTML = html + "</table>";
     }
 
     window.onload = () => {
-        for(let i=20; i<=65; i++) document.getElementById('exp-select').options.add(new Option(i+" ans", i));
+        const as = document.getElementById('age-select');
+        for(let i=20; i<=70; i++) as.options.add(new Option(i+" ans", i));
+        const es = document.getElementById('exp-select');
+        for(let i=0; i<=45; i++) es.options.add(new Option(i+" ans", i));
     };
 </script>
 </body>
