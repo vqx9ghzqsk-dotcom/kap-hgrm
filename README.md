@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAP-HGRM - Expert Breast Cancer RDC</title>
+    <title>KAP-HGRM - Base de Données & Analyse Expert</title>
     <style>
+        /* --- STYLE EXISTANT (Conservé) --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
-        .container { max-width: 1100px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 800px;}
+        .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 800px;}
         
-        /* Header & Tabs */
         .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 100; }
         .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; }
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
         .btn-excel { margin-left: auto; background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
         .btn-excel:hover { background: #1b5e20; }
 
-        .form-content { padding: 30px; display: none; /* Caché par défaut, géré par JS */ }
+        .form-content { padding: 30px; display: none; }
         .form-content.active { display: block; animation: fadeIn 0.5s; }
-
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 30px 0 15px 0; text-transform: uppercase; font-size: 15px; display: flex; align-items: center; justify-content: space-between; }
@@ -27,13 +26,11 @@
         label { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #222; line-height: 1.2; }
         select, input[type="text"], input[type="number"] { padding: 12px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; background: #fff; width: 100%; box-sizing: border-box; }
 
-        /* Tables Likert & Results */
         table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
-        th { background: #f8f9fa; padding: 12px; border: 1px solid #ddd; }
+        th { background: #f8f9fa; padding: 12px; border: 1px solid #ddd; text-align: center; }
         td { border: 1px solid #eee; padding: 12px; text-align: center; }
-        .text-left { text-align: left; width: 60%; font-weight: 500; padding-left: 15px; }
+        .text-left { text-align: left; }
 
-        /* Grid Checkboxes */
         .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; background: #fdfdfd; padding: 20px; border-radius: 8px; border: 1px solid #eee; }
         .check-item { display: flex; align-items: center; font-size: 13px; cursor: pointer; padding: 5px; }
         .check-item input { margin-right: 15px; transform: scale(1.4); }
@@ -41,447 +38,396 @@
         .btn-save { width: 100%; background: #b03060; color: white; padding: 25px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; }
         .btn-save:hover { background: #8e244d; transform: translateY(-2px); }
 
-        /* Styles Spécifiques aux Résultats (Nouveau) */
-        .score-box { background: #fff; border: 1px solid #ddd; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .score-title { font-size: 16px; font-weight: bold; color: #444; margin-bottom: 10px; }
-        .progress-bg { background: #eee; height: 20px; border-radius: 10px; overflow: hidden; }
-        .progress-bar { height: 100%; text-align: center; color: white; font-size: 12px; line-height: 20px; transition: width 1s ease-in-out; }
-        .bg-success { background-color: #2e7d32; }
-        .bg-warning { background-color: #f57f17; }
-        .bg-danger { background-color: #c62828; }
+        /* --- NOUVEAUX STYLES POUR L'ANALYSE AVANCÉE --- */
+        .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .stat-title { font-weight: bold; color: #555; margin-bottom: 10px; font-size: 14px; border-bottom: 2px solid #b03060; display: inline-block; }
         
-        .reco-card { background: #e3f2fd; border-left: 5px solid #2196f3; padding: 15px; margin-bottom: 10px; }
-        .reco-card h4 { margin: 0 0 5px 0; color: #1565c0; }
+        .bar-container { display: flex; align-items: center; margin-bottom: 8px; font-size: 12px; }
+        .bar-label { width: 150px; font-weight: 600; }
+        .bar-track { flex-grow: 1; background: #f0f0f0; height: 18px; border-radius: 4px; margin: 0 10px; overflow: hidden; }
+        .bar-fill { height: 100%; transition: width 0.5s; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; }
+        .bar-value { width: 40px; text-align: right; font-weight: bold; }
+
+        .cross-table th { background-color: #333; color: white; }
+        .interpretation-box { background: #e8f5e9; border-left: 5px solid #2e7d32; padding: 15px; font-style: italic; color: #1b5e20; margin-top: 10px; }
+        .alert-box { background: #ffebee; border-left: 5px solid #c62828; padding: 15px; font-style: italic; color: #b71c1c; margin-top: 10px; }
+
+        .counter-badge { background: #b03060; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; vertical-align: middle; margin-left: 5px;}
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-tabs">
-        <button class="tab active" onclick="switchTab(1)">1. COLLECTE</button>
-        <button class="tab" onclick="switchTab(2)">2. DÉPOUILLEMENT</button>
-        <button class="tab" onclick="switchTab(3)">3. RÉSULTAT ET ANALYSE</button>
+        <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">0</span></button>
+        <button class="tab" onclick="switchTab(2)">2. DÉPOUILLEMENT GLOBAL</button>
+        <button class="tab" onclick="switchTab(3)">3. RÉSULTAT ET ANALYSE CROISÉE</button>
         <button class="tab" onclick="switchTab(4)">4. CONCLUSION</button>
-        <button type="button" class="btn-excel" onclick="exportToCSV()">📊 EXPORT EXCEL (CSV)</button>
+        <button type="button" class="btn-excel" onclick="exportToCSV()">📊 EXPORT TOTAL (CSV)</button>
     </div>
 
     <div id="content-1" class="form-content active">
+        <div style="background: #e3f2fd; padding: 10px; border-radius: 5px; margin-bottom: 15px; color: #0d47a1;">
+            <strong>ℹ️ Mode Saisie :</strong> Remplissez la fiche ci-dessous. En cliquant sur "ENREGISTRER", les données s'ajouteront à la base pour l'analyse globale.
+        </div>
         <form id="kapForm">
             <div class="section-title">I. IDENTIFICATION & PROFIL (RDC)</div>
             <div class="row">
-                <div class="field">
-                    <label>Code Enquêté(e)</label>
-                    <select id="code-enquete"></select>
-                </div>
-                <div class="field">
-                    <label>Service / Département</label>
-                    <select id="service">
-                        <option selected>Gynécologie-Obstétrique</option>
-                        <option>Maternité / Salle d'accouchement</option>
-                        <option>Chirurgie Générale</option>
-                        <option>Oncologie (si existant)</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Statut Professionnel</label>
-                    <select id="statut">
-                        <option selected>Titulaire du service</option>
-                        <option>Infirmier(e) de garde</option>
-                        <option>Stagiaire (Fin de cycle)</option>
-                        <option>Sous-statutaire (Bénévole)</option>
-                    </select>
-                </div>
+                <div class="field"><label>Code Enquêté(e)</label><select id="code-enquete"></select></div>
+                <div class="field"><label>Service</label><select id="service"><option>Gynécologie-Obstétrique</option><option>Maternité</option><option>Chirurgie</option><option>Oncologie</option></select></div>
+                <div class="field"><label>Statut</label><select id="statut"><option>Titulaire</option><option>Infirmier(e) de garde</option><option>Stagiaire</option><option>Bénévole</option></select></div>
             </div>
             <div class="row">
-                <div class="field"><label>Âge de l'infirmier(e)</label><select id="age-select"></select></div>
-                <div class="field"><label>Années d'expérience professionnelle</label><select id="exp-select"></select></div>
-                <div class="field">
-                    <label>Niveau d'étude le plus élevé</label>
-                    <select id="niveau">
-                        <option>A2 (Diplômée d'État)</option>
-                        <option selected>A1 (Graduée en Sciences Infirmières)</option>
-                        <option>L0/L1 (Licenciée nouveau système)</option>
-                        <option>Master / Doctorat</option>
-                    </select>
-                </div>
+                <div class="field"><label>Âge</label><select id="age-select"></select></div>
+                <div class="field"><label>Expérience</label><select id="exp-select"></select></div>
+                <div class="field"><label>Niveau Etude</label><select id="niveau"><option>A2 (Diplômée d'État)</option><option selected>A1 (Graduée)</option><option>L0/L1 (Licenciée)</option><option>Master</option></select></div>
             </div>
 
-            <div class="section-title">II. CONNAISSANCES SUR LE CANCER DU SEIN (SAVOIRS)</div>
+            <div class="section-title">II. CONNAISSANCES (SAVOIRS)</div>
             <div class="row">
-                <div class="field">
-                    <label>Le cancer du sein est-il la première cause de décès par cancer chez la femme en RDC ?</label>
-                    <select id="q1"><option selected>Vrai (Oui)</option><option>Faux (Non)</option><option>Ne sait pas</option></select>
-                </div>
-                <div class="field">
-                    <label>À quel âge une femme devrait-elle commencer l'autopalpation (AES) ?</label>
-                    <select id="q2"><option>Dès 12 ans</option><option selected>Dès 20 ans</option><option>Après 40 ans</option></select>
-                </div>
-                <div class="field">
-                    <label>Quel est le meilleur moment pour l'AES ?</label>
-                    <select id="q3"><option selected>7 jours après les règles</option><option>Pendant les règles</option><option>N'importe quand</option></select>
-                </div>
+                <div class="field"><label>1ère cause décès ?</label><select id="q1"><option selected>Vrai (Oui)</option><option>Faux (Non)</option><option>Ne sait pas</option></select></div>
+                <div class="field"><label>Âge début AES ?</label><select id="q2"><option>Dès 12 ans</option><option selected>Dès 20 ans</option><option>Après 40 ans</option></select></div>
+                <div class="field"><label>Moment AES ?</label><select id="q3"><option selected>7 jours après les règles</option><option>Pendant les règles</option><option>N'importe quand</option></select></div>
             </div>
 
-            <label style="margin: 15px 0 10px 0; display:block; font-weight: bold; color: #b03060;">Facteurs de risque connus (Cochez les propositions valides) :</label>
+            <label style="margin:10px 0; font-weight:bold; color:#b03060;">Facteurs de risque (Cochez si connu) :</label>
             <div class="check-group" id="group-risques">
-                <label class="check-item"><input type="checkbox" value="nulliparite" checked> Nulliparité (n'avoir jamais accouché)</label>
-                <label class="check-item"><input type="checkbox" value="tardive" checked> Première grossesse tardive (> 30 ans)</label>
-                <label class="check-item"><input type="checkbox" value="menopause" checked> Ménopause tardive (> 55 ans)</label>
-                <label class="check-item"><input type="checkbox" value="alcool" checked> Consommation d'alcool et tabac</label>
-                <label class="check-item"><input type="checkbox" value="contraceptif"> Usage prolongé de contraceptifs oraux</label>
-                <label class="check-item"><input type="checkbox" value="famille" checked> Antécédents familiaux (Mère, Sœur)</label>
+                <label class="check-item"><input type="checkbox" value="nulliparite"> Nulliparité</label>
+                <label class="check-item"><input type="checkbox" value="tardive"> 1ère grossesse > 30 ans</label>
+                <label class="check-item"><input type="checkbox" value="menopause"> Ménopause > 55 ans</label>
+                <label class="check-item"><input type="checkbox" value="alcool"> Alcool/Tabac</label>
+                <label class="check-item"><input type="checkbox" value="contraceptif"> Contraceptifs oraux</label>
+                <label class="check-item"><input type="checkbox" value="famille"> Antécédents familiaux</label>
             </div>
 
-            <label style="margin: 20px 0 10px 0; display:block; font-weight: bold; color: #b03060;">Signes cliniques d'alerte (Signes à rechercher) :</label>
+            <label style="margin:10px 0; font-weight:bold; color:#b03060;">Signes d'alerte (Cochez si connu) :</label>
             <div class="check-group" id="group-signes">
-                <label class="check-item"><input type="checkbox" value="nodule" checked> Nodule dur, fixe et indolore</label>
-                <label class="check-item"><input type="checkbox" value="ecoulement" checked> Écoulement séro-sanguinolent unilatéral</label>
-                <label class="check-item"><input type="checkbox" value="retraction" checked> Rétraction ou ombilication du mamelon</label>
-                <label class="check-item"><input type="checkbox" value="adenopathie" checked> Adénopathie axillaire (boule sous l'aisselle)</label>
-                <label class="check-item"><input type="checkbox" value="peauorange" checked> Aspect de "peau d'orange" sur le tégument</label>
-                <label class="check-item"><input type="checkbox" value="douleur"> Douleur mammaire isolée (Mastodynie)</label>
+                <label class="check-item"><input type="checkbox" value="nodule"> Nodule dur/fixe</label>
+                <label class="check-item"><input type="checkbox" value="ecoulement"> Écoulement sanglant</label>
+                <label class="check-item"><input type="checkbox" value="retraction"> Rétraction mamelon</label>
+                <label class="check-item"><input type="checkbox" value="adenopathie"> Adénopathie axillaire</label>
+                <label class="check-item"><input type="checkbox" value="peauorange"> Peau d'orange</label>
             </div>
 
-            <div class="section-title">III. ATTITUDES ET PERCEPTIONS (SAVOIR-ÊTRE : 1 À 5)</div>
-            <table id="table-attitude">
-                <thead>
-                    <tr>
-                        <th class="text-left">Énoncés (Perception de l'infirmier/e)</th>
-                        <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
-                    </tr>
-                </thead>
+            <div class="section-title">III. ATTITUDES (1-5)</div>
+            <table>
+                <thead><tr><th class="text-left">Énoncés</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
                 <tbody>
-                    <tr><td class="text-left">Je me sens capable de détecter un nodule suspect lors d'une palpation.</td><td><input type="radio" name="p1" value="1"></td><td><input type="radio" name="p1" value="2"></td><td><input type="radio" name="p1" value="3"></td><td><input type="radio" name="p1" value="4" checked></td><td><input type="radio" name="p1" value="5"></td></tr>
-                    <tr><td class="text-left">L'influence culturelle (pudeur) empêche mes patientes de se déshabiller.</td><td><input type="radio" name="p2" value="1"></td><td><input type="radio" name="p2" value="2"></td><td><input type="radio" name="p2" value="3"></td><td><input type="radio" name="p2" value="4"></td><td><input type="radio" name="p2" value="5" checked></td></tr>
-                    <tr><td class="text-left">Le diagnostic de cancer est une sentence de mort en RDC.</td><td><input type="radio" name="p3" value="1"></td><td><input type="radio" name="p3" value="2" checked></td><td><input type="radio" name="p3" value="3"></td><td><input type="radio" name="p3" value="4"></td><td><input type="radio" name="p3" value="5"></td></tr>
-                    <tr><td class="text-left">Je pense que chaque femme en consultation doit être sensibilisée au cancer.</td><td><input type="radio" name="p4" value="1"></td><td><input type="radio" name="p4" value="2"></td><td><input type="radio" name="p4" value="3"></td><td><input type="radio" name="p4" value="4"></td><td><input type="radio" name="p4" value="5" checked></td></tr>
+                    <tr><td class="text-left">Je me sens capable de détecter un nodule.</td><td><input type="radio" name="p1" value="1"></td><td><input type="radio" name="p1" value="2"></td><td><input type="radio" name="p1" value="3"></td><td><input type="radio" name="p1" value="4" checked></td><td><input type="radio" name="p1" value="5"></td></tr>
+                    <tr><td class="text-left">Pudeur des patientes est un obstacle.</td><td><input type="radio" name="p2" value="1"></td><td><input type="radio" name="p2" value="2"></td><td><input type="radio" name="p2" value="3"></td><td><input type="radio" name="p2" value="4"></td><td><input type="radio" name="p2" value="5" checked></td></tr>
+                    <tr><td class="text-left">Cancer = Mort inévitable.</td><td><input type="radio" name="p3" value="1"></td><td><input type="radio" name="p3" value="2" checked></td><td><input type="radio" name="p3" value="3"></td><td><input type="radio" name="p3" value="4"></td><td><input type="radio" name="p3" value="5"></td></tr>
+                    <tr><td class="text-left">Sensibilisation systématique nécessaire.</td><td><input type="radio" name="p4" value="1"></td><td><input type="radio" name="p4" value="2"></td><td><input type="radio" name="p4" value="3"></td><td><input type="radio" name="p4" value="4"></td><td><input type="radio" name="p4" value="5" checked></td></tr>
                 </tbody>
             </table>
 
-            <div class="section-title">IV. PRATIQUES PROFESSIONNELLES (SAVOIR-FAIRE)</div>
+            <div class="section-title">IV. PRATIQUES</div>
             <div class="row">
-                <div class="field">
-                    <label>Fréquence de la palpation clinique des seins (ECS) en consultation :</label>
-                    <select id="pratique-freq">
-                        <option selected>Systématique pour chaque patiente</option>
-                        <option>Uniquement si la patiente se plaint</option>
-                        <option>Rarement par manque de temps</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Enseignement de la technique d'autopalpation (AES) :</label>
-                    <select id="pratique-enseigne">
-                        <option selected>Je démontre la technique physiquement</option>
-                        <option>J'explique verbalement seulement</option>
-                        <option>Je ne l'enseigne pas</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Référence des cas suspects :</label>
-                    <select id="pratique-ref">
-                        <option selected>Vers l'imagerie (Mammographie/Echo)</option>
-                        <option>Vers la Chirurgie directement</option>
-                        <option>Observation (Attendre le prochain RDV)</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="field">
-                    <label>Utilisation de supports visuels (Affiches, Boites à images) :</label>
-                    <select id="pratique-visuel"><option selected>Jamais (Pas de matériel disponible)</option><option>Parfois</option><option>Toujours</option></select>
-                </div>
-                <div class="field">
-                    <label>Avez-vous déjà palpé un sein ce matin ?</label>
-                    <select id="pratique-matin"><option selected>Oui</option><option>Non</option></select>
-                </div>
-                <div class="field">
-                    <label>Nombre de cas de cancer suspectés ce mois-ci :</label>
-                    <select id="pratique-cas"><option>0</option><option selected>1 à 5 cas</option><option>Plus de 5 cas</option></select>
-                </div>
+                <div class="field"><label>Fréquence Palpation</label><select id="pratique-freq"><option>Systématique</option><option>Si plainte</option><option>Rarement</option></select></div>
+                <div class="field"><label>Enseignement AES</label><select id="pratique-enseigne"><option>Démonstration physique</option><option>Verbalement</option><option>Pas d'enseignement</option></select></div>
+                <div class="field"><label>Palpé ce matin ?</label><select id="pratique-matin"><option>Oui</option><option>Non</option></select></div>
             </div>
 
-            <div class="section-title">V. OBSTACLES ET SOLUTIONS (RDC CONTEXT)</div>
-            <label style="margin-bottom: 10px; display:block; font-weight: bold;">Quelles sont les barrières à l'HGRM ? (Cochez tout ce qui est vrai):</label>
+            <div class="section-title">V. OBSTACLES</div>
             <div class="check-group" id="group-obstacles">
-                <label class="check-item"><input type="checkbox" value="intimite" checked> Absence de salle isolée respectant l'intimité</label>
-                <label class="check-item"><input type="checkbox" value="cout" checked> Coût exorbitant de la mammographie (> 50$)</label>
-                <label class="check-item"><input type="checkbox" value="formation" checked> Manque de formation continue sur le cancer</label>
-                <label class="check-item"><input type="checkbox" value="culture" checked> Préférence des patientes pour la prière/tradition</label>
-                <label class="check-item"><input type="checkbox" value="surcharge"> Surcharge de travail (Ratio infirmière/patient)</label>
+                <label class="check-item"><input type="checkbox" value="intimite"> Absence intimité</label>
+                <label class="check-item"><input type="checkbox" value="cout"> Coût élevé</label>
+                <label class="check-item"><input type="checkbox" value="formation"> Manque formation</label>
+                <label class="check-item"><input type="checkbox" value="culture"> Croyances/Tradition</label>
             </div>
 
-            <div class="field" style="margin-top: 20px;">
-                <label>Votre recommandation principale pour l'HGRM :</label>
-                <select id="recommandation-user">
-                    <option selected>Installation d'une unité de dépistage permanent</option>
-                    <option>Formation certifiante pour tout le personnel infirmier</option>
-                    <option>Subvention des examens d'imagerie pour les indigents</option>
-                    <option>Campagnes de masse dans les églises et marchés</option>
-                </select>
-            </div>
-
-            <button type="button" class="btn-save" onclick="switchTab(2)">VALIDER ET PASSER AU DÉPOUILLEMENT</button>
+            <button type="button" class="btn-save" onclick="saveRecord()">💾 ENREGISTRER CETTE FICHE ET CONTINUER</button>
+            <p style="text-align:center; color:#777; font-size:12px;">Après avoir enregistré toutes vos fiches, cliquez sur les onglets ci-dessus pour l'analyse.</p>
         </form>
     </div>
 
     <div id="content-2" class="form-content">
-        <div class="section-title">DÉPOUILLEMENT DES DONNÉES BRUTES</div>
-        <p>Ce tableau résume la transformation des réponses textuelles en scores numériques exploitables.</p>
+        <div class="section-title">MATRICE DE DÉPOUILLEMENT (TOUTES LES FICHES)</div>
+        <p>Liste exhaustive des données codées pour chaque fiche enregistrée.</p>
         
-        <table>
+        <table style="font-size:11px;">
             <thead>
                 <tr>
-                    <th class="text-left">Variable / Domaine</th>
-                    <th>Réponse Enregistrée</th>
-                    <th>Score / Codage</th>
+                    <th>Code</th>
+                    <th>Niveau</th>
+                    <th>Expérience</th>
+                    <th>Score Savoir (%)</th>
+                    <th>Score Attitude (/5)</th>
+                    <th>Score Pratique (%)</th>
+                    <th>Statut</th>
                 </tr>
             </thead>
-            <tbody id="table-depouillement">
+            <tbody id="database-body">
                 </tbody>
         </table>
-        <div style="text-align: right;">
-            <button type="button" class="btn-excel" onclick="switchTab(3)">VOIR L'ANALYSE &gt;</button>
-        </div>
     </div>
 
     <div id="content-3" class="form-content">
-        <div class="section-title">ANALYSE DES PERFORMANCES (K.A.P)</div>
+        <div class="section-title">1. STATISTIQUES DESCRIPTIVES (FRÉQUENCES)</div>
+        <div class="row">
+            <div class="stat-card">
+                <div class="stat-title">Niveau de Savoir (Connaissances)</div>
+                <div id="graph-savoir"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Qualité de la Pratique</div>
+                <div id="graph-pratique"></div>
+            </div>
+        </div>
+
+        <div class="section-title">2. ANALYSE CROISÉE (ASSOCIATIONS)</div>
+        <p><strong>Objectif :</strong> Comprendre comment les connaissances influencent l'attitude et la pratique.</p>
         
-        <div class="score-box">
-            <div class="score-title">1. SAVOIRS (CONNAISSANCES THÉORIQUES)</div>
-            <div id="res-savoir-text" style="margin-bottom:5px;">Analyse en cours...</div>
-            <div class="progress-bg">
-                <div id="bar-savoir" class="progress-bar bg-success" style="width: 0%">0%</div>
-            </div>
-        </div>
+        <table class="cross-table">
+            <thead>
+                <tr>
+                    <th class="text-left">Groupe (Selon le Savoir)</th>
+                    <th>Nombre (N)</th>
+                    <th>Attitude Moyenne (/5)</th>
+                    <th>Score Pratique Moyen (%)</th>
+                </tr>
+            </thead>
+            <tbody id="cross-body">
+                </tbody>
+        </table>
 
-        <div class="score-box">
-            <div class="score-title">2. ATTITUDES (PERCEPTION & PSYCHOLOGIE)</div>
-            <div id="res-attitude-text" style="margin-bottom:5px;">Analyse en cours...</div>
-            <div class="progress-bg">
-                <div id="bar-attitude" class="progress-bar bg-warning" style="width: 0%">0%</div>
+        <div id="interpretation-cross">
             </div>
-            <small>Score basé sur l'échelle de Likert (Moyenne sur 5)</small>
-        </div>
 
-        <div class="score-box">
-            <div class="score-title">3. PRATIQUES (ACTION TERRAIN)</div>
-            <div id="res-pratique-text" style="margin-bottom:5px;">Analyse en cours...</div>
-            <div class="progress-bg">
-                <div id="bar-pratique" class="progress-bar bg-danger" style="width: 0%">0%</div>
-            </div>
-            <small>Basé sur la fréquence de palpation et la technique d'enseignement</small>
-        </div>
-
-        <div class="section-title">BARRIÈRES IDENTIFIÉES</div>
-        <ul id="list-barrieres" style="list-style-type: square; padding-left: 20px;">
-            </ul>
-        <br>
-        <button type="button" class="btn-save" onclick="switchTab(4)">VOIR LES CONCLUSIONS</button>
+        <div class="section-title">3. ANALYSE DES BARRIÈRES</div>
+        <div id="graph-obstacles"></div>
     </div>
 
     <div id="content-4" class="form-content">
-        <div class="section-title">CONCLUSION GÉNÉRALE & RECOMMANDATIONS</div>
-        
-        <div id="conclusion-text" style="margin-bottom: 20px; font-style: italic;">
-            </div>
-
-        <h3>RECOMMANDATIONS PRIORITAIRES POUR L'HGRM</h3>
-        <div id="recommendations-container">
-            </div>
-
-        <div style="margin-top: 40px; padding: 20px; background: #eee; text-align: center;">
-            <p><strong>Prochaine étape :</strong> Exporter ces données pour la base centrale.</p>
-            <button type="button" class="btn-excel" onclick="exportToCSV()" style="font-size: 16px; padding: 15px 30px;">📥 TÉLÉCHARGER LE RAPPORT (CSV)</button>
+        <div class="section-title">SYNTHÈSE DE L'ÉTUDE</div>
+        <div id="final-conclusion" style="font-size:14px; line-height:1.6; color:#333;">
+            Analyse en attente de données...
         </div>
+        
+        <br>
+        <button type="button" class="btn-excel" onclick="exportToCSV()">📥 TÉLÉCHARGER LA BASE DE DONNÉES COMPLÈTE (CSV)</button>
     </div>
 
 </div>
 
 <script>
-    // --- 1. INITIALISATION (Code original +) ---
+    // --- 1. INITIALISATION ---
+    let database = []; // LA BASE DE DONNEES LOCALE
+
+    // Remplissages des listes déroulantes (Code inchangé)
     const codeSelect = document.getElementById('code-enquete');
-    for (let i = 0; i <= 200; i++) {
-        let opt = document.createElement('option');
-        opt.value = i; opt.text = "Code: " + i;
-        codeSelect.appendChild(opt);
-    }
+    for (let i = 1; i <= 200; i++) { let opt = document.createElement('option'); opt.value = "E-"+i; opt.text = "Fiche N° " + i; codeSelect.appendChild(opt); }
     const ageSelect = document.getElementById('age-select');
-    for (let i = 18; i <= 60; i++) {
-        let opt = document.createElement('option');
-        opt.value = i; opt.text = i + " ans";
-        if(i === 35) opt.selected = true;
-        ageSelect.appendChild(opt);
-    }
+    for (let i = 18; i <= 65; i++) { let opt = document.createElement('option'); opt.value = i; opt.text = i + " ans"; ageSelect.appendChild(opt); }
     const expSelect = document.getElementById('exp-select');
-    let m = document.createElement('option'); m.text = "Stagiaire / Moins d'un an"; expSelect.appendChild(m);
-    for (let i = 1; i <= 30; i++) {
-        let opt = document.createElement('option');
-        opt.value = i; opt.text = i + (i === 1 ? " an" : " ans") + " d'expérience";
-        if(i === 10) opt.selected = true;
-        expSelect.appendChild(opt);
-    }
+    for (let i = 0; i <= 40; i++) { let opt = document.createElement('option'); opt.value = i; opt.text = i + " ans d'exp."; expSelect.appendChild(opt); }
 
-    // --- 2. GESTION DES ONGLETS ---
-    function switchTab(tabIndex) {
-        // Masquer tous les contenus
-        document.querySelectorAll('.form-content').forEach(div => div.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
+    // --- 2. FONCTION SAUVEGARDER (COEUR DU SYSTÈME) ---
+    function saveRecord() {
+        // A. COLLECTE DES DONNÉES BRUTES
+        let record = {
+            id: document.getElementById('code-enquete').value,
+            niveau: document.getElementById('niveau').value,
+            exp: parseInt(document.getElementById('exp-select').value),
+            
+            // Savoirs
+            q1: document.getElementById('q1').value,
+            q2: document.getElementById('q2').value,
+            q3: document.getElementById('q3').value,
+            risques: getCheckedCount('group-risques'),
+            signes: getCheckedCount('group-signes'),
+            
+            // Attitudes
+            p1: getRadioValue('p1'), p2: getRadioValue('p2'), p3: getRadioValue('p3'), p4: getRadioValue('p4'),
+            
+            // Pratiques
+            freq: document.getElementById('pratique-freq').value,
+            enseigne: document.getElementById('pratique-enseigne').value,
+            matin: document.getElementById('pratique-matin').value,
+            
+            // Obstacles (Array of values)
+            obstacles: getCheckedValues('group-obstacles')
+        };
 
-        // Afficher le contenu désiré
-        document.getElementById('content-' + tabIndex).classList.add('active');
-        
-        // Activer le bouton correspondant (utilisation de nth-child)
-        document.querySelector(`.header-tabs button:nth-child(${tabIndex})`).classList.add('active');
-
-        // Si on quitte l'onglet 1, on lance les calculs
-        if (tabIndex > 1) {
-            calculateAndDisplay();
-        }
-    }
-
-    // --- 3. MOTEUR DE CALCUL ET ANALYSE ---
-    function calculateAndDisplay() {
-        // A. RECUPERATION DES VALEURS
-        const q1 = document.getElementById('q1').value;
-        const q2 = document.getElementById('q2').value;
-        const q3 = document.getElementById('q3').value;
-        
-        // Checkboxes Risques
-        let scoreRisque = 0;
-        document.querySelectorAll('#group-risques input:checked').forEach(() => scoreRisque++);
-        
-        // Checkboxes Signes
-        let scoreSignes = 0;
-        document.querySelectorAll('#group-signes input:checked').forEach(() => scoreSignes++);
-
-        // Likert Attitudes (Moyenne)
-        let totalLikert = 0;
-        let countLikert = 0;
-        ['p1', 'p2', 'p3', 'p4'].forEach(name => {
-            const el = document.querySelector(`input[name="${name}"]:checked`);
-            if(el) {
-                totalLikert += parseInt(el.value);
-                countLikert++;
-            }
-        });
-        const moyAttitude = countLikert > 0 ? (totalLikert / countLikert).toFixed(1) : 0;
-
-        // Pratiques
-        const freq = document.getElementById('pratique-freq').value;
-        const enseigne = document.getElementById('pratique-enseigne').value;
-        const matin = document.getElementById('pratique-matin').value;
-
-        // B. CALCUL DES SCORES (Logique simple)
-        // Score Savoir (Sur 20 pts fictifs ramenés en %)
-        // Q1=1pt, Q2=1pt, Q3=1pt, Risques=1pt chaque, Signes=1pt chaque
+        // B. CODAGE AUTOMATIQUE (SCORING)
+        // Score Savoir (Max approx 15 pts -> ramené à %)
         let rawSavoir = 0;
-        if(q1.includes("Vrai")) rawSavoir++;
-        if(q2.includes("20 ans")) rawSavoir++;
-        if(q3.includes("7 jours")) rawSavoir++;
-        rawSavoir += scoreRisque + scoreSignes;
-        // Max théorique environ 15 (3 questions + 6 risques + 6 signes)
-        let pctSavoir = Math.min(100, Math.round((rawSavoir / 15) * 100));
+        if(record.q1.includes("Vrai")) rawSavoir++;
+        if(record.q2.includes("20 ans")) rawSavoir++;
+        if(record.q3.includes("7 jours")) rawSavoir++;
+        rawSavoir += record.risques + record.signes;
+        record.scoreSavoir = Math.min(100, Math.round((rawSavoir / 14) * 100)); // 14 items total approx
 
-        // Score Pratique (Algorithme qualitatif)
-        let pctPratique = 0;
-        if (freq.includes("Systématique")) pctPratique += 40;
-        if (freq.includes("plaint")) pctPratique += 10;
-        if (enseigne.includes("démontre")) pctPratique += 40;
-        if (enseigne.includes("verbalement")) pctPratique += 10;
-        if (matin === "Oui") pctPratique += 20;
+        // Score Attitude (Moyenne Likert)
+        let sumAtt = parseInt(record.p1) + parseInt(record.p2) + parseInt(record.p3) + parseInt(record.p4);
+        record.scoreAttitude = (sumAtt / 4).toFixed(1);
 
-        // C. REMPLISSAGE ONGLET 2 (DÉPOUILLEMENT)
-        const tbody = document.getElementById('table-depouillement');
-        tbody.innerHTML = `
-            <tr><td class="text-left">Connaissance Cause/Age/Moment</td><td>${q1} / ${q2}</td><td>${q1.includes('Vrai') && q2.includes('20') ? 'Correct (2pts)' : 'Incomplet'}</td></tr>
-            <tr><td class="text-left">Facteurs de Risque identifiés</td><td>${scoreRisque} facteurs cochés</td><td>${scoreRisque}/6</td></tr>
-            <tr><td class="text-left">Signes d'alerte connus</td><td>${scoreSignes} signes cochés</td><td>${scoreSignes}/6</td></tr>
-            <tr><td class="text-left"><strong>TOTAL SAVOIR</strong></td><td>-</td><td><strong>${pctSavoir}%</strong></td></tr>
-            <tr><td class="text-left">Attitude Moyenne (Likert)</td><td>Moyenne sur 4 items</td><td>${moyAttitude} / 5</td></tr>
-            <tr><td class="text-left">Qualité de la Pratique</td><td>Freq: ${freq.substring(0,10)}...</td><td>${pctPratique}%</td></tr>
+        // Score Pratique (Algorithme pondéré)
+        let rawPrac = 0;
+        if(record.freq.includes("Systématique")) rawPrac += 40;
+        if(record.enseigne.includes("Démonstration")) rawPrac += 40; else if(record.enseigne.includes("Verbalement")) rawPrac += 10;
+        if(record.matin === "Oui") rawPrac += 20;
+        record.scorePratique = rawPrac;
+
+        // C. AJOUT A LA BASE
+        database.push(record);
+
+        // D. FEEDBACK ET RESET
+        document.getElementById('count-badge').textContent = database.length;
+        alert(`Fiche ${record.id} enregistrée avec succès !\n\nTotal fiches : ${database.length}\nVous pouvez saisir la suivante.`);
+        
+        // Reset partiel pour faciliter la saisie suivante (On garde le service par exemple, mais on reset les cases)
+        document.querySelectorAll('input[type="checkbox"]').forEach(i => i.checked = false);
+        // Incrémenter l'ID automatiquement
+        let currIdx = codeSelect.selectedIndex;
+        if(currIdx < codeSelect.options.length - 1) codeSelect.selectedIndex = currIdx + 1;
+        
+        // Mettre à jour les analyses en arrière-plan
+        updateAnalysis();
+    }
+
+    // --- 3. ANALYSE ET AFFICHAGE ---
+    function updateAnalysis() {
+        if(database.length === 0) return;
+
+        // A. REMPLIR LE TABLEAU DE DEPOUILLEMENT (ONGLET 2)
+        const tbody = document.getElementById('database-body');
+        tbody.innerHTML = '';
+        database.forEach(row => {
+            let tr = `<tr>
+                <td><strong>${row.id}</strong></td>
+                <td>${row.niveau}</td>
+                <td>${row.exp} ans</td>
+                <td style="color:${getColor(row.scoreSavoir)}">${row.scoreSavoir}%</td>
+                <td>${row.scoreAttitude}</td>
+                <td style="color:${getColor(row.scorePratique)}">${row.scorePratique}%</td>
+                <td>${row.scoreSavoir >= 70 && row.scorePratique >= 70 ? '🟢 Performant' : '🔴 À former'}</td>
+            </tr>`;
+            tbody.innerHTML += tr;
+        });
+
+        // B. STATISTIQUES ET CROISEMENT (ONGLET 3)
+        // 1. Catégorisation
+        let highKnow = database.filter(r => r.scoreSavoir >= 70);
+        let lowKnow = database.filter(r => r.scoreSavoir < 70);
+
+        // 2. Moyennes par groupe
+        let avgAttHigh = getAvg(highKnow, 'scoreAttitude');
+        let avgPracHigh = getAvg(highKnow, 'scorePratique');
+        
+        let avgAttLow = getAvg(lowKnow, 'scoreAttitude');
+        let avgPracLow = getAvg(lowKnow, 'scorePratique');
+
+        // 3. Tableau Croisé HTML
+        document.getElementById('cross-body').innerHTML = `
+            <tr>
+                <td class="text-left"><strong>Haut Niveau de Savoir</strong> (>=70%)</td>
+                <td>${highKnow.length}</td>
+                <td>${avgAttHigh} / 5</td>
+                <td style="font-weight:bold; color:${avgPracHigh > 60 ? 'green':'red'}">${avgPracHigh}%</td>
+            </tr>
+            <tr>
+                <td class="text-left"><strong>Faible Niveau de Savoir</strong> (<70%)</td>
+                <td>${lowKnow.length}</td>
+                <td>${avgAttLow} / 5</td>
+                <td style="font-weight:bold; color:${avgPracLow > 60 ? 'green':'red'}">${avgPracLow}%</td>
+            </tr>
         `;
 
-        // D. REMPLISSAGE ONGLET 3 (RÉSULTAT)
-        updateBar('bar-savoir', pctSavoir, 'res-savoir-text');
-        updateBar('bar-attitude', (moyAttitude/5)*100, 'res-attitude-text', moyAttitude + "/5");
-        updateBar('bar-pratique', pctPratique, 'res-pratique-text');
-
-        // Liste des barrières
-        const ulBar = document.getElementById('list-barrieres');
-        ulBar.innerHTML = "";
-        document.querySelectorAll('#group-obstacles input:checked').forEach(chk => {
-            let li = document.createElement('li');
-            li.textContent = chk.parentNode.textContent;
-            ulBar.appendChild(li);
-        });
-
-        // E. REMPLISSAGE ONGLET 4 (CONCLUSION)
-        generateConclusion(pctSavoir, moyAttitude, pctPratique);
-    }
-
-    function updateBar(id, pct, textId, customVal) {
-        const bar = document.getElementById(id);
-        const txt = document.getElementById(textId);
-        bar.style.width = pct + "%";
-        bar.textContent = (customVal ? customVal : pct + "%");
+        // 4. Interprétation Automatique
+        let interpret = document.getElementById('interpretation-cross');
+        let text = `<p>Sur un échantillon de <strong>${database.length}</strong> infirmiers :</p>`;
         
-        // Couleur dynamique
-        bar.className = "progress-bar " + (pct > 70 ? "bg-success" : (pct > 40 ? "bg-warning" : "bg-danger"));
-        
-        let appreciation = pct > 70 ? "Excellent niveau" : (pct > 40 ? "Niveau Moyen" : "Niveau Critique");
-        txt.innerHTML = `Score calculé : <strong>${pct}%</strong> - ${appreciation}`;
-    }
-
-    function generateConclusion(savoir, attitude, pratique) {
-        const divConcl = document.getElementById('conclusion-text');
-        const divReco = document.getElementById('recommendations-container');
-        
-        divConcl.innerHTML = `L'analyse des données de l'infirmier(e) montre un niveau de connaissances théoriques de <strong>${savoir}%</strong>, couplé à une attitude de ${attitude}/5. Cependant, la pratique réelle sur le terrain est évaluée à <strong>${pratique}%</strong>. Le décalage entre le savoir et le faire semble lié aux obstacles structurels.`;
-
-        let recos = "";
-        // Logique conditionnelle pour les recommandations
-        if(savoir < 50) {
-            recos += `<div class="reco-card"><h4>🚑 Formation Urgente Requise</h4><p>Le personnel a des lacunes sur les signes cliniques. Programmer une session de mise à niveau sur l'anatomie et la palpation.</p></div>`;
-        }
-        if(pratique < 50) {
-            recos += `<div class="reco-card"><h4>📋 Protocole de Soins</h4><p>La palpation n'est pas systématique. Instaurer une fiche de contrôle obligatoire dans chaque dossier patient.</p></div>`;
-        }
-        // Obstacles
-        const obstacles = document.querySelectorAll('#group-obstacles input:checked');
-        let hasCout = false;
-        obstacles.forEach(o => { if(o.value === 'cout') hasCout = true; });
-        
-        if(hasCout) {
-            recos += `<div class="reco-card"><h4>💰 Plaidoyer Financier</h4><p>Le coût est un frein majeur identifié. Proposer à la direction de l'HGRM un forfait "Octobre Rose" ou des subventions.</p></div>`;
+        if (highKnow.length > lowKnow.length) {
+            text += `<p>• La majorité des enquêtés (${((highKnow.length/database.length)*100).toFixed(0)}%) possède de <strong>bonnes connaissances théoriques</strong>.</p>`;
         } else {
-             recos += `<div class="reco-card"><h4>🏥 Aménagement</h4><p>Vérifier la disponibilité des paravents pour garantir l'intimité et encourager l'examen.</p></div>`;
+            text += `<div class="alert-box">⚠️ Alerte : La majorité du personnel a des connaissances insuffisantes sur le cancer.</div>`;
         }
 
-        divReco.innerHTML = recos;
+        if (avgPracHigh > avgPracLow + 10) {
+            text += `<div class="interpretation-box">✅ <strong>Corrélation Positive :</strong> L'analyse confirme que les infirmiers ayant les meilleures connaissances ont également une meilleure pratique (${avgPracHigh}% contre ${avgPracLow}%). Cela valide l'hypothèse que la formation théorique améliore la prise en charge.</div>`;
+        } else {
+            text += `<div class="alert-box">❌ <strong>Disparité Savoir-Agir :</strong> Même parmi ceux qui ont un bon savoir théorique, la pratique reste faible (${avgPracHigh}%). Cela suggère que le problème n'est pas intellectuel mais structurel (manque de matériel, de temps ou de motivation).</div>`;
+        }
+        interpret.innerHTML = text;
+
+        // 5. Graphiques Barres (CSS)
+        renderBarChart('graph-savoir', [
+            {label: 'Bon (>70%)', val: highKnow.length, total: database.length, color: '#2e7d32'},
+            {label: 'Insuffisant (<70%)', val: lowKnow.length, total: database.length, color: '#c62828'}
+        ]);
+        
+        let goodPrac = database.filter(r => r.scorePratique >= 60).length;
+        renderBarChart('graph-pratique', [
+            {label: 'Pratique Correcte', val: goodPrac, total: database.length, color: '#1565c0'},
+            {label: 'Pratique Inadéquate', val: database.length - goodPrac, total: database.length, color: '#f57f17'}
+        ]);
+
+        // 6. Analyse Obstacles
+        let obstaclesCounts = {};
+        database.forEach(r => {
+            r.obstacles.forEach(o => { obstaclesCounts[o] = (obstaclesCounts[o] || 0) + 1; });
+        });
+        let obstacleHtml = "";
+        for (const [key, value] of Object.entries(obstaclesCounts)) {
+            let pct = Math.round((value / database.length) * 100);
+            obstacleHtml += `<div class="bar-container"><div class="bar-label">${key.toUpperCase()}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:#b03060;">${pct}%</div></div><div class="bar-value">${value}</div></div>`;
+        }
+        document.getElementById('graph-obstacles').innerHTML = obstacleHtml;
+
+        // C. CONCLUSION (ONGLET 4)
+        document.getElementById('final-conclusion').innerHTML = `
+            <h3>Synthèse des ${database.length} fiches analysées</h3>
+            <p>L'étude menée à l'HGRM révèle que le taux de connaissances satisfaisantes est de <strong>${((highKnow.length/database.length)*100).toFixed(0)}%</strong>. 
+            Cependant, l'attitude moyenne globale se situe à <strong>${((parseFloat(avgAttHigh)+parseFloat(avgAttLow))/2).toFixed(1)}/5</strong>.</p>
+            <p>Le croisement des variables montre que le frein principal n'est pas toujours la compétence, mais les barrières environnementales, citées par les répondants (voir graphe obstacles).</p>
+            <p><strong>Recommandation majeure :</strong> ${avgPracHigh < 50 ? "Prioriser l'équipement et les protocoles (Pratique faible malgré Savoir)." : "Renforcer la formation continue (Maintien des acquis)."}</p>
+        `;
     }
 
-    // --- 4. EXPORT EXCEL (CSV) ---
+    // --- HELPER FUNCTIONS ---
+    function getCheckedCount(groupId) { return document.querySelectorAll(`#${groupId} input:checked`).length; }
+    function getCheckedValues(groupId) { 
+        return Array.from(document.querySelectorAll(`#${groupId} input:checked`)).map(cb => cb.value); 
+    }
+    function getRadioValue(name) { 
+        let el = document.querySelector(`input[name="${name}"]:checked`); 
+        return el ? el.value : 0; 
+    }
+    function getColor(score) { return score >= 70 ? 'green' : (score >= 50 ? 'orange' : 'red'); }
+    function getAvg(arr, prop) {
+        if(arr.length === 0) return 0;
+        let sum = arr.reduce((acc, curr) => acc + parseFloat(curr[prop]), 0);
+        return (sum / arr.length).toFixed(1);
+    }
+    function renderBarChart(divId, data) {
+        let html = '';
+        data.forEach(item => {
+            let pct = item.total > 0 ? Math.round((item.val / item.total) * 100) : 0;
+            html += `<div class="bar-container">
+                <div class="bar-label">${item.label}</div>
+                <div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:${item.color};">${pct}%</div></div>
+                <div class="bar-value">${item.val}</div>
+            </div>`;
+        });
+        document.getElementById(divId).innerHTML = html;
+    }
+
+    function switchTab(idx) {
+        document.querySelectorAll('.form-content').forEach(d => d.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+        document.getElementById('content-'+idx).classList.add('active');
+        document.querySelector(`.header-tabs button:nth-child(${idx})`).classList.add('active');
+    }
+
     function exportToCSV() {
-        const code = document.getElementById('code-enquete').value;
-        const niveau = document.getElementById('niveau').value;
-        const q1 = document.getElementById('q1').value;
-        
-        // Calcul rapide pour l'export
-        let score = 0; 
-        if(q1.includes("Vrai")) score++;
-
-        // Construction du CSV (En-têtes + Données)
-        // \ufeff est le BOM pour forcer Excel à lire l'UTF-8 (accents)
-        let csvContent = "data:text/csv;charset=utf-8,\ufeff";
-        csvContent += "Code,Niveau Etude,Connaissance Cause,Pratique Matin,Recommandation\n";
-        csvContent += `${code},${niveau},${q1},${document.getElementById('pratique-matin').value},${document.getElementById('recommandation-user').value}\n`;
-
-        // Création du lien de téléchargement
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "KAP_HGRM_Resultats.csv");
+        if(database.length === 0) { alert("Aucune donnée à exporter !"); return; }
+        let csv = "data:text/csv;charset=utf-8,\ufeffID,Niveau,Exp,Savoir,Attitude,Pratique,Obstacles\n";
+        database.forEach(r => {
+            csv += `${r.id},${r.niveau},${r.exp},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},"${r.obstacles.join('|')}"\n`;
+        });
+        let link = document.createElement("a");
+        link.href = encodeURI(csv);
+        link.download = "KAP_HGRM_Complet.csv";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
