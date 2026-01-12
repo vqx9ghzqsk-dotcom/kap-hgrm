@@ -3,364 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAP-HGRM - Étude Scientifique Cancer du Sein</title>
+    <title>KAP-HGRM - Étude Prévention Cancer du Sein</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 1200px; margin: auto; background: white; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.15); min-height: 900px; overflow: hidden; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 15px; }
+        .container { max-width: 1100px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
         
-        /* HEADER & TABS */
-        .header-tabs { display: flex; background: #fff; border-bottom: 4px solid #b03060; padding: 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .tab { flex: 1; padding: 18px; text-align: center; font-weight: 600; font-size: 13px; color: #666; cursor: pointer; transition: 0.3s; border: none; background: transparent; text-transform: uppercase; letter-spacing: 0.5px; }
-        .tab:hover { background: #fff0f5; color: #b03060; }
-        .tab.active { background: #b03060; color: white; border-bottom: 4px solid #880e4f; }
+        .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 100; }
+        .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; }
+        .tab.active { background: #b03060; color: white; border-color: #b03060; }
         
-        /* CONTENT */
-        .form-content { padding: 40px; display: none; animation: fadeIn 0.4s ease-out; }
+        .form-content { padding: 25px; display: none; }
         .form-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* TITRES */
-        .section-title { background: #fce4ec; color: #880e4f; padding: 12px 20px; font-weight: 700; border-left: 6px solid #b03060; margin: 30px 0 20px 0; border-radius: 0 8px 8px 0; font-size: 15px; display: flex; justify-content: space-between; align-items: center; }
-
-        /* GRILLES */
-        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 20px; }
-        .field { display: flex; flex-direction: column; }
-        label { font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #444; }
-        select, input[type="text"] { padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; background: #fff; transition: 0.3s; }
-        select:focus { border-color: #b03060; outline: none; box-shadow: 0 0 0 3px rgba(176, 48, 96, 0.1); }
-
-        /* TABLEAUX LIKERT */
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 13px; background: #fff; border: 1px solid #eee; }
-        th { background: #f8f9fa; padding: 15px; border-bottom: 2px solid #ddd; color: #555; font-weight: 600; }
-        td { border-bottom: 1px solid #eee; padding: 12px; text-align: center; }
-        .question-text { text-align: left; padding-left: 15px; width: 50%; }
-
-        /* BOUTONS */
-        .btn-save { width: 100%; background: linear-gradient(135deg, #b03060 0%, #880e4f 100%); color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 30px; box-shadow: 0 4px 15px rgba(176, 48, 96, 0.3); transition: transform 0.2s; }
-        .btn-save:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(176, 48, 96, 0.4); }
+        .section-title { background: #fff1f6; color: #b03060; padding: 12px; font-weight: bold; border-left: 5px solid #b03060; margin: 20px 0 15px 0; text-transform: uppercase; font-size: 13px; }
         
-        .btn-export { background: #2e7d32; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; float: right; margin-top: -50px; }
+        .question-block { margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #eee; }
+        .question-text { font-weight: 600; font-size: 14px; margin-bottom: 8px; color: #333; }
+        
+        .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; }
+        .option-item { display: flex; align-items: center; font-size: 13px; background: #fdfdfd; padding: 8px; border: 1px solid #eee; border-radius: 5px; cursor: pointer; }
+        .option-item:hover { background: #f5f5f5; }
+        .option-item input { margin-right: 10px; }
 
-        /* ANALYSE RESULTS */
-        .stat-card { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .result-badge { padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
-        .good { background: #e8f5e9; color: #2e7d32; }
-        .medium { background: #fff3e0; color: #ef6c00; }
-        .bad { background: #ffebee; color: #c62828; }
+        select, input[type="text"] { padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 100%; box-sizing: border-box; }
 
-        .interpretation-box { margin-top: 20px; padding: 20px; background: #e3f2fd; border-left: 5px solid #1976d2; color: #0d47a1; line-height: 1.6; border-radius: 4px; }
+        .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 30px; }
+        .consent-box { background: #e3f2fd; padding: 15px; border-radius: 8px; border: 1px solid #bbdefb; font-size: 13px; line-height: 1.5; }
+
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 12px; }
+        th { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; }
+        td { border: 1px solid #eee; padding: 10px; text-align: center; }
+        
+        .interpretation-box { background: #e8f5e9; border-left: 5px solid #2e7d32; padding: 15px; margin-top: 10px; font-size: 14px; }
+        .counter-badge { background: #b03060; color: white; padding: 2px 6px; border-radius: 10px; font-size: 10px; margin-left: 5px;}
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-tabs">
-        <button class="tab active" onclick="switchTab(1)">1. COLLECTE DES DONNÉES</button>
+        <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">0</span></button>
         <button class="tab" onclick="switchTab(2)">2. DÉPOUILLEMENT</button>
-        <button class="tab" onclick="switchTab(3)">3. ANALYSE STATISTIQUE</button>
-        <button class="tab" onclick="switchTab(4)">4. INTERPRÉTATION & RAPPORT</button>
+        <button class="tab" onclick="switchTab(3)">3. ANALYSE CROISÉE</button>
+        <button class="tab" onclick="switchTab(4)">4. CONCLUSIONS</button>
     </div>
 
     <div id="content-1" class="form-content active">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="color:#b03060; margin:0;">Nouvelle Fiche d'Enquête</h2>
-            <span style="background:#eee; padding:5px 10px; border-radius:15px; font-size:12px; font-weight:bold;">Total Fiches : <span id="count-badge">0</span></span>
-        </div>
-
         <form id="kapForm">
-            <div class="section-title">I. IDENTIFICATION SOCIO-PROFESSIONNELLE</div>
-            <div class="row">
-                <div class="field"><label>Code Fiche</label><select id="code-enquete"></select></div>
-                <div class="field"><label>Service</label><select id="service"><option>Maternité</option><option>Gynécologie</option><option>Chirurgie</option><option>Médecine Interne</option><option>Urgences</option></select></div>
-                <div class="field"><label>Niveau d'étude</label><select id="niveau"><option value="A2">A2 (Secondaire)</option><option value="A1" selected>A1 (Graduat)</option><option value="L2">L2 (Licence)</option></select></div>
-                <div class="field"><label>Années d'expérience</label><select id="experience"></select></div>
+            
+            <div class="section-title">1. Identification de l'Enquête</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="field"><label>Code de la Fiche</label><input type="text" id="code-fiche" placeholder="Ex: INF-001"></div>
+                <div class="field"><label>Date de l'entretien</label><input type="text" id="date-entretien" value="12/01/2026"></div>
             </div>
 
-            <div class="section-title">II. CONNAISSANCES (SAVOIR) - Prévention & Dépistage</div>
-            <div class="row">
-                <div class="field">
-                    <label>Q1. Quelle est la fréquence recommandée pour l'Auto-Examen des Seins (AES) ?</label>
-                    <select id="k1">
-                        <option value="0">Une fois par semaine</option>
-                        <option value="1">Une fois par mois</option> <option value="0">Une fois par an</option>
-                        <option value="0">Ne sait pas</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Q2. Quel est le moment idéal pour faire l'AES (femme réglée) ?</label>
-                    <select id="k2">
-                        <option value="0">N'importe quand dans le cycle</option>
-                        <option value="0">Pendant les règles</option>
-                        <option value="1">7 à 10 jours après le début des règles</option> <option value="0">Juste avant les règles</option>
-                    </select>
+            <div class="section-title">2. Consentement Éclairé</div>
+            <div class="consent-box">
+                "Je confirme avoir été informée des objectifs de cette étude sur la prévention du cancer du sein à l'HGRM. 
+                Je participe volontairement et je sais que mes réponses sont anonymes."
+                <div style="margin-top: 10px;">
+                    <label><input type="radio" name="consent" value="oui" checked> <b>Oui, je consens</b></label>
+                    <label style="margin-left: 20px;"><input type="radio" name="consent" value="non"> Non, je refuse</label>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="field">
-                    <label>Q3. Quel signe clinique N'EST PAS un signe précoce habituel ? (Le piège)</label>
-                    <select id="k3">
-                        <option value="0">Un nodule dur et fixe</option>
-                        <option value="0">Un écoulement mamelonnaire</option>
-                        <option value="1">Une douleur vive au sein</option> <option value="0">Une peau d'orange</option>
-                    </select>
+            <div class="section-title">3. Données Sociodémographiques</div>
+            <div class="options-grid">
+                <div class="field"><label>Service</label>
+                    <select id="service"><option>Gynéco-Obstétrique</option><option>Maternité</option><option>Chirurgie</option><option>Oncologie</option><option>Médecine Interne</option></select>
                 </div>
-                <div class="field">
-                    <label>Q4. À partir de quel âge recommande-t-on la mammographie de dépistage ?</label>
-                    <select id="k4">
-                        <option value="0">Dès 20 ans</option>
-                        <option value="1">À partir de 40-50 ans</option> <option value="0">Uniquement si on sent une boule</option>
-                    </select>
+                <div class="field"><label>Niveau d'étude</label>
+                    <select id="niveau"><option>A2 (Diplômée)</option><option selected>A1 (Graduée)</option><option>L0/L1 (Licenciée)</option><option>Master</option></select>
+                </div>
+                <div class="field"><label>Ancienneté (Années)</label>
+                    <select id="anciennete"><option>0-5 ans</option><option>6-10 ans</option><option>+10 ans</option></select>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="field">
-                    <label>Q5. Lequel est un facteur de risque prouvé ?</label>
-                    <select id="k5">
-                        <option value="1">Avoir une mère ou sœur ayant eu le cancer</option> <option value="0">Porter des soutiens-gorge à armature</option> <option value="0">Recevoir un coup sur le sein</option> <option value="0">L'utilisation de déodorants</option> </select>
+            <div class="section-title">4. Connaissances Générales (Prévention)</div>
+            
+            <div class="question-block">
+                <div class="question-text">Q1. Quelle est la fréquence recommandée pour l'auto-examen des seins (AES) ?</div>
+                <div class="options-grid">
+                    <label class="option-item"><input type="radio" name="q_aes_freq" value="0"> Chaque semaine</label>
+                    <label class="option-item"><input type="radio" name="q_aes_freq" value="1"> Une fois par mois</label>
+                    <label class="option-item"><input type="radio" name="q_aes_freq" value="0"> Une fois par an</label>
                 </div>
             </div>
 
-            <div class="section-title">III. ATTITUDES (Perceptions et Croyances)</div>
-            <p style="font-size:12px; color:#666; margin-bottom:10px;">Échelle : 1 (Pas du tout d'accord) à 5 (Tout à fait d'accord)</p>
+            <div class="question-block">
+                <div class="question-text">Q2. Quel est le moment idéal pour pratiquer l'AES chez une femme réglée ?</div>
+                <div class="options-grid">
+                    <label class="option-item"><input type="radio" name="q_aes_moment" value="0"> Pendant les règles</label>
+                    <label class="option-item"><input type="radio" name="q_aes_moment" value="1"> 7 à 10 jours après les règles</label>
+                    <label class="option-item"><input type="radio" name="q_aes_moment" value="0"> Avant les règles</label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text">Q3. La douleur est-elle le premier signe d'alerte d'un cancer du sein débutant ?</div>
+                <div class="options-grid">
+                    <label class="option-item"><input type="radio" name="q_douleur" value="0"> Oui</label>
+                    <label class="option-item"><input type="radio" name="q_douleur" value="1"> Non (souvent indolore)</label>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-text">Q4. Quel est l'examen de référence (Gold Standard) pour le dépistage ?</div>
+                <div class="options-grid">
+                    <label class="option-item"><input type="radio" name="q_gold" value="0"> Échographie</label>
+                    <label class="option-item"><input type="radio" name="q_gold" value="1"> Mammographie</label>
+                    <label class="option-item"><input type="radio" name="q_gold" value="0"> Biopsie</label>
+                </div>
+            </div>
+
+            <div class="section-title">5. Attitudes vis-à-vis du Dépistage (1-5)</div>
+            <p style="font-size: 12px; color: #666;">(1: Pas d'accord, 5: Tout à fait d'accord)</p>
             <table>
-                <thead><tr><th class="question-text">Énoncé</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
-                <tbody>
-                    <tr>
-                        <td class="question-text">A1. Je me sens capable d'enseigner l'AES à mes patientes.</td>
-                        <td><input type="radio" name="a1" value="1"></td><td><input type="radio" name="a1" value="2"></td><td><input type="radio" name="a1" value="3"></td><td><input type="radio" name="a1" value="4"></td><td><input type="radio" name="a1" value="5" checked></td>
-                    </tr>
-                    <tr>
-                        <td class="question-text">A2. L'éducation sur le cancer du sein fait partie de mon rôle.</td>
-                        <td><input type="radio" name="a2" value="1"></td><td><input type="radio" name="a2" value="2"></td><td><input type="radio" name="a2" value="3"></td><td><input type="radio" name="a2" value="4"></td><td><input type="radio" name="a2" value="5" checked></td>
-                    </tr>
-                    <tr>
-                        <td class="question-text">A3. Le cancer du sein est une fatalité, c'est la mort assurée.</td>
-                        <td><input type="radio" name="a3" value="5" checked></td><td><input type="radio" name="a3" value="4"></td><td><input type="radio" name="a3" value="3"></td><td><input type="radio" name="a3" value="2"></td><td><input type="radio" name="a3" value="1"></td>
-                    </tr>
-                    <tr>
-                        <td class="question-text">A4. Je suis à l'aise pour examiner les seins d'une patiente (Pudeur).</td>
-                        <td><input type="radio" name="a4" value="1"></td><td><input type="radio" name="a4" value="2"></td><td><input type="radio" name="a4" value="3"></td><td><input type="radio" name="a4" value="4"></td><td><input type="radio" name="a4" value="5" checked></td>
-                    </tr>
-                </tbody>
+                <tr><th style="text-align:left">Énoncé</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+                <tr><td style="text-align:left">Le dépistage précoce peut sauver une vie</td><td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5" checked></td></tr>
+                <tr><td style="text-align:left">Je me sens capable d'enseigner l'AES</td><td><input type="radio" name="att2" value="1"></td><td><input type="radio" name="att2" value="2"></td><td><input type="radio" name="att2" value="3"></td><td><input type="radio" name="att2" value="4" checked></td><td><input type="radio" name="att2" value="5"></td></tr>
             </table>
 
-            <div class="section-title">IV. PRATIQUES (Technique et Action)</div>
-            <div class="row">
-                <div class="field">
-                    <label>P1. Pratiquez-vous l'AES sur vous-même ?</label>
-                    <select id="p1">
-                        <option value="0">Jamais</option>
-                        <option value="5">Rarement</option>
-                        <option value="10">Chaque mois (Régulièrement)</option> </select>
-                </div>
-                <div class="field">
-                    <label>P2. Quelle partie de la main utilisez-vous pour palper ? (Technique)</label>
-                    <select id="p2">
-                        <option value="0">Le bout des doigts (pointes)</option>
-                        <option value="0">La paume de la main</option>
-                        <option value="10">La pulpe des 3 doigts du milieu</option> <option value="0">Je pince le sein</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>P3. Éduquez-vous les patientes sur le cancer du sein ?</label>
-                    <select id="p3">
-                        <option value="0">Non, jamais</option>
-                        <option value="5">Seulement si elles demandent</option>
-                        <option value="10">Oui, systématiquement</option> </select>
-                </div>
+            <div class="section-title">6. Pratiques de l'Infirmière</div>
+            <div class="question-block">
+                <div class="question-text">Pratiquez-vous l'auto-examen sur vous-même ?</div>
+                <select id="prac1"><option>Régulièrement</option><option>Rarement</option><option>Jamais</option></select>
+            </div>
+            <div class="question-block">
+                <div class="question-text">Réalisez-vous l'examen clinique des seins (ECS) pour vos patientes ?</div>
+                <select id="prac2"><option>Systématiquement</option><option>Si plainte</option><option>Jamais</option></select>
             </div>
 
-            <button type="button" class="btn-save" onclick="saveRecord()">💾 ENREGISTRER L'ENQUÊTE ET CALCULER LES SCORES</button>
+            <div class="section-title">7. Obstacles identifiés</div>
+            <div class="options-grid">
+                <label class="option-item"><input type="checkbox" class="obs" value="Manque_Temps"> Manque de temps</label>
+                <label class="option-item"><input type="checkbox" class="obs" value="Pudeur"> Pudeur culturelle</label>
+                <label class="option-item"><input type="checkbox" class="obs" value="Formation"> Manque de formation</label>
+                <label class="option-item"><input type="checkbox" class="obs" value="Materiel"> Manque de matériel</label>
+            </div>
+
+            <div class="section-title">8. Recommandations de l'Infirmière</div>
+            <div class="field">
+                <label>Quelle action prioritaire proposez-vous pour l'HGRM ?</label>
+                <select id="recommandation">
+                    <option>Organiser des séances de formation continue</option>
+                    <option>Installer un service de mammographie</option>
+                    <option>Créer des brochures de sensibilisation</option>
+                    <option>Rendre l'examen des seins obligatoire en consultation</option>
+                </select>
+            </div>
+
+            <button type="button" class="btn-save" onclick="saveRecord()">💾 ENREGISTRER CETTE FICHE</button>
         </form>
     </div>
 
     <div id="content-2" class="form-content">
-        <button class="btn-export" onclick="exportCSV()">📥 Exporter CSV</button>
-        <div class="section-title">MATRICE DE DONNÉES BRUTES</div>
-        <table style="font-size:12px;">
+        <div class="section-title">MATRICE DE DÉPOUILLEMENT</div>
+        <table id="table-depouillement">
             <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Niveau</th>
-                    <th>Score Savoir /5</th>
-                    <th>Score Attitude /20</th>
-                    <th>Score Pratique /30</th>
-                    <th>Interprétation</th>
-                </tr>
+                <tr><th>ID</th><th>Niveau</th><th>Ancienneté</th><th>Savoir (%)</th><th>Attitude (/5)</th><th>Pratique (%)</th><th>Rec. Prioritaire</th></tr>
             </thead>
-            <tbody id="table-body"></tbody>
+            <tbody id="db-body"></tbody>
         </table>
     </div>
 
     <div id="content-3" class="form-content">
-        <div class="section-title">RÉSULTATS DE L'ÉTUDE</div>
-        
-        <div class="stat-card">
-            <h3>1. Niveau de Connaissances (Savoir)</h3>
-            <p>Capacité à identifier les risques et normes de dépistage.</p>
-            <div id="stats-savoir" style="font-weight:bold; color:#b03060;">En attente de données...</div>
-        </div>
-
-        <div class="stat-card">
-            <h3>2. Corrélation Savoir vs Pratique</h3>
-            <p>Est-ce que mieux connaître la maladie pousse à mieux agir ?</p>
-            <table class="cross-table">
-                <thead>
-                    <tr>
-                        <th>Groupe</th>
-                        <th>Pratique Moyenne (%)</th>
-                    </tr>
-                </thead>
-                <tbody id="cross-body"></tbody>
-            </table>
-        </div>
+        <div class="section-title">ANALYSE CROISÉE (SAVOIR vs PRATIQUE)</div>
+        <table id="analysis-table">
+            <thead><tr><th>Groupe</th><th>Effectif</th><th>Score Pratique Moyen</th></tr></thead>
+            <tbody id="analysis-body"></tbody>
+        </table>
+        <div id="interpretation" class="interpretation-box"></div>
     </div>
 
     <div id="content-4" class="form-content">
-        <div class="section-title">RAPPORT D'INTERPRÉTATION AUTOMATIQUE</div>
-        <div id="final-report" class="interpretation-box">
-            Veuillez saisir des données pour générer le rapport scientifique.
-        </div>
+        <div class="section-title">CONCLUSIONS DE L'ÉTUDE</div>
+        <div id="conclusion-text" style="line-height:1.6; font-size:15px;">En attente de données...</div>
     </div>
 
 </div>
 
 <script>
-    // --- 1. INITIALISATION ---
     let database = [];
+    const urlCloud = "https://script.google.com/macros/s/AKfycbz-a9ZgcGRrxTDWXLlbuTnsIzUsdj4ZY5FVgTc7pHAMyyOPdrNQY8lT4HxxXngYGTNy/exec";
 
-    // Remplir les listes déroulantes dynamiquement
-    const codeSelect = document.getElementById('code-enquete');
-    for(let i=1; i<=200; i++) { let opt=document.createElement('option'); opt.value="N-"+i; opt.text="Infirmière "+i; codeSelect.appendChild(opt); }
-    const expSelect = document.getElementById('experience');
-    for(let i=0; i<=40; i++) { let opt=document.createElement('option'); opt.value=i; opt.text=i+" ans"; expSelect.appendChild(opt); }
-
-    // --- 2. FONCTION DE SAUVEGARDE ET SCORING ---
     function saveRecord() {
-        // A. Récupération des valeurs
-        let k1 = parseInt(document.getElementById('k1').value);
-        let k2 = parseInt(document.getElementById('k2').value);
-        let k3 = parseInt(document.getElementById('k3').value);
-        let k4 = parseInt(document.getElementById('k4').value);
-        let k5 = parseInt(document.getElementById('k5').value);
+        // Collecte des points de savoir (Q1 à Q4)
+        let s1 = parseInt(document.querySelector('input[name="q_aes_freq"]:checked')?.value || 0);
+        let s2 = parseInt(document.querySelector('input[name="q_aes_moment"]:checked')?.value || 0);
+        let s3 = parseInt(document.querySelector('input[name="q_douleur"]:checked')?.value || 0);
+        let s4 = parseInt(document.querySelector('input[name="q_gold"]:checked')?.value || 0);
+        
+        let scoreSavoir = Math.round(((s1 + s2 + s3 + s4) / 4) * 100);
 
-        // Attitude (Notez que A3 est inversé dans le HTML : value=5 pour "Pas du tout d'accord")
-        let a1 = parseInt(document.querySelector('input[name="a1"]:checked').value);
-        let a2 = parseInt(document.querySelector('input[name="a2"]:checked').value);
-        let a3 = parseInt(document.querySelector('input[name="a3"]:checked').value); // Déjà inversé dans le HTML value
-        let a4 = parseInt(document.querySelector('input[name="a4"]:checked').value);
+        // Attitude
+        let a1 = parseInt(document.querySelector('input[name="att1"]:checked').value);
+        let a2 = parseInt(document.querySelector('input[name="att2"]:checked').value);
+        let scoreAttitude = ((a1 + a2) / 2).toFixed(1);
 
         // Pratique
-        let p1 = parseInt(document.getElementById('p1').value);
-        let p2 = parseInt(document.getElementById('p2').value);
-        let p3 = parseInt(document.getElementById('p3').value);
+        let p1Val = document.getElementById('prac1').value;
+        let p2Val = document.getElementById('prac2').value;
+        let scorePratique = (p1Val === "Régulièrement" ? 50 : 10) + (p2Val === "Systématiquement" ? 50 : 10);
 
-        // B. Calcul des Scores
-        let scoreSavoir = k1 + k2 + k3 + k4 + k5; // Max 5 points
-        let scoreSavoirPct = (scoreSavoir / 5) * 100;
-
-        let scoreAttitude = a1 + a2 + a3 + a4; // Max 20 points
-        let scoreAttitudePct = (scoreAttitude / 20) * 100;
-
-        let scorePratique = p1 + p2 + p3; // Max 30 points
-        let scorePratiquePct = (scorePratique / 30) * 100;
-
-        // C. Création de l'objet Enquête
         let record = {
-            id: document.getElementById('code-enquete').value,
+            id: document.getElementById('code-fiche').value || "Inconnu",
+            service: document.getElementById('service').value,
             niveau: document.getElementById('niveau').value,
-            savoir: scoreSavoirPct,
-            attitude: scoreAttitudePct,
-            pratique: scorePratiquePct
+            anciennete: document.getElementById('anciennete').value,
+            scoreSavoir: scoreSavoir,
+            scoreAttitude: scoreAttitude,
+            scorePratique: scorePratique,
+            recommandation: document.getElementById('recommandation').value,
+            obstacles: Array.from(document.querySelectorAll('.obs:checked')).map(c => c.value).join('|')
         };
 
-        // D. Sauvegarde
         database.push(record);
         document.getElementById('count-badge').textContent = database.length;
-        
-        // E. Feedback et Reset
-        alert(`✅ Fiche enregistrée !\n\nSavoir : ${scoreSavoirPct}%\nAttitude : ${scoreAttitudePct}%\nPratique : ${scorePratiquePct}%`);
-        updateAnalysis();
-        
-        // Passer à la fiche suivante
-        codeSelect.selectedIndex += 1;
-        window.scrollTo(0,0);
+
+        // Envoi au Cloud
+        fetch(urlCloud, { method: "POST", mode: "no-cors", body: JSON.stringify(record) });
+
+        alert("Fiche enregistrée !");
+        updateAll();
+        document.getElementById('kapForm').reset();
     }
 
-    // --- 3. ANALYSE ET AFFICHAGE ---
-    function updateAnalysis() {
-        const tbody = document.getElementById('table-body');
-        tbody.innerHTML = '';
-        
-        let sumSavoir = 0;
-        let sumPratique = 0;
+    function updateAll() {
+        // Onglet 2
+        document.getElementById('db-body').innerHTML = database.map(r => 
+            `<tr><td>${r.id}</td><td>${r.niveau}</td><td>${r.anciennete}</td><td>${r.scoreSavoir}%</td><td>${r.scoreAttitude}</td><td>${r.scorePratique}%</td><td>${r.recommandation}</td></tr>`
+        ).join('');
 
-        // Génération Tableau Dépouillement
-        database.forEach(r => {
-            sumSavoir += r.savoir;
-            sumPratique += r.pratique;
+        // Onglet 3
+        let highSavoir = database.filter(r => r.scoreSavoir >= 75);
+        let lowSavoir = database.filter(r => r.scoreSavoir < 75);
+        let avgHigh = highSavoir.length ? (highSavoir.reduce((a,b)=>a+b.scorePratique,0)/highSavoir.length).toFixed(1) : 0;
+        let avgLow = lowSavoir.length ? (lowSavoir.reduce((a,b)=>a+b.scorePratique,0)/lowSavoir.length).toFixed(1) : 0;
 
-            let badgeClass = r.savoir >= 70 ? 'good' : (r.savoir >= 50 ? 'medium' : 'bad');
-            let badgeText = r.savoir >= 70 ? 'Bon' : (r.savoir >= 50 ? 'Moyen' : 'Insuffisant');
-
-            tbody.innerHTML += `
-                <tr>
-                    <td>${r.id}</td>
-                    <td>${r.niveau}</td>
-                    <td>${(r.savoir/20).toFixed(1)}/5 (${r.savoir}%)</td>
-                    <td>${(r.attitude/5).toFixed(1)}/20</td>
-                    <td>${r.pratique}%</td>
-                    <td><span class="result-badge ${badgeClass}">${badgeText}</span></td>
-                </tr>
-            `;
-        });
-
-        // Analyse Croisée
-        let highKnow = database.filter(r => r.savoir >= 60); // Seuil de "Bon savoir" fixé à 60% pour l'exercice
-        let lowKnow = database.filter(r => r.savoir < 60);
-
-        let avgPracHigh = highKnow.length ? (highKnow.reduce((s,c)=>s+c.pratique,0)/highKnow.length).toFixed(1) : 0;
-        let avgPracLow = lowKnow.length ? (lowKnow.reduce((s,c)=>s+c.pratique,0)/lowKnow.length).toFixed(1) : 0;
-
-        document.getElementById('stats-savoir').innerHTML = `Moyenne globale du savoir : ${(sumSavoir/database.length).toFixed(1)}%`;
-
-        document.getElementById('cross-body').innerHTML = `
-            <tr><td>Infirmières avec <b>Bonnes Connaissances</b> (Savoir ≥ 60%)</td><td style="color:green; font-weight:bold;">${avgPracHigh}%</td></tr>
-            <tr><td>Infirmières avec <b>Connaissances Faibles</b> (Savoir < 60%)</td><td style="color:red; font-weight:bold;">${avgPracLow}%</td></tr>
+        document.getElementById('analysis-body').innerHTML = `
+            <tr><td>Savoir Satisfaisant (>=75%)</td><td>${highSavoir.length}</td><td>${avgHigh}%</td></tr>
+            <tr><td>Savoir Insuffisant (<75%)</td><td>${lowSavoir.length}</td><td>${avgLow}%</td></tr>
         `;
 
-        // Interprétation
-        let conclusion = `<h3>Synthèse pour ${database.length} enquêtées</h3>`;
-        conclusion += `<p>Le niveau de connaissance moyen est de <strong>${(sumSavoir/database.length).toFixed(1)}%</strong>.</p>`;
-        
-        if(avgPracHigh > avgPracLow + 15) {
-            conclusion += `<p>✅ <strong>Hypothèse validée :</strong> On observe clairement que les infirmières qui connaissent les normes de dépistage (moment de l'AES, âge mammographie) ont une pratique beaucoup plus rigoureuse (${avgPracHigh}%) que celles qui ne savent pas (${avgPracLow}%).</p>`;
-        } else {
-            conclusion += `<p>⚠️ <strong>Constat alarmant :</strong> Même les infirmières qui ont les connaissances théoriques peinent à les mettre en pratique (Score pratique moyen : ${avgPracHigh}%). Cela suggère des barrières autres que le manque de savoir (manque de temps, manque de matériel ou manque de motivation).</p>`;
-        }
+        document.getElementById('interpretation').innerHTML = `L'analyse montre que les infirmières ayant un savoir satisfaisant ont une pratique moyenne de ${avgHigh}%, ce qui souligne l'impact de la connaissance sur l'action clinique.`;
 
-        document.getElementById('final-report').innerHTML = conclusion;
+        // Onglet 4
+        document.getElementById('conclusion-text').innerHTML = `L'étude porte sur ${database.length} infirmières. La recommandation la plus citée est : <b>${database[database.length-1].recommandation}</b>.`;
     }
 
-    // --- UTILS ---
-    function switchTab(id) {
+    function switchTab(idx) {
         document.querySelectorAll('.form-content').forEach(d => d.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.getElementById('content-'+id).classList.add('active');
-        document.querySelector(`.header-tabs button:nth-child(${id})`).classList.add('active');
-    }
-
-    function exportCSV() {
-        let csv = "ID,Niveau,Savoir_Pct,Attitude_Pct,Pratique_Pct\n";
-        database.forEach(r => csv += `${r.id},${r.niveau},${r.savoir},${r.attitude},${r.pratique}\n`);
-        let link = document.createElement('a');
-        link.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
-        link.download = 'Resultats_KAP.csv';
-        link.click();
+        document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+        document.getElementById('content-'+idx).classList.add('active');
+        document.querySelector(`.header-tabs button:nth-child(${idx})`).classList.add('active');
     }
 </script>
-
 </body>
 </html>
