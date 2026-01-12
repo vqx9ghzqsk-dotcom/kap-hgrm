@@ -93,7 +93,7 @@
                 <label class="check-item"><input type="checkbox" value="pudeur"> Pudeur culturelle</label>
             </div>
 
-            <button type="button" class="btn-save" id="btn-submit" onclick="saveRecord()">💾 ENREGISTRER & SYNCHRONISER AU CLOUD</button>
+            <button type="button" class="btn-save" id="btn-submit" onclick="saveRecord()">💾 ENREGISTRER & ENVOYER AU SHEETS</button>
         </form>
     </div>
 
@@ -101,7 +101,7 @@
         <div class="section-title">TABLEAU DE DÉPOUILLEMENT ET CODAGE</div>
         <table style="font-size:11px;">
             <thead>
-                <tr><th>Code</th><th>Niveau</th><th>Savoir (%)</th><th>Attitude (/5)</th><th>Pratique (%)</th><th>Sync Status</th></tr>
+                <tr><th>Code</th><th>Niveau</th><th>Savoir (%)</th><th>Attitude (/5)</th><th>Pratique (%)</th><th>Cloud Sync</th></tr>
             </thead>
             <tbody id="database-body"></tbody>
         </table>
@@ -124,8 +124,8 @@
 
 <script>
     let database = [];
-    // URL GOOGLE APPS SCRIPT
-    const urlCloud = "https://script.google.com/macros/s/AKfycbwTJhDSObZr2e8olN9j4sXr2YmqrNzw2EgJGNbCerWPU9icMGacdEl6_gpHUsfyhE64/exec";
+    // NOUVELLE URL SYNCHRONISÉE
+    const urlCloud = "https://script.google.com/macros/s/AKfycbyOKRBtmx8QTmhHh3_qCbTcmTpjHcVWO9sER_HWkWcdDRCF0cmXof4qwVRQhWV1VvG-/exec";
 
     // Initialisation codes
     const codeSelect = document.getElementById('code-enquete');
@@ -138,7 +138,7 @@
     function saveRecord() {
         const btn = document.getElementById('btn-submit');
         btn.disabled = true;
-        btn.textContent = "⌛ SYNCHRONISATION EN COURS...";
+        btn.textContent = "⌛ ENVOI VERS GOOGLE SHEETS...";
 
         let record = {
             id: document.getElementById('code-enquete').value,
@@ -163,7 +163,7 @@
         database.push(record);
         document.getElementById('count-badge').textContent = database.length;
 
-        // Envoi au Cloud (Google Sheets)
+        // Envoi au Cloud
         fetch(urlCloud, {
             method: "POST",
             mode: "no-cors",
@@ -171,41 +171,39 @@
             body: JSON.stringify(record)
         })
         .then(() => {
-            alert("✅ Données sauvegardées sur Google Sheets !");
+            alert("✅ Succès ! La fiche a été ajoutée à Google Sheets.");
             btn.disabled = false;
-            btn.textContent = "💾 ENREGISTRER & SYNCHRONISER AU CLOUD";
+            btn.textContent = "💾 ENREGISTRER & ENVOYER AU SHEETS";
             updateAnalysis();
         })
         .catch(err => {
-            alert("⚠️ Erreur Cloud (mais sauvegardé localement)");
+            console.error(err);
+            alert("⚠️ Problème de connexion, mais la fiche est enregistrée localement dans l'onglet 2.");
             btn.disabled = false;
+            btn.textContent = "💾 ENREGISTRER & ENVOYER AU SHEETS";
             updateAnalysis();
         });
     }
 
     function updateAnalysis() {
-        // MAJ Onglet 2
         const tbody = document.getElementById('database-body');
-        tbody.innerHTML = database.map(r => `<tr><td>${r.id}</td><td>${r.niveau}</td><td>${r.scoreSavoir}%</td><td>${r.scoreAttitude}</td><td>${r.scorePratique}%</td><td>✅ OK</td></tr>`).join('');
+        tbody.innerHTML = database.map(r => `<tr><td>${r.id}</td><td>${r.niveau}</td><td>${r.scoreSavoir}%</td><td>${r.scoreAttitude}</td><td>${r.scorePratique}%</td><td>☁️ Synchro</td></tr>`).join('');
 
-        // MAJ Onglet 3 (Analyse croisée simple)
         let high = database.filter(r => r.scoreSavoir >= 70);
         let low = database.filter(r => r.scoreSavoir < 70);
         
         document.getElementById('cross-body').innerHTML = `
-            <tr><td>Savoir Satisfaisant (>=70%)</td><td>${high.length}</td><td>${avg(high)}%</td></tr>
-            <tr><td>Savoir Insuffisant (<70%)</td><td>${low.length}</td><td>${avg(low)}%</td></tr>
+            <tr><td>Savoir Elevé</td><td>${high.length}</td><td>${avg(high)}%</td></tr>
+            <tr><td>Savoir Faible</td><td>${low.length}</td><td>${avg(low)}%</td></tr>
         `;
 
-        document.getElementById('interpretation-cross').textContent = `On observe que les infirmiers ayant un bon savoir ont une pratique moyenne de ${avg(high)}%, validant l'importance de la formation théorique.`;
-        
-        // MAJ Onglet 4
-        document.getElementById('final-conclusion').innerHTML = `<h3>Rapport de Synthèse</h3><p>Sur <strong>${database.length}</strong> répondants analysés, le niveau de pratique moyen à l'HGRM est de <strong>${avg(database)}%</strong>. Les barrières identifiées suggèrent une intervention sur les coûts et l'intimité des patientes.</p>`;
+        document.getElementById('interpretation-cross').textContent = `Moyenne de pratique : ${avg(database)}%. Les infirmiers avec un bon savoir pratiquent mieux (${avg(high)}%).`;
+        document.getElementById('final-conclusion').innerHTML = `<h3>Rapport HGRM</h3><p>Total fiches : ${database.length}. Pratique globale : ${avg(database)}%.</p>`;
     }
 
     function avg(arr) {
         if(arr.length === 0) return 0;
-        return (arr.reduce((s, c) => s + c.scorePratique, 0) / arr.length).toFixed(1);
+        return (arr.reduce((s, c) => s + parseFloat(c.scorePratique), 0) / arr.length).toFixed(1);
     }
 
     function switchTab(idx) {
@@ -216,7 +214,7 @@
     }
 
     function exportToCSV() {
-        let csv = "data:text/csv;charset=utf-8,\ufeffID,Niveau,Savoir_Pct,Attitude_5,Pratique_Pct\n";
+        let csv = "data:text/csv;charset=utf-8,\ufeffID,Niveau,Savoir,Attitude,Pratique\n";
         database.forEach(r => csv += `${r.id},${r.niveau},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique}\n`);
         window.open(encodeURI(csv));
     }
