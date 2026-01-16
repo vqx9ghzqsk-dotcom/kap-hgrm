@@ -355,9 +355,10 @@
 
 <script>
     // ============================================================
-    // CONFIGURATION URL GOOGLE APPS SCRIPT
+    // ZONE DE CONFIGURATION (A REMPLIR PAR L'UTILISATEUR)
+    // Collez ici l'URL obtenue lors du déploiement Apps Script
     // ============================================================
-    const GOOGLE_SCRIPT_URL = "VOTRE_URL_GOOGLE_SCRIPT_ICI";
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSvgFSulSt4aROwLoBhfbN9FDU3mXEbHz83KOKnONON2zfcpJrZwOJZT-QpEX3XkmB/exec";
     // ============================================================
 
     let database = [];
@@ -374,6 +375,10 @@
 
     // --- CHARGEMENT DES DONNÉES AU DÉMARRAGE (PERSISTANCE) ---
     window.onload = function() {
+        if(GOOGLE_SCRIPT_URL.includes("VOTRE_URL")) {
+            alert("ATTENTION : Vous devez configurer l'URL du script Google dans le code HTML pour que la sauvegarde fonctionne !");
+            return;
+        }
         loadDataFromCloud();
     };
 
@@ -390,6 +395,10 @@
                 if(typeof r.risques === 'string') r.risques = r.risques.split(',');
                 if(typeof r.signes === 'string') r.signes = r.signes.split(',');
                 if(typeof r.obstacles === 'string') r.obstacles = r.obstacles.split(',');
+                // Assurer que les listes sont des arrays, pas null
+                if(!r.risques) r.risques = [];
+                if(!r.signes) r.signes = [];
+                if(!r.obstacles) r.obstacles = [];
             });
 
             document.getElementById('count-badge').textContent = database.length;
