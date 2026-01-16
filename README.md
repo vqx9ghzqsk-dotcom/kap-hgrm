@@ -38,6 +38,7 @@
         .btn-save { width: 100%; background: #b03060; color: white; padding: 25px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; }
         .btn-save:hover { background: #8e244d; transform: translateY(-2px); }
 
+        /* --- NOUVEAUX STYLES POUR L'ANALYSE AVANCÉE --- */
         .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .stat-title { font-weight: bold; color: #555; margin-bottom: 10px; font-size: 14px; border-bottom: 2px solid #b03060; display: inline-block; }
         
@@ -159,31 +160,51 @@
     </div>
 
     <div id="content-3" class="form-content">
-        <div class="section-title">1. STATISTIQUES DESCRIPTIVES</div>
+        <div class="section-title">1. STATISTIQUES DESCRIPTIVES (FRÉQUENCES)</div>
         <div class="row">
-            <div class="stat-card"><div class="stat-title">Niveau de Savoir</div><div id="graph-savoir"></div></div>
-            <div class="stat-card"><div class="stat-title">Qualité de la Pratique</div><div id="graph-pratique"></div></div>
+            <div class="stat-card">
+                <div class="stat-title">Niveau de Savoir (Connaissances)</div>
+                <div id="graph-savoir"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Qualité de la Pratique</div>
+                <div id="graph-pratique"></div>
+            </div>
         </div>
-        <div class="section-title">2. ANALYSE CROISÉE</div>
+
+        <div class="section-title">2. ANALYSE CROISÉE (ASSOCIATIONS)</div>
         <table class="cross-table">
-            <thead><tr><th class="text-left">Groupe</th><th>Nombre (N)</th><th>Attitude (/5)</th><th>Pratique (%)</th></tr></thead>
+            <thead>
+                <tr>
+                    <th class="text-left">Groupe (Selon le Savoir)</th>
+                    <th>Nombre (N)</th>
+                    <th>Attitude Moyenne (/5)</th>
+                    <th>Score Pratique Moyen (%)</th>
+                </tr>
+            </thead>
             <tbody id="cross-body"></tbody>
         </table>
+
         <div id="interpretation-cross"></div>
+
         <div class="section-title">3. ANALYSE DES BARRIÈRES</div>
         <div id="graph-obstacles"></div>
     </div>
 
     <div id="content-4" class="form-content">
         <div class="section-title">SYNTHÈSE DE L'ÉTUDE</div>
-        <div id="final-conclusion">Analyse en attente...</div>
-        <button type="button" class="btn-excel" onclick="exportToCSV()">📥 EXPORT CSV</button>
+        <div id="final-conclusion" style="font-size:14px; line-height:1.6; color:#333;">
+            Analyse en attente de données...
+        </div>
+        <br>
+        <button type="button" class="btn-excel" onclick="exportToCSV()">📥 TÉLÉCHARGER LA BASE DE DONNÉES COMPLÈTE (CSV)</button>
     </div>
 
 </div>
 
 <script>
     let database = [];
+
     const codeSelect = document.getElementById('code-enquete');
     for (let i = 1; i <= 200; i++) { let opt = document.createElement('option'); opt.value = "E-"+i; opt.text = "Fiche N° " + i; codeSelect.appendChild(opt); }
     const ageSelect = document.getElementById('age-select');
@@ -205,10 +226,11 @@
             freq: document.getElementById('pratique-freq').value,
             enseigne: document.getElementById('pratique-enseigne').value,
             matin: document.getElementById('pratique-matin').value,
-            technique: document.getElementById('pratique-technique').value, // Ajouté ici
+            technique: document.getElementById('pratique-technique').value, // Sauvegarde de la technique
             obstacles: getCheckedValues('group-obstacles')
         };
 
+        // Ton calcul de score d'origine
         let rawSavoir = 0;
         if(record.q1.includes("Vrai")) rawSavoir++;
         if(record.q2.includes("20 ans")) rawSavoir++;
@@ -227,10 +249,12 @@
 
         database.push(record);
         document.getElementById('count-badge').textContent = database.length;
-        alert(`Fiche enregistrée !`);
+        alert(`Fiche ${record.id} enregistrée !`);
+        
         document.querySelectorAll('input[type="checkbox"]').forEach(i => i.checked = false);
         let currIdx = codeSelect.selectedIndex;
         if(currIdx < codeSelect.options.length - 1) codeSelect.selectedIndex = currIdx + 1;
+        
         updateAnalysis();
     }
 
@@ -239,12 +263,13 @@
         const tbody = document.getElementById('database-body');
         tbody.innerHTML = '';
         database.forEach(row => {
-            tbody.innerHTML += `<tr><td>${row.id}</td><td>${row.niveau}</td><td>${row.exp}</td><td>${row.scoreSavoir}%</td><td>${row.scoreAttitude}</td><td>${row.scorePratique}%</td><td>${row.scoreSavoir >= 70 ? '🟢' : '🔴'}</td></tr>`;
+            tbody.innerHTML += `<tr><td><strong>${row.id}</strong></td><td>${row.niveau}</td><td>${row.exp} ans</td><td>${row.scoreSavoir}%</td><td>${row.scoreAttitude}</td><td>${row.scorePratique}%</td><td>${row.scoreSavoir >= 70 ? '🟢' : '🔴'}</td></tr>`;
         });
-        // Les fonctions graphiques restent les mêmes pour assurer la stabilité
+        
+        // Maintien des fonctions de rendu graphique d'origine
         let highKnow = database.filter(r => r.scoreSavoir >= 70);
         let lowKnow = database.filter(r => r.scoreSavoir < 70);
-        renderBarChart('graph-savoir', [{label: 'Bon', val: highKnow.length, total: database.length, color: '#2e7d32'},{label: 'Insuffisant', val: lowKnow.length, total: database.length, color: '#c62828'}]);
+        renderBarChart('graph-savoir', [{label: 'Bon (>70%)', val: highKnow.length, total: database.length, color: '#2e7d32'}, {label: 'Insuffisant', val: lowKnow.length, total: database.length, color: '#c62828'}]);
     }
 
     function getCheckedCount(groupId) { return document.querySelectorAll(`#${groupId} input:checked`).length; }
@@ -265,11 +290,11 @@
         document.querySelector(`.header-tabs button:nth-child(${idx})`).classList.add('active');
     }
     function exportToCSV() {
-        let csv = "ID,Savoir,Attitude,Pratique,Technique\n";
-        database.forEach(r => csv += `${r.id},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},${r.technique}\n`);
+        let csv = "ID,Niveau,Exp,Savoir,Attitude,Pratique,Technique\n";
+        database.forEach(r => csv += `${r.id},${r.niveau},${r.exp},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},${r.technique}\n`);
         let link = document.createElement("a");
         link.href = encodeURI("data:text/csv;charset=utf-8," + csv);
-        link.download = "base.csv";
+        link.download = "KAP_HGRM.csv";
         link.click();
     }
 </script>
