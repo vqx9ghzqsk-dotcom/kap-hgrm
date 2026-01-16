@@ -13,8 +13,14 @@
         .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 100; }
         .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; transition: 0.2s; }
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
-        .btn-excel { margin-left: auto; background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
-        .btn-excel:hover { background: #1b5e20; }
+        
+        /* Protection Admin */
+        .admin-locked { display: none !important; } /* Cache les onglets par défaut */
+        .btn-admin { margin-left: auto; background: #333; color: white; padding: 10px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size:12px; }
+        .btn-excel { background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-left: 10px;}
+        
+        /* Indicateur de chargement */
+        #loading-indicator { display:none; color: #b03060; font-weight:bold; margin-left:10px; font-size:12px; }
 
         /* Contenu */
         .form-content { padding: 30px; display: none; }
@@ -44,6 +50,7 @@
         /* Bouton Action */
         .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .btn-save:hover { background: #880e4f; transform: translateY(-2px); }
+        .btn-save:disabled { background: #ccc; cursor: not-allowed; }
         
         /* Elements Analyse */
         .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
@@ -66,10 +73,13 @@
 <div class="container">
     <div class="header-tabs">
         <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">0</span></button>
-        <button class="tab" onclick="switchTab(2)">2. MATRICE DE DÉPOUILLEMENT</button>
-        <button class="tab" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE CROISÉE</button>
-        <button class="tab" onclick="switchTab(4)">4. CONCLUSION & SYNTHÈSE</button>
-        <button type="button" class="btn-excel" onclick="exportToCSV()">📊 EXPORT CSV</button>
+        <button class="tab admin-locked" id="tab2" onclick="switchTab(2)">2. MATRICE DE DÉPOUILLEMENT</button>
+        <button class="tab admin-locked" id="tab3" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE</button>
+        <button class="tab admin-locked" id="tab4" onclick="switchTab(4)">4. CONCLUSION</button>
+        
+        <span id="loading-indicator">🔄 Synchro...</span>
+        <button type="button" class="btn-admin" onclick="adminLogin()">🔒 ADMIN</button>
+        <button type="button" class="btn-excel admin-locked" onclick="exportToCSV()">📊 EXPORT CSV</button>
     </div>
 
     <div id="content-1" class="form-content active">
@@ -283,12 +293,12 @@
                 <label class="check-item"><input type="checkbox" value="Protocole"> Absence de protocole</label>
             </div>
 
-            <button type="button" class="btn-save" onclick="saveRecord()">💾 ENREGISTRER CETTE FICHE</button>
+            <button type="button" id="btn-submit" class="btn-save" onclick="saveRecord()">💾 ENREGISTRER CETTE FICHE</button>
         </form>
     </div>
 
     <div id="content-2" class="form-content">
-        <div class="section-title">BASE DE DONNÉES BRUTE (N = <span id="n-total">0</span>)</div>
+        <div class="section-title">BASE DE DONNÉES CLOUD (N = <span id="n-total">0</span>)</div>
         <div style="overflow-x:auto;">
             <table>
                 <thead>
@@ -344,7 +354,15 @@
 </div>
 
 <script>
+    // ============================================================
+    // ZONE DE CONFIGURATION (A REMPLIR PAR L'UTILISATEUR)
+    // Collez ici l'URL obtenue lors du déploiement Apps Script
+    // ============================================================
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMX8dcz3yHj3Y7ou8ByVSORkN0hjkCPkE7eaq0bxbzSxpzC_8n5kEZyt45lharxPYI/exec";
+    // ============================================================
+
     let database = [];
+    let isAdmin = false;
 
     // --- INITIALISATION DES LISTES DÉROULANTES ---
     const codeSel = document.getElementById('code-enquete');
@@ -355,9 +373,76 @@
         codeSel.appendChild(o); 
     }
 
-    // --- FONCTION PRINCIPALE D'ENREGISTREMENT ---
+    // --- CHARGEMENT DES DONNÉES AU DÉMARRAGE (PERSISTANCE) ---
+    window.onload = function() {
+        if(GOOGLE_SCRIPT_URL.includes("VOTRE_URL")) {
+            alert("ATTENTION : Vous devez configurer l'URL du script Google dans le code HTML pour que la sauvegarde fonctionne !");
+            return;
+        }
+        loadDataFromCloud();
+    };
+
+    function loadDataFromCloud() {
+        const indicator = document.getElementById('loading-indicator');
+        indicator.style.display = "inline";
+        
+        fetch(GOOGLE_SCRIPT_URL)
+        .then(response => response.json())
+        .then(data => {
+            database = data;
+            // Conversion des types si nécessaire (les CSV renvoient parfois des strings)
+            database.forEach(r => {
+                if(typeof r.risques === 'string') r.risques = r.risques.split(',');
+                if(typeof r.signes === 'string') r.signes = r.signes.split(',');
+                if(typeof r.obstacles === 'string') r.obstacles = r.obstacles.split(',');
+                // Assurer que les listes sont des arrays, pas null
+                if(!r.risques) r.risques = [];
+                if(!r.signes) r.signes = [];
+                if(!r.obstacles) r.obstacles = [];
+            });
+
+            document.getElementById('count-badge').textContent = database.length;
+            document.getElementById('n-total').textContent = database.length;
+            
+            // Si l'admin est connecté, on met à jour les tableaux
+            if(isAdmin) updateAnalysis();
+            
+            indicator.style.display = "none";
+            console.log("Données chargées : " + database.length + " fiches.");
+        })
+        .catch(error => {
+            console.error('Erreur chargement:', error);
+            indicator.textContent = "Erreur Synchro";
+            indicator.style.color = "red";
+        });
+    }
+
+    // --- FONCTION DE LOGIN ADMIN ---
+    function adminLogin() {
+        let code = prompt("Veuillez entrer le Code Administrateur :");
+        if(code === "2020") {
+            isAdmin = true;
+            alert("Accès Autorisé. Les onglets d'analyse sont déverrouillés.");
+            
+            // Afficher les éléments protégés
+            document.querySelectorAll('.admin-locked').forEach(el => {
+                el.classList.remove('admin-locked');
+            });
+            
+            // Mettre à jour l'analyse avec les données chargées
+            updateAnalysis();
+        } else {
+            alert("Code incorrect. Accès refusé.");
+        }
+    }
+
+    // --- FONCTION D'ENREGISTREMENT VERS CLOUD ---
     function saveRecord() {
-        // 1. Récupération des données brutes du nouveau formulaire
+        const btn = document.getElementById('btn-submit');
+        btn.disabled = true;
+        btn.textContent = "⏳ ENVOI EN COURS...";
+
+        // 1. Récupération des données brutes
         let r = {
             id: document.getElementById('code-enquete').value,
             service: document.getElementById('service').value,
@@ -378,8 +463,8 @@
             att1: parseInt(getRadioValue('att1')),
             att2: parseInt(getRadioValue('att2')),
             att3: parseInt(getRadioValue('att3')),
-            att4: parseInt(getRadioValue('att4')), // Item inversé dans l'analyse si besoin, ici on garde brut
-            att5: parseInt(getRadioValue('att5')), // Item négatif
+            att4: parseInt(getRadioValue('att4')), 
+            att5: parseInt(getRadioValue('att5')),
 
             // Pratiques
             prac_perso: document.getElementById('prac-perso').value,
@@ -392,84 +477,91 @@
             obstacles: getCheckedValues('group-obstacles')
         };
 
-        // 2. CALCUL DES SCORES (Algorithme adapté à la nouvelle fiche)
-
-        // --- A. SCORE SAVOIR (Sur 100%) ---
+        // 2. CALCUL DES SCORES (Logique préservée)
         let ptsSavoir = 0;
-        let maxSavoir = 15; // Total des points possibles
+        let maxSavoir = 15;
 
         if(r.q_cause === "vrai") ptsSavoir += 1;
-        if(r.q_age === "50" || r.q_age === "35") ptsSavoir += 1; // Accepte 35-40 ou 50 comme "correct" selon contexte
+        if(r.q_age === "50" || r.q_age === "35") ptsSavoir += 1;
         if(r.q_aes === "apres") ptsSavoir += 1;
         
-        // Risques (Points pour les vrais facteurs de risque)
         let riskPoints = 0;
         ['age', 'famille', 'alcool', 'obesite', 'menopause'].forEach(k => {
             if(r.risques.includes(k)) riskPoints++;
         });
         ptsSavoir += riskPoints;
 
-        // Signes (Points pour les signes d'alerte valides)
         let signPoints = 0;
         ['nodule', 'retraction', 'peau', 'ecoulement'].forEach(k => {
             if(r.signes.includes(k)) signPoints++;
         });
         ptsSavoir += signPoints;
 
-        // Mammo
         if(r.mammo_role === "detecter") ptsSavoir += 2;
-        if(r.mammo_freq === "2") ptsSavoir += 1; // 2 ans est souvent le standard, mais 1 an peut être accepté. Soyons stricts : 2 ans.
+        if(r.mammo_freq === "2") ptsSavoir += 1;
 
         r.scoreSavoir = Math.round((ptsSavoir / maxSavoir) * 100);
         if(r.scoreSavoir > 100) r.scoreSavoir = 100;
 
-        // --- B. SCORE ATTITUDE (/5) ---
-        // Attention : Att5 ("Ne sert à rien") est négatif. 
-        // Si cochée 5 (Tout à fait d'accord), c'est une MAUVAISE attitude.
-        // On inverse Att5 et Att4 (Mal à l'aise) pour le score global de "Positivité"
         let invAtt4 = 6 - r.att4;
         let invAtt5 = 6 - r.att5;
         let sumAtt = r.att1 + r.att2 + r.att3 + invAtt4 + invAtt5;
         r.scoreAttitude = (sumAtt / 5).toFixed(1);
 
-        // --- C. SCORE PRATIQUE (Sur 100%) ---
         let ptsPrac = 0;
         let maxPrac = 20;
 
-        if(r.prac_perso === "mois") ptsPrac += 3; // L'exemplarité
-        if(r.prac_freq === "syst") ptsPrac += 5; // Systématique
+        if(r.prac_perso === "mois") ptsPrac += 3;
+        if(r.prac_freq === "syst") ptsPrac += 5;
         else if(r.prac_freq === "plainte") ptsPrac += 1;
 
-        if(r.prac_main === "pulpe") ptsPrac += 4; // La bonne technique
-        if(r.prac_zone === "axillaire") ptsPrac += 4; // La zone oubliée
+        if(r.prac_main === "pulpe") ptsPrac += 4;
+        if(r.prac_zone === "axillaire") ptsPrac += 4;
 
-        // Mouvements (Il faut varier les mouvements)
         let validMoves = ['circulaire', 'vertical', 'radial'];
         let movesCount = 0;
         r.prac_mouv.forEach(m => { if(validMoves.includes(m)) movesCount++; });
-        if(r.prac_mouv.includes('aleatoire')) movesCount = 0; // Pénalité si aléatoire
+        if(r.prac_mouv.includes('aleatoire')) movesCount = 0;
         
         if(movesCount >= 2) ptsPrac += 4;
         else if(movesCount === 1) ptsPrac += 2;
 
         r.scorePratique = Math.round((ptsPrac / maxPrac) * 100);
 
-        // 3. Stockage et Mise à jour
-        database.push(r);
-        document.getElementById('count-badge').textContent = database.length;
-        document.getElementById('n-total').textContent = database.length;
-        
-        alert(`Fiche ${r.id} enregistrée !\n\n📊 Savoir: ${r.scoreSavoir}%\n🧠 Attitude: ${r.scoreAttitude}/5\n🩺 Pratique: ${r.scorePratique}%`);
-        
-        codeSel.selectedIndex = (codeSel.selectedIndex + 1) % codeSel.options.length;
-        updateAnalysis();
+        // 3. ENVOI AU CLOUD (Fetch API)
+        fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors', // Important pour Google Sheets
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(r)
+        }).then(() => {
+            // Succès
+            database.push(r); // Mise à jour locale immédiate
+            document.getElementById('count-badge').textContent = database.length;
+            document.getElementById('n-total').textContent = database.length;
+            
+            alert(`✅ Fiche ${r.id} sauvegardée dans le Cloud !\nScores: Savoir ${r.scoreSavoir}% | Pratique ${r.scorePratique}%`);
+            
+            // Reset UI
+            codeSel.selectedIndex = (codeSel.selectedIndex + 1) % codeSel.options.length;
+            btn.disabled = false;
+            btn.textContent = "💾 ENREGISTRER CETTE FICHE";
+            
+            if(isAdmin) updateAnalysis();
+            
+        }).catch(err => {
+            console.error(err);
+            alert("Erreur de connexion au serveur. Vérifiez votre connexion internet.");
+            btn.disabled = false;
+            btn.textContent = "💾 ENREGISTRER CETTE FICHE";
+        });
     }
 
-    // --- FONCTIONS D'ANALYSE (ONGLETS 2, 3, 4) ---
+    // --- FONCTIONS D'ANALYSE (Logique préservée) ---
     function updateAnalysis() {
         if(database.length === 0) return;
 
-        // A. Remplir le Tableau (Onglet 2)
+        // Onglet 2
         const tbody = document.getElementById('database-body');
         tbody.innerHTML = database.map(row => `
             <tr>
@@ -484,8 +576,8 @@
             </tr>
         `).join('');
 
-        // B. Analyse Croisée (Onglet 3)
-        let high = database.filter(r => r.scoreSavoir >= 60); // Seuil de bon savoir
+        // Onglet 3
+        let high = database.filter(r => r.scoreSavoir >= 60);
         let low = database.filter(r => r.scoreSavoir < 60);
 
         let avgAttH = getAvg(high, 'scoreAttitude'), avgPracH = getAvg(high, 'scorePratique');
@@ -496,7 +588,6 @@
             <tr><td style="padding:15px;"><b>Connaissances Faibles (<60%)</b></td><td>${low.length}</td><td>${avgAttL}/5</td><td style="font-weight:bold; font-size:14px;">${avgPracL}%</td></tr>
         `;
 
-        // Graphiques
         renderBarChart('graph-savoir', [
             {label: 'Connaissances Solides', val: high.length, total: database.length, color: '#2e7d32'},
             {label: 'Lacunes Théoriques', val: low.length, total: database.length, color: '#c62828'}
@@ -508,7 +599,6 @@
             {label: 'Pratique Insuffisante', val: database.length - goodPrac, total: database.length, color: '#f57f17'}
         ]);
 
-        // Interprétation dynamique
         let gap = avgPracH - avgPracL;
         let interpDiv = document.getElementById('interpretation-cross');
         if(gap > 15) {
@@ -519,9 +609,12 @@
             interpDiv.innerHTML = `<b>Dissociation Savoir/Agir :</b> Même le personnel ayant de bonnes connaissances a une pratique moyenne. Le problème n'est pas intellectuel mais structurel (manque de temps, de matériel ou de motivation).`;
         }
 
-        // Obstacles
         let obsCounts = {};
-        database.forEach(r => r.obstacles.forEach(o => obsCounts[o] = (obsCounts[o]||0)+1));
+        database.forEach(r => {
+            if(Array.isArray(r.obstacles)) {
+                r.obstacles.forEach(o => obsCounts[o] = (obsCounts[o]||0)+1);
+            }
+        });
         let sortedObs = Object.entries(obsCounts).sort((a,b)=>b[1]-a[1]);
         
         document.getElementById('graph-obstacles').innerHTML = sortedObs.map(([k,v]) => {
@@ -529,7 +622,7 @@
             return `<div class="bar-container"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:#b03060;">${p}%</div></div><div class="bar-value">${v}</div></div>`;
         }).join('');
 
-        // C. Conclusion (Onglet 4)
+        // Onglet 4
         let mainObstacle = sortedObs.length > 0 ? sortedObs[0][0] : "Aucun";
         document.getElementById('final-conclusion').innerHTML = `
             <h3>Synthèse pour la Direction de l'Hôpital</h3>
@@ -569,6 +662,7 @@
     }
 
     function exportToCSV() {
+        if(!isAdmin) { alert("Accès réservé aux administrateurs."); return; }
         if(database.length === 0) { alert("Aucune donnée à exporter."); return; }
         let headers = "ID,Sexe,Service,Niveau,Exp,Savoir(%),Attitude(/5),Pratique(%),Obstacles\n";
         let rows = database.map(r => `${r.id},${r.sexe},${r.service},${r.niveau},${r.anciennete},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},"${r.obstacles.join('|')}"`).join("\n");
