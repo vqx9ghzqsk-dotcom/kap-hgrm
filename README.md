@@ -429,7 +429,7 @@
         r.scorePratique = Math.round((ptsPrac / maxPrac) * 100);
 
         // AJOUT DE L'ENVOI VERS GOOGLE SHEETS
-        const webAppUrl = "https://script.google.com/macros/s/AKfycbwQPk3CAUYV75xr-JdLk-NqgwRyIlcqnZCvTL_OdH0bO5fCoza_U4qtapwsr_UZc11ENQ/exec";
+        const webAppUrl = https://script.google.com/macros/s/AKfycbyDsuYQ8DMEpHkTxQorlVHKf5T63O9_QRHdXQhO0X4SAMsmhfUMPtMiNN6YjQKTCuWQ/exec;
 
         fetch(webAppUrl, {
             method: "POST",
