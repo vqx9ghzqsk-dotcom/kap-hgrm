@@ -16,7 +16,7 @@
         .btn-excel { margin-left: auto; background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
         .btn-excel:hover { background: #1b5e20; }
 
-        /* --- AJOUT : STYLE BOUTONS SUPPRESSION --- */
+        /* STYLE BOUTONS SUPPRESSION */
         .btn-delete-selected { background: #c62828; color: white; padding: 8px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: none; }
         .btn-delete-single { background: none; border: 1px solid #c62828; color: #c62828; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; }
         .btn-delete-single:hover { background: #c62828; color: white; }
@@ -88,6 +88,7 @@
                 <div class="field">
                     <label>2. Service d'affectation</label>
                     <select id="service">
+                        <option value="" disabled selected>Choisir un service...</option>
                         <option>Gynécologie-Obstétrique</option>
                         <option>Médecine Interne</option>
                         <option>Chirurgie</option>
@@ -99,18 +100,20 @@
                 <div class="field">
                     <label>3. Niveau d'étude</label>
                     <select id="niveau">
+                        <option value="" disabled selected>Niveau...</option>
                         <option>A2 (Secondaire)</option>
-                        <option selected>A1 (Gradué)</option>
+                        <option>A1 (Gradué)</option>
                         <option>A0 (Licencié/Master)</option>
                     </select>
                 </div>
                 <div class="field">
                     <label>4. Ancienneté (années)</label>
-                    <input type="number" id="anciennete" min="0" value="5">
+                    <input type="number" id="anciennete" min="0" placeholder="Ex: 5">
                 </div>
                 <div class="field">
                     <label>5. Sexe</label>
                     <select id="sexe">
+                        <option value="" disabled selected>Sexe...</option>
                         <option>F (Féminin)</option>
                         <option>M (Masculin)</option>
                     </select>
@@ -124,6 +127,7 @@
                 <div class="field">
                     <label>Le cancer du sein est la 1ère cause de décès par cancer (RDC) :</label>
                     <select id="q-cause">
+                        <option value="" disabled selected>Réponse...</option>
                         <option value="vrai">Vrai</option>
                         <option value="faux">Faux</option>
                         <option value="jsp">Je ne sais pas</option>
@@ -132,6 +136,7 @@
                 <div class="field">
                     <label>Âge recommandé 1ère mammographie :</label>
                     <select id="q-age-mammo">
+                        <option value="" disabled selected>Âge...</option>
                         <option value="20">Dès 20 ans</option>
                         <option value="35">Vers 35-40 ans</option>
                         <option value="50">Vers 50 ans</option>
@@ -140,8 +145,9 @@
                 <div class="field">
                     <label>Moment idéal pour Auto-Examen (AES) :</label>
                     <select id="q-moment-aes">
+                        <option value="" disabled selected>Moment...</option>
                         <option value="regles">Pendant les règles</option>
-                        <option value="apres" selected>7 à 10 jours après début règles</option>
+                        <option value="apres">7 à 10 jours après début règles</option>
                         <option value="nimporte">N’importe quand</option>
                     </select>
                 </div>
@@ -171,11 +177,15 @@
             <div class="row">
                 <div class="field">
                     <label>La mammographie est importante pour détection précoce :</label>
-                    <select id="q-mammo-imp"><option>Oui</option><option>Non</option><option>Je ne sais pas</option></select>
+                    <select id="q-mammo-imp">
+                        <option value="" disabled selected>Réponse...</option>
+                        <option>Oui</option><option>Non</option><option>Je ne sais pas</option>
+                    </select>
                 </div>
                 <div class="field">
                     <label>Rôle principal :</label>
                     <select id="q-mammo-role">
+                        <option value="" disabled selected>Rôle...</option>
                         <option value="detecter">Détecter lésions avant symptômes</option>
                         <option value="traiter">Traiter le cancer</option>
                         <option value="douleur">Soulager douleur</option>
@@ -184,6 +194,7 @@
                 <div class="field">
                     <label>Fréquence (Femme sans risque) :</label>
                     <select id="q-mammo-freq">
+                        <option value="" disabled selected>Fréquence...</option>
                         <option value="1">Tous les ans</option>
                         <option value="2">Tous les 2 ans</option>
                         <option value="5">Tous les 5 ans</option>
@@ -207,23 +218,23 @@
                 <tbody>
                     <tr>
                         <td class="td-left">L’éducation à l’AES fait partie de mon rôle.</td>
-                        <td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5" checked></td>
+                        <td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5"></td>
                     </tr>
                     <tr>
                         <td class="td-left">Je me sens capable de détecter un nodule de petite taille.</td>
-                        <td><input type="radio" name="att2" value="1"></td><td><input type="radio" name="att2" value="2"></td><td><input type="radio" name="att2" value="3"></td><td><input type="radio" name="att2" value="4" checked></td><td><input type="radio" name="att2" value="5"></td>
+                        <td><input type="radio" name="att2" value="1"></td><td><input type="radio" name="att2" value="2"></td><td><input type="radio" name="att2" value="3"></td><td><input type="radio" name="att2" value="4"></td><td><input type="radio" name="att2" value="5"></td>
                     </tr>
                     <tr>
                         <td class="td-left">La peur du diagnostic empêche les patientes de consulter.</td>
-                        <td><input type="radio" name="att3" value="1"></td><td><input type="radio" name="att3" value="2"></td><td><input type="radio" name="att3" value="3" checked></td><td><input type="radio" name="att3" value="4"></td><td><input type="radio" name="att3" value="5"></td>
+                        <td><input type="radio" name="att3" value="1"></td><td><input type="radio" name="att3" value="2"></td><td><input type="radio" name="att3" value="3"></td><td><input type="radio" name="att3" value="4"></td><td><input type="radio" name="att3" value="5"></td>
                     </tr>
                     <tr>
                         <td class="td-left">Je suis mal à l’aise d’aborder l’intimité avec les âgées.</td>
-                        <td><input type="radio" name="att4" value="1"></td><td><input type="radio" name="att4" value="2" checked></td><td><input type="radio" name="att4" value="3"></td><td><input type="radio" name="att4" value="4"></td><td><input type="radio" name="att4" value="5"></td>
+                        <td><input type="radio" name="att4" value="1"></td><td><input type="radio" name="att4" value="2"></td><td><input type="radio" name="att4" value="3"></td><td><input type="radio" name="att4" value="4"></td><td><input type="radio" name="att4" value="5"></td>
                     </tr>
                     <tr>
                         <td class="td-left">Le dépistage ne sert à rien (coût des traitements).</td>
-                        <td><input type="radio" name="att5" value="1" checked></td><td><input type="radio" name="att5" value="2"></td><td><input type="radio" name="att5" value="3"></td><td><input type="radio" name="att5" value="4"></td><td><input type="radio" name="att5" value="5"></td>
+                        <td><input type="radio" name="att5" value="1"></td><td><input type="radio" name="att5" value="2"></td><td><input type="radio" name="att5" value="3"></td><td><input type="radio" name="att5" value="4"></td><td><input type="radio" name="att5" value="5"></td>
                     </tr>
                 </tbody>
             </table>
@@ -234,6 +245,7 @@
                 <div class="field">
                     <label>9. Pratique personnelle (AES sur vous) :</label>
                     <select id="prac-perso">
+                        <option value="" disabled selected>Fréquence...</option>
                         <option value="mois">Tous les mois</option>
                         <option value="temps">De temps en temps</option>
                         <option value="jamais">Jamais</option>
@@ -242,6 +254,7 @@
                 <div class="field">
                     <label>10. Examen des patientes (Fréquence) :</label>
                     <select id="prac-pro-freq">
+                        <option value="" disabled selected>Fréquence...</option>
                         <option value="syst">Systématiquement</option>
                         <option value="plainte">Uniquement si plainte</option>
                         <option value="rare">Rarement / Jamais</option>
@@ -254,8 +267,9 @@
                 <div class="field">
                     <label>Partie de la main utilisée ?</label>
                     <select id="prac-main">
+                        <option value="" disabled selected>Choisir...</option>
                         <option value="pointe">La pointe des doigts</option>
-                        <option value="pulpe" selected>La pulpe des 3 doigts du milieu</option>
+                        <option value="pulpe">La pulpe des 3 doigts du milieu</option>
                         <option value="paume">La paume entière</option>
                         <option value="pince">Le pouce et l'index</option>
                     </select>
@@ -263,9 +277,10 @@
                 <div class="field">
                     <label>Zone "oubliée" à inclure absolument ?</label>
                     <select id="prac-zone">
+                        <option value="" disabled selected>Zone...</option>
                         <option value="mamelon">Le mamelon</option>
                         <option value="sillon">Le sillon sous-mammaire</option>
-                        <option value="axillaire" selected>Le creux axillaire (aisselle)</option>
+                        <option value="axillaire">Le creux axillaire (aisselle)</option>
                     </select>
                 </div>
             </div>
@@ -294,9 +309,7 @@
 
     <div id="content-2" class="form-content">
         <div class="section-title">BASE DE DONNÉES BRUTE (N = <span id="n-total">0</span>)</div>
-        
         <button id="btn-delete-multi" class="btn-delete-selected" onclick="deleteSelected()">🗑️ Supprimer la sélection</button>
-        
         <div style="overflow-x:auto;">
             <table>
                 <thead>
@@ -324,7 +337,6 @@
                 <div id="graph-pratique"></div>
             </div>
         </div>
-
         <div class="section-title">2. ANALYSE CROISÉE : IMPACT DU SAVOIR SUR L'ACTION</div>
         <table style="background:#444; color:white; border-radius:8px; overflow:hidden;">
             <thead>
@@ -337,9 +349,7 @@
             </thead>
             <tbody id="cross-body" style="background:white; color:#333;"></tbody>
         </table>
-
         <div id="interpretation-cross"></div>
-
         <div class="section-title">3. ANALYSE DES BARRIÈRES À LA PRÉVENTION</div>
         <div id="graph-obstacles-anal"></div>
     </div>
@@ -353,7 +363,6 @@
 </div>
 
 <script>
-    // --- 1. CHARGEMENT ET INITIALISATION ---
     let database = JSON.parse(localStorage.getItem('survey_database')) || [];
 
     window.onload = function() {
@@ -371,7 +380,6 @@
         }
     }
 
-    // --- 2. LOGIQUE D'ENREGISTREMENT ---
     function saveRecord() {
         let r = {
             id: document.getElementById('code-enquete').value,
@@ -425,7 +433,6 @@
         updateUI();
     }
 
-    // --- 3. FONCTIONS DE SUPPRESSION ---
     function deleteOne(index) {
         if(confirm("Supprimer cette fiche ?")) {
             database.splice(index, 1);
@@ -447,7 +454,6 @@
     function deleteSelected() {
         if(confirm("Supprimer les fiches sélectionnées ?")) {
             const checkboxes = Array.from(document.querySelectorAll('.row-check'));
-            // On filtre la base pour ne garder que ceux non cochés
             database = database.filter((_, index) => !checkboxes[index].checked);
             saveAndRefresh();
         }
@@ -458,7 +464,6 @@
         updateUI();
     }
 
-    // --- 4. FONCTIONS D'INTERFACE ---
     function updateUI() {
         const count = database.length;
         document.getElementById('count-badge').textContent = count;
@@ -519,7 +524,6 @@
         }).join('');
     }
 
-    // --- UTILITAIRES ---
     function getCheckedValues(id) { return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value); }
     function getRadioValue(n) { let e = document.querySelector(`input[name="${n}"]:checked`); return e ? e.value : 0; }
     function getColor(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); }
