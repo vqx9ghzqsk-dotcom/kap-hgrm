@@ -16,6 +16,11 @@
         .btn-excel { margin-left: auto; background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
         .btn-excel:hover { background: #1b5e20; }
 
+        /* --- AJOUT : STYLE BOUTONS SUPPRESSION --- */
+        .btn-delete-selected { background: #c62828; color: white; padding: 8px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: none; }
+        .btn-delete-single { background: none; border: 1px solid #c62828; color: #c62828; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; }
+        .btn-delete-single:hover { background: #c62828; color: white; }
+
         /* Contenu */
         .form-content { padding: 30px; display: none; }
         .form-content.active { display: block; animation: fadeIn 0.5s; }
@@ -289,13 +294,17 @@
 
     <div id="content-2" class="form-content">
         <div class="section-title">BASE DE DONNÉES BRUTE (N = <span id="n-total">0</span>)</div>
+        
+        <button id="btn-delete-multi" class="btn-delete-selected" onclick="deleteSelected()">🗑️ Supprimer la sélection</button>
+        
         <div style="overflow-x:auto;">
             <table>
                 <thead>
                     <tr>
+                        <th><input type="checkbox" id="select-all" onclick="toggleSelectAll(this)"></th>
                         <th>Code</th><th>Sexe</th><th>Service</th><th>Exp (ans)</th>
                         <th>Score Savoir (%)</th><th>Score Attitude (/5)</th><th>Score Pratique (%)</th>
-                        <th>Diagnostic</th>
+                        <th>Diagnostic</th><th>Action</th>
                     </tr>
                 </thead>
                 <tbody id="database-body"></tbody>
@@ -390,8 +399,6 @@
             obstacles: getCheckedValues('group-obstacles')
         };
 
-        // --- CALCULS SCORES ---
-        // Savoir (Sur 15 pts)
         let ptsS = (r.q_cause === "vrai" ? 1 : 0) + (r.q_age !== "20" ? 1 : 0) + (r.q_aes === "apres" ? 1 : 0);
         ['age', 'famille', 'alcool', 'obesite', 'menopause'].forEach(k => { if(r.risques.includes(k)) ptsS++; });
         ['nodule', 'retraction', 'peau', 'ecoulement'].forEach(k => { if(r.signes.includes(k)) ptsS++; });
@@ -399,11 +406,9 @@
         if(r.mammo_freq === "2") ptsS += 1;
         r.scoreSavoir = Math.round((ptsS / 15) * 100);
 
-        // Attitude (/5)
         let sumAtt = r.att1 + r.att2 + r.att3 + (6-r.att4) + (6-r.att5);
         r.scoreAttitude = (sumAtt / 5).toFixed(1);
 
-        // Pratique (Sur 20 pts)
         let ptsP = (r.prac_perso === "mois" ? 3 : 0) + (r.prac_freq === "syst" ? 5 : 0);
         if(r.prac_main === "pulpe") ptsP += 4;
         if(r.prac_zone === "axillaire") ptsP += 4;
@@ -411,11 +416,6 @@
         ptsP += (mv >= 2 ? 4 : (mv === 1 ? 2 : 0));
         r.scorePratique = Math.round((ptsP / 20) * 100);
 
-        // --- SYNCHRONISATION CLOUD ---
-        const url = "https://script.google.com/macros/s/AKfycbwQPk3CAUYV75xr-JdLk-NqgwRyIlcqnZCvTL_OdH0bO5fCoza_U4qtapwsr_UZc11ENQ/exec";
-        fetch(url, { method: "POST", mode: "no-cors", cache: "no-cache", body: JSON.stringify(r) });
-
-        // --- SAUVEGARDE ET MAJ UI ---
         database.push(r);
         localStorage.setItem('survey_database', JSON.stringify(database));
         
@@ -425,32 +425,74 @@
         updateUI();
     }
 
-    // --- 3. FONCTIONS D'INTERFACE ---
+    // --- 3. FONCTIONS DE SUPPRESSION ---
+    function deleteOne(index) {
+        if(confirm("Supprimer cette fiche ?")) {
+            database.splice(index, 1);
+            saveAndRefresh();
+        }
+    }
+
+    function toggleSelectAll(source) {
+        const checkboxes = document.querySelectorAll('.row-check');
+        checkboxes.forEach(cb => cb.checked = source.checked);
+        toggleDeleteButton();
+    }
+
+    function toggleDeleteButton() {
+        const checked = document.querySelectorAll('.row-check:checked').length;
+        document.getElementById('btn-delete-multi').style.display = checked > 0 ? 'block' : 'none';
+    }
+
+    function deleteSelected() {
+        if(confirm("Supprimer les fiches sélectionnées ?")) {
+            const checkboxes = Array.from(document.querySelectorAll('.row-check'));
+            // On filtre la base pour ne garder que ceux non cochés
+            database = database.filter((_, index) => !checkboxes[index].checked);
+            saveAndRefresh();
+        }
+    }
+
+    function saveAndRefresh() {
+        localStorage.setItem('survey_database', JSON.stringify(database));
+        updateUI();
+    }
+
+    // --- 4. FONCTIONS D'INTERFACE ---
     function updateUI() {
         const count = database.length;
         document.getElementById('count-badge').textContent = count;
         document.getElementById('n-total').textContent = count;
+        document.getElementById('select-all').checked = false;
+        toggleDeleteButton();
 
-        // Tableau Matrice
         const tbody = document.getElementById('database-body');
-        tbody.innerHTML = database.map(row => `
+        tbody.innerHTML = database.map((row, index) => `
             <tr>
+                <td><input type="checkbox" class="row-check" onclick="toggleDeleteButton()"></td>
                 <td><b>${row.id}</b></td><td>${row.sexe}</td><td>${row.service}</td><td>${row.anciennete}</td>
                 <td style="color:${getColor(row.scoreSavoir)}">${row.scoreSavoir}%</td>
                 <td>${row.scoreAttitude}</td>
                 <td style="color:${getColor(row.scorePratique)}">${row.scorePratique}%</td>
                 <td>${row.scoreSavoir >= 70 && row.scorePratique >= 70 ? '🟢 Expert' : '🟠 Moyen'}</td>
+                <td><button class="btn-delete-single" onclick="deleteOne(${index})">Effacer</button></td>
             </tr>
         `).join('');
 
-        if(count > 0) updateAnalytics();
+        updateAnalytics();
     }
 
     function updateAnalytics() {
+        if(database.length === 0) {
+            document.getElementById('graph-savoir').innerHTML = "Aucune donnée";
+            document.getElementById('graph-pratique').innerHTML = "Aucune donnée";
+            document.getElementById('cross-body').innerHTML = "";
+            document.getElementById('graph-obstacles-anal').innerHTML = "";
+            return;
+        }
         let highS = database.filter(r => r.scoreSavoir >= 60);
         let lowS = database.filter(r => r.scoreSavoir < 60);
 
-        // Graphiques
         renderBars('graph-savoir', [
             {l: 'Connaissances Solides', v: highS.length, t: database.length, c: '#2e7d32'},
             {l: 'Lacunes', v: lowS.length, t: database.length, c: '#c62828'}
@@ -462,7 +504,6 @@
             {l: 'Pratique Faible', v: database.length - highP, t: database.length, c: '#f57f17'}
         ]);
 
-        // Analyse Croisée
         let avgAttH = getAvg(highS, 'scoreAttitude'), avgPracH = getAvg(highS, 'scorePratique');
         let avgAttL = getAvg(lowS, 'scoreAttitude'), avgPracL = getAvg(lowS, 'scorePratique');
         document.getElementById('cross-body').innerHTML = `
@@ -470,7 +511,6 @@
             <tr><td style="padding:15px;">Savoir < 60%</td><td>${lowS.length}</td><td>${avgAttL}</td><td>${avgPracL}%</td></tr>
         `;
 
-        // Obstacles
         let obsMap = {};
         database.forEach(r => r.obstacles.forEach(o => obsMap[o] = (obsMap[o]||0)+1));
         document.getElementById('graph-obstacles-anal').innerHTML = Object.entries(obsMap).sort((a,b)=>b[1]-a[1]).map(([k,v]) => {
