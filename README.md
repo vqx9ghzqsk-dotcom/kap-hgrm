@@ -357,7 +357,42 @@
     // ============================================================
     // CONFIGURATION URL GOOGLE APPS SCRIPT
     // ============================================================
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMX8dcz3yHj3Y7ou8ByVSORkN0hjkCPkE7eaq0bxbzSxpzC_8n5kEZyt45lharxPYI/exec";
+    const GOOGLE_SCRIPT_URL = "function doGet(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = sheet.getDataRange().getValues();
+  var headers = data[0];
+  var rows = data.slice(1);
+  var result = rows.map(function(r) {
+    var obj = {};
+    headers.forEach(function(h, i) { obj[h] = r[i]; });
+    // Reconversion des listes (obstacles, etc)
+    if(obj.risques) obj.risques = obj.risques.toString().split(',');
+    if(obj.signes) obj.signes = obj.signes.toString().split(',');
+    if(obj.prac_mouv) obj.prac_mouv = obj.prac_mouv.toString().split(','); // Note: attention au nommage
+    if(obj.obstacles) obj.obstacles = obj.obstacles.toString().split(',');
+    return obj;
+  });
+  return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  
+  // On transforme les tableaux en chaînes pour le stockage
+  var row = [
+    data.id, data.sexe, data.service, data.niveau, data.anciennete,
+    data.q_cause, data.q_age, data.q_aes, 
+    (data.risques || []).join(','), 
+    (data.signes || []).join(','),
+    data.mammo_role, data.mammo_freq,
+    data.scoreSavoir, data.scoreAttitude, data.scorePratique,
+    (data.obstacles || []).join(','),
+    new Date()
+  ];
+  sheet.appendRow(row);
+  return ContentService.createTextOutput(JSON.stringify({result: "Success"})).setMimeType(ContentService.MimeType.JSON);
+}";
     // ============================================================
 
     let database = [];
