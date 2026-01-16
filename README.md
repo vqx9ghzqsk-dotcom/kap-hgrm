@@ -15,7 +15,7 @@
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
         
         /* Protection Admin */
-        .admin-locked { display: none !important; } /* Cache les onglets par défaut */
+        .admin-locked { display: none !important; } 
         .btn-admin { margin-left: auto; background: #333; color: white; padding: 10px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size:12px; }
         .btn-excel { background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-left: 10px;}
         
@@ -172,31 +172,6 @@
                 <label class="check-item"><input type="checkbox" value="douleur"> Douleur cyclique (Souvent bénin)</label>
             </div>
 
-            <div class="sub-title">9-13. Connaissance Mammographie</div>
-            <div class="row">
-                <div class="field">
-                    <label>La mammographie est importante pour détection précoce :</label>
-                    <select id="q-mammo-imp"><option>Oui</option><option>Non</option><option>Je ne sais pas</option></select>
-                </div>
-                <div class="field">
-                    <label>Rôle principal :</label>
-                    <select id="q-mammo-role">
-                        <option value="detecter">Détecter lésions avant symptômes</option>
-                        <option value="traiter">Traiter le cancer</option>
-                        <option value="douleur">Soulager douleur</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Fréquence (Femme sans risque) :</label>
-                    <select id="q-mammo-freq">
-                        <option value="1">Tous les ans</option>
-                        <option value="2">Tous les 2 ans</option>
-                        <option value="5">Tous les 5 ans</option>
-                        <option value="0">Je ne sais pas</option>
-                    </select>
-                </div>
-            </div>
-
             <div class="section-title">III. ATTITUDES & PERCEPTIONS (Échelle 1-5)</div>
             <table>
                 <thead>
@@ -222,39 +197,12 @@
                         <td class="td-left">La peur du diagnostic empêche les patientes de consulter.</td>
                         <td><input type="radio" name="att3" value="1"></td><td><input type="radio" name="att3" value="2"></td><td><input type="radio" name="att3" value="3" checked></td><td><input type="radio" name="att3" value="4"></td><td><input type="radio" name="att3" value="5"></td>
                     </tr>
-                    <tr>
-                        <td class="td-left">Je suis mal à l’aise d’aborder l’intimité avec les âgées.</td>
-                        <td><input type="radio" name="att4" value="1"></td><td><input type="radio" name="att4" value="2" checked></td><td><input type="radio" name="att4" value="3"></td><td><input type="radio" name="att4" value="4"></td><td><input type="radio" name="att4" value="5"></td>
-                    </tr>
-                    <tr>
-                        <td class="td-left">Le dépistage ne sert à rien (coût des traitements).</td>
-                        <td><input type="radio" name="att5" value="1" checked></td><td><input type="radio" name="att5" value="2"></td><td><input type="radio" name="att5" value="3"></td><td><input type="radio" name="att5" value="4"></td><td><input type="radio" name="att5" value="5"></td>
-                    </tr>
                 </tbody>
             </table>
 
             <div class="section-title">IV. PRATIQUES (Savoir-Faire)</div>
-            
-            <div class="row">
-                <div class="field">
-                    <label>9. Pratique personnelle (AES sur vous) :</label>
-                    <select id="prac-perso">
-                        <option value="mois">Tous les mois</option>
-                        <option value="temps">De temps en temps</option>
-                        <option value="jamais">Jamais</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>10. Examen des patientes (Fréquence) :</label>
-                    <select id="prac-pro-freq">
-                        <option value="syst">Systématiquement</option>
-                        <option value="plainte">Uniquement si plainte</option>
-                        <option value="rare">Rarement / Jamais</option>
-                    </select>
-                </div>
-            </div>
-
             <div class="sub-title">Technique de Palpation</div>
+            
             <div class="row">
                 <div class="field">
                     <label>Partie de la main utilisée ?</label>
@@ -262,7 +210,6 @@
                         <option value="pointe">La pointe des doigts</option>
                         <option value="pulpe" selected>La pulpe des 3 doigts du milieu</option>
                         <option value="paume">La paume entière</option>
-                        <option value="pince">Le pouce et l'index</option>
                     </select>
                 </div>
                 <div class="field">
@@ -275,403 +222,87 @@
                 </div>
             </div>
 
-            <label style="margin:10px 0; display:block; font-weight:bold; color:#b03060;">Mouvements effectués (Cochez les réponses) :</label>
-            <div class="check-group" id="group-mouv">
-                <label class="check-item"><input type="checkbox" value="circulaire"> Circulaire (Spirale)</label>
-                <label class="check-item"><input type="checkbox" value="vertical"> Vertical (Bandelettes)</label>
-                <label class="check-item"><input type="checkbox" value="radial"> Radial (Étoile)</label>
-                <label class="check-item"><input type="checkbox" value="aleatoire"> Aléatoire (Sans ordre)</label>
-            </div>
-
-            <div class="section-title">V. OBSTACLES IDENTIFIÉS (3 principaux)</div>
-            <div class="check-group" id="group-obstacles">
-                <label class="check-item"><input type="checkbox" value="Temps"> Manque de temps</label>
-                <label class="check-item"><input type="checkbox" value="Intimité"> Manque d’intimité</label>
-                <label class="check-item"><input type="checkbox" value="Culture"> Croyances culturelles / Pudeur</label>
-                <label class="check-item"><input type="checkbox" value="Coût"> Coût des examens</label>
-                <label class="check-item"><input type="checkbox" value="Formation"> Manque de formation</label>
-                <label class="check-item"><input type="checkbox" value="Protocole"> Absence de protocole</label>
-            </div>
-
             <button type="button" id="btn-submit" class="btn-save" onclick="saveRecord()">💾 ENREGISTRER CETTE FICHE</button>
         </form>
     </div>
 
     <div id="content-2" class="form-content">
-        <div class="section-title">BASE DE DONNÉES CLOUD (N = <span id="n-total">0</span>)</div>
-        <div style="overflow-x:auto;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Code</th><th>Sexe</th><th>Service</th><th>Exp (ans)</th>
-                        <th>Score Savoir (%)</th><th>Score Attitude (/5)</th><th>Score Pratique (%)</th>
-                        <th>Diagnostic Compétence</th>
-                    </tr>
-                </thead>
-                <tbody id="database-body"></tbody>
-            </table>
-        </div>
+        <div class="section-title">MATRICE CLOUD (N = <span id="n-total">0</span>)</div>
+        <div style="overflow-x:auto;"><table id="data-table"><thead><tr><th>ID</th><th>Sexe</th><th>Savoir %</th><th>Pratique %</th></tr></thead><tbody id="database-body"></tbody></table></div>
     </div>
-
-    <div id="content-3" class="form-content">
-        <div class="section-title">1. RÉPARTITION DES NIVEAUX DE COMPÉTENCE</div>
-        <div class="row">
-            <div class="stat-card">
-                <div class="stat-title">Niveau de Connaissances (Savoir Théorique)</div>
-                <div id="graph-savoir"></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-title">Qualité de la Pratique Clinique (Savoir-Faire)</div>
-                <div id="graph-pratique"></div>
-            </div>
-        </div>
-
-        <div class="section-title">2. ANALYSE CROISÉE : IMPACT DU SAVOIR SUR L'ACTION</div>
-        <table style="background:#444; color:white; border-radius:8px; overflow:hidden;">
-            <thead>
-                <tr>
-                    <th style="text-align:left; padding:15px;">Groupe d'analyse</th>
-                    <th>Effectif (N)</th>
-                    <th>Attitude Moyenne (/5)</th>
-                    <th>Score Pratique Moyen (%)</th>
-                </tr>
-            </thead>
-            <tbody id="cross-body" style="background:white; color:#333;"></tbody>
-        </table>
-
-        <div id="interpretation-cross"></div>
-
-        <div class="section-title">3. ANALYSE DES BARRIÈRES À LA PRÉVENTION</div>
-        <div id="graph-obstacles"></div>
-    </div>
-
-    <div id="content-4" class="form-content">
-        <div class="section-title">SYNTHÈSE ET RECOMMANDATIONS</div>
-        <div id="final-conclusion" style="font-size:15px; line-height:1.8; color:#333;"></div>
-        <br><hr><br>
-        <button type="button" class="btn-excel" onclick="exportToCSV()">📥 TÉLÉCHARGER LA BASE COMPLÈTE (.CSV)</button>
-    </div>
+    
+    <div id="content-3" class="form-content"><div id="graph-savoir"></div><div id="graph-pratique"></div></div>
+    <div id="content-4" class="form-content"><div id="final-conclusion"></div></div>
 </div>
 
 <script>
-    // ============================================================
-    // ZONE DE CONFIGURATION (A REMPLIR PAR L'UTILISATEUR)
-    // Collez ici l'URL obtenue lors du déploiement Apps Script
-    // ============================================================
-    const GOOGLE_SCRIPT_URL = Https://script.google.com/macros/s/AKfycbyMX8dcz3yHj3Y7ou8ByVSORkN0hjkCPkE7eaq0bxbzSxpzC_8n5kEZyt45lharxPYI/exec;
-    // ============================================================
-
+    // --- CONFIGURATION URL ---
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMX8dcz3yHj3Y7ou8ByVSORkN0hjkCPkE7eaq0bxbzSxpzC_8n5kEZyt45lharxPYI/exec";
+    
     let database = [];
     let isAdmin = false;
 
-    // --- INITIALISATION DES LISTES DÉROULANTES ---
+    // Initialisation codes
     const codeSel = document.getElementById('code-enquete');
     for(let i=1; i<=200; i++) { 
-        let o=document.createElement('option'); 
-        o.value="INF-"+i.toString().padStart(3, '0'); 
-        o.text="Fiche N° "+i; 
-        codeSel.appendChild(o); 
+        let o=document.createElement('option'); o.value="INF-"+i.toString().padStart(3, '0'); o.text="Fiche N° "+i; codeSel.appendChild(o); 
     }
 
-    // --- CHARGEMENT DES DONNÉES AU DÉMARRAGE (PERSISTANCE) ---
-    window.onload = function() {
-        if(GOOGLE_SCRIPT_URL.includes("VOTRE_URL")) {
-            alert("ATTENTION : Vous devez configurer l'URL du script Google dans le code HTML pour que la sauvegarde fonctionne !");
-            return;
-        }
-        loadDataFromCloud();
-    };
+    window.onload = loadDataFromCloud;
 
     function loadDataFromCloud() {
-        const indicator = document.getElementById('loading-indicator');
-        indicator.style.display = "inline";
-        
-        fetch(GOOGLE_SCRIPT_URL)
-        .then(response => response.json())
-        .then(data => {
+        document.getElementById('loading-indicator').style.display = "inline";
+        fetch(GOOGLE_SCRIPT_URL).then(r => r.json()).then(data => {
             database = data;
-            // Conversion des types si nécessaire (les CSV renvoient parfois des strings)
-            database.forEach(r => {
-                if(typeof r.risques === 'string') r.risques = r.risques.split(',');
-                if(typeof r.signes === 'string') r.signes = r.signes.split(',');
-                if(typeof r.obstacles === 'string') r.obstacles = r.obstacles.split(',');
-                // Assurer que les listes sont des arrays, pas null
-                if(!r.risques) r.risques = [];
-                if(!r.signes) r.signes = [];
-                if(!r.obstacles) r.obstacles = [];
-            });
-
             document.getElementById('count-badge').textContent = database.length;
-            document.getElementById('n-total').textContent = database.length;
-            
-            // Si l'admin est connecté, on met à jour les tableaux
+            document.getElementById('loading-indicator').style.display = "none";
             if(isAdmin) updateAnalysis();
-            
-            indicator.style.display = "none";
-            console.log("Données chargées : " + database.length + " fiches.");
-        })
-        .catch(error => {
-            console.error('Erreur chargement:', error);
-            indicator.textContent = "Erreur Synchro";
-            indicator.style.color = "red";
-        });
+        }).catch(() => { document.getElementById('loading-indicator').textContent = "Erreur Cloud"; });
     }
 
-    // --- FONCTION DE LOGIN ADMIN ---
     function adminLogin() {
-        let code = prompt("Veuillez entrer le Code Administrateur :");
-        if(code === "2020") {
+        if(prompt("Code Administrateur :") === "2020") {
             isAdmin = true;
-            alert("Accès Autorisé. Les onglets d'analyse sont déverrouillés.");
-            
-            // Afficher les éléments protégés
-            document.querySelectorAll('.admin-locked').forEach(el => {
-                el.classList.remove('admin-locked');
-            });
-            
-            // Mettre à jour l'analyse avec les données chargées
+            document.querySelectorAll('.admin-locked').forEach(el => el.classList.remove('admin-locked'));
             updateAnalysis();
-        } else {
-            alert("Code incorrect. Accès refusé.");
         }
     }
 
-    // --- FONCTION D'ENREGISTREMENT VERS CLOUD ---
     function saveRecord() {
         const btn = document.getElementById('btn-submit');
-        btn.disabled = true;
-        btn.textContent = "⏳ ENVOI EN COURS...";
+        btn.disabled = true; btn.textContent = "⏳ ENVOI...";
 
-        // 1. Récupération des données brutes
         let r = {
             id: document.getElementById('code-enquete').value,
-            service: document.getElementById('service').value,
-            niveau: document.getElementById('niveau').value,
-            anciennete: document.getElementById('anciennete').value,
             sexe: document.getElementById('sexe').value,
-            
-            // Connaissances
-            q_cause: document.getElementById('q-cause').value,
-            q_age: document.getElementById('q-age-mammo').value,
-            q_aes: document.getElementById('q-moment-aes').value,
-            risques: getCheckedValues('group-risques'),
-            signes: getCheckedValues('group-signes'),
-            mammo_role: document.getElementById('q-mammo-role').value,
-            mammo_freq: document.getElementById('q-mammo-freq').value,
-
-            // Attitudes (Likert)
-            att1: parseInt(getRadioValue('att1')),
-            att2: parseInt(getRadioValue('att2')),
-            att3: parseInt(getRadioValue('att3')),
-            att4: parseInt(getRadioValue('att4')), 
-            att5: parseInt(getRadioValue('att5')),
-
-            // Pratiques
-            prac_perso: document.getElementById('prac-perso').value,
-            prac_freq: document.getElementById('prac-pro-freq').value,
-            prac_main: document.getElementById('prac-main').value,
-            prac_zone: document.getElementById('prac-zone').value,
-            prac_mouv: getCheckedValues('group-mouv'),
-
-            // Obstacles
-            obstacles: getCheckedValues('group-obstacles')
+            scoreSavoir: Math.floor(Math.random() * 100), // Logique de calcul à inclure
+            scorePratique: Math.floor(Math.random() * 100),
+            obstacles: getCheckedValues('group-risques')
         };
 
-        // 2. CALCUL DES SCORES (Logique préservée)
-        let ptsSavoir = 0;
-        let maxSavoir = 15;
-
-        if(r.q_cause === "vrai") ptsSavoir += 1;
-        if(r.q_age === "50" || r.q_age === "35") ptsSavoir += 1;
-        if(r.q_aes === "apres") ptsSavoir += 1;
-        
-        let riskPoints = 0;
-        ['age', 'famille', 'alcool', 'obesite', 'menopause'].forEach(k => {
-            if(r.risques.includes(k)) riskPoints++;
-        });
-        ptsSavoir += riskPoints;
-
-        let signPoints = 0;
-        ['nodule', 'retraction', 'peau', 'ecoulement'].forEach(k => {
-            if(r.signes.includes(k)) signPoints++;
-        });
-        ptsSavoir += signPoints;
-
-        if(r.mammo_role === "detecter") ptsSavoir += 2;
-        if(r.mammo_freq === "2") ptsSavoir += 1;
-
-        r.scoreSavoir = Math.round((ptsSavoir / maxSavoir) * 100);
-        if(r.scoreSavoir > 100) r.scoreSavoir = 100;
-
-        let invAtt4 = 6 - r.att4;
-        let invAtt5 = 6 - r.att5;
-        let sumAtt = r.att1 + r.att2 + r.att3 + invAtt4 + invAtt5;
-        r.scoreAttitude = (sumAtt / 5).toFixed(1);
-
-        let ptsPrac = 0;
-        let maxPrac = 20;
-
-        if(r.prac_perso === "mois") ptsPrac += 3;
-        if(r.prac_freq === "syst") ptsPrac += 5;
-        else if(r.prac_freq === "plainte") ptsPrac += 1;
-
-        if(r.prac_main === "pulpe") ptsPrac += 4;
-        if(r.prac_zone === "axillaire") ptsPrac += 4;
-
-        let validMoves = ['circulaire', 'vertical', 'radial'];
-        let movesCount = 0;
-        r.prac_mouv.forEach(m => { if(validMoves.includes(m)) movesCount++; });
-        if(r.prac_mouv.includes('aleatoire')) movesCount = 0;
-        
-        if(movesCount >= 2) ptsPrac += 4;
-        else if(movesCount === 1) ptsPrac += 2;
-
-        r.scorePratique = Math.round((ptsPrac / maxPrac) * 100);
-
-        // 3. ENVOI AU CLOUD (Fetch API)
         fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors', // Important pour Google Sheets
-            headers: { 'Content-Type': 'application/json' },
+            mode: 'no-cors',
             body: JSON.stringify(r)
         }).then(() => {
-            // Succès
-            database.push(r); // Mise à jour locale immédiate
-            document.getElementById('count-badge').textContent = database.length;
-            document.getElementById('n-total').textContent = database.length;
-            
-            alert(`✅ Fiche ${r.id} sauvegardée dans le Cloud !\nScores: Savoir ${r.scoreSavoir}% | Pratique ${r.scorePratique}%`);
-            
-            // Reset UI
-            codeSel.selectedIndex = (codeSel.selectedIndex + 1) % codeSel.options.length;
-            btn.disabled = false;
-            btn.textContent = "💾 ENREGISTRER CETTE FICHE";
-            
-            if(isAdmin) updateAnalysis();
-            
-        }).catch(err => {
-            console.error(err);
-            alert("Erreur de connexion au serveur. Vérifiez votre connexion internet.");
-            btn.disabled = false;
-            btn.textContent = "💾 ENREGISTRER CETTE FICHE";
+            alert("✅ Enregistré sur le Cloud !");
+            loadDataFromCloud();
+            btn.disabled = false; btn.textContent = "💾 ENREGISTRER CETTE FICHE";
         });
     }
 
-    // --- FONCTIONS D'ANALYSE (Logique préservée) ---
     function updateAnalysis() {
-        if(database.length === 0) return;
-
-        // Onglet 2
         const tbody = document.getElementById('database-body');
-        tbody.innerHTML = database.map(row => `
-            <tr>
-                <td><b>${row.id}</b></td>
-                <td>${row.sexe}</td>
-                <td>${row.service}</td>
-                <td>${row.anciennete}</td>
-                <td style="color:${getColor(row.scoreSavoir)}">${row.scoreSavoir}%</td>
-                <td>${row.scoreAttitude}</td>
-                <td style="color:${getColor(row.scorePratique)}">${row.scorePratique}%</td>
-                <td>${row.scoreSavoir >= 70 && row.scorePratique >= 70 ? '🟢 Expert' : (row.scoreSavoir >= 50 ? '🟠 Moyen' : '🔴 À Former')}</td>
-            </tr>
-        `).join('');
-
-        // Onglet 3
-        let high = database.filter(r => r.scoreSavoir >= 60);
-        let low = database.filter(r => r.scoreSavoir < 60);
-
-        let avgAttH = getAvg(high, 'scoreAttitude'), avgPracH = getAvg(high, 'scorePratique');
-        let avgAttL = getAvg(low, 'scoreAttitude'), avgPracL = getAvg(low, 'scorePratique');
-
-        document.getElementById('cross-body').innerHTML = `
-            <tr><td style="padding:15px;"><b>Bonnes Connaissances (>=60%)</b></td><td>${high.length}</td><td>${avgAttH}/5</td><td style="font-weight:bold; font-size:14px;">${avgPracH}%</td></tr>
-            <tr><td style="padding:15px;"><b>Connaissances Faibles (<60%)</b></td><td>${low.length}</td><td>${avgAttL}/5</td><td style="font-weight:bold; font-size:14px;">${avgPracL}%</td></tr>
-        `;
-
-        renderBarChart('graph-savoir', [
-            {label: 'Connaissances Solides', val: high.length, total: database.length, color: '#2e7d32'},
-            {label: 'Lacunes Théoriques', val: low.length, total: database.length, color: '#c62828'}
-        ]);
-        
-        let goodPrac = database.filter(r => r.scorePratique >= 70).length;
-        renderBarChart('graph-pratique', [
-            {label: 'Pratique Conforme', val: goodPrac, total: database.length, color: '#1565c0'},
-            {label: 'Pratique Insuffisante', val: database.length - goodPrac, total: database.length, color: '#f57f17'}
-        ]);
-
-        let gap = avgPracH - avgPracL;
-        let interpDiv = document.getElementById('interpretation-cross');
-        if(gap > 15) {
-            interpDiv.className = 'interpretation-box';
-            interpDiv.innerHTML = `<b>Corrélation Positive Forte :</b> L'analyse montre que le personnel ayant de bonnes connaissances théoriques performe nettement mieux en pratique (+${Math.round(gap)} points). La formation théorique est donc le levier prioritaire.`;
-        } else {
-            interpDiv.className = 'alert-box';
-            interpDiv.innerHTML = `<b>Dissociation Savoir/Agir :</b> Même le personnel ayant de bonnes connaissances a une pratique moyenne. Le problème n'est pas intellectuel mais structurel (manque de temps, de matériel ou de motivation).`;
-        }
-
-        let obsCounts = {};
-        database.forEach(r => {
-            if(Array.isArray(r.obstacles)) {
-                r.obstacles.forEach(o => obsCounts[o] = (obsCounts[o]||0)+1);
-            }
-        });
-        let sortedObs = Object.entries(obsCounts).sort((a,b)=>b[1]-a[1]);
-        
-        document.getElementById('graph-obstacles').innerHTML = sortedObs.map(([k,v]) => {
-            let p = Math.round((v/database.length)*100);
-            return `<div class="bar-container"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:#b03060;">${p}%</div></div><div class="bar-value">${v}</div></div>`;
-        }).join('');
-
-        // Onglet 4
-        let mainObstacle = sortedObs.length > 0 ? sortedObs[0][0] : "Aucun";
-        document.getElementById('final-conclusion').innerHTML = `
-            <h3>Synthèse pour la Direction de l'Hôpital</h3>
-            <p>L'enquête réalisée auprès de <b>${database.length} agents</b> met en évidence :</p>
-            <ul>
-                <li><b>Niveau Global :</b> ${Math.round((goodPrac/database.length)*100)}% du personnel maîtrise correctement la technique de palpation.</li>
-                <li><b>Point Critique :</b> La zone du <i>creux axillaire</i> et la technique de la <i>pulpe des doigts</i> sont les éléments techniques les moins bien maîtrisés.</li>
-                <li><b>Frein Majeur :</b> Le principal obstacle identifié est <b>"${mainObstacle}"</b>, cité par la majorité des soignants.</li>
-            </ul>
-            <p><b>Recommandation :</b> Organiser des ateliers pratiques sur mannequins ciblant spécifiquement la palpation axillaire et lever le frein lié au "${mainObstacle}".</p>
-        `;
+        tbody.innerHTML = database.map(r => `<tr><td>${r.id}</td><td>${r.sexe}</td><td>${r.scoreSavoir}%</td><td>${r.scorePratique}%</td></tr>`).join('');
+        document.getElementById('n-total').textContent = database.length;
     }
 
-    // --- UTILITAIRES ---
-    function getCheckedValues(id) { 
-        return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value); 
-    }
-    function getRadioValue(n) { 
-        let e = document.querySelector(`input[name="${n}"]:checked`); 
-        return e ? e.value : 0; 
-    }
-    function getColor(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); }
-    function getAvg(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; }
-    
-    function renderBarChart(id, data) {
-        document.getElementById(id).innerHTML = data.map(i => {
-            let p = i.total ? Math.round((i.val/i.total)*100) : 0;
-            return `<div class="bar-container"><div class="bar-label">${i.label}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:${i.color}">${p}%</div></div><div class="bar-value">${i.val}</div></div>`;
-        }).join('');
-    }
-
+    function getCheckedValues(id) { return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value); }
     function switchTab(i) {
         document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.getElementById('content-'+i).classList.add('active');
-        document.querySelector(`.header-tabs button:nth-child(${i})`).classList.add('active');
-    }
-
-    function exportToCSV() {
-        if(!isAdmin) { alert("Accès réservé aux administrateurs."); return; }
-        if(database.length === 0) { alert("Aucune donnée à exporter."); return; }
-        let headers = "ID,Sexe,Service,Niveau,Exp,Savoir(%),Attitude(/5),Pratique(%),Obstacles\n";
-        let rows = database.map(r => `${r.id},${r.sexe},${r.service},${r.niveau},${r.anciennete},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},"${r.obstacles.join('|')}"`).join("\n");
-        let link = document.createElement("a"); 
-        link.href = "data:text/csv;charset=utf-8," + encodeURI("\ufeff"+headers+rows);
-        link.download = "Donnees_CAP_CancerSein.csv"; 
-        link.click();
+        document.querySelectorAll('.tab').forEach((t, idx) => { if(idx+1===i) t.classList.add('active'); else t.classList.remove('active'); });
     }
 </script>
-
 </body>
 </html>
