@@ -2,33 +2,31 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>KAP-HGRM - Analyse Expert</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAP-HGRM - Base de Données & Analyse Expert</title>
 
 <style>
-body { font-family: Arial; background:#f0f2f5; padding:15px;}
-.container{background:white;border-radius:10px;padding:20px;max-width:1300px;margin:auto}
-
-.tab{padding:8px 12px;border:1px solid #ccc;cursor:pointer}
+body {font-family:'Segoe UI',Arial;background:#f0f2f5;margin:0;padding:15px}
+.container{max-width:1200px;margin:auto;background:white;border-radius:12px;box-shadow:0 4px 25px rgba(0,0,0,0.2)}
+.header-tabs{display:flex;background:#fff;border-bottom:3px solid #b03060;padding:12px;gap:8px;position:sticky;top:0}
+.tab{padding:10px 15px;font-weight:bold;font-size:12px;border-radius:4px;border:1px solid #ddd;background:#f8f9fa;cursor:pointer}
 .tab.active{background:#b03060;color:white}
-
-.form-content{display:none}
+.btn-excel{margin-left:auto;background:#2e7d32;color:white;padding:10px 20px;border:none;border-radius:4px;font-weight:bold}
+.form-content{padding:30px;display:none}
 .form-content.active{display:block}
-
-.section-title{background:#fde4ef;padding:10px;margin-top:20px;font-weight:bold;color:#b03060}
-
-.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
-
-select{padding:8px}
-
-.stat-card{border:1px solid #ddd;padding:10px;margin-top:10px}
-
-.bar-track{background:#ddd;height:18px;border-radius:5px}
-.bar-fill{height:18px;color:white;font-size:11px;text-align:center}
-
-.btn-save{margin-top:20px;padding:15px;background:#b03060;color:white;border:none;width:100%}
-
-table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{border:1px solid #ccc;padding:6px;text-align:center}
+.section-title{background:#fce4ec;color:#b03060;padding:15px;font-weight:bold;border-left:8px solid #b03060;margin:30px 0}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.field{display:flex;flex-direction:column}
+select,input{padding:10px;border:1px solid #bbb;border-radius:6px}
+table{width:100%;border-collapse:collapse}
+th,td{border:1px solid #ddd;padding:10px;text-align:center}
+.check-group{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.btn-save{width:100%;background:#b03060;color:white;padding:20px;border:none;border-radius:8px;font-size:18px;font-weight:bold}
+.bar-container{display:flex;align-items:center;margin:6px 0}
+.bar-label{width:180px}
+.bar-track{flex:1;background:#eee;border-radius:4px;overflow:hidden}
+.bar-fill{height:18px;color:white;text-align:center;font-size:11px}
+.counter-badge{background:#b03060;color:white;padding:2px 8px;border-radius:10px;margin-left:5px}
 </style>
 </head>
 
@@ -36,23 +34,23 @@ th,td{border:1px solid #ccc;padding:6px;text-align:center}
 
 <div class="container">
 
-<div>
-<button class="tab active" onclick="switchTab(1)">1. COLLECTE</button>
-<button class="tab" onclick="switchTab(2)">2. BASE</button>
+<div class="header-tabs">
+<button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">0</span></button>
+<button class="tab" onclick="switchTab(2)">2. DEPLOUILLEMENT</button>
 <button class="tab" onclick="switchTab(3)">3. ANALYSE</button>
 <button class="tab" onclick="switchTab(4)">4. CONCLUSION</button>
-<button onclick="exportToCSV()">EXPORT CSV</button>
+<button class="btn-excel" onclick="exportToCSV()">EXPORT CSV</button>
 </div>
 
-<!-- ONGLET 1 -->
+<!-- ================= COLLECTE ================= -->
 <div id="content-1" class="form-content active">
 
 <div class="section-title">PRATIQUES</div>
 
 <div class="row">
 
-<div>
-<label>Fréquence Palpation</label>
+<div class="field">
+<label>Fréquence palpation</label>
 <select id="pratique-freq">
 <option>Systématique</option>
 <option>Si plainte</option>
@@ -60,16 +58,7 @@ th,td{border:1px solid #ccc;padding:6px;text-align:center}
 </select>
 </div>
 
-<div>
-<label>Technique de palpation</label>
-<select id="pratique-technique">
-<option>Palpation rapide sans méthode précise</option>
-<option>Méthode systématique (Quadrant par quadrant)</option>
-<option>Méthode complète (Quadrant + creux axillaire + mamelon)</option>
-</select>
-</div>
-
-<div>
+<div class="field">
 <label>Enseignement AES</label>
 <select id="pratique-enseigne">
 <option>Démonstration physique</option>
@@ -78,11 +67,20 @@ th,td{border:1px solid #ccc;padding:6px;text-align:center}
 </select>
 </div>
 
-<div>
+<div class="field">
 <label>Palpé ce matin ?</label>
 <select id="pratique-matin">
 <option>Oui</option>
 <option>Non</option>
+</select>
+</div>
+
+<div class="field">
+<label>Technique de palpation</label>
+<select id="pratique-technique">
+<option>Palpation rapide sans méthode précise</option>
+<option>Méthode systématique (Quadrant par quadrant)</option>
+<option>Méthode complète (Quadrant + creux axillaire + mamelon)</option>
 </select>
 </div>
 
@@ -92,20 +90,15 @@ th,td{border:1px solid #ccc;padding:6px;text-align:center}
 
 </div>
 
-<!-- ONGLET 2 -->
+<!-- ================= TABLEAU ================= -->
 <div id="content-2" class="form-content">
-
-<h3>Matrice KAP</h3>
 
 <table>
 <thead>
 <tr>
-<th>ID</th>
-<th>Savoir</th>
-<th>Attitude</th>
-<th>Pratique</th>
-<th>KAP Global</th>
-<th>Statut</th>
+<th>#</th>
+<th>Score Pratique</th>
+<th>Score KAP Global</th>
 </tr>
 </thead>
 <tbody id="database-body"></tbody>
@@ -113,27 +106,17 @@ th,td{border:1px solid #ccc;padding:6px;text-align:center}
 
 </div>
 
-<!-- ONGLET 3 -->
+<!-- ================= ANALYSE ================= -->
 <div id="content-3" class="form-content">
 
-<div class="section-title">TECHNIQUES DE PALPATION</div>
-
-<div class="stat-card">
-<h4>Répartition globale</h4>
+<div class="section-title">Comparaison Techniques de Palpation</div>
 <div id="graph-technique"></div>
-</div>
-
-<div class="stat-card">
-<h4>Comparaison Méthode Complète vs Rapide</h4>
-<div id="graph-technique-compare"></div>
-</div>
 
 </div>
 
-<!-- ONGLET 4 -->
+<!-- ================= CONCLUSION ================= -->
 <div id="content-4" class="form-content">
 
-<h3>Conclusion automatique</h3>
 <div id="final-conclusion"></div>
 
 </div>
@@ -144,147 +127,99 @@ th,td{border:1px solid #ccc;padding:6px;text-align:center}
 
 let database=[];
 
-// SAVE
 function saveRecord(){
 
-let record={
-id:"E-"+(database.length+1),
-scoreSavoir:Math.floor(Math.random()*40)+60,
-scoreAttitude:(Math.random()*2+3).toFixed(1),
+let freq=document.getElementById("pratique-freq").value;
+let enseigne=document.getElementById("pratique-enseigne").value;
+let matin=document.getElementById("pratique-matin").value;
+let technique=document.getElementById("pratique-technique").value;
 
-freq:pratique-freq.value,
-technique:pratique-technique.value,
-enseigne:pratique-enseigne.value,
-matin:pratique-matin.value
-};
+let scorePratique=0;
 
-// SCORE PRATIQUE
-let rawPrac=0;
+if(freq=="Systématique") scorePratique+=30;
+if(enseigne=="Démonstration physique") scorePratique+=30;
+else if(enseigne=="Verbalement") scorePratique+=10;
+if(matin=="Oui") scorePratique+=10;
 
-if(record.freq.includes("Systématique")) rawPrac+=25;
+if(technique.includes("rapide")) scorePratique+=10;
+if(technique.includes("systématique")) scorePratique+=20;
+if(technique.includes("complète")) scorePratique+=30;
 
-if(record.technique.includes("complète")) rawPrac+=30;
-else if(record.technique.includes("systématique")) rawPrac+=20;
-else rawPrac+=5;
+if(scorePratique>100) scorePratique=100;
 
-if(record.enseigne.includes("Démonstration")) rawPrac+=25;
-else if(record.enseigne.includes("Verbalement")) rawPrac+=10;
+let scoreKAP=Math.round(scorePratique);
 
-if(record.matin==="Oui") rawPrac+=20;
+database.push({scorePratique,scoreKAP,technique});
 
-record.scorePratique=Math.min(100,rawPrac);
+document.getElementById("count-badge").textContent=database.length;
 
-// SCORE KAP GLOBAL
-record.scoreKAP=Math.round(
-(record.scoreSavoir*0.4)+
-((record.scoreAttitude/5)*100*0.2)+
-(record.scorePratique*0.4)
-);
-
-database.push(record);
-
-updateAnalysis();
-
-alert("Fiche enregistrée !");
+updateTable();
+updateGraph();
 }
 
-// ANALYSE
-function updateAnalysis(){
+function updateTable(){
 
-let body="";
-database.forEach(r=>{
+let body=document.getElementById("database-body");
+body.innerHTML="";
 
-let statut=r.scoreKAP>=75?"🟢 Excellent":r.scoreKAP>=50?"🟠 Moyen":"🔴 Faible";
-
-body+=`
-<tr>
-<td>${r.id}</td>
-<td>${r.scoreSavoir}%</td>
-<td>${r.scoreAttitude}</td>
+database.forEach((r,i)=>{
+body.innerHTML+=`<tr>
+<td>${i+1}</td>
 <td>${r.scorePratique}%</td>
 <td><b>${r.scoreKAP}%</b></td>
-<td>${statut}</td>
-</tr>
-`;
+</tr>`;
 });
-
-database-body.innerHTML=body;
-
-// TECHNIQUES
-let rapide=0,systematique=0,complete=0;
-
-database.forEach(r=>{
-if(r.technique.includes("rapide")) rapide++;
-else if(r.technique.includes("systématique")) systematique++;
-else complete++;
-});
-
-renderBars("graph-technique",[
-{l:"Rapide",v:rapide},
-{l:"Systématique",v:systematique},
-{l:"Complète",v:complete}
-]);
-
-renderBars("graph-technique-compare",[
-{l:"Complète",v:complete},
-{l:"Rapide",v:rapide}
-]);
-
-final-conclusion.innerHTML=`
-<b>${database.length}</b> fiches analysées.<br>
-Score KAP moyen : <b>${avg(database,"scoreKAP")}%</b><br>
-Méthode complète utilisée par <b>${complete}</b> agents.
-`;
 
 }
 
-// BAR GRAPH
-function renderBars(id,data){
+function updateGraph(){
 
-let html="";
+let rapide=database.filter(r=>r.technique.includes("rapide")).length;
+let syst=database.filter(r=>r.technique.includes("systématique")).length;
+let comp=database.filter(r=>r.technique.includes("complète")).length;
+
 let total=database.length;
 
-data.forEach(d=>{
-let pct=total?Math.round((d.v/total)*100):0;
-html+=`
-<div>${d.l}</div>
+function bar(label,val,color){
+let pct=total?Math.round(val/total*100):0;
+return `<div class="bar-container">
+<div class="bar-label">${label}</div>
 <div class="bar-track">
-<div class="bar-fill" style="width:${pct}%;background:#b03060">${pct}%</div>
+<div class="bar-fill" style="width:${pct}%;background:${color}">${pct}%</div>
 </div>
-`;
-});
-
-document.getElementById(id).innerHTML=html;
+</div>`;
 }
 
-// UTILS
-function avg(arr,key){
-if(arr.length==0) return 0;
-return Math.round(arr.reduce((a,b)=>a+b[key],0)/arr.length);
+document.getElementById("graph-technique").innerHTML=
+bar("Rapide",rapide,"#c62828")+
+bar("Systématique",syst,"#f9a825")+
+bar("Complète",comp,"#2e7d32");
+
+document.getElementById("final-conclusion").innerHTML=
+`<h3>Total fiches : ${total}</h3>
+<p>Méthode complète utilisée par ${Math.round(comp/total*100||0)}%</p>`;
 }
 
 function switchTab(i){
 document.querySelectorAll(".form-content").forEach(d=>d.classList.remove("active"));
-document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
 document.getElementById("content-"+i).classList.add("active");
-document.querySelectorAll(".tab")[i-1].classList.add("active");
+document.querySelector(".header-tabs button:nth-child("+i+")").classList.add("active");
 }
 
-// EXPORT
 function exportToCSV(){
 
-if(database.length==0){alert("Vide");return;}
+if(database.length==0){alert("Aucune donnée");return;}
 
-let csv="ID,Savoir,Attitude,Pratique,KAP Global\n";
+let csv="ID,Pratique,KAP,Technique\n";
 
-database.forEach(r=>{
-csv+=`${r.id},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},${r.scoreKAP}\n`;
+database.forEach((r,i)=>{
+csv+=`${i+1},${r.scorePratique},${r.scoreKAP},"${r.technique}"\n`;
 });
 
-let blob=new Blob([csv],{type:"text/csv"});
 let a=document.createElement("a");
-a.href=URL.createObjectURL(blob);
-a.download="KAP_HGRM_FINAL.csv";
+a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);
+a.download="KAP_HGRM.csv";
 a.click();
 }
 
