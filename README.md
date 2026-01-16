@@ -125,7 +125,6 @@
                 <div class="field"><label>Fréquence Palpation</label><select id="pratique-freq"><option>Systématique</option><option>Si plainte</option><option>Rarement</option></select></div>
                 <div class="field"><label>Enseignement AES</label><select id="pratique-enseigne"><option>Démonstration physique</option><option>Verbalement</option><option>Pas d'enseignement</option></select></div>
                 <div class="field"><label>Palpé ce matin ?</label><select id="pratique-matin"><option>Oui</option><option>Non</option></select></div>
-                <div class="field"><label>Technique de palpation</label><select id="pratique-technique"><option>Circulaire</option><option>Radiale</option><option>Verticale</option><option>Sommaire</option></select></div>
             </div>
 
             <div class="section-title">V. OBSTACLES</div>
@@ -143,6 +142,8 @@
 
     <div id="content-2" class="form-content">
         <div class="section-title">MATRICE DE DÉPOUILLEMENT (TOUTES LES FICHES)</div>
+        <p>Liste exhaustive des données codées pour chaque fiche enregistrée.</p>
+        
         <table style="font-size:11px;">
             <thead>
                 <tr>
@@ -155,7 +156,8 @@
                     <th>Statut</th>
                 </tr>
             </thead>
-            <tbody id="database-body"></tbody>
+            <tbody id="database-body">
+                </tbody>
         </table>
     </div>
 
@@ -173,6 +175,8 @@
         </div>
 
         <div class="section-title">2. ANALYSE CROISÉE (ASSOCIATIONS)</div>
+        <p><strong>Objectif :</strong> Comprendre comment les connaissances influencent l'attitude et la pratique.</p>
+        
         <table class="cross-table">
             <thead>
                 <tr>
@@ -182,10 +186,12 @@
                     <th>Score Pratique Moyen (%)</th>
                 </tr>
             </thead>
-            <tbody id="cross-body"></tbody>
+            <tbody id="cross-body">
+                </tbody>
         </table>
 
-        <div id="interpretation-cross"></div>
+        <div id="interpretation-cross">
+            </div>
 
         <div class="section-title">3. ANALYSE DES BARRIÈRES</div>
         <div id="graph-obstacles"></div>
@@ -196,6 +202,7 @@
         <div id="final-conclusion" style="font-size:14px; line-height:1.6; color:#333;">
             Analyse en attente de données...
         </div>
+        
         <br>
         <button type="button" class="btn-excel" onclick="exportToCSV()">📥 TÉLÉCHARGER LA BASE DE DONNÉES COMPLÈTE (CSV)</button>
     </div>
@@ -203,8 +210,10 @@
 </div>
 
 <script>
-    let database = [];
+    // --- 1. INITIALISATION ---
+    let database = []; // LA BASE DE DONNEES LOCALE
 
+    // Remplissages des listes déroulantes (Code inchangé)
     const codeSelect = document.getElementById('code-enquete');
     for (let i = 1; i <= 200; i++) { let opt = document.createElement('option'); opt.value = "E-"+i; opt.text = "Fiche N° " + i; codeSelect.appendChild(opt); }
     const ageSelect = document.getElementById('age-select');
@@ -212,91 +221,218 @@
     const expSelect = document.getElementById('exp-select');
     for (let i = 0; i <= 40; i++) { let opt = document.createElement('option'); opt.value = i; opt.text = i + " ans d'exp."; expSelect.appendChild(opt); }
 
+    // --- 2. FONCTION SAUVEGARDER (COEUR DU SYSTÈME) ---
     function saveRecord() {
+        // A. COLLECTE DES DONNÉES BRUTES
         let record = {
             id: document.getElementById('code-enquete').value,
             niveau: document.getElementById('niveau').value,
             exp: parseInt(document.getElementById('exp-select').value),
+            
+            // Savoirs
             q1: document.getElementById('q1').value,
             q2: document.getElementById('q2').value,
             q3: document.getElementById('q3').value,
             risques: getCheckedCount('group-risques'),
             signes: getCheckedCount('group-signes'),
+            
+            // Attitudes
             p1: getRadioValue('p1'), p2: getRadioValue('p2'), p3: getRadioValue('p3'), p4: getRadioValue('p4'),
+            
+            // Pratiques
             freq: document.getElementById('pratique-freq').value,
             enseigne: document.getElementById('pratique-enseigne').value,
             matin: document.getElementById('pratique-matin').value,
-            technique: document.getElementById('pratique-technique').value, // Sauvegarde de la technique
+            
+            // Obstacles (Array of values)
             obstacles: getCheckedValues('group-obstacles')
         };
 
-        // Ton calcul de score d'origine
+        // B. CODAGE AUTOMATIQUE (SCORING)
+        // Score Savoir (Max approx 15 pts -> ramené à %)
         let rawSavoir = 0;
         if(record.q1.includes("Vrai")) rawSavoir++;
         if(record.q2.includes("20 ans")) rawSavoir++;
         if(record.q3.includes("7 jours")) rawSavoir++;
         rawSavoir += record.risques + record.signes;
-        record.scoreSavoir = Math.min(100, Math.round((rawSavoir / 14) * 100));
+        record.scoreSavoir = Math.min(100, Math.round((rawSavoir / 14) * 100)); // 14 items total approx
 
+        // Score Attitude (Moyenne Likert)
         let sumAtt = parseInt(record.p1) + parseInt(record.p2) + parseInt(record.p3) + parseInt(record.p4);
         record.scoreAttitude = (sumAtt / 4).toFixed(1);
 
+        // Score Pratique (Algorithme pondéré)
         let rawPrac = 0;
         if(record.freq.includes("Systématique")) rawPrac += 40;
         if(record.enseigne.includes("Démonstration")) rawPrac += 40; else if(record.enseigne.includes("Verbalement")) rawPrac += 10;
         if(record.matin === "Oui") rawPrac += 20;
         record.scorePratique = rawPrac;
 
+        // C. AJOUT A LA BASE
         database.push(record);
+
+        // D. FEEDBACK ET RESET
         document.getElementById('count-badge').textContent = database.length;
-        alert(`Fiche ${record.id} enregistrée !`);
+        alert(`Fiche ${record.id} enregistrée avec succès !\n\nTotal fiches : ${database.length}\nVous pouvez saisir la suivante.`);
         
+        // Reset partiel pour faciliter la saisie suivante (On garde le service par exemple, mais on reset les cases)
         document.querySelectorAll('input[type="checkbox"]').forEach(i => i.checked = false);
+        // Incrémenter l'ID automatiquement
         let currIdx = codeSelect.selectedIndex;
         if(currIdx < codeSelect.options.length - 1) codeSelect.selectedIndex = currIdx + 1;
         
+        // Mettre à jour les analyses en arrière-plan
         updateAnalysis();
     }
 
+    // --- 3. ANALYSE ET AFFICHAGE ---
     function updateAnalysis() {
         if(database.length === 0) return;
+
+        // A. REMPLIR LE TABLEAU DE DEPOUILLEMENT (ONGLET 2)
         const tbody = document.getElementById('database-body');
         tbody.innerHTML = '';
         database.forEach(row => {
-            tbody.innerHTML += `<tr><td><strong>${row.id}</strong></td><td>${row.niveau}</td><td>${row.exp} ans</td><td>${row.scoreSavoir}%</td><td>${row.scoreAttitude}</td><td>${row.scorePratique}%</td><td>${row.scoreSavoir >= 70 ? '🟢' : '🔴'}</td></tr>`;
+            let tr = `<tr>
+                <td><strong>${row.id}</strong></td>
+                <td>${row.niveau}</td>
+                <td>${row.exp} ans</td>
+                <td style="color:${getColor(row.scoreSavoir)}">${row.scoreSavoir}%</td>
+                <td>${row.scoreAttitude}</td>
+                <td style="color:${getColor(row.scorePratique)}">${row.scorePratique}%</td>
+                <td>${row.scoreSavoir >= 70 && row.scorePratique >= 70 ? '🟢 Performant' : '🔴 À former'}</td>
+            </tr>`;
+            tbody.innerHTML += tr;
         });
-        
-        // Maintien des fonctions de rendu graphique d'origine
+
+        // B. STATISTIQUES ET CROISEMENT (ONGLET 3)
+        // 1. Catégorisation
         let highKnow = database.filter(r => r.scoreSavoir >= 70);
         let lowKnow = database.filter(r => r.scoreSavoir < 70);
-        renderBarChart('graph-savoir', [{label: 'Bon (>70%)', val: highKnow.length, total: database.length, color: '#2e7d32'}, {label: 'Insuffisant', val: lowKnow.length, total: database.length, color: '#c62828'}]);
+
+        // 2. Moyennes par groupe
+        let avgAttHigh = getAvg(highKnow, 'scoreAttitude');
+        let avgPracHigh = getAvg(highKnow, 'scorePratique');
+        
+        let avgAttLow = getAvg(lowKnow, 'scoreAttitude');
+        let avgPracLow = getAvg(lowKnow, 'scorePratique');
+
+        // 3. Tableau Croisé HTML
+        document.getElementById('cross-body').innerHTML = `
+            <tr>
+                <td class="text-left"><strong>Haut Niveau de Savoir</strong> (>=70%)</td>
+                <td>${highKnow.length}</td>
+                <td>${avgAttHigh} / 5</td>
+                <td style="font-weight:bold; color:${avgPracHigh > 60 ? 'green':'red'}">${avgPracHigh}%</td>
+            </tr>
+            <tr>
+                <td class="text-left"><strong>Faible Niveau de Savoir</strong> (<70%)</td>
+                <td>${lowKnow.length}</td>
+                <td>${avgAttLow} / 5</td>
+                <td style="font-weight:bold; color:${avgPracLow > 60 ? 'green':'red'}">${avgPracLow}%</td>
+            </tr>
+        `;
+
+        // 4. Interprétation Automatique
+        let interpret = document.getElementById('interpretation-cross');
+        let text = `<p>Sur un échantillon de <strong>${database.length}</strong> infirmiers :</p>`;
+        
+        if (highKnow.length > lowKnow.length) {
+            text += `<p>• La majorité des enquêtés (${((highKnow.length/database.length)*100).toFixed(0)}%) possède de <strong>bonnes connaissances théoriques</strong>.</p>`;
+        } else {
+            text += `<div class="alert-box">⚠️ Alerte : La majorité du personnel a des connaissances insuffisantes sur le cancer.</div>`;
+        }
+
+        if (avgPracHigh > avgPracLow + 10) {
+            text += `<div class="interpretation-box">✅ <strong>Corrélation Positive :</strong> L'analyse confirme que les infirmiers ayant les meilleures connaissances ont également une meilleure pratique (${avgPracHigh}% contre ${avgPracLow}%). Cela valide l'hypothèse que la formation théorique améliore la prise en charge.</div>`;
+        } else {
+            text += `<div class="alert-box">❌ <strong>Disparité Savoir-Agir :</strong> Même parmi ceux qui ont un bon savoir théorique, la pratique reste faible (${avgPracHigh}%). Cela suggère que le problème n'est pas intellectuel mais structurel (manque de matériel, de temps ou de motivation).</div>`;
+        }
+        interpret.innerHTML = text;
+
+        // 5. Graphiques Barres (CSS)
+        renderBarChart('graph-savoir', [
+            {label: 'Bon (>70%)', val: highKnow.length, total: database.length, color: '#2e7d32'},
+            {label: 'Insuffisant (<70%)', val: lowKnow.length, total: database.length, color: '#c62828'}
+        ]);
+        
+        let goodPrac = database.filter(r => r.scorePratique >= 60).length;
+        renderBarChart('graph-pratique', [
+            {label: 'Pratique Correcte', val: goodPrac, total: database.length, color: '#1565c0'},
+            {label: 'Pratique Inadéquate', val: database.length - goodPrac, total: database.length, color: '#f57f17'}
+        ]);
+
+        // 6. Analyse Obstacles
+        let obstaclesCounts = {};
+        database.forEach(r => {
+            r.obstacles.forEach(o => { obstaclesCounts[o] = (obstaclesCounts[o] || 0) + 1; });
+        });
+        let obstacleHtml = "";
+        for (const [key, value] of Object.entries(obstaclesCounts)) {
+            let pct = Math.round((value / database.length) * 100);
+            obstacleHtml += `<div class="bar-container"><div class="bar-label">${key.toUpperCase()}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:#b03060;">${pct}%</div></div><div class="bar-value">${value}</div></div>`;
+        }
+        document.getElementById('graph-obstacles').innerHTML = obstacleHtml;
+
+        // C. CONCLUSION (ONGLET 4)
+        document.getElementById('final-conclusion').innerHTML = `
+            <h3>Synthèse des ${database.length} fiches analysées</h3>
+            <p>L'étude menée à l'HGRM révèle que le taux de connaissances satisfaisantes est de <strong>${((highKnow.length/database.length)*100).toFixed(0)}%</strong>. 
+            Cependant, l'attitude moyenne globale se situe à <strong>${((parseFloat(avgAttHigh)+parseFloat(avgAttLow))/2).toFixed(1)}/5</strong>.</p>
+            <p>Le croisement des variables montre que le frein principal n'est pas toujours la compétence, mais les barrières environnementales, citées par les répondants (voir graphe obstacles).</p>
+            <p><strong>Recommandation majeure :</strong> ${avgPracHigh < 50 ? "Prioriser l'équipement et les protocoles (Pratique faible malgré Savoir)." : "Renforcer la formation continue (Maintien des acquis)."}</p>
+        `;
     }
 
+    // --- HELPER FUNCTIONS ---
     function getCheckedCount(groupId) { return document.querySelectorAll(`#${groupId} input:checked`).length; }
-    function getCheckedValues(groupId) { return Array.from(document.querySelectorAll(`#${groupId} input:checked`)).map(cb => cb.value); }
-    function getRadioValue(name) { let el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : 0; }
+    function getCheckedValues(groupId) { 
+        return Array.from(document.querySelectorAll(`#${groupId} input:checked`)).map(cb => cb.value); 
+    }
+    function getRadioValue(name) { 
+        let el = document.querySelector(`input[name="${name}"]:checked`); 
+        return el ? el.value : 0; 
+    }
+    function getColor(score) { return score >= 70 ? 'green' : (score >= 50 ? 'orange' : 'red'); }
+    function getAvg(arr, prop) {
+        if(arr.length === 0) return 0;
+        let sum = arr.reduce((acc, curr) => acc + parseFloat(curr[prop]), 0);
+        return (sum / arr.length).toFixed(1);
+    }
     function renderBarChart(divId, data) {
         let html = '';
         data.forEach(item => {
             let pct = item.total > 0 ? Math.round((item.val / item.total) * 100) : 0;
-            html += `<div class="bar-container"><div class="bar-label">${item.label}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:${item.color};">${pct}%</div></div><div class="bar-value">${item.val}</div></div>`;
+            html += `<div class="bar-container">
+                <div class="bar-label">${item.label}</div>
+                <div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:${item.color};">${pct}%</div></div>
+                <div class="bar-value">${item.val}</div>
+            </div>`;
         });
         document.getElementById(divId).innerHTML = html;
     }
+
     function switchTab(idx) {
         document.querySelectorAll('.form-content').forEach(d => d.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
         document.getElementById('content-'+idx).classList.add('active');
         document.querySelector(`.header-tabs button:nth-child(${idx})`).classList.add('active');
     }
+
     function exportToCSV() {
-        let csv = "ID,Niveau,Exp,Savoir,Attitude,Pratique,Technique\n";
-        database.forEach(r => csv += `${r.id},${r.niveau},${r.exp},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},${r.technique}\n`);
+        if(database.length === 0) { alert("Aucune donnée à exporter !"); return; }
+        let csv = "data:text/csv;charset=utf-8,\ufeffID,Niveau,Exp,Savoir,Attitude,Pratique,Obstacles\n";
+        database.forEach(r => {
+            csv += `${r.id},${r.niveau},${r.exp},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},"${r.obstacles.join('|')}"\n`;
+        });
         let link = document.createElement("a");
-        link.href = encodeURI("data:text/csv;charset=utf-8," + csv);
-        link.download = "KAP_HGRM.csv";
+        link.href = encodeURI(csv);
+        link.download = "KAP_HGRM_Complet.csv";
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
     }
 </script>
+
 </body>
 </html>
