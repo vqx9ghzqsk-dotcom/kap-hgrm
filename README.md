@@ -358,7 +358,25 @@
     // ZONE DE CONFIGURATION (A REMPLIR PAR L'UTILISATEUR)
     // Collez ici l'URL obtenue lors du déploiement Apps Script
     // ============================================================
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSvgFSulSt4aROwLoBhfbN9FDU3mXEbHz83KOKnONON2zfcpJrZwOJZT-QpEX3XkmB/exec";
+    const GOOGLE_SCRIPT_URL = "function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  
+  sheet.appendRow([
+    data.id,
+    data.sexe,
+    data.service,
+    data.niveau,
+    data.anciennete,
+    data.scoreSavoir,
+    data.scoreAttitude,
+    data.scorePratique,
+    data.obstacles.join(', ')
+  ]);
+  
+  return ContentService.createTextOutput("Succès").setMimeType(ContentService.MimeType.TEXT);
+}
+";
     // ============================================================
 
     let database = [];
