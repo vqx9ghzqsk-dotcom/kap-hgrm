@@ -344,28 +344,36 @@
 </div>
 
 <script>
-    let database = [];
+    // --- 1. CHARGEMENT INITIAL (LocalStorage) ---
+    // On récupère les données stockées dans le navigateur ou on crée un tableau vide
+    let database = JSON.parse(localStorage.getItem('survey_database')) || [];
 
-    // --- INITIALISATION DES LISTES DÉROULANTES ---
+    // Au chargement de la page, on affiche les données déjà enregistrées
+    window.onload = function() {
+        if(database.length > 0) {
+            document.getElementById('count-badge').textContent = database.length;
+            document.getElementById('n-total').textContent = database.length;
+            updateAnalysis();
+        }
+    };
+
+    // --- 2. GÉNÉRATION DES CODES FICHES ---
     const codeSel = document.getElementById('code-enquete');
     for(let i=1; i<=200; i++) { 
-        let o=document.createElement('option'); 
-        o.value="INF-"+i.toString().padStart(3, '0'); 
-        o.text="Fiche N° "+i; 
+        let o = document.createElement('option'); 
+        o.value = "INF-" + i.toString().padStart(3, '0'); 
+        o.text = "Fiche N° " + i; 
         codeSel.appendChild(o); 
     }
 
-    // --- FONCTION PRINCIPALE D'ENREGISTREMENT ---
+    // --- 3. FONCTION D'ENREGISTREMENT ---
     function saveRecord() {
-        // 1. Récupération des données brutes du nouveau formulaire
         let r = {
             id: document.getElementById('code-enquete').value,
             service: document.getElementById('service').value,
             niveau: document.getElementById('niveau').value,
             anciennete: document.getElementById('anciennete').value,
             sexe: document.getElementById('sexe').value,
-            
-            // Connaissances
             q_cause: document.getElementById('q-cause').value,
             q_age: document.getElementById('q-age-mammo').value,
             q_aes: document.getElementById('q-moment-aes').value,
@@ -373,103 +381,69 @@
             signes: getCheckedValues('group-signes'),
             mammo_role: document.getElementById('q-mammo-role').value,
             mammo_freq: document.getElementById('q-mammo-freq').value,
-
-            // Attitudes (Likert)
             att1: parseInt(getRadioValue('att1')),
             att2: parseInt(getRadioValue('att2')),
             att3: parseInt(getRadioValue('att3')),
-            att4: parseInt(getRadioValue('att4')), // Item inversé dans l'analyse si besoin, ici on garde brut
-            att5: parseInt(getRadioValue('att5')), // Item négatif
-
-            // Pratiques
+            att4: parseInt(getRadioValue('att4')), 
+            att5: parseInt(getRadioValue('att5')), 
             prac_perso: document.getElementById('prac-perso').value,
             prac_freq: document.getElementById('prac-pro-freq').value,
             prac_main: document.getElementById('prac-main').value,
             prac_zone: document.getElementById('prac-zone').value,
             prac_mouv: getCheckedValues('group-mouv'),
-
-            // Obstacles
             obstacles: getCheckedValues('group-obstacles')
         };
 
-        // 2. CALCUL DES SCORES (Algorithme adapté à la nouvelle fiche)
-
-        // --- A. SCORE SAVOIR (Sur 100%) ---
+        // CALCUL DES SCORES
         let ptsSavoir = 0;
-        let maxSavoir = 15; // Total des points possibles
-
         if(r.q_cause === "vrai") ptsSavoir += 1;
-        if(r.q_age === "50" || r.q_age === "35") ptsSavoir += 1; // Accepte 35-40 ou 50 comme "correct" selon contexte
+        if(r.q_age === "50" || r.q_age === "35") ptsSavoir += 1; 
         if(r.q_aes === "apres") ptsSavoir += 1;
-        
-        // Risques (Points pour les vrais facteurs de risque)
-        let riskPoints = 0;
-        ['age', 'famille', 'alcool', 'obesite', 'menopause'].forEach(k => {
-            if(r.risques.includes(k)) riskPoints++;
-        });
-        ptsSavoir += riskPoints;
-
-        // Signes (Points pour les signes d'alerte valides)
-        let signPoints = 0;
-        ['nodule', 'retraction', 'peau', 'ecoulement'].forEach(k => {
-            if(r.signes.includes(k)) signPoints++;
-        });
-        ptsSavoir += signPoints;
-
-        // Mammo
+        ['age', 'famille', 'alcool', 'obesite', 'menopause'].forEach(k => { if(r.risques.includes(k)) ptsSavoir++; });
+        ['nodule', 'retraction', 'peau', 'ecoulement'].forEach(k => { if(r.signes.includes(k)) ptsSavoir++; });
         if(r.mammo_role === "detecter") ptsSavoir += 2;
-        if(r.mammo_freq === "2") ptsSavoir += 1; // 2 ans est souvent le standard, mais 1 an peut être accepté. Soyons stricts : 2 ans.
+        if(r.mammo_freq === "2") ptsSavoir += 1;
+        r.scoreSavoir = Math.round((ptsSavoir / 15) * 100);
 
-        r.scoreSavoir = Math.round((ptsSavoir / maxSavoir) * 100);
-        if(r.scoreSavoir > 100) r.scoreSavoir = 100;
-
-        // --- B. SCORE ATTITUDE (/5) ---
-        // Attention : Att5 ("Ne sert à rien") est négatif. 
-        // Si cochée 5 (Tout à fait d'accord), c'est une MAUVAISE attitude.
-        // On inverse Att5 et Att4 (Mal à l'aise) pour le score global de "Positivité"
-        let invAtt4 = 6 - r.att4;
-        let invAtt5 = 6 - r.att5;
-        let sumAtt = r.att1 + r.att2 + r.att3 + invAtt4 + invAtt5;
+        let sumAtt = r.att1 + r.att2 + r.att3 + (6-r.att4) + (6-r.att5);
         r.scoreAttitude = (sumAtt / 5).toFixed(1);
 
-        // --- C. SCORE PRATIQUE (Sur 100%) ---
         let ptsPrac = 0;
-        let maxPrac = 20;
+        if(r.prac_perso === "mois") ptsPrac += 3; 
+        if(r.prac_freq === "syst") ptsPrac += 5; 
+        if(r.prac_main === "pulpe") ptsPrac += 4; 
+        if(r.prac_zone === "axillaire") ptsPrac += 4; 
+        let moves = r.prac_mouv.filter(m => ['circulaire', 'vertical', 'radial'].includes(m)).length;
+        ptsPrac += (moves >= 2) ? 4 : (moves === 1 ? 2 : 0);
+        r.scorePratique = Math.round((ptsPrac / 20) * 100);
 
-        if(r.prac_perso === "mois") ptsPrac += 3; // L'exemplarité
-        if(r.prac_freq === "syst") ptsPrac += 5; // Systématique
-        else if(r.prac_freq === "plainte") ptsPrac += 1;
+        // --- ENVOI VERS GOOGLE SHEETS ---
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbwQPk3CAUYV75xr-JdLk-NqgwRyIlcqnZCvTL_OdH0bO5fCoza_U4qtapwsr_UZc11ENQ/exec";
 
-        if(r.prac_main === "pulpe") ptsPrac += 4; // La bonne technique
-        if(r.prac_zone === "axillaire") ptsPrac += 4; // La zone oubliée
+        fetch(webAppUrl, {
+            method: "POST",
+            mode: "no-cors", 
+            cache: "no-cache",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(r)
+        }).then(() => console.log("Cloud OK")).catch(err => console.error("Cloud Error", err));
 
-        // Mouvements (Il faut varier les mouvements)
-        let validMoves = ['circulaire', 'vertical', 'radial'];
-        let movesCount = 0;
-        r.prac_mouv.forEach(m => { if(validMoves.includes(m)) movesCount++; });
-        if(r.prac_mouv.includes('aleatoire')) movesCount = 0; // Pénalité si aléatoire
-        
-        if(movesCount >= 2) ptsPrac += 4;
-        else if(movesCount === 1) ptsPrac += 2;
-
-        r.scorePratique = Math.round((ptsPrac / maxPrac) * 100);
-
-        // 3. Stockage et Mise à jour
+        // --- SAUVEGARDE LOCALE (Empêche l'effacement au refresh) ---
         database.push(r);
+        localStorage.setItem('survey_database', JSON.stringify(database));
+        
+        // Mise à jour interface
         document.getElementById('count-badge').textContent = database.length;
         document.getElementById('n-total').textContent = database.length;
-        
-        alert(`Fiche ${r.id} enregistrée !\n\n📊 Savoir: ${r.scoreSavoir}%\n🧠 Attitude: ${r.scoreAttitude}/5\n🩺 Pratique: ${r.scorePratique}%`);
+        alert(`Fiche ${r.id} enregistrée et sécurisée !`);
         
         codeSel.selectedIndex = (codeSel.selectedIndex + 1) % codeSel.options.length;
         updateAnalysis();
     }
 
-    // --- FONCTIONS D'ANALYSE (ONGLETS 2, 3, 4) ---
+    // --- 4. FONCTIONS ANALYTIQUES ---
     function updateAnalysis() {
         if(database.length === 0) return;
-
-        // A. Remplir le Tableau (Onglet 2)
         const tbody = document.getElementById('database-body');
         tbody.innerHTML = database.map(row => `
             <tr>
@@ -480,104 +454,54 @@
                 <td style="color:${getColor(row.scoreSavoir)}">${row.scoreSavoir}%</td>
                 <td>${row.scoreAttitude}</td>
                 <td style="color:${getColor(row.scorePratique)}">${row.scorePratique}%</td>
-                <td>${row.scoreSavoir >= 70 && row.scorePratique >= 70 ? '🟢 Expert' : (row.scoreSavoir >= 50 ? '🟠 Moyen' : '🔴 À Former')}</td>
+                <td>${row.scoreSavoir >= 70 && row.scorePratique >= 70 ? '🟢 Expert' : '🟠 Moyen'}</td>
             </tr>
         `).join('');
+        
+        // (Note: Les fonctions de graphiques renderBarChart, getAvg, etc. doivent rester ici)
+        refreshCharts(); 
+    }
 
-        // B. Analyse Croisée (Onglet 3)
-        let high = database.filter(r => r.scoreSavoir >= 60); // Seuil de bon savoir
+    function refreshCharts() {
+        let high = database.filter(r => r.scoreSavoir >= 60);
         let low = database.filter(r => r.scoreSavoir < 60);
-
-        let avgAttH = getAvg(high, 'scoreAttitude'), avgPracH = getAvg(high, 'scorePratique');
-        let avgAttL = getAvg(low, 'scoreAttitude'), avgPracL = getAvg(low, 'scorePratique');
-
-        document.getElementById('cross-body').innerHTML = `
-            <tr><td style="padding:15px;"><b>Bonnes Connaissances (>=60%)</b></td><td>${high.length}</td><td>${avgAttH}/5</td><td style="font-weight:bold; font-size:14px;">${avgPracH}%</td></tr>
-            <tr><td style="padding:15px;"><b>Connaissances Faibles (<60%)</b></td><td>${low.length}</td><td>${avgAttL}/5</td><td style="font-weight:bold; font-size:14px;">${avgPracL}%</td></tr>
-        `;
-
-        // Graphiques
         renderBarChart('graph-savoir', [
-            {label: 'Connaissances Solides', val: high.length, total: database.length, color: '#2e7d32'},
-            {label: 'Lacunes Théoriques', val: low.length, total: database.length, color: '#c62828'}
+            {label: 'Solides', val: high.length, total: database.length, color: '#2e7d32'},
+            {label: 'Lacunes', val: low.length, total: database.length, color: '#c62828'}
         ]);
-        
-        let goodPrac = database.filter(r => r.scorePratique >= 70).length;
-        renderBarChart('graph-pratique', [
-            {label: 'Pratique Conforme', val: goodPrac, total: database.length, color: '#1565c0'},
-            {label: 'Pratique Insuffisante', val: database.length - goodPrac, total: database.length, color: '#f57f17'}
-        ]);
-
-        // Interprétation dynamique
-        let gap = avgPracH - avgPracL;
-        let interpDiv = document.getElementById('interpretation-cross');
-        if(gap > 15) {
-            interpDiv.className = 'interpretation-box';
-            interpDiv.innerHTML = `<b>Corrélation Positive Forte :</b> L'analyse montre que le personnel ayant de bonnes connaissances théoriques performe nettement mieux en pratique (+${Math.round(gap)} points). La formation théorique est donc le levier prioritaire.`;
-        } else {
-            interpDiv.className = 'alert-box';
-            interpDiv.innerHTML = `<b>Dissociation Savoir/Agir :</b> Même le personnel ayant de bonnes connaissances a une pratique moyenne. Le problème n'est pas intellectuel mais structurel (manque de temps, de matériel ou de motivation).`;
-        }
-
-        // Obstacles
-        let obsCounts = {};
-        database.forEach(r => r.obstacles.forEach(o => obsCounts[o] = (obsCounts[o]||0)+1));
-        let sortedObs = Object.entries(obsCounts).sort((a,b)=>b[1]-a[1]);
-        
-        document.getElementById('graph-obstacles').innerHTML = sortedObs.map(([k,v]) => {
+        // Analyse des obstacles
+        let obs = {};
+        database.forEach(r => r.obstacles.forEach(o => obs[o] = (obs[o]||0)+1));
+        document.getElementById('graph-obstacles').innerHTML = Object.entries(obs).map(([k,v]) => {
             let p = Math.round((v/database.length)*100);
-            return `<div class="bar-container"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:#b03060;">${p}%</div></div><div class="bar-value">${v}</div></div>`;
+            return `<div class="bar-container"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:#b03060;">${p}%</div></div></div>`;
         }).join('');
-
-        // C. Conclusion (Onglet 4)
-        let mainObstacle = sortedObs.length > 0 ? sortedObs[0][0] : "Aucun";
-        document.getElementById('final-conclusion').innerHTML = `
-            <h3>Synthèse pour la Direction de l'Hôpital</h3>
-            <p>L'enquête réalisée auprès de <b>${database.length} agents</b> met en évidence :</p>
-            <ul>
-                <li><b>Niveau Global :</b> ${Math.round((goodPrac/database.length)*100)}% du personnel maîtrise correctement la technique de palpation.</li>
-                <li><b>Point Critique :</b> La zone du <i>creux axillaire</i> et la technique de la <i>pulpe des doigts</i> sont les éléments techniques les moins bien maîtrisés.</li>
-                <li><b>Frein Majeur :</b> Le principal obstacle identifié est <b>"${mainObstacle}"</b>, cité par la majorité des soignants.</li>
-            </ul>
-            <p><b>Recommandation :</b> Organiser des ateliers pratiques sur mannequins ciblant spécifiquement la palpation axillaire et lever le frein lié au "${mainObstacle}".</p>
-        `;
     }
 
-    // --- UTILITAIRES ---
-    function getCheckedValues(id) { 
-        return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value); 
-    }
-    function getRadioValue(n) { 
-        let e = document.querySelector(`input[name="${n}"]:checked`); 
-        return e ? e.value : 0; 
-    }
+    function getCheckedValues(id) { return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value); }
+    function getRadioValue(n) { let e = document.querySelector(`input[name="${n}"]:checked`); return e ? e.value : 0; }
     function getColor(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); }
-    function getAvg(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; }
-    
     function renderBarChart(id, data) {
         document.getElementById(id).innerHTML = data.map(i => {
             let p = i.total ? Math.round((i.val/i.total)*100) : 0;
-            return `<div class="bar-container"><div class="bar-label">${i.label}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:${i.color}">${p}%</div></div><div class="bar-value">${i.val}</div></div>`;
+            return `<div class="bar-container"><div class="bar-label">${i.label}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:${i.color}">${p}%</div></div></div>`;
         }).join('');
     }
-
     function switchTab(i) {
         document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.getElementById('content-'+i).classList.add('active');
         document.querySelector(`.header-tabs button:nth-child(${i})`).classList.add('active');
     }
-
     function exportToCSV() {
-        if(database.length === 0) { alert("Aucune donnée à exporter."); return; }
-        let headers = "ID,Sexe,Service,Niveau,Exp,Savoir(%),Attitude(/5),Pratique(%),Obstacles\n";
-        let rows = database.map(r => `${r.id},${r.sexe},${r.service},${r.niveau},${r.anciennete},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},"${r.obstacles.join('|')}"`).join("\n");
-        let link = document.createElement("a"); 
+        let headers = "ID,Sexe,Service,Savoir,Attitude,Pratique\n";
+        let rows = database.map(r => `${r.id},${r.sexe},${r.service},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique}`).join("\n");
+        let link = document.createElement("a");
         link.href = "data:text/csv;charset=utf-8," + encodeURI("\ufeff"+headers+rows);
-        link.download = "Donnees_CAP_CancerSein.csv"; 
-        link.click();
+        link.download = "export_cap.csv"; link.click();
     }
 </script>
+
 
 </body>
 </html>
