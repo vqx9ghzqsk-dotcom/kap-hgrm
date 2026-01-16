@@ -358,7 +358,7 @@
     // ZONE DE CONFIGURATION (A REMPLIR PAR L'UTILISATEUR)
     // Collez ici l'URL obtenue lors du déploiement Apps Script
     // ============================================================
-    const GOOGLE_SCRIPT_URL ="https://script.google.com/macros/s/AKfycbyMX8dcz3yHj3Y7ou8ByVSORkN0hjkCPkE7eaq0bxbzSxpzC_8n5kEZyt45lharxPYI/exec"/exec;
+    const GOOGLE_SCRIPT_URL = "VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI";
     // ============================================================
 
     let database = [];
