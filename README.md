@@ -355,10 +355,9 @@
 
 <script>
     // ============================================================
-    // ZONE DE CONFIGURATION (A REMPLIR PAR L'UTILISATEUR)
-    // Collez ici l'URL obtenue lors du déploiement Apps Script
+    // CONFIGURATION URL GOOGLE APPS SCRIPT
     // ============================================================
-    const GOOGLE_SCRIPT_URL = "VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI";
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMX8dcz3yHj3Y7ou8ByVSORkN0hjkCPkE7eaq0bxbzSxpzC_8n5kEZyt45lharxPYI/exec";
     // ============================================================
 
     let database = [];
@@ -375,10 +374,6 @@
 
     // --- CHARGEMENT DES DONNÉES AU DÉMARRAGE (PERSISTANCE) ---
     window.onload = function() {
-        if(GOOGLE_SCRIPT_URL.includes("VOTRE_URL")) {
-            alert("ATTENTION : Vous devez configurer l'URL du script Google dans le code HTML pour que la sauvegarde fonctionne !");
-            return;
-        }
         loadDataFromCloud();
     };
 
