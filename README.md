@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KAP-HGRM - Analyse Expert & Techniques de Palpation</title>
     <style>
-        /* --- STYLE EXISTANT --- */
+        /* --- STYLE EXISTANT (Conservé) --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
         .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 800px;}
         .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 100; }
@@ -208,7 +208,7 @@
 
         document.getElementById('conclusion-text').innerHTML = `
             <h3>Analyse des Pratiques à l'HGRM</h3>
-            <p>Sur ${db.length} infirmiers, seulement <strong>${complete}</strong> pratiquent la méthode complète (incluant le creux axillaire et le mamelon).</p>
+            <p>Sur ${db.length} infirmiers analysés, seulement <strong>${complete}</strong> utilisent la méthode complète (Quadrant + creux axillaire + mamelon).</p>
         `;
     }
 
