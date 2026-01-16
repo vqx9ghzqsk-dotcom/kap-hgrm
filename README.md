@@ -112,191 +112,79 @@
                 </div>
             </div>
 
-            <div class="section-title">II. CONNAISSANCES (SAVOIRS THÉORIQUES)</div>
-            
-            <div class="sub-title">6. Épidémiologie & Dépistage</div>
+            <div class="section-title">II. CONNAISSANCES</div>
+            <div class="sub-title">Épidémiologie & Dépistage</div>
             <div class="row">
                 <div class="field">
                     <label>Le cancer du sein est la 1ère cause de décès par cancer (RDC) :</label>
-                    <select id="q-cause">
-                        <option value="vrai">Vrai</option>
-                        <option value="faux">Faux</option>
-                        <option value="jsp">Je ne sais pas</option>
-                    </select>
+                    <select id="q-cause"><option value="vrai">Vrai</option><option value="faux">Faux</option><option value="jsp">JSP</option></select>
                 </div>
                 <div class="field">
                     <label>Âge recommandé 1ère mammographie :</label>
-                    <select id="q-age-mammo">
-                        <option value="20">Dès 20 ans</option>
-                        <option value="35">Vers 35-40 ans</option>
-                        <option value="50">Vers 50 ans</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Moment idéal pour Auto-Examen (AES) :</label>
-                    <select id="q-moment-aes">
-                        <option value="regles">Pendant les règles</option>
-                        <option value="apres" selected>7 à 10 jours après début règles</option>
-                        <option value="nimporte">N’importe quand</option>
-                    </select>
+                    <select id="q-age-mammo"><option value="20">Dès 20 ans</option><option value="35">35-40 ans</option><option value="50">50 ans</option></select>
                 </div>
             </div>
 
-            <div class="sub-title">7. Facteurs de risque (Cochez ceux prouvés scientifiquement)</div>
+            <div class="sub-title">Facteurs de risque (Cochez)</div>
             <div class="check-group" id="group-risques">
-                <label class="check-item"><input type="checkbox" value="age"> Âge avancé (>50 ans)</label>
-                <label class="check-item"><input type="checkbox" value="multi"> Multiparité (NB: Risque faible/Protecteur)</label>
+                <label class="check-item"><input type="checkbox" value="age"> Âge (>50 ans)</label>
                 <label class="check-item"><input type="checkbox" value="famille"> Antécédents familiaux</label>
                 <label class="check-item"><input type="checkbox" value="alcool"> Alcool / Tabac</label>
-                <label class="check-item"><input type="checkbox" value="obesite"> Obésité et sédentarité</label>
-                <label class="check-item"><input type="checkbox" value="allaitement"> Allaitement prolongé (NB: Protecteur)</label>
-                <label class="check-item"><input type="checkbox" value="menopause"> Ménopause tardive (>55 ans)</label>
+                <label class="check-item"><input type="checkbox" value="obesite"> Obésité</label>
+                <label class="check-item"><input type="checkbox" value="menopause"> Ménopause tardive</label>
             </div>
 
-            <div class="sub-title">8. Signes d’alerte</div>
-            <div class="check-group" id="group-signes">
-                <label class="check-item"><input type="checkbox" value="nodule"> Nodule dur et indolore</label>
-                <label class="check-item"><input type="checkbox" value="retraction"> Rétraction du mamelon</label>
-                <label class="check-item"><input type="checkbox" value="peau"> Aspect peau d’orange</label>
-                <label class="check-item"><input type="checkbox" value="ecoulement"> Écoulement mamelonnaire</label>
-                <label class="check-item"><input type="checkbox" value="douleur"> Douleur cyclique (Souvent bénin)</label>
-            </div>
-
-            <div class="sub-title">9-13. Connaissance Mammographie</div>
-            <div class="row">
-                <div class="field">
-                    <label>La mammographie est importante pour détection précoce :</label>
-                    <select id="q-mammo-imp"><option>Oui</option><option>Non</option><option>Je ne sais pas</option></select>
-                </div>
-                <div class="field">
-                    <label>Rôle principal :</label>
-                    <select id="q-mammo-role">
-                        <option value="detecter">Détecter lésions avant symptômes</option>
-                        <option value="traiter">Traiter le cancer</option>
-                        <option value="douleur">Soulager douleur</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Fréquence (Femme sans risque) :</label>
-                    <select id="q-mammo-freq">
-                        <option value="1">Tous les ans</option>
-                        <option value="2">Tous les 2 ans</option>
-                        <option value="5">Tous les 5 ans</option>
-                        <option value="0">Je ne sais pas</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="section-title">III. ATTITUDES & PERCEPTIONS (Échelle 1-5)</div>
+            <div class="section-title">III. ATTITUDES (1-5)</div>
             <table>
-                <thead>
-                    <tr>
-                        <th class="td-left">Énoncé</th>
-                        <th>1<br><small>Pas du tout</small></th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5<br><small>Tout à fait</small></th>
-                    </tr>
-                </thead>
+                <thead><tr><th class="td-left">Énoncé</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <td class="td-left">L’éducation à l’AES fait partie de mon rôle.</td>
-                        <td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5" checked></td>
-                    </tr>
-                    <tr>
-                        <td class="td-left">Je me sens capable de détecter un nodule de petite taille.</td>
-                        <td><input type="radio" name="att2" value="1"></td><td><input type="radio" name="att2" value="2"></td><td><input type="radio" name="att2" value="3"></td><td><input type="radio" name="att2" value="4" checked></td><td><input type="radio" name="att2" value="5"></td>
-                    </tr>
-                    <tr>
-                        <td class="td-left">La peur du diagnostic empêche les patientes de consulter.</td>
-                        <td><input type="radio" name="att3" value="1"></td><td><input type="radio" name="att3" value="2"></td><td><input type="radio" name="att3" value="3" checked></td><td><input type="radio" name="att3" value="4"></td><td><input type="radio" name="att3" value="5"></td>
-                    </tr>
-                    <tr>
-                        <td class="td-left">Je suis mal à l’aise d’aborder l’intimité avec les âgées.</td>
-                        <td><input type="radio" name="att4" value="1"></td><td><input type="radio" name="att4" value="2" checked></td><td><input type="radio" name="att4" value="3"></td><td><input type="radio" name="att4" value="4"></td><td><input type="radio" name="att4" value="5"></td>
-                    </tr>
-                    <tr>
-                        <td class="td-left">Le dépistage ne sert à rien (coût des traitements).</td>
-                        <td><input type="radio" name="att5" value="1" checked></td><td><input type="radio" name="att5" value="2"></td><td><input type="radio" name="att5" value="3"></td><td><input type="radio" name="att5" value="4"></td><td><input type="radio" name="att5" value="5"></td>
-                    </tr>
+                    <tr><td class="td-left">L'éducation à l'AES fait partie de mon rôle.</td><td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5" checked></td></tr>
+                    <tr><td class="td-left">Je me sens capable de détecter un nodule.</td><td><input type="radio" name="att2" value="1"></td><td><input type="radio" name="att2" value="2"></td><td><input type="radio" name="att2" value="3"></td><td><input type="radio" name="att2" value="4" checked></td><td><input type="radio" name="att2" value="5"></td></tr>
                 </tbody>
             </table>
 
-            <div class="section-title">IV. PRATIQUES (Savoir-Faire)</div>
-            
+            <div class="section-title">IV. PRATIQUES</div>
             <div class="row">
                 <div class="field">
-                    <label>9. Pratique personnelle (AES sur vous) :</label>
-                    <select id="prac-perso">
-                        <option value="mois">Tous les mois</option>
-                        <option value="temps">De temps en temps</option>
-                        <option value="jamais">Jamais</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>10. Examen des patientes (Fréquence) :</label>
-                    <select id="prac-pro-freq">
-                        <option value="syst">Systématiquement</option>
-                        <option value="plainte">Uniquement si plainte</option>
-                        <option value="rare">Rarement / Jamais</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="sub-title">Technique de Palpation</div>
-            <div class="row">
-                <div class="field">
-                    <label>Partie de la main utilisée ?</label>
+                    <label>Technique de palpation utilisée :</label>
                     <select id="prac-main">
-                        <option value="pointe">La pointe des doigts</option>
-                        <option value="pulpe" selected>La pulpe des 3 doigts du milieu</option>
-                        <option value="paume">La paume entière</option>
-                        <option value="pince">Le pouce et l'index</option>
+                        <option value="pointe">Pointe des doigts</option>
+                        <option value="pulpe" selected>Pulpe des 3 doigts</option>
                     </select>
                 </div>
                 <div class="field">
-                    <label>Zone "oubliée" à inclure absolument ?</label>
+                    <label>Zone incluse ?</label>
                     <select id="prac-zone">
-                        <option value="mamelon">Le mamelon</option>
-                        <option value="sillon">Le sillon sous-mammaire</option>
-                        <option value="axillaire" selected>Le creux axillaire (aisselle)</option>
+                        <option value="axillaire" selected>Creux axillaire</option>
+                        <option value="mamelon">Mamelon seulement</option>
                     </select>
                 </div>
             </div>
-
-            <label style="margin:10px 0; display:block; font-weight:bold; color:#b03060;">Mouvements effectués (Cochez les réponses) :</label>
+            
+            <div class="sub-title">Mouvements (Cochez)</div>
             <div class="check-group" id="group-mouv">
-                <label class="check-item"><input type="checkbox" value="circulaire"> Circulaire (Spirale)</label>
-                <label class="check-item"><input type="checkbox" value="vertical"> Vertical (Bandelettes)</label>
-                <label class="check-item"><input type="checkbox" value="radial"> Radial (Étoile)</label>
-                <label class="check-item"><input type="checkbox" value="aleatoire"> Aléatoire (Sans ordre)</label>
+                <label class="check-item"><input type="checkbox" value="circulaire"> Circulaire</label>
+                <label class="check-item"><input type="checkbox" value="vertical"> Vertical</label>
+                <label class="check-item"><input type="checkbox" value="radial"> Radial</label>
             </div>
 
-            <div class="section-title">V. OBSTACLES IDENTIFIÉS (3 principaux)</div>
+            <div class="section-title">V. OBSTACLES</div>
             <div class="check-group" id="group-obstacles">
-                <label class="check-item"><input type="checkbox" value="Temps"> Manque de temps</label>
-                <label class="check-item"><input type="checkbox" value="Intimité"> Manque d’intimité</label>
-                <label class="check-item"><input type="checkbox" value="Culture"> Croyances culturelles / Pudeur</label>
-                <label class="check-item"><input type="checkbox" value="Coût"> Coût des examens</label>
-                <label class="check-item"><input type="checkbox" value="Formation"> Manque de formation</label>
-                <label class="check-item"><input type="checkbox" value="Protocole"> Absence de protocole</label>
+                <label class="check-item"><input type="checkbox" value="Temps"> Temps</label>
+                <label class="check-item"><input type="checkbox" value="Formation"> Formation</label>
+                <label class="check-item"><input type="checkbox" value="Pudeur"> Pudeur</label>
             </div>
 
-            <button type="button" class="btn-save" onclick="saveRecord()">💾 ENREGISTRER CETTE FICHE</button>
+            <button type="button" class="btn-save" onclick="saveRecord()">💾 ENREGISTRER LA FICHE</button>
         </form>
     </div>
 
     <div id="content-2" class="form-content">
-        <div class="section-title">BASE DE DONNÉES BRUTE (N = <span id="n-total">0</span>)</div>
+        <div class="section-title">MATRICE DE DÉPOUILLEMENT (N = <span id="n-total">0</span>)</div>
         <div style="overflow-x:auto;">
             <table>
                 <thead>
-                    <tr>
-                        <th>Code</th><th>Sexe</th><th>Service</th><th>Exp (ans)</th>
-                        <th>Score Savoir (%)</th><th>Score Attitude (/5)</th><th>Score Pratique (%)</th>
-                        <th>Diagnostic Compétence</th>
-                    </tr>
+                    <tr><th>ID</th><th>Sexe</th><th>Savoir %</th><th>Attitude /5</th><th>Pratique %</th><th>Statut</th></tr>
                 </thead>
                 <tbody id="database-body"></tbody>
             </table>
@@ -304,172 +192,118 @@
     </div>
 
     <div id="content-3" class="form-content">
-        <div class="section-title">1. RÉPARTITION DES NIVEAUX DE COMPÉTENCE</div>
+        <div class="section-title">RÉSULTATS ANALYTIQUES</div>
         <div class="row">
-            <div class="stat-card">
-                <div class="stat-title">Niveau de Connaissances (Savoir Théorique)</div>
-                <div id="graph-savoir"></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-title">Qualité de la Pratique Clinique (Savoir-Faire)</div>
-                <div id="graph-pratique"></div>
-            </div>
+            <div class="stat-card"><div class="stat-title">Niveau Connaissances</div><div id="graph-savoir"></div></div>
+            <div class="stat-card"><div class="stat-title">Niveau Pratiques</div><div id="graph-pratique"></div></div>
         </div>
-
-        <div class="section-title">2. ANALYSE CROISÉE : IMPACT DU SAVOIR SUR L'ACTION</div>
-        <table style="background:#444; color:white; border-radius:8px; overflow:hidden;">
-            <thead>
-                <tr>
-                    <th style="text-align:left; padding:15px;">Groupe d'analyse</th>
-                    <th>Effectif (N)</th>
-                    <th>Attitude Moyenne (/5)</th>
-                    <th>Score Pratique Moyen (%)</th>
-                </tr>
-            </thead>
-            <tbody id="cross-body" style="background:white; color:#333;"></tbody>
-        </table>
-
-        <div id="interpretation-cross"></div>
-
-        <div class="section-title">3. ANALYSE DES BARRIÈRES À LA PRÉVENTION</div>
+        <div class="section-title">BARRIÈRES IDENTIFIÉES</div>
         <div id="graph-obstacles"></div>
     </div>
 
     <div id="content-4" class="form-content">
-        <div class="section-title">SYNTHÈSE ET RECOMMANDATIONS</div>
-        <div id="final-conclusion" style="font-size:15px; line-height:1.8; color:#333;"></div>
-        <br><hr><br>
-        <button type="button" class="btn-excel" onclick="exportToCSV()">📥 TÉLÉCHARGER LA BASE COMPLÈTE (.CSV)</button>
+        <div class="section-title">CONCLUSION</div>
+        <div id="final-conclusion">En attente de données...</div>
     </div>
 </div>
 
 <script>
     // --- 1. CHARGEMENT INITIAL (LocalStorage) ---
-    // On récupère les données stockées dans le navigateur ou on crée un tableau vide
     let database = JSON.parse(localStorage.getItem('survey_database')) || [];
 
-    // Au chargement de la page, on affiche les données déjà enregistrées
     window.onload = function() {
-        if(database.length > 0) {
-            document.getElementById('count-badge').textContent = database.length;
-            document.getElementById('n-total').textContent = database.length;
-            updateAnalysis();
-        }
+        initCodes();
+        updateUI();
     };
 
-    // --- 2. GÉNÉRATION DES CODES FICHES ---
-    const codeSel = document.getElementById('code-enquete');
-    for(let i=1; i<=200; i++) { 
-        let o = document.createElement('option'); 
-        o.value = "INF-" + i.toString().padStart(3, '0'); 
-        o.text = "Fiche N° " + i; 
-        codeSel.appendChild(o); 
+    function initCodes() {
+        const sel = document.getElementById('code-enquete');
+        for(let i=1; i<=200; i++){
+            let o = document.createElement('option');
+            o.value = "INF-" + i.toString().padStart(3,'0');
+            o.text = "Fiche N° " + i;
+            sel.appendChild(o);
+        }
     }
 
-    // --- 3. FONCTION D'ENREGISTREMENT ---
+    // --- 2. ENREGISTREMENT ET ENVOI ---
     function saveRecord() {
         let r = {
             id: document.getElementById('code-enquete').value,
-            service: document.getElementById('service').value,
-            niveau: document.getElementById('niveau').value,
-            anciennete: document.getElementById('anciennete').value,
             sexe: document.getElementById('sexe').value,
+            service: document.getElementById('service').value,
             q_cause: document.getElementById('q-cause').value,
             q_age: document.getElementById('q-age-mammo').value,
-            q_aes: document.getElementById('q-moment-aes').value,
             risques: getCheckedValues('group-risques'),
-            signes: getCheckedValues('group-signes'),
-            mammo_role: document.getElementById('q-mammo-role').value,
-            mammo_freq: document.getElementById('q-mammo-freq').value,
             att1: parseInt(getRadioValue('att1')),
             att2: parseInt(getRadioValue('att2')),
-            att3: parseInt(getRadioValue('att3')),
-            att4: parseInt(getRadioValue('att4')), 
-            att5: parseInt(getRadioValue('att5')), 
-            prac_perso: document.getElementById('prac-perso').value,
-            prac_freq: document.getElementById('prac-pro-freq').value,
             prac_main: document.getElementById('prac-main').value,
             prac_zone: document.getElementById('prac-zone').value,
             prac_mouv: getCheckedValues('group-mouv'),
             obstacles: getCheckedValues('group-obstacles')
         };
 
-        // CALCUL DES SCORES
-        let ptsSavoir = 0;
-        if(r.q_cause === "vrai") ptsSavoir += 1;
-        if(r.q_age === "50" || r.q_age === "35") ptsSavoir += 1; 
-        if(r.q_aes === "apres") ptsSavoir += 1;
-        ['age', 'famille', 'alcool', 'obesite', 'menopause'].forEach(k => { if(r.risques.includes(k)) ptsSavoir++; });
-        ['nodule', 'retraction', 'peau', 'ecoulement'].forEach(k => { if(r.signes.includes(k)) ptsSavoir++; });
-        if(r.mammo_role === "detecter") ptsSavoir += 2;
-        if(r.mammo_freq === "2") ptsSavoir += 1;
-        r.scoreSavoir = Math.round((ptsSavoir / 15) * 100);
+        // Calcul Scores Simples
+        let ptsSavoir = (r.q_cause === "vrai" ? 1 : 0) + (r.q_age === "50" ? 1 : 0) + r.risques.length;
+        r.scoreSavoir = Math.round((ptsSavoir / 7) * 100);
+        
+        r.scoreAttitude = ((r.att1 + r.att2) / 2).toFixed(1);
 
-        let sumAtt = r.att1 + r.att2 + r.att3 + (6-r.att4) + (6-r.att5);
-        r.scoreAttitude = (sumAtt / 5).toFixed(1);
+        let ptsPrac = (r.prac_main === "pulpe" ? 2 : 0) + (r.prac_zone === "axillaire" ? 2 : 0) + r.prac_mouv.length;
+        r.scorePratique = Math.round((ptsPrac / 7) * 100);
 
-        let ptsPrac = 0;
-        if(r.prac_perso === "mois") ptsPrac += 3; 
-        if(r.prac_freq === "syst") ptsPrac += 5; 
-        if(r.prac_main === "pulpe") ptsPrac += 4; 
-        if(r.prac_zone === "axillaire") ptsPrac += 4; 
-        let moves = r.prac_mouv.filter(m => ['circulaire', 'vertical', 'radial'].includes(m)).length;
-        ptsPrac += (moves >= 2) ? 4 : (moves === 1 ? 2 : 0);
-        r.scorePratique = Math.round((ptsPrac / 20) * 100);
-
-        // --- ENVOI VERS GOOGLE SHEETS ---
+        // --- ENVOI GOOGLE SHEETS ---
         const webAppUrl = "https://script.google.com/macros/s/AKfycbwQPk3CAUYV75xr-JdLk-NqgwRyIlcqnZCvTL_OdH0bO5fCoza_U4qtapwsr_UZc11ENQ/exec";
-
+        
         fetch(webAppUrl, {
             method: "POST",
-            mode: "no-cors", 
+            mode: "no-cors",
             cache: "no-cache",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(r)
-        }).then(() => console.log("Cloud OK")).catch(err => console.error("Cloud Error", err));
+        }).then(() => console.log("Cloud Synced")).catch(e => console.error(e));
 
-        // --- SAUVEGARDE LOCALE (Empêche l'effacement au refresh) ---
+        // --- SAUVEGARDE LOCALE ---
         database.push(r);
         localStorage.setItem('survey_database', JSON.stringify(database));
         
-        // Mise à jour interface
-        document.getElementById('count-badge').textContent = database.length;
-        document.getElementById('n-total').textContent = database.length;
-        alert(`Fiche ${r.id} enregistrée et sécurisée !`);
-        
-        codeSel.selectedIndex = (codeSel.selectedIndex + 1) % codeSel.options.length;
-        updateAnalysis();
+        alert("Fiche enregistrée avec succès !");
+        updateUI();
+        document.getElementById('kapForm').reset();
     }
 
-    // --- 4. FONCTIONS ANALYTIQUES ---
-    function updateAnalysis() {
-        if(database.length === 0) return;
+    // --- 3. MISE À JOUR INTERFACE ---
+    function updateUI() {
+        document.getElementById('count-badge').textContent = database.length;
+        document.getElementById('n-total').textContent = database.length;
+
+        // Remplir tableau
         const tbody = document.getElementById('database-body');
         tbody.innerHTML = database.map(row => `
             <tr>
-                <td><b>${row.id}</b></td>
-                <td>${row.sexe}</td>
-                <td>${row.service}</td>
-                <td>${row.anciennete}</td>
-                <td style="color:${getColor(row.scoreSavoir)}">${row.scoreSavoir}%</td>
+                <td>${row.id}</td><td>${row.sexe}</td>
+                <td style="color:${row.scoreSavoir > 60 ? 'green':'red'}">${row.scoreSavoir}%</td>
                 <td>${row.scoreAttitude}</td>
-                <td style="color:${getColor(row.scorePratique)}">${row.scorePratique}%</td>
-                <td>${row.scoreSavoir >= 70 && row.scorePratique >= 70 ? '🟢 Expert' : '🟠 Moyen'}</td>
+                <td style="color:${row.scorePratique > 60 ? 'green':'red'}">${row.scorePratique}%</td>
+                <td>${row.scoreSavoir > 60 ? '✅':'⚠️'}</td>
             </tr>
         `).join('');
-        
-        // (Note: Les fonctions de graphiques renderBarChart, getAvg, etc. doivent rester ici)
-        refreshCharts(); 
+
+        updateCharts();
     }
 
-    function refreshCharts() {
-        let high = database.filter(r => r.scoreSavoir >= 60);
-        let low = database.filter(r => r.scoreSavoir < 60);
-        renderBarChart('graph-savoir', [
-            {label: 'Solides', val: high.length, total: database.length, color: '#2e7d32'},
-            {label: 'Lacunes', val: low.length, total: database.length, color: '#c62828'}
-        ]);
-        // Analyse des obstacles
+    function updateCharts() {
+        if(database.length === 0) return;
+        
+        // Savoir
+        let goodS = database.filter(r => r.scoreSavoir >= 60).length;
+        renderBar('graph-savoir', goodS, database.length, '#2e7d32', 'Conformes');
+
+        // Pratique
+        let goodP = database.filter(r => r.scorePratique >= 60).length;
+        renderBar('graph-pratique', goodP, database.length, '#1565c0', 'Maîtrisées');
+
+        // Obstacles
         let obs = {};
         database.forEach(r => r.obstacles.forEach(o => obs[o] = (obs[o]||0)+1));
         document.getElementById('graph-obstacles').innerHTML = Object.entries(obs).map(([k,v]) => {
@@ -478,30 +312,29 @@
         }).join('');
     }
 
+    function renderBar(id, val, total, color, label) {
+        let p = Math.round((val/total)*100);
+        document.getElementById(id).innerHTML = `
+            <div class="bar-container"><div class="bar-label">${label}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:${color}">${p}%</div></div></div>
+            <div class="bar-container"><div class="bar-label">Lacunes</div><div class="bar-track"><div class="bar-fill" style="width:${100-p}%; background:#ddd;">${100-p}%</div></div></div>
+        `;
+    }
+
+    // Utilitaires
     function getCheckedValues(id) { return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value); }
     function getRadioValue(n) { let e = document.querySelector(`input[name="${n}"]:checked`); return e ? e.value : 0; }
-    function getColor(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); }
-    function renderBarChart(id, data) {
-        document.getElementById(id).innerHTML = data.map(i => {
-            let p = i.total ? Math.round((i.val/i.total)*100) : 0;
-            return `<div class="bar-container"><div class="bar-label">${i.label}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:${i.color}">${p}%</div></div></div>`;
-        }).join('');
-    }
     function switchTab(i) {
         document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.getElementById('content-'+i).classList.add('active');
-        document.querySelector(`.header-tabs button:nth-child(${i})`).classList.add('active');
+        document.querySelectorAll('.tab')[i-1].classList.add('active');
     }
     function exportToCSV() {
-        let headers = "ID,Sexe,Service,Savoir,Attitude,Pratique\n";
-        let rows = database.map(r => `${r.id},${r.sexe},${r.service},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique}`).join("\n");
-        let link = document.createElement("a");
-        link.href = "data:text/csv;charset=utf-8," + encodeURI("\ufeff"+headers+rows);
-        link.download = "export_cap.csv"; link.click();
+        let rows = [["ID", "Sexe", "Savoir", "Attitude", "Pratique"]];
+        database.forEach(r => rows.push([r.id, r.sexe, r.scoreSavoir, r.scoreAttitude, r.scorePratique]));
+        let csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+        window.open(encodeURI(csvContent));
     }
 </script>
-
-
 </body>
 </html>
