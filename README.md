@@ -3,114 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAP-HGRM - Base de Données Simplifiée</title>
+    <title>KAP-HGRM - Analyse Expert & Techniques de Palpation</title>
     <style>
         /* --- STYLE --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
-        .container { max-width: 1100px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); min-height: 800px;}
-        .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; gap: 8px; position: sticky; top: 0; z-index: 100; }
+        .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 800px;}
+        .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 100; }
         .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; }
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
-        .btn-excel { margin-left: auto; background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;}
-        
-        .form-content { padding: 25px; display: none; }
-        .form-content.active { display: block; }
-        
-        .section-title { background: #fce4ec; color: #b03060; padding: 12px; font-weight: bold; border-left: 6px solid #b03060; margin: 25px 0 15px 0; text-transform: uppercase; font-size: 14px; }
-        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .btn-excel { margin-left: auto; background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .form-content { padding: 30px; display: none; }
+        .form-content.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 30px 0 15px 0; text-transform: uppercase; font-size: 14px; }
+        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 15px; }
         .field { display: flex; flex-direction: column; }
-        label { font-size: 13px; font-weight: 700; margin-bottom: 5px; color: #333; }
-        select, input { padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; width: 100%; }
-
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 13px; }
-        th { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; }
-        td { border: 1px solid #eee; padding: 10px; text-align: center; }
-        
-        .btn-save { width: 100%; background: #b03060; color: white; padding: 18px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; }
-        .counter-badge { background: #b03060; color: white; padding: 2px 7px; border-radius: 10px; font-size: 10px; margin-left: 4px;}
-        
-        /* Graphiques simples */
-        .stat-card { background: #fff; border: 1px solid #eee; padding: 15px; border-radius: 8px; margin-bottom: 10px;}
-        .bar-container { display: flex; align-items: center; margin-bottom: 5px; }
-        .bar-label { width: 140px; font-size: 12px; }
-        .bar-track { flex-grow: 1; background: #eee; height: 15px; border-radius: 3px; overflow: hidden; margin: 0 10px; }
-        .bar-fill { height: 100%; background: #b03060; transition: width 0.3s; }
+        label { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #222; }
+        select, input { padding: 12px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; width: 100%; box-sizing: border-box; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+        th { background: #f8f9fa; padding: 12px; border: 1px solid #ddd; }
+        td { border: 1px solid #eee; padding: 12px; text-align: center; }
+        .text-left { text-align: left; }
+        .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 30px; }
+        .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        .bar-container { display: flex; align-items: center; margin-bottom: 8px; font-size: 12px; }
+        .bar-label { width: 180px; }
+        .bar-track { flex-grow: 1; background: #f0f0f0; height: 18px; border-radius: 4px; margin: 0 10px; overflow: hidden; }
+        .bar-fill { height: 100%; color: white; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+        .counter-badge { background: #b03060; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 5px;}
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-tabs">
-        <button class="tab active" onclick="switchTab(1)">1. SAISIE <span id="count-badge" class="counter-badge">0</span></button>
-        <button class="tab" onclick="switchTab(2)">2. BASE DE DONNÉES</button>
-        <button class="tab" onclick="switchTab(3)">3. ANALYSE</button>
-        <button type="button" class="btn-excel" onclick="exportToCSV()">📥 EXPORT CSV</button>
+        <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">0</span></button>
+        <button class="tab" onclick="switchTab(2)">2. MATRICE DE DONNÉES</button>
+        <button class="tab" onclick="switchTab(3)">3. ANALYSE DES PRATIQUES</button>
+        <button class="tab" onclick="switchTab(4)">4. SYNTHÈSE</button>
+        <button type="button" class="btn-excel" onclick="exportToCSV()">📊 EXPORT CSV</button>
     </div>
 
     <div id="content-1" class="form-content active">
         <form id="kapForm">
-            <div class="section-title">I. IDENTIFICATION</div>
+            <div class="section-title">I. PROFIL DE L'ENQUÊTÉ(E)</div>
             <div class="row">
-                <div class="field"><label>ID Enquêté</label><select id="code-enquete"></select></div>
-                <div class="field"><label>Service</label><select id="service"><option>Gynécologie</option><option>Maternité</option><option>Chirurgie</option><option>Autre</option></select></div>
-                <div class="field"><label>Niveau Étude</label><select id="niveau"><option>A2</option><option selected>A1 (Graduée)</option><option>L0/L1 (Licenciée)</option></select></div>
+                <div class="field"><label>Code Enquêté</label><select id="code-enquete"></select></div>
+                <div class="field"><label>Service</label><select id="service"><option>Gynécologie</option><option>Maternité</option><option>Chirurgie</option><option>Urgences</option></select></div>
+                <div class="field"><label>Ancienneté</label><select id="exp-select"></select></div>
             </div>
 
-            <div class="section-title">II. CONNAISSANCES ET PRATIQUES</div>
+            <div class="section-title">II. CONNAISSANCES THÉORIQUES</div>
             <div class="row">
-                <div class="field">
-                    <label>Quand faire l'AES ? (Savoir)</label>
-                    <select id="q-savoir-moment">
-                        <option value="0">Pendant les règles</option>
-                        <option value="1">2 à 7 jours après les règles</option>
-                        <option value="0">N'importe quand / Ne sait pas</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Technique de palpation utilisée (Pratique)</label>
-                    <select id="q-pratique-tech">
-                        <option value="insatisfaisant">Palpation rapide sans méthode précise</option>
-                        <option value="satisfaisant">Méthode systématique (Quadrant par quadrant)</option>
-                        <option value="expert">Méthode complète (Quadrant + creux axillaire + mamelon)</option>
-                    </select>
-                </div>
+                <div class="field"><label>Période d'AES</label><select id="q-moment"><option>Pendant les règles</option><option selected>2 à 7 jours après les règles</option><option>N'importe quand</option></select></div>
+                <div class="field"><label>Âge de début dépistage</label><select id="q-age"><option>40 ans</option><option selected>20-25 ans</option><option>60 ans</option></select></div>
             </div>
 
-            <div class="section-title">III. ATTITUDE ET ENSEIGNEMENT</div>
+            <div class="section-title">III. ATTITUDES</div>
+            <table>
+                <thead><tr><th class="text-left">Énoncé</th><th>Accord</th><th>Neutre</th><th>Désaccord</th></tr></thead>
+                <tbody>
+                    <tr><td class="text-left">La prévention peut sauver des vies à l'HGRM.</td><td><input type="radio" name="att1" value="1" checked></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td></tr>
+                </tbody>
+            </table>
+
+            <div class="section-title">IV. PRATIQUES (TECHNIQUES DE PALPATION)</div>
             <div class="row">
                 <div class="field">
-                    <label>Enseignez-vous l'AES aux patientes ?</label>
-                    <select id="q-enseignement">
-                        <option>Oui, systématiquement</option>
-                        <option>Oui, si la patiente est réceptive</option>
-                        <option>Rarement / Jamais</option>
+                    <label>Quelle technique de palpation appliquez-vous ?</label>
+                    <select id="prac-methode">
+                        <option value="1">1. Palpation rapide sans méthode précise</option>
+                        <option value="2">2. Méthode systématique (Quadrant par quadrant)</option>
+                        <option value="3" selected>3. Méthode complète (Quadrant + creux axillaire + mamelon)</option>
                     </select>
                 </div>
                 <div class="field">
-                    <label>Principal obstacle à la pratique</label>
-                    <select id="q-obstacle">
-                        <option>Manque de formation</option>
-                        <option>Manque de temps / Surcharge</option>
-                        <option>Pudeur des patientes</option>
-                        <option>Oubli / Pas de protocole</option>
+                    <label>Fréquence de réalisation</label>
+                    <select id="prac-freq">
+                        <option>Systématique</option>
+                        <option>Si plainte</option>
+                        <option>Rarement</option>
                     </select>
                 </div>
             </div>
 
-            <button type="button" class="btn-save" onclick="saveRecord()">💾 ENREGISTRER CETTE FICHE</button>
+            <button type="button" class="btn-save" onclick="saveRecord()">💾 ENREGISTRER LA FICHE</button>
         </form>
     </div>
 
     <div id="content-2" class="form-content">
-        <div class="section-title">LISTE DES ENQUÊTES ENREGISTRÉES</div>
+        <div class="section-title">MATRICE DE DÉPOUILLEMENT</div>
         <table>
             <thead>
                 <tr>
                     <th>Code</th>
                     <th>Service</th>
-                    <th>Savoir Moment</th>
-                    <th>Qualité Technique</th>
-                    <th>Enseignement</th>
+                    <th>Technique Utilisée</th>
+                    <th>Score Pratique (%)</th>
                 </tr>
             </thead>
             <tbody id="db-body"></tbody>
@@ -118,80 +107,102 @@
     </div>
 
     <div id="content-3" class="form-content">
-        <div class="section-title">RÉSULTATS STATISTIQUES</div>
+        <div class="section-title">ANALYSE DE LA QUALITÉ DES TECHNIQUES</div>
         <div class="stat-card">
-            <strong>Maîtrise de la Technique de Palpation :</strong>
-            <div id="graph-tech" style="margin-top:10px;"></div>
+            <div id="graph-prac"></div>
         </div>
-        <div class="stat-card">
-            <strong>Obstacles Prédominants :</strong>
-            <div id="graph-obs" style="margin-top:10px;"></div>
-        </div>
-        <div id="synthèse-rapide" style="font-style: italic; color: #555; margin-top: 20px;"></div>
+        <div id="interpret-box" style="padding:15px; background:#f0f7ff; border-radius:8px; border-left: 5px solid #007bff;"></div>
     </div>
 
+    <div id="content-4" class="form-content">
+        <div class="section-title">CONCLUSION DU MÉMOIRE</div>
+        <div id="conclusion-text" style="line-height: 1.6;"></div>
+    </div>
 </div>
 
 <script>
-    let database = [];
-
-    // Initialisation ID
+    let db = [];
     const codeS = document.getElementById('code-enquete');
-    for(let i=1; i<=100; i++) { let o=document.createElement('option'); o.value="INF-"+i; o.text="Fiche n°"+i; codeS.appendChild(o); }
+    for(let i=1; i<=100; i++) { let o = document.createElement('option'); o.value="E-"+i; o.text="Fiche n° "+i; codeS.appendChild(o); }
+    const expS = document.getElementById('exp-select');
+    for(let i=0; i<=40; i++) { let o = document.createElement('option'); o.value=i; o.text=i+" ans"; expS.appendChild(o); }
 
     function saveRecord() {
+        let methodeVal = document.getElementById('prac-methode').value;
+        let methodeText = document.getElementById('prac-methode').options[document.getElementById('prac-methode').selectedIndex].text;
+        
         let rec = {
             id: document.getElementById('code-enquete').value,
             service: document.getElementById('service').value,
-            savoir: document.getElementById('q-savoir-moment').value == "1" ? "Correct" : "Incorrect",
-            technique: document.getElementById('q-pratique-tech').value,
-            enseignement: document.getElementById('q-enseignement').value,
-            obstacle: document.getElementById('q-obstacle').value
+            methodeId: methodeVal,
+            methodeLabel: methodeText,
+            scorePratique: (methodeVal == "3") ? 100 : (methodeVal == "2" ? 60 : 30)
         };
 
-        database.push(rec);
-        document.getElementById('count-badge').textContent = database.length;
-        codeS.selectedIndex++; // Passe au suivant
-        
-        updateDisplay();
-        alert("Enregistré !");
+        db.push(rec);
+        document.getElementById('count-badge').textContent = db.length;
+        codeS.selectedIndex++;
+        updateUI();
+        alert("Fiche ajoutée !");
     }
 
-    function updateDisplay() {
-        // Table
+    function updateUI() {
         const tbody = document.getElementById('db-body');
         tbody.innerHTML = '';
-        database.forEach(r => {
-            tbody.innerHTML += `<tr><td>${r.id}</td><td>${r.service}</td><td>${r.savoir}</td><td>${r.technique}</td><td>${r.enseignement}</td></tr>`;
+        db.forEach(r => {
+            tbody.innerHTML += `<tr>
+                <td>${r.id}</td><td>${r.service}</td>
+                <td>${r.methodeLabel}</td>
+                <td style="font-weight:bold; color:${r.scorePratique == 100 ? 'green':'orange'}">${r.scorePratique}%</td>
+            </tr>`;
         });
 
-        // Stats
-        let sat = database.filter(r => r.technique !== 'insatisfaisant').length;
-        let pct = database.length > 0 ? Math.round((sat/database.length)*100) : 0;
+        // Calcul stats
+        let m3 = db.filter(r => r.methodeId == "3").length;
+        let m2 = db.filter(r => r.methodeId == "2").length;
+        let m1 = db.filter(r => r.methodeId == "1").length;
         
-        document.getElementById('graph-tech').innerHTML = `
-            <div class="bar-container">
-                <div class="bar-label">Satisfaisant/Expert :</div>
-                <div class="bar-track"><div class="bar-fill" style="width:${pct}%;"></div></div>
-                <span>${pct}%</span>
-            </div>
+        let total = db.length;
+        document.getElementById('graph-prac').innerHTML = `
+            <strong>Répartition des techniques de palpation (N=${total})</strong><br><br>
+            ${renderBar("Complète (Q+A+M)", m3, total, "green")}
+            ${renderBar("Systématique (Q)", m2, total, "orange")}
+            ${renderBar("Rapide / Sans méthode", m1, total, "red")}
         `;
 
-        document.getElementById('synthèse-rapide').innerHTML = `Analyse basée sur ${database.length} fiches.`;
+        document.getElementById('interpret-box').innerHTML = `
+            <strong>Interprétation :</strong><br>
+            ${(m3/total*100).toFixed(1)}% des infirmières pratiquent la <strong>méthode complète</strong>. 
+            Le reste (${((m2+m1)/total*100).toFixed(1)}%) utilise une technique incomplète, ce qui représente un risque de non-détection des nodules axillaires.
+        `;
+
+        document.getElementById('conclusion-text').innerHTML = `
+            <p>L'étude menée à l'HGRM démontre une disparité dans les techniques de palpation.</p>
+            <p><strong>Recommandation :</strong> Standardiser la <em>Méthode Complète (Quadrant + creux axillaire + mamelon)</em> via des sessions de formation continue pour garantir un dépistage efficace.</p>
+        `;
+    }
+
+    function renderBar(label, val, total, color) {
+        let pct = total > 0 ? Math.round(val/total*100) : 0;
+        return `<div class="bar-container">
+            <div class="bar-label">${label}</div>
+            <div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:${color};">${pct}%</div></div>
+            <div style="width:30px">${val}</div>
+        </div>`;
     }
 
     function switchTab(i) {
-        document.querySelectorAll('.form-content, .tab').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.form-content, .tab').forEach(e => e.classList.remove('active'));
         document.getElementById('content-'+i).classList.add('active');
         document.querySelector(`.header-tabs button:nth-child(${i})`).classList.add('active');
     }
 
     function exportToCSV() {
-        let csv = "ID,Service,Savoir,Technique,Enseignement,Obstacle\n";
-        database.forEach(r => csv += `${r.id},${r.service},${r.savoir},${r.technique},${r.enseignement},${r.obstacle}\n`);
+        let csv = "ID,Service,Technique,Score\n";
+        db.forEach(r => csv += `${r.id},${r.service},"${r.methodeLabel}",${r.scorePratique}\n`);
         let link = document.createElement("a");
         link.href = "data:text/csv;charset=utf-8," + encodeURI(csv);
-        link.download = "data_memoire_HGRM.csv";
+        link.download = "resultats_palpation.csv";
         link.click();
     }
 </script>
