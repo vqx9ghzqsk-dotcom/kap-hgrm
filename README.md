@@ -23,7 +23,6 @@
         .btn-delete-selected { background: #c62828; color: white; padding: 8px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: none; }
         .btn-delete-single { background: none; border: 1px solid #c62828; color: #c62828; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; margin-left: 5px; }
         .btn-view-single { background: none; border: 1px solid #0288d1; color: #0288d1; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; }
-        .btn-delete-single:hover { background: #c62828; color: white; }
         .btn-view-single:hover { background: #0288d1; color: white; }
 
         /* Contenu */
@@ -88,7 +87,7 @@
     <div class="header-tabs">
         <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">0</span></button>
         <button class="tab admin-only" id="tab-2" onclick="switchTab(2)">2. MATRICE DE DÉPOUILLEMENT</button>
-        <button class="tab admin-only" id="tab-3" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE CROISÉE</button>
+        <button class="tab admin-only" id="tab-3" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE PROTOCOLE</button>
         <button class="tab admin-only" id="tab-4" onclick="switchTab(4)">4. CONCLUSION & RECOMMANDATIONS</button>
         
         <button type="button" class="btn-auth" id="btn-auth" onclick="requestAdmin()">🔒 ACCÈS ADMIN</button>
@@ -355,35 +354,48 @@
     </div>
 
     <div id="content-3" class="form-content">
-        <div class="section-title">1. VUE D'ENSEMBLE DES COMPÉTENCES</div>
+        <div class="section-title">1. ÉVALUATION DES SAVOIRS ET PRATIQUES (Obj. Spécifiques 1 & 3)</div>
         <div class="row">
             <div class="stat-card">
-                <div class="stat-title">Niveau de Connaissances (Savoir Théorique)</div>
+                <div class="stat-title">Niveau de Connaissances (Obj. 1)</div>
                 <div id="graph-savoir"></div>
             </div>
             <div class="stat-card">
-                <div class="stat-title">Qualité de la Pratique Clinique (Savoir-Faire)</div>
+                <div class="stat-title">Qualité de la Pratique (Obj. 3)</div>
                 <div id="graph-pratique"></div>
             </div>
         </div>
 
-        <div class="section-title">2. ANALYSE CROISÉE & DIAGRAMMES COMPARATIFS</div>
-        <p style="font-size:12px; color:#666;">Comparaison des scores moyens par Service et Niveau d'étude.</p>
+        <div class="section-title">2. IDENTIFICATION DES ATTITUDES (Obj. Spécifique 2)</div>
+        <div class="stat-card">
+            <div class="stat-title">Répartition des Attitudes face au dépistage</div>
+            <p style="font-size:12px; color:#666; margin-bottom:10px;">Attitude Positive (Score > 3.5/5) vs Attitude Négative/Neutre.</p>
+            <div id="graph-attitudes"></div>
+        </div>
+
+        <div class="section-title">3. FACTEURS ASSOCIÉS (Obj. Spécifique 4)</div>
+        <p style="font-size:12px; color:#666;">Recherche des liens entre profil et performance.</p>
         
         <div class="row">
             <div class="stat-card">
-                <div class="stat-title">Score Moyen Pratique par SERVICE</div>
+                <div class="stat-title">Association : Service vs Pratique</div>
                 <div id="graph-cross-service"></div>
                 <div id="interp-service" class="interpretation-box"></div>
             </div>
             <div class="stat-card">
-                <div class="stat-title">Score Moyen Pratique par NIVEAU D'ÉTUDE</div>
+                <div class="stat-title">Association : Niveau d'étude vs Pratique</div>
                 <div id="graph-cross-niveau"></div>
                 <div id="interp-niveau" class="interpretation-box"></div>
             </div>
         </div>
 
-        <div class="section-title">3. TABLEAU SYNTHÉTIQUE</div>
+        <div class="stat-card" style="margin-top:15px;">
+            <div class="stat-title">Facteur Clé : Impact des Connaissances sur la Pratique</div>
+            <div id="graph-correlation"></div>
+            <p style="font-size:12px; color:#666; margin-top:5px;">Vérification de l'hypothèse : "Mieux on connait, mieux on pratique".</p>
+        </div>
+
+        <div class="section-title">4. SYNTHÈSE DES GROUPES</div>
         <table style="background:#444; color:white; border-radius:8px; overflow:hidden;">
             <thead>
                 <tr>
@@ -396,7 +408,7 @@
             <tbody id="cross-body" style="background:white; color:#333;"></tbody>
         </table>
 
-        <div class="section-title">4. ANALYSE DES BARRIÈRES À LA PRÉVENTION</div>
+        <div class="section-title">5. OBSTACLES IDENTIFIÉS</div>
         <div id="graph-obstacles-anal"></div>
     </div>
 
@@ -620,7 +632,14 @@
             {l: 'Pratique Insuffisante', v: database.length - highP, t: database.length, c: '#f57f17'}
         ]);
 
-        // --- B. Analyses Croisées (Nouveaux Graphiques) ---
+        // --- NOUVEAU: GRAPHIQUE ATTITUDES (Obj Spécifique 2) ---
+        let attPos = database.filter(r => parseFloat(r.scoreAttitude) > 3.5).length;
+        renderBars('graph-attitudes', [
+            {l: 'Attitude Positive (>3.5/5)', v: attPos, t: database.length, c: '#43a047'},
+            {l: 'Attitude Mitigée/Négative', v: database.length - attPos, t: database.length, c: '#d81b60'}
+        ]);
+
+        // --- B. Analyses Croisées (Facteurs Associés) ---
         // Par Service
         let services = ["Gynécologie-Obstétrique", "Médecine Interne", "Chirurgie", "Urgences / Autre"];
         let serviceData = services.map(s => {
@@ -628,9 +647,9 @@
             return { l: s, v: Math.round(getAvg(group, 'scorePratique')), t: 100, c: '#8e24aa' };
         });
         renderBars('graph-cross-service', serviceData);
-        // Interprétation dynamique Service
+        
         let bestS = serviceData.reduce((prev, curr) => prev.v > curr.v ? prev : curr);
-        document.getElementById('interp-service').innerHTML = `💡 <b>Analyse :</b> Le service <b>${bestS.l}</b> présente la meilleure performance pratique avec une moyenne de ${bestS.v}%.`;
+        document.getElementById('interp-service').innerHTML = `💡 <b>Analyse (Obj 4) :</b> Le service <b>${bestS.l}</b> est un facteur associé à une meilleure pratique (${bestS.v}%).`;
 
         // Par Niveau
         let niveaux = ["A2 (Secondaire)", "A1 (Gradué)", "A0 (Licencié/Master)"];
@@ -639,6 +658,16 @@
             return { l: n, v: Math.round(getAvg(group, 'scorePratique')), t: 100, c: '#00897b' };
         });
         renderBars('graph-cross-niveau', niveauData);
+
+        // --- NOUVEAU: CORRÉLATION CONNAISSANCE / PRATIQUE (Obj Spécifique 4) ---
+        // On regarde le score pratique moyen chez ceux qui ont le savoir, vs ceux qui ne l'ont pas.
+        let pracChezHighS = Math.round(getAvg(highS, 'scorePratique'));
+        let pracChezLowS = Math.round(getAvg(lowS, 'scorePratique'));
+        renderBars('graph-correlation', [
+            {l: 'Pratique chez ceux qui SAVENT', v: pracChezHighS, t: 100, c: '#1a237e'},
+            {l: 'Pratique chez ceux qui NE SAVENT PAS', v: pracChezLowS, t: 100, c: '#b71c1c'}
+        ]);
+
 
         // --- C. Obstacles ---
         let obsMap = {};
