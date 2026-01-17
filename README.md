@@ -165,7 +165,7 @@
                     </select>
                 </div>
                 <div class="field">
-                    <label>Moment idéal pour Auto-Examen (AES) :</label>
+                    <label>Moment idéal pour Auto-examen des seins :</label>
                     <select id="q-moment-aes">
                         <option value="" disabled selected>Moment...</option>
                         <option value="regles">Pendant les règles</option>
@@ -239,7 +239,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="td-left">L’éducation à l’AES fait partie de mon rôle.</td>
+                        <td class="td-left">L’éducation à l’Auto-examen des seins fait partie de mon rôle.</td>
                         <td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5"></td>
                     </tr>
                     <tr>
@@ -265,7 +265,7 @@
             
             <div class="row">
                 <div class="field">
-                    <label>15. Pratique personnelle (AES sur vous) :</label>
+                    <label>15. Pratique personnelle (Auto-examen des seins sur vous) :</label>
                     <select id="prac-perso">
                         <option value="" disabled selected>Fréquence...</option>
                         <option value="mois">Tous les mois</option>
@@ -414,10 +414,7 @@
 
     <div id="content-4" class="form-content">
         <div class="section-title">SYNTHÈSE AUTOMATISÉE ET RECOMMANDATIONS</div>
-        
-        <div id="dynamic-report" style="font-size:14px; line-height:1.6; color:#333;">
-            </div>
-
+        <div id="dynamic-report" style="font-size:14px; line-height:1.6; color:#333;"></div>
         <br><hr><br>
         <button type="button" class="btn-excel" onclick="exportToCSV()">📥 TÉLÉCHARGER LA BASE COMPLÈTE (.CSV)</button>
     </div>
@@ -434,13 +431,12 @@
 </div>
 
 <script>
-    // --- 1. INITIALISATION & DONNÉES ---
     let database = JSON.parse(localStorage.getItem('survey_database')) || [];
     let isAdmin = false;
 
     window.onload = function() {
         initCodeDropdown();
-        updateUI(); // Met à jour l'UI mais cache les onglets admin
+        updateUI(); 
     };
 
     function initCodeDropdown() {
@@ -453,15 +449,13 @@
         }
     }
 
-    // --- 2. SÉCURITÉ (Code 1398) ---
     function requestAdmin() {
-        if(isAdmin) return; // Déjà connecté
+        if(isAdmin) return; 
         let code = prompt("Veuillez entrer le code d'accès administrateur :");
         if(code === "1398") {
             isAdmin = true;
-            // Affiche les onglets cachés
             document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
-            document.getElementById('btn-auth').style.display = 'none'; // Cache le bouton login
+            document.getElementById('btn-auth').style.display = 'none'; 
             alert("Accès autorisé. Les onglets d'analyse sont maintenant visibles.");
             updateUI();
         } else {
@@ -469,11 +463,10 @@
         }
     }
 
-    // --- 3. ENREGISTREMENT ---
     function saveRecord() {
         let r = {
             id: document.getElementById('code-enquete').value,
-            consentement: document.getElementById('consentement').value, // Ajout Consentement
+            consentement: document.getElementById('consentement').value, 
             service: document.getElementById('service').value,
             niveau: document.getElementById('niveau').value,
             anciennete: document.getElementById('anciennete').value,
@@ -496,10 +489,9 @@
             prac_zone: document.getElementById('prac-zone').value,
             prac_mouv: getCheckedValues('group-mouv'),
             obstacles: getCheckedValues('group-obstacles'),
-            reco_verbatim: document.getElementById('reco-verbatim').value // Ajout Recommandations
+            reco_verbatim: document.getElementById('reco-verbatim').value 
         };
 
-        // Calculs Scores (Intacts)
         let ptsS = (r.q_cause === "vrai" ? 1 : 0) + (r.q_age !== "20" ? 1 : 0) + (r.q_aes === "apres" ? 1 : 0);
         ['age', 'famille', 'alcool', 'obesite', 'menopause'].forEach(k => { if(r.risques.includes(k)) ptsS++; });
         ['nodule', 'retraction', 'peau', 'ecoulement'].forEach(k => { if(r.signes.includes(k)) ptsS++; });
@@ -523,12 +515,10 @@
         alert(`Fiche ${r.id} enregistrée avec succès !`);
         document.getElementById('kapForm').reset();
         document.getElementById('code-enquete').selectedIndex = (database.length) % 200;
-        // Reset manuel du sexe à F
         document.getElementById('sexe').value = "F";
         updateUI();
     }
 
-    // --- 4. GESTION SUPPRESSION & VUE DÉTAILS ---
     function deleteOne(index) {
         if(confirm("Supprimer cette fiche ?")) {
             database.splice(index, 1);
@@ -540,7 +530,6 @@
         let d = database[index];
         document.getElementById('modal-title-id').innerText = d.id;
         
-        // Construction du HTML des détails
         let html = `
             <div class="sub-title">IDENTITÉ</div>
             <div class="detail-row"><span class="detail-label">Consentement</span><span class="detail-val">${d.consentement}</span></div>
@@ -588,7 +577,6 @@
         updateUI();
     }
 
-    // --- 5. UI & ANALYTIQUES AVANCÉES ---
     function updateUI() {
         const count = database.length;
         document.getElementById('count-badge').textContent = count;
@@ -596,7 +584,6 @@
         document.getElementById('select-all').checked = false;
         toggleDeleteButton();
 
-        // MATRICE
         const tbody = document.getElementById('database-body');
         tbody.innerHTML = database.map((row, index) => `
             <tr>
@@ -618,7 +605,6 @@
     function updateAnalytics() {
         if(database.length === 0) return;
 
-        // --- A. Graphiques Simples ---
         let highS = database.filter(r => r.scoreSavoir >= 60);
         let lowS = database.filter(r => r.scoreSavoir < 60);
         renderBars('graph-savoir', [
@@ -632,15 +618,12 @@
             {l: 'Pratique Insuffisante', v: database.length - highP, t: database.length, c: '#f57f17'}
         ]);
 
-        // --- NOUVEAU: GRAPHIQUE ATTITUDES (Obj Spécifique 2) ---
         let attPos = database.filter(r => parseFloat(r.scoreAttitude) > 3.5).length;
         renderBars('graph-attitudes', [
             {l: 'Attitude Positive (>3.5/5)', v: attPos, t: database.length, c: '#43a047'},
             {l: 'Attitude Mitigée/Négative', v: database.length - attPos, t: database.length, c: '#d81b60'}
         ]);
 
-        // --- B. Analyses Croisées (Facteurs Associés) ---
-        // Par Service
         let services = ["Gynécologie-Obstétrique", "Médecine Interne", "Chirurgie", "Urgences / Autre"];
         let serviceData = services.map(s => {
             let group = database.filter(r => r.service === s);
@@ -651,7 +634,6 @@
         let bestS = serviceData.reduce((prev, curr) => prev.v > curr.v ? prev : curr);
         document.getElementById('interp-service').innerHTML = `💡 <b>Analyse (Obj 4) :</b> Le service <b>${bestS.l}</b> est un facteur associé à une meilleure pratique (${bestS.v}%).`;
 
-        // Par Niveau
         let niveaux = ["A2 (Secondaire)", "A1 (Gradué)", "A0 (Licencié/Master)"];
         let niveauData = niveaux.map(n => {
             let group = database.filter(r => r.niveau === n);
@@ -659,8 +641,6 @@
         });
         renderBars('graph-cross-niveau', niveauData);
 
-        // --- NOUVEAU: CORRÉLATION CONNAISSANCE / PRATIQUE (Obj Spécifique 4) ---
-        // On regarde le score pratique moyen chez ceux qui ont le savoir, vs ceux qui ne l'ont pas.
         let pracChezHighS = Math.round(getAvg(highS, 'scorePratique'));
         let pracChezLowS = Math.round(getAvg(lowS, 'scorePratique'));
         renderBars('graph-correlation', [
@@ -668,8 +648,6 @@
             {l: 'Pratique chez ceux qui NE SAVENT PAS', v: pracChezLowS, t: 100, c: '#b71c1c'}
         ]);
 
-
-        // --- C. Obstacles ---
         let obsMap = {};
         database.forEach(r => r.obstacles.forEach(o => obsMap[o] = (obsMap[o]||0)+1));
         document.getElementById('graph-obstacles-anal').innerHTML = Object.entries(obsMap).sort((a,b)=>b[1]-a[1]).map(([k,v]) => {
@@ -677,7 +655,6 @@
             return `<div class="bar-container"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:#b03060;">${p}%</div></div><div class="bar-value">${v}</div></div>`;
         }).join('');
 
-        // --- D. Tableau Croisé Global ---
         let avgAttH = getAvg(highS, 'scoreAttitude'), avgPracH = getAvg(highS, 'scorePratique');
         let avgAttL = getAvg(lowS, 'scoreAttitude'), avgPracL = getAvg(lowS, 'scorePratique');
         document.getElementById('cross-body').innerHTML = `
@@ -688,7 +665,6 @@
         generateDynamicReport(highP, obsMap);
     }
 
-    // --- 6. GÉNÉRATEUR DE CONCLUSION AUTOMATIQUE ---
     function generateDynamicReport(goodPracticeCount, obsMap) {
         let total = database.length;
         let pPractice = Math.round((goodPracticeCount/total)*100);
@@ -696,7 +672,6 @@
 
         let report = `<p>Sur un total de <b>${total} participants</b>, l'analyse en temps réel révèle que <b>${pPractice}%</b> du personnel possède une maîtrise pratique satisfaisante de l'examen clinique des seins.</p>`;
         
-        // Recommandations dynamiques
         let recs = "";
         if(pPractice < 50) {
             recs += `<div class="reco-box"><div class="reco-title">🔴 PRIORITÉ : FORMATION PRATIQUE</div>Le niveau de compétence pratique est critique (< 50%). Il est urgent d'organiser des ateliers de simulation sur mannequins.</div>`;
@@ -713,14 +688,13 @@
         document.getElementById('dynamic-report').innerHTML = report + recs;
     }
 
-    // --- UTILITAIRES (Intacts) ---
     function getCheckedValues(id) { return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value); }
     function getRadioValue(n) { let e = document.querySelector(`input[name="${n}"]:checked`); return e ? e.value : 0; }
     function getColor(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); }
     function getAvg(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; }
     function renderBars(id, data) {
         document.getElementById(id).innerHTML = data.map(i => {
-            let p = i.t ? Math.round((i.v/i.t)*100) : 0; // Si t=100 alors v est déjà %
+            let p = i.t ? Math.round((i.v/i.t)*100) : 0; 
             return `<div class="bar-container"><div class="bar-label">${i.l}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:${i.c}">${p}%</div></div><div class="bar-value">${i.v}</div></div>`;
         }).join('');
     }
@@ -731,10 +705,8 @@
         document.querySelectorAll('.tab')[i-1].classList.add('active');
     }
     function exportToCSV() {
-        // Mise à jour de l'export pour inclure Consentement et Recommandations
         let h = "ID,Consentement,Sexe,Service,Savoir(%),Attitude(/5),Pratique(%),Recommandations\n";
         let r = database.map(r => {
-            // Échapper les guillemets et sauts de ligne dans le verbatim
             let cleanReco = (r.reco_verbatim || "").replace(/"/g, '""').replace(/(\r\n|\n|\r)/gm, " ");
             return `${r.id},${r.consentement},${r.sexe},${r.service},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},"${cleanReco}"`;
         }).join("\n");
