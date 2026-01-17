@@ -14,8 +14,8 @@
         .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; transition: 0.2s; }
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
         
-        /* --- NOUVEAU : CLASSES POUR LA SÉCURITÉ --- */
-        .admin-only { display: none; } /* Masqué par défaut */
+        /* --- CLASSES POUR LA SÉCURITÉ --- */
+        .admin-only { display: none; } 
         .btn-auth { margin-left: auto; background: #333; color: white; padding: 10px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
         .btn-excel { background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-left: 10px;}
 
@@ -38,7 +38,8 @@
         .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 15px; }
         .field { display: flex; flex-direction: column; }
         label { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #222; }
-        select, input[type="text"], input[type="number"] { padding: 10px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; background: #fff; width: 100%; box-sizing: border-box; }
+        select, input[type="text"], input[type="number"], textarea { padding: 10px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; background: #fff; width: 100%; box-sizing: border-box; }
+        textarea { resize: vertical; font-family: inherit; }
 
         /* Tableaux & Checkboxes */
         table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 12px; }
@@ -67,7 +68,7 @@
         
         .counter-badge { background: #b03060; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; vertical-align: middle; margin-left: 5px;}
 
-        /* --- NOUVEAU : MODAL DÉTAILS --- */
+        /* --- MODAL DÉTAILS --- */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; justify-content: center; align-items: center; }
         .modal-content { background: white; width: 80%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
@@ -75,6 +76,7 @@
         .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; font-size: 13px; }
         .detail-label { font-weight: bold; color: #555; }
         .detail-val { color: #b03060; font-weight: 600; text-align: right; width: 50%; }
+        .detail-val-long { color: #333; font-style: italic; text-align: left; width: 100%; background: #f9f9f9; padding: 8px; margin-top: 5px; border-radius: 4px; }
         
         .reco-box { background: #fff3e0; border: 1px solid #ffe0b2; padding: 15px; border-radius: 6px; margin-bottom: 10px; }
         .reco-title { color: #e65100; font-weight: bold; margin-bottom: 5px; }
@@ -102,7 +104,14 @@
                     <select id="code-enquete"></select>
                 </div>
                 <div class="field">
-                    <label>2. Service d'affectation</label>
+                    <label style="color:#b03060;">2. Consentement Éclairé</label>
+                    <select id="consentement">
+                        <option value="oui">Oui, a accepté de participer</option>
+                        <option value="non">Non (Refus)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>3. Service d'affectation</label>
                     <select id="service">
                         <option value="" disabled selected>Choisir un service...</option>
                         <option>Gynécologie-Obstétrique</option>
@@ -114,7 +123,7 @@
             </div>
             <div class="row">
                 <div class="field">
-                    <label>3. Niveau d'étude</label>
+                    <label>4. Niveau d'étude</label>
                     <select id="niveau">
                         <option value="" disabled selected>Niveau...</option>
                         <option>A2 (Secondaire)</option>
@@ -123,22 +132,20 @@
                     </select>
                 </div>
                 <div class="field">
-                    <label>4. Ancienneté (années)</label>
+                    <label>5. Ancienneté (années)</label>
                     <input type="number" id="anciennete" min="0" placeholder="Ex: 5">
                 </div>
                 <div class="field">
-                    <label>5. Sexe</label>
+                    <label>6. Sexe</label>
                     <select id="sexe">
-                        <option value="" disabled selected>Sexe...</option>
-                        <option>F (Féminin)</option>
-                        <option>M (Masculin)</option>
+                        <option value="F" selected>F (Féminin)</option>
                     </select>
                 </div>
             </div>
 
             <div class="section-title">II. CONNAISSANCES (SAVOIRS THÉORIQUES)</div>
             
-            <div class="sub-title">6. Épidémiologie & Dépistage</div>
+            <div class="sub-title">7. Épidémiologie & Dépistage</div>
             <div class="row">
                 <div class="field">
                     <label>Le cancer du sein est la 1ère cause de décès par cancer (RDC) :</label>
@@ -169,7 +176,7 @@
                 </div>
             </div>
 
-            <div class="sub-title">7. Facteurs de risque (Cochez ceux prouvés scientifiquement)</div>
+            <div class="sub-title">8. Facteurs de risque (Cochez ceux prouvés scientifiquement)</div>
             <div class="check-group" id="group-risques">
                 <label class="check-item"><input type="checkbox" value="age"> Âge avancé (>50 ans)</label>
                 <label class="check-item"><input type="checkbox" value="multi"> Multiparité (NB: Risque faible/Protecteur)</label>
@@ -180,7 +187,7 @@
                 <label class="check-item"><input type="checkbox" value="menopause"> Ménopause tardive (>55 ans)</label>
             </div>
 
-            <div class="sub-title">8. Signes d’alerte</div>
+            <div class="sub-title">9. Signes d’alerte</div>
             <div class="check-group" id="group-signes">
                 <label class="check-item"><input type="checkbox" value="nodule"> Nodule dur et indolore</label>
                 <label class="check-item"><input type="checkbox" value="retraction"> Rétraction du mamelon</label>
@@ -189,7 +196,7 @@
                 <label class="check-item"><input type="checkbox" value="douleur"> Douleur cyclique (Souvent bénin)</label>
             </div>
 
-            <div class="sub-title">9-13. Connaissance Mammographie</div>
+            <div class="sub-title">10-14. Connaissance Mammographie</div>
             <div class="row">
                 <div class="field">
                     <label>La mammographie est importante pour détection précoce :</label>
@@ -259,7 +266,7 @@
             
             <div class="row">
                 <div class="field">
-                    <label>9. Pratique personnelle (AES sur vous) :</label>
+                    <label>15. Pratique personnelle (AES sur vous) :</label>
                     <select id="prac-perso">
                         <option value="" disabled selected>Fréquence...</option>
                         <option value="mois">Tous les mois</option>
@@ -268,7 +275,7 @@
                     </select>
                 </div>
                 <div class="field">
-                    <label>10. Examen des patientes (Fréquence) :</label>
+                    <label>16. Examen des patientes (Fréquence) :</label>
                     <select id="prac-pro-freq">
                         <option value="" disabled selected>Fréquence...</option>
                         <option value="syst">Systématiquement</option>
@@ -317,6 +324,12 @@
                 <label class="check-item"><input type="checkbox" value="Coût"> Coût des examens</label>
                 <label class="check-item"><input type="checkbox" value="Formation"> Manque de formation</label>
                 <label class="check-item"><input type="checkbox" value="Protocole"> Absence de protocole</label>
+            </div>
+
+            <div class="section-title">VI. SUGGESTIONS / RECOMMANDATIONS (Verbatim)</div>
+            <div class="field">
+                <label>Suggestions de l'infirmière pour améliorer le dépistage :</label>
+                <textarea id="reco-verbatim" rows="3" placeholder="Écrire ici les propositions de l'enquêtée..."></textarea>
             </div>
 
             <button type="button" class="btn-save" onclick="saveRecord()">💾 ENREGISTRER CETTE FICHE</button>
@@ -444,10 +457,11 @@
         }
     }
 
-    // --- 3. ENREGISTREMENT (Strictement inchangé sauf pour lecture des valeurs) ---
+    // --- 3. ENREGISTREMENT ---
     function saveRecord() {
         let r = {
             id: document.getElementById('code-enquete').value,
+            consentement: document.getElementById('consentement').value, // Ajout Consentement
             service: document.getElementById('service').value,
             niveau: document.getElementById('niveau').value,
             anciennete: document.getElementById('anciennete').value,
@@ -469,7 +483,8 @@
             prac_main: document.getElementById('prac-main').value,
             prac_zone: document.getElementById('prac-zone').value,
             prac_mouv: getCheckedValues('group-mouv'),
-            obstacles: getCheckedValues('group-obstacles')
+            obstacles: getCheckedValues('group-obstacles'),
+            reco_verbatim: document.getElementById('reco-verbatim').value // Ajout Recommandations
         };
 
         // Calculs Scores (Intacts)
@@ -493,9 +508,11 @@
         database.push(r);
         localStorage.setItem('survey_database', JSON.stringify(database));
         
-        alert(`Fiche ${r.id} enregistrée !`);
+        alert(`Fiche ${r.id} enregistrée avec succès !`);
         document.getElementById('kapForm').reset();
         document.getElementById('code-enquete').selectedIndex = (database.length) % 200;
+        // Reset manuel du sexe à F
+        document.getElementById('sexe').value = "F";
         updateUI();
     }
 
@@ -514,6 +531,7 @@
         // Construction du HTML des détails
         let html = `
             <div class="sub-title">IDENTITÉ</div>
+            <div class="detail-row"><span class="detail-label">Consentement</span><span class="detail-val">${d.consentement}</span></div>
             <div class="detail-row"><span class="detail-label">Service</span><span class="detail-val">${d.service}</span></div>
             <div class="detail-row"><span class="detail-label">Niveau</span><span class="detail-val">${d.niveau}</span></div>
             <div class="detail-row"><span class="detail-label">Ancienneté</span><span class="detail-val">${d.anciennete} ans</span></div>
@@ -523,13 +541,12 @@
             <div class="detail-row"><span class="detail-label">Score Pratique</span><span class="detail-val">${d.scorePratique}%</span></div>
 
             <div class="sub-title">RÉPONSES DÉTAILLÉES</div>
-            <div class="detail-row"><span class="detail-label">1ère cause décès ?</span><span class="detail-val">${d.q_cause}</span></div>
-            <div class="detail-row"><span class="detail-label">Moment AES</span><span class="detail-val">${d.q_aes}</span></div>
             <div class="detail-row"><span class="detail-label">Facteurs Risque Cochés</span><span class="detail-val">${d.risques.join(', ') || 'Aucun'}</span></div>
             <div class="detail-row"><span class="detail-label">Signes Alerte Cochés</span><span class="detail-val">${d.signes.join(', ') || 'Aucun'}</span></div>
-            <div class="detail-row"><span class="detail-label">Pratique Perso</span><span class="detail-val">${d.prac_perso}</span></div>
-            <div class="detail-row"><span class="detail-label">Zone Oubliée</span><span class="detail-val">${d.prac_zone}</span></div>
             <div class="detail-row"><span class="detail-label">Obstacles Cités</span><span class="detail-val">${d.obstacles.join(', ') || 'Aucun'}</span></div>
+            
+            <div class="sub-title">RECOMMANDATIONS DE L'ENQUÊTÉE</div>
+            <div class="detail-val-long">${d.reco_verbatim || "Aucune suggestion."}</div>
         `;
         
         document.getElementById('modal-body-content').innerHTML = html;
@@ -685,11 +702,16 @@
         document.querySelectorAll('.tab')[i-1].classList.add('active');
     }
     function exportToCSV() {
-        let h = "ID,Sexe,Service,Savoir(%),Attitude(/5),Pratique(%)\n";
-        let r = database.map(r => `${r.id},${r.sexe},${r.service},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique}`).join("\n");
+        // Mise à jour de l'export pour inclure Consentement et Recommandations
+        let h = "ID,Consentement,Sexe,Service,Savoir(%),Attitude(/5),Pratique(%),Recommandations\n";
+        let r = database.map(r => {
+            // Échapper les guillemets et sauts de ligne dans le verbatim
+            let cleanReco = (r.reco_verbatim || "").replace(/"/g, '""').replace(/(\r\n|\n|\r)/gm, " ");
+            return `${r.id},${r.consentement},${r.sexe},${r.service},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},"${cleanReco}"`;
+        }).join("\n");
         let l = document.createElement("a");
         l.href = "data:text/csv;charset=utf-8," + encodeURI("\ufeff"+h+r);
-        l.download = "Rapport_CAP_Cancer.csv"; l.click();
+        l.download = "Rapport_CAP_Cancer_RDC.csv"; l.click();
     }
 </script>
 </body>
