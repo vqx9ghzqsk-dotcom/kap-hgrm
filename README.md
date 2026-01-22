@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enquête CAP - Cancer du Sein (HGR RDC) - Version Cloud</title>
+    <title>Enquête CAP - Cancer du Sein (HGR RDC) - Version Cloud Complète</title>
     <style>
-        /* --- STYLE IDENTIQUE À VOTRE VERSION LOCALE --- */
+        /* --- STYLE GLOBAL (IDENTIQUE CODE 2) --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
         .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 900px;}
         
@@ -14,8 +14,10 @@
         .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; transition: 0.2s; }
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
         
-        /* Sécurité */
-        .admin-only { display: none; } 
+        /* Sécurité - Caché par défaut */
+        .admin-only { display: none !important; } /* Force le masquage */
+        .admin-visible { display: inline-block !important; } /* Classe pour afficher */
+        
         .btn-auth { margin-left: auto; background: #333; color: white; padding: 10px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
         .btn-excel { background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-left: 10px;}
 
@@ -79,6 +81,12 @@
         
         .reco-box { background: #fff3e0; border: 1px solid #ffe0b2; padding: 15px; border-radius: 6px; margin-bottom: 10px; }
         .reco-title { color: #e65100; font-weight: bold; margin-bottom: 5px; }
+
+        /* Toast Notification */
+        #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 17px; }
+        #toast.show { visibility: visible; -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body>
@@ -90,8 +98,8 @@
         <button class="tab admin-only" id="tab-3" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE PROTOCOLE</button>
         <button class="tab admin-only" id="tab-4" onclick="switchTab(4)">4. CONCLUSION & RECOMMANDATIONS</button>
         
-        <button type="button" class="btn-auth" id="btn-auth" onclick="requestAdmin()">🔒 ACCÈS ADMIN</button>
-        <button type="button" class="btn-excel admin-only" id="btn-export" onclick="exportToCSV()">📊 EXPORT CSV</button>
+        <button type="button" class="btn-auth" id="btn-auth" onclick="window.requestAdmin()">🔒 ACCÈS ADMIN</button>
+        <button type="button" class="btn-excel admin-only" id="btn-export" onclick="window.exportToCSV()">📊 EXPORT CSV</button>
     </div>
 
     <div id="content-1" class="form-content active">
@@ -143,6 +151,7 @@
             </div>
 
             <div class="section-title">II. CONNAISSANCES (SAVOIRS THÉORIQUES)</div>
+            
             <div class="sub-title">7. Épidémiologie & Dépistage</div>
             <div class="row">
                 <div class="field">
@@ -261,6 +270,7 @@
             </table>
 
             <div class="section-title">IV. PRATIQUES (Savoir-Faire)</div>
+            
             <div class="row">
                 <div class="field">
                     <label>15. Pratique personnelle (AES sur vous) :</label>
@@ -329,18 +339,18 @@
                 <textarea id="reco-verbatim" rows="3" placeholder="Écrire ici les propositions de l'enquêtée..."></textarea>
             </div>
 
-            <button type="button" id="save-btn" class="btn-save" onclick="saveRecord()">☁️ ENREGISTRER DANS LE CLOUD</button>
+            <button type="button" id="save-btn" class="btn-save" onclick="window.saveRecord()">☁️ ENREGISTRER DANS LE CLOUD</button>
         </form>
     </div>
 
     <div id="content-2" class="form-content">
         <div class="section-title">BASE DE DONNÉES EN LIGNE (N = <span id="n-total">0</span>)</div>
-        <button id="btn-delete-multi" class="btn-delete-selected" onclick="deleteSelected()">🗑️ Supprimer la sélection</button>
+        <button id="btn-delete-multi" class="btn-delete-selected" onclick="window.deleteSelected()">🗑️ Supprimer la sélection</button>
         <div style="overflow-x:auto;">
             <table>
                 <thead>
                     <tr>
-                        <th><input type="checkbox" id="select-all" onclick="toggleSelectAll(this)"></th>
+                        <th><input type="checkbox" id="select-all" onclick="window.toggleSelectAll(this)"></th>
                         <th>Code</th><th>Sexe</th><th>Service</th><th>Exp (ans)</th>
                         <th>Score Savoir (%)</th><th>Score Pratique (%)</th>
                         <th>Diagnostic</th><th>Actions</th>
@@ -412,26 +422,28 @@
         <div class="section-title">SYNTHÈSE AUTOMATISÉE ET RECOMMANDATIONS</div>
         <div id="dynamic-report" style="font-size:14px; line-height:1.6; color:#333;"></div>
         <br><hr><br>
-        <button type="button" class="btn-excel" onclick="exportToCSV()">📥 TÉLÉCHARGER LA BASE COMPLÈTE (.CSV)</button>
+        <button type="button" class="btn-excel" onclick="window.exportToCSV()">📥 TÉLÉCHARGER LA BASE COMPLÈTE (.CSV)</button>
     </div>
 </div>
 
-<div id="detailModal" class="modal-overlay" onclick="closeModal(event)">
+<div id="detailModal" class="modal-overlay" onclick="window.closeModal(event)">
     <div class="modal-content">
         <div class="modal-header">
             <h3 style="margin:0; color:#b03060;">Détails de la fiche <span id="modal-title-id"></span></h3>
-            <span class="modal-close" onclick="closeModalBtn()">&times;</span>
+            <span class="modal-close" onclick="window.closeModalBtn()">&times;</span>
         </div>
         <div id="modal-body-content"></div>
     </div>
 </div>
 
+<div id="toast">Donnée synchronisée !</div>
+
 <script type="module">
-    // --- 1. CONFIGURATION & IMPORTS (Le seul passage "technique") ---
+    // 1. IMPORT DES FONCTIONS FIREBASE
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    // Tes clés (J'ai corrigé les fautes de frappe "ld" -> "Id" et les points ".")
+    // CONFIGURATION FIREBASE
     const firebaseConfig = {
         apiKey: "AlzaSyAdEKZFfinxpHcThi4vh8EMGJ9ZgqchxEl",
         authDomain: "nero-15812.firebaseapp.com",
@@ -441,34 +453,29 @@
         appId: "1:957894727402:web:5c319686c580c23700e993"
     };
 
+    // 2. INITIALISATION
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const surveysCollection = collection(db, "enquetes_rdc_cancer");
 
-    let database = []; 
+    let database = []; // Variable locale qui sera mise à jour par le Cloud
     let isAdmin = false;
 
-    // ÉCOUTEUR AUTOMATIQUE (Remplace le chargement manuel)
+    // 3. ECOUTE EN TEMPS RÉEL
     onSnapshot(surveysCollection, (snapshot) => {
         database = [];
         snapshot.forEach((doc) => {
             let data = doc.data();
-            data.firestoreId = doc.id; // On garde la clé secrète pour supprimer
+            data.firestoreId = doc.id; // On garde l'ID unique du cloud
             database.push(data);
         });
-        // Si admin est déjà connecté, on met à jour l'affichage
-        if(document.getElementById('database-body').innerHTML !== "" || isAdmin) {
-            updateUI();
-        }
+        
+        updateUI(); // Met à jour l'UI dès que les données changent
+        showToast("Données mises à jour depuis le Cloud");
     });
 
-    window.onload = function() {
-        initCodeDropdown();
-    };
-
-    // --- 2. FONCTIONS DE LOGIQUE (IDENTIQUES À TA VERSION LOCALE) ---
-
-    function initCodeDropdown() {
+    // 4. FONCTIONS GLOBALES (Accessibles depuis le HTML via window)
+    window.initCodeDropdown = function() {
         const sel = document.getElementById('code-enquete');
         sel.innerHTML = "";
         for(let i=1; i<=200; i++) { 
@@ -479,8 +486,29 @@
         }
     }
 
-    // Note : J'ai mis 'async' devant car on parle au Cloud
-    async function saveRecord() {
+    // AUTHENTIFICATION ADMIN CORRIGÉE
+    window.requestAdmin = function() {
+        if(isAdmin) return; 
+        let code = prompt("Code administrateur :");
+        if(code === "1398") {
+            isAdmin = true;
+            // On affiche les éléments
+            document.querySelectorAll('.admin-only').forEach(el => {
+                el.classList.add('admin-visible');
+                el.style.display = 'inline-block'; // Force l'affichage inline pour les onglets
+            });
+            document.getElementById('btn-auth').style.display = 'none';
+            alert("Connexion Admin réussie. Vous voyez les données en temps réel.");
+            
+            // IMPORTANT : On force la mise à jour des graphiques et on change d'onglet
+            updateUI(); 
+            window.switchTab(2); 
+        } else {
+            alert("Code incorrect !");
+        }
+    };
+
+    window.saveRecord = async function() {
         const btn = document.getElementById('save-btn');
         btn.disabled = true;
         btn.innerText = "Envoi en cours...";
@@ -514,7 +542,7 @@
             reco_verbatim: document.getElementById('reco-verbatim').value
         };
 
-        // Calculs (Identiques)
+        // Calculs
         let ptsS = (r.q_cause === "vrai" ? 1 : 0) + (r.q_age !== "20" ? 1 : 0) + (r.q_aes === "apres" ? 1 : 0);
         ['age', 'famille', 'alcool', 'obesite', 'menopause'].forEach(k => { if(r.risques.includes(k)) ptsS++; });
         ['nodule', 'retraction', 'peau', 'ecoulement'].forEach(k => { if(r.signes.includes(k)) ptsS++; });
@@ -537,30 +565,17 @@
             alert(`Fiche ${r.id} envoyée dans le Cloud avec succès !`);
             document.getElementById('kapForm').reset();
             document.getElementById('sexe').value = "F";
+            // Pas besoin d'updateUI, onSnapshot s'en occupe
         } catch (e) {
             console.error("Erreur: ", e);
-            alert("Erreur: " + e.message);
+            alert("Erreur lors de l'envoi. Vérifiez votre connexion internet.");
         } finally {
             btn.disabled = false;
             btn.innerText = "☁️ ENREGISTRER DANS LE CLOUD";
         }
-    }
+    };
 
-    function requestAdmin() {
-        if(isAdmin) return; 
-        let code = prompt("Code administrateur :");
-        if(code === "1398") {
-            isAdmin = true;
-            document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
-            document.getElementById('btn-auth').style.display = 'none';
-            alert("Connexion Admin réussie. Vous voyez les données en temps réel.");
-            updateUI();
-        } else {
-            alert("Code incorrect !");
-        }
-    }
-
-    async function deleteOne(index) {
+    window.deleteOne = async function(index) {
         if(!confirm("Supprimer définitivement cette fiche du Cloud ?")) return;
         let idToDelete = database[index].firestoreId;
         try {
@@ -568,9 +583,9 @@
         } catch(e) {
             alert("Erreur suppression: " + e.message);
         }
-    }
+    };
 
-    async function deleteSelected() {
+    window.deleteSelected = async function() {
         if(!confirm("Supprimer la sélection du Cloud ?")) return;
         const checkboxes = Array.from(document.querySelectorAll('.row-check'));
         let promises = [];
@@ -581,11 +596,9 @@
             }
         });
         await Promise.all(promises);
-    }
+    };
 
-    // --- 3. FONCTIONS D'AFFICHAGE & UTILITAIRES (IDENTIQUES) ---
-
-    function viewDetails(index) {
+    window.viewDetails = function(index) {
         let d = database[index];
         document.getElementById('modal-title-id').innerText = d.id;
         
@@ -611,63 +624,64 @@
         
         document.getElementById('modal-body-content').innerHTML = html;
         document.getElementById('detailModal').style.display = 'flex';
-    }
+    };
 
-    function closeModal(e) { if(e.target.id === 'detailModal') document.getElementById('detailModal').style.display = 'none'; }
-    function closeModalBtn() { document.getElementById('detailModal').style.display = 'none'; }
+    window.closeModal = function(e) { if(e.target.id === 'detailModal') document.getElementById('detailModal').style.display = 'none'; };
+    window.closeModalBtn = function() { document.getElementById('detailModal').style.display = 'none'; };
 
-    function toggleSelectAll(source) {
+    window.toggleSelectAll = function(source) {
         document.querySelectorAll('.row-check').forEach(cb => cb.checked = source.checked);
-        toggleDeleteButton();
-    }
-    function toggleDeleteButton() {
+        window.toggleDeleteButton();
+    };
+    
+    window.toggleDeleteButton = function() {
         const checked = document.querySelectorAll('.row-check:checked').length;
         document.getElementById('btn-delete-multi').style.display = checked > 0 ? 'block' : 'none';
-    }
+    };
 
-    function updateUI() {
+    window.updateUI = function() {
         const count = database.length;
         document.getElementById('count-badge').textContent = count;
         document.getElementById('n-total').textContent = count;
         document.getElementById('select-all').checked = false;
-        toggleDeleteButton();
+        window.toggleDeleteButton();
 
         const tbody = document.getElementById('database-body');
         tbody.innerHTML = database.map((row, index) => `
             <tr>
-                <td><input type="checkbox" class="row-check" onclick="toggleDeleteButton()"></td>
+                <td><input type="checkbox" class="row-check" onclick="window.toggleDeleteButton()"></td>
                 <td><b>${row.id}</b></td><td>${row.sexe}</td><td>${row.service}</td><td>${row.anciennete}</td>
-                <td style="color:${getColor(row.scoreSavoir)}">${row.scoreSavoir}%</td>
-                <td style="color:${getColor(row.scorePratique)}">${row.scorePratique}%</td>
+                <td style="color:${window.getColor(row.scoreSavoir)}">${row.scoreSavoir}%</td>
+                <td style="color:${window.getColor(row.scorePratique)}">${row.scorePratique}%</td>
                 <td>${row.scoreSavoir >= 70 && row.scorePratique >= 70 ? '🟢 Expert' : '🟠 Moyen'}</td>
                 <td>
-                    <button class="btn-view-single" onclick="viewDetails(${index})">👁️ Voir</button>
-                    <button class="btn-delete-single" onclick="deleteOne(${index})">Effacer</button>
+                    <button class="btn-view-single" onclick="window.viewDetails(${index})">👁️ Voir</button>
+                    <button class="btn-delete-single" onclick="window.deleteOne(${index})">Effacer</button>
                 </td>
             </tr>
         `).join('');
 
-        if(isAdmin) updateAnalytics();
-    }
+        if(isAdmin) window.updateAnalytics();
+    };
 
-    function updateAnalytics() {
+    window.updateAnalytics = function() {
         if(database.length === 0) return;
 
         let highS = database.filter(r => r.scoreSavoir >= 60);
         let lowS = database.filter(r => r.scoreSavoir < 60);
-        renderBars('graph-savoir', [
+        window.renderBars('graph-savoir', [
             {l: 'Connaissances Solides', v: highS.length, t: database.length, c: '#2e7d32'},
             {l: 'Lacunes Importantes', v: lowS.length, t: database.length, c: '#c62828'}
         ]);
 
         let highP = database.filter(r => r.scorePratique >= 70).length;
-        renderBars('graph-pratique', [
+        window.renderBars('graph-pratique', [
             {l: 'Pratique Conforme', v: highP, t: database.length, c: '#1565c0'},
             {l: 'Pratique Insuffisante', v: database.length - highP, t: database.length, c: '#f57f17'}
         ]);
 
         let attPos = database.filter(r => parseFloat(r.scoreAttitude) > 3.5).length;
-        renderBars('graph-attitudes', [
+        window.renderBars('graph-attitudes', [
             {l: 'Attitude Positive (>3.5/5)', v: attPos, t: database.length, c: '#43a047'},
             {l: 'Attitude Mitigée/Négative', v: database.length - attPos, t: database.length, c: '#d81b60'}
         ]);
@@ -675,9 +689,9 @@
         let services = ["Gynécologie-Obstétrique", "Médecine Interne", "Chirurgie", "Urgences / Autre"];
         let serviceData = services.map(s => {
             let group = database.filter(r => r.service === s);
-            return { l: s, v: Math.round(getAvg(group, 'scorePratique')), t: 100, c: '#8e24aa' };
+            return { l: s, v: Math.round(window.getAvg(group, 'scorePratique')), t: 100, c: '#8e24aa' };
         });
-        renderBars('graph-cross-service', serviceData);
+        window.renderBars('graph-cross-service', serviceData);
         
         let bestS = serviceData.reduce((prev, curr) => prev.v > curr.v ? prev : curr);
         document.getElementById('interp-service').innerHTML = `💡 <b>Analyse (Obj 4) :</b> Le service <b>${bestS.l}</b> est un facteur associé à une meilleure pratique (${bestS.v}%).`;
@@ -685,13 +699,13 @@
         let niveaux = ["A2 (Secondaire)", "A1 (Gradué)", "A0 (Licencié/Master)"];
         let niveauData = niveaux.map(n => {
             let group = database.filter(r => r.niveau === n);
-            return { l: n, v: Math.round(getAvg(group, 'scorePratique')), t: 100, c: '#00897b' };
+            return { l: n, v: Math.round(window.getAvg(group, 'scorePratique')), t: 100, c: '#00897b' };
         });
-        renderBars('graph-cross-niveau', niveauData);
+        window.renderBars('graph-cross-niveau', niveauData);
 
-        let pracChezHighS = Math.round(getAvg(highS, 'scorePratique'));
-        let pracChezLowS = Math.round(getAvg(lowS, 'scorePratique'));
-        renderBars('graph-correlation', [
+        let pracChezHighS = Math.round(window.getAvg(highS, 'scorePratique'));
+        let pracChezLowS = Math.round(window.getAvg(lowS, 'scorePratique'));
+        window.renderBars('graph-correlation', [
             {l: 'Pratique chez ceux qui SAVENT', v: pracChezHighS, t: 100, c: '#1a237e'},
             {l: 'Pratique chez ceux qui NE SAVENT PAS', v: pracChezLowS, t: 100, c: '#b71c1c'}
         ]);
@@ -703,17 +717,17 @@
             return `<div class="bar-container"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:#b03060;">${p}%</div></div><div class="bar-value">${v}</div></div>`;
         }).join('');
 
-        let avgAttH = getAvg(highS, 'scoreAttitude'), avgPracH = getAvg(highS, 'scorePratique');
-        let avgAttL = getAvg(lowS, 'scoreAttitude'), avgPracL = getAvg(lowS, 'scorePratique');
+        let avgAttH = window.getAvg(highS, 'scoreAttitude'), avgPracH = window.getAvg(highS, 'scorePratique');
+        let avgAttL = window.getAvg(lowS, 'scoreAttitude'), avgPracL = window.getAvg(lowS, 'scorePratique');
         document.getElementById('cross-body').innerHTML = `
             <tr><td style="padding:15px;">Bonnes Connaissances</td><td>${highS.length}</td><td>${avgAttH}</td><td>${avgPracH}%</td></tr>
             <tr><td style="padding:15px;">Connaissances Faibles</td><td>${lowS.length}</td><td>${avgAttL}</td><td>${avgPracL}%</td></tr>
         `;
 
-        generateDynamicReport(highP, obsMap);
-    }
+        window.generateDynamicReport(highP, obsMap);
+    };
 
-    function generateDynamicReport(goodPracticeCount, obsMap) {
+    window.generateDynamicReport = function(goodPracticeCount, obsMap) {
         let total = database.length;
         let pPractice = Math.round((goodPracticeCount/total)*100);
         let topObstacle = Object.keys(obsMap).sort((a,b) => obsMap[b]-obsMap[a])[0] || "Aucun";
@@ -733,34 +747,25 @@
              recs += `<div class="reco-box"><div class="reco-title">🔵 BESOIN COGNITIF</div>Le personnel réclame plus de formation. Distribuer des aides-mémoires visuels dans les services.</div>`;
         }
         document.getElementById('dynamic-report').innerHTML = report + recs;
-    }
+    };
 
-    function getCheckedValues(id) { return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value); }
-    function getRadioValue(n) { let e = document.querySelector(`input[name="${n}"]:checked`); return e ? e.value : 0; }
-    function getColor(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); }
-    function getAvg(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; }
-    function renderBars(id, data) {
+    // UTILS
+    window.getCheckedValues = function(id) { return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value); };
+    window.getRadioValue = function(n) { let e = document.querySelector(`input[name="${n}"]:checked`); return e ? e.value : 0; };
+    window.getColor = function(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); };
+    window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
+    window.renderBars = function(id, data) {
         document.getElementById(id).innerHTML = data.map(i => {
             let p = i.t ? Math.round((i.v/i.t)*100) : 0;
             return `<div class="bar-container"><div class="bar-label">${i.l}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:${i.c}">${p}%</div></div><div class="bar-value">${i.v}</div></div>`;
         }).join('');
-    }
-    
-    // --- 4. LE PONT (Rend les fonctions accessibles au HTML) ---
-    // C'est ce bloc qui permet d'utiliser onclick="saveRecord()" dans le HTML
-    Object.assign(window, {
-        saveRecord, deleteOne, deleteSelected, requestAdmin, 
-        viewDetails, closeModal, closeModalBtn, toggleSelectAll, toggleDeleteButton, exportToCSV
-    });
-
-    // Gestion des onglets
+    };
     window.switchTab = function(i) {
         document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.getElementById('content-'+i).classList.add('active');
         document.querySelectorAll('.tab')[i-1].classList.add('active');
     };
-
     window.exportToCSV = function() {
         let h = "ID,Consentement,Sexe,Service,Savoir(%),Attitude(/5),Pratique(%),Recommandations\n";
         let r = database.map(r => {
@@ -771,7 +776,16 @@
         l.href = "data:text/csv;charset=utf-8," + encodeURI("\ufeff"+h+r);
         l.download = "Rapport_CAP_Cancer_RDC.csv"; l.click();
     };
+    
+    function showToast(message) {
+        var x = document.getElementById("toast");
+        x.className = "show";
+        x.innerText = message;
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
 
+    // Lancement
+    window.initCodeDropdown();
 </script>
 </body>
 </html>
