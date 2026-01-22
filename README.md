@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enquête CAP - Cancer du Sein (HGR RDC) - Version Cloud</title>
     <style>
-        /* --- STYLE GLOBAL (INTACT - IDENTIQUE À TA VERSION) --- */
+        /* --- STYLE IDENTIQUE À VOTRE VERSION LOCALE --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
         .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 900px;}
         
@@ -79,12 +79,6 @@
         
         .reco-box { background: #fff3e0; border: 1px solid #ffe0b2; padding: 15px; border-radius: 6px; margin-bottom: 10px; }
         .reco-title { color: #e65100; font-weight: bold; margin-bottom: 5px; }
-
-        /* Notification Toast */
-        #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 17px; }
-        #toast.show { visibility: visible; -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body>
@@ -149,7 +143,6 @@
             </div>
 
             <div class="section-title">II. CONNAISSANCES (SAVOIRS THÉORIQUES)</div>
-            
             <div class="sub-title">7. Épidémiologie & Dépistage</div>
             <div class="row">
                 <div class="field">
@@ -268,7 +261,6 @@
             </table>
 
             <div class="section-title">IV. PRATIQUES (Savoir-Faire)</div>
-            
             <div class="row">
                 <div class="field">
                     <label>15. Pratique personnelle (AES sur vous) :</label>
@@ -434,44 +426,49 @@
     </div>
 </div>
 
-<div id="toast">Donnée synchronisée !</div>
-
 <script type="module">
-    // 1. IMPORT DES FONCTIONS FIREBASE
+    // --- 1. CONFIGURATION & IMPORTS (Le seul passage "technique") ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    // --- ⬇️ COLLE TES CLES FIREBASE ICI ⬇️ ---
+    // Tes clés (J'ai corrigé les fautes de frappe "ld" -> "Id" et les points ".")
     const firebaseConfig = {
         apiKey: "AlzaSyAdEKZFfinxpHcThi4vh8EMGJ9ZgqchxEl",
-authDomain: "nero-15812.firebaseapp.com", projectld: "nero-15812". storageBucket: "nero-15812. firebasestorage.app", messagingSenderld: "957894727402" appld: "1:957894727402:web:5c319686c580c23700e993"
+        authDomain: "nero-15812.firebaseapp.com",
+        projectId: "nero-15812",
+        storageBucket: "nero-15812.firebasestorage.app",
+        messagingSenderId: "957894727402",
+        appId: "1:957894727402:web:5c319686c580c23700e993"
     };
-    // --- ⬆️ FIN DE LA CONFIGURATION ⬆️ ---
 
-    // 2. INITIALISATION
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const surveysCollection = collection(db, "enquetes_rdc_cancer");
 
-    let database = []; // Variable locale qui sera mise à jour par le Cloud
+    let database = []; 
     let isAdmin = false;
 
-    // 3. ECOUTE EN TEMPS RÉEL (C'est la magie qui remplace localStorage)
+    // ÉCOUTEUR AUTOMATIQUE (Remplace le chargement manuel)
     onSnapshot(surveysCollection, (snapshot) => {
         database = [];
         snapshot.forEach((doc) => {
             let data = doc.data();
-            data.firestoreId = doc.id; // On garde l'ID unique du cloud pour pouvoir supprimer
+            data.firestoreId = doc.id; // On garde la clé secrète pour supprimer
             database.push(data);
         });
-        
-        // Tri par date (facultatif, ici on garde l'ordre d'arrivée)
-        updateUI();
-        showToast("Données mises à jour depuis le Cloud");
+        // Si admin est déjà connecté, on met à jour l'affichage
+        if(document.getElementById('database-body').innerHTML !== "" || isAdmin) {
+            updateUI();
+        }
     });
 
-    // 4. FONCTIONS GLOBALES (Accessibles depuis le HTML)
-    window.initCodeDropdown = function() {
+    window.onload = function() {
+        initCodeDropdown();
+    };
+
+    // --- 2. FONCTIONS DE LOGIQUE (IDENTIQUES À TA VERSION LOCALE) ---
+
+    function initCodeDropdown() {
         const sel = document.getElementById('code-enquete');
         sel.innerHTML = "";
         for(let i=1; i<=200; i++) { 
@@ -482,14 +479,15 @@ authDomain: "nero-15812.firebaseapp.com", projectld: "nero-15812". storageBucket
         }
     }
 
-    window.saveRecord = async function() {
+    // Note : J'ai mis 'async' devant car on parle au Cloud
+    async function saveRecord() {
         const btn = document.getElementById('save-btn');
         btn.disabled = true;
         btn.innerText = "Envoi en cours...";
 
         let r = {
             id: document.getElementById('code-enquete').value,
-            createdAt: Timestamp.now(), // Ajout de la date
+            createdAt: Timestamp.now(),
             consentement: document.getElementById('consentement').value,
             service: document.getElementById('service').value,
             niveau: document.getElementById('niveau').value,
@@ -535,51 +533,20 @@ authDomain: "nero-15812.firebaseapp.com", projectld: "nero-15812". storageBucket
         r.scorePratique = Math.round((ptsP / 20) * 100);
 
         try {
-            // ENVOI VERS FIREBASE
             await addDoc(surveysCollection, r);
             alert(`Fiche ${r.id} envoyée dans le Cloud avec succès !`);
             document.getElementById('kapForm').reset();
             document.getElementById('sexe').value = "F";
-            // On ne fait pas updateUI ici car onSnapshot le fera automatiquement
         } catch (e) {
             console.error("Erreur: ", e);
-            alert("Erreur lors de l'envoi. Vérifiez votre connexion internet.");
+            alert("Erreur: " + e.message);
         } finally {
             btn.disabled = false;
             btn.innerText = "☁️ ENREGISTRER DANS LE CLOUD";
         }
-    };
+    }
 
-    window.deleteOne = async function(index) {
-        if(!confirm("Supprimer définitivement cette fiche du Cloud ?")) return;
-        let idToDelete = database[index].firestoreId;
-        try {
-            await deleteDoc(doc(db, "enquetes_rdc_cancer", idToDelete));
-        } catch(e) {
-            alert("Erreur suppression: " + e.message);
-        }
-    };
-
-    window.deleteSelected = async function() {
-        if(!confirm("Supprimer la sélection du Cloud ?")) return;
-        const checkboxes = Array.from(document.querySelectorAll('.row-check'));
-        let promises = [];
-        checkboxes.forEach((cb, idx) => {
-            if(cb.checked) {
-                let idToDelete = database[idx].firestoreId;
-                promises.push(deleteDoc(doc(db, "enquetes_rdc_cancer", idToDelete)));
-            }
-        });
-        await Promise.all(promises);
-    };
-
-    // --- FONCTIONS UI & LOGIQUE (INCHANGÉES MAIS ADAPTÉES AU SCOPE) ---
-    window.onload = function() {
-        initCodeDropdown();
-        // updateUI sera appelé par onSnapshot quand les données arrivent
-    };
-
-    window.requestAdmin = function() {
+    function requestAdmin() {
         if(isAdmin) return; 
         let code = prompt("Code administrateur :");
         if(code === "1398") {
@@ -591,9 +558,34 @@ authDomain: "nero-15812.firebaseapp.com", projectld: "nero-15812". storageBucket
         } else {
             alert("Code incorrect !");
         }
-    };
+    }
 
-    window.viewDetails = function(index) {
+    async function deleteOne(index) {
+        if(!confirm("Supprimer définitivement cette fiche du Cloud ?")) return;
+        let idToDelete = database[index].firestoreId;
+        try {
+            await deleteDoc(doc(db, "enquetes_rdc_cancer", idToDelete));
+        } catch(e) {
+            alert("Erreur suppression: " + e.message);
+        }
+    }
+
+    async function deleteSelected() {
+        if(!confirm("Supprimer la sélection du Cloud ?")) return;
+        const checkboxes = Array.from(document.querySelectorAll('.row-check'));
+        let promises = [];
+        checkboxes.forEach((cb, idx) => {
+            if(cb.checked) {
+                let idToDelete = database[idx].firestoreId;
+                promises.push(deleteDoc(doc(db, "enquetes_rdc_cancer", idToDelete)));
+            }
+        });
+        await Promise.all(promises);
+    }
+
+    // --- 3. FONCTIONS D'AFFICHAGE & UTILITAIRES (IDENTIQUES) ---
+
+    function viewDetails(index) {
         let d = database[index];
         document.getElementById('modal-title-id').innerText = d.id;
         
@@ -619,21 +611,21 @@ authDomain: "nero-15812.firebaseapp.com", projectld: "nero-15812". storageBucket
         
         document.getElementById('modal-body-content').innerHTML = html;
         document.getElementById('detailModal').style.display = 'flex';
-    };
+    }
 
-    window.closeModal = function(e) { if(e.target.id === 'detailModal') document.getElementById('detailModal').style.display = 'none'; };
-    window.closeModalBtn = function() { document.getElementById('detailModal').style.display = 'none'; };
+    function closeModal(e) { if(e.target.id === 'detailModal') document.getElementById('detailModal').style.display = 'none'; }
+    function closeModalBtn() { document.getElementById('detailModal').style.display = 'none'; }
 
-    window.toggleSelectAll = function(source) {
+    function toggleSelectAll(source) {
         document.querySelectorAll('.row-check').forEach(cb => cb.checked = source.checked);
         toggleDeleteButton();
-    };
-    window.toggleDeleteButton = function() {
+    }
+    function toggleDeleteButton() {
         const checked = document.querySelectorAll('.row-check:checked').length;
         document.getElementById('btn-delete-multi').style.display = checked > 0 ? 'block' : 'none';
-    };
+    }
 
-    window.updateUI = function() {
+    function updateUI() {
         const count = database.length;
         document.getElementById('count-badge').textContent = count;
         document.getElementById('n-total').textContent = count;
@@ -656,9 +648,9 @@ authDomain: "nero-15812.firebaseapp.com", projectld: "nero-15812". storageBucket
         `).join('');
 
         if(isAdmin) updateAnalytics();
-    };
+    }
 
-    window.updateAnalytics = function() {
+    function updateAnalytics() {
         if(database.length === 0) return;
 
         let highS = database.filter(r => r.scoreSavoir >= 60);
@@ -719,9 +711,9 @@ authDomain: "nero-15812.firebaseapp.com", projectld: "nero-15812". storageBucket
         `;
 
         generateDynamicReport(highP, obsMap);
-    };
+    }
 
-    window.generateDynamicReport = function(goodPracticeCount, obsMap) {
+    function generateDynamicReport(goodPracticeCount, obsMap) {
         let total = database.length;
         let pPractice = Math.round((goodPracticeCount/total)*100);
         let topObstacle = Object.keys(obsMap).sort((a,b) => obsMap[b]-obsMap[a])[0] || "Aucun";
@@ -741,25 +733,34 @@ authDomain: "nero-15812.firebaseapp.com", projectld: "nero-15812". storageBucket
              recs += `<div class="reco-box"><div class="reco-title">🔵 BESOIN COGNITIF</div>Le personnel réclame plus de formation. Distribuer des aides-mémoires visuels dans les services.</div>`;
         }
         document.getElementById('dynamic-report').innerHTML = report + recs;
-    };
+    }
 
-    // Utils
-    window.getCheckedValues = function(id) { return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value); };
-    window.getRadioValue = function(n) { let e = document.querySelector(`input[name="${n}"]:checked`); return e ? e.value : 0; };
-    window.getColor = function(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); };
-    window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
-    window.renderBars = function(id, data) {
+    function getCheckedValues(id) { return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value); }
+    function getRadioValue(n) { let e = document.querySelector(`input[name="${n}"]:checked`); return e ? e.value : 0; }
+    function getColor(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); }
+    function getAvg(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; }
+    function renderBars(id, data) {
         document.getElementById(id).innerHTML = data.map(i => {
             let p = i.t ? Math.round((i.v/i.t)*100) : 0;
             return `<div class="bar-container"><div class="bar-label">${i.l}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:${i.c}">${p}%</div></div><div class="bar-value">${i.v}</div></div>`;
         }).join('');
-    };
+    }
+    
+    // --- 4. LE PONT (Rend les fonctions accessibles au HTML) ---
+    // C'est ce bloc qui permet d'utiliser onclick="saveRecord()" dans le HTML
+    Object.assign(window, {
+        saveRecord, deleteOne, deleteSelected, requestAdmin, 
+        viewDetails, closeModal, closeModalBtn, toggleSelectAll, toggleDeleteButton, exportToCSV
+    });
+
+    // Gestion des onglets
     window.switchTab = function(i) {
         document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.getElementById('content-'+i).classList.add('active');
         document.querySelectorAll('.tab')[i-1].classList.add('active');
     };
+
     window.exportToCSV = function() {
         let h = "ID,Consentement,Sexe,Service,Savoir(%),Attitude(/5),Pratique(%),Recommandations\n";
         let r = database.map(r => {
@@ -770,13 +771,7 @@ authDomain: "nero-15812.firebaseapp.com", projectld: "nero-15812". storageBucket
         l.href = "data:text/csv;charset=utf-8," + encodeURI("\ufeff"+h+r);
         l.download = "Rapport_CAP_Cancer_RDC.csv"; l.click();
     };
-    
-    function showToast(message) {
-        var x = document.getElementById("toast");
-        x.className = "show";
-        x.innerText = message;
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-    }
+
 </script>
 </body>
 </html>
