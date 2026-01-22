@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enquête CAP - Cancer du Sein (HGR RDC) - Version Admin</title>
+    <title>Enquête CAP - Cancer du Sein (HGR RDC) - Version Cloud</title>
     <style>
-        /* --- STYLE GLOBAL (INTACT) --- */
+        /* --- STYLE GLOBAL (INTACT - IDENTIQUE À TA VERSION) --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
         .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 900px;}
         
@@ -14,12 +14,12 @@
         .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; transition: 0.2s; }
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
         
-        /* --- CLASSES POUR LA SÉCURITÉ --- */
+        /* Sécurité */
         .admin-only { display: none; } 
         .btn-auth { margin-left: auto; background: #333; color: white; padding: 10px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
         .btn-excel { background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-left: 10px;}
 
-        /* --- STYLE BOUTONS ACTIONS --- */
+        /* Actions */
         .btn-delete-selected { background: #c62828; color: white; padding: 8px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: none; }
         .btn-delete-single { background: none; border: 1px solid #c62828; color: #c62828; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; margin-left: 5px; }
         .btn-view-single { background: none; border: 1px solid #0288d1; color: #0288d1; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; }
@@ -30,7 +30,7 @@
         .form-content.active { display: block; animation: fadeIn 0.5s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Sections Formulaire */
+        /* Sections */
         .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 30px 0 15px 0; text-transform: uppercase; font-size: 14px; display: flex; align-items: center; justify-content: space-between; }
         .sub-title { font-weight: bold; color: #b03060; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         
@@ -40,7 +40,7 @@
         select, input[type="text"], input[type="number"], textarea { padding: 10px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; background: #fff; width: 100%; box-sizing: border-box; }
         textarea { resize: vertical; font-family: inherit; }
 
-        /* Tableaux & Checkboxes */
+        /* Tables & Check */
         table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 12px; }
         th { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; }
         td { border: 1px solid #eee; padding: 10px; text-align: center; vertical-align: middle; }
@@ -52,8 +52,9 @@
 
         .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .btn-save:hover { background: #880e4f; transform: translateY(-2px); }
+        .btn-save:disabled { background: #ccc; cursor: not-allowed; }
         
-        /* Elements Analyse & Graphiques */
+        /* Stats */
         .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .stat-title { font-weight: bold; color: #555; margin-bottom: 15px; font-size: 14px; border-bottom: 2px solid #b03060; display: inline-block; }
         
@@ -64,10 +65,9 @@
         .bar-value { width: 40px; text-align: right; font-weight: bold; color: #b03060; }
 
         .interpretation-box { background: #e3f2fd; border-left: 5px solid #2196f3; padding: 15px; font-size: 13px; color: #0d47a1; margin-top: 15px; border-radius: 4px; }
-        
         .counter-badge { background: #b03060; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; vertical-align: middle; margin-left: 5px;}
 
-        /* --- MODAL DÉTAILS --- */
+        /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; justify-content: center; align-items: center; }
         .modal-content { background: white; width: 80%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
@@ -79,13 +79,19 @@
         
         .reco-box { background: #fff3e0; border: 1px solid #ffe0b2; padding: 15px; border-radius: 6px; margin-bottom: 10px; }
         .reco-title { color: #e65100; font-weight: bold; margin-bottom: 5px; }
+
+        /* Notification Toast */
+        #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 17px; }
+        #toast.show { visibility: visible; -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-tabs">
-        <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">0</span></button>
+        <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">...</span></button>
         <button class="tab admin-only" id="tab-2" onclick="switchTab(2)">2. MATRICE DE DÉPOUILLEMENT</button>
         <button class="tab admin-only" id="tab-3" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE PROTOCOLE</button>
         <button class="tab admin-only" id="tab-4" onclick="switchTab(4)">4. CONCLUSION & RECOMMANDATIONS</button>
@@ -165,7 +171,7 @@
                     </select>
                 </div>
                 <div class="field">
-                    <label>Moment idéal pour Auto-examen des seins :</label>
+                    <label>Moment idéal pour Auto-Examen (AES) :</label>
                     <select id="q-moment-aes">
                         <option value="" disabled selected>Moment...</option>
                         <option value="regles">Pendant les règles</option>
@@ -239,7 +245,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="td-left">L’éducation à l’Auto-examen des seins fait partie de mon rôle.</td>
+                        <td class="td-left">L’éducation à l’AES fait partie de mon rôle.</td>
                         <td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5"></td>
                     </tr>
                     <tr>
@@ -265,7 +271,7 @@
             
             <div class="row">
                 <div class="field">
-                    <label>15. Pratique personnelle (Auto-examen des seins sur vous) :</label>
+                    <label>15. Pratique personnelle (AES sur vous) :</label>
                     <select id="prac-perso">
                         <option value="" disabled selected>Fréquence...</option>
                         <option value="mois">Tous les mois</option>
@@ -331,12 +337,12 @@
                 <textarea id="reco-verbatim" rows="3" placeholder="Écrire ici les propositions de l'enquêtée..."></textarea>
             </div>
 
-            <button type="button" class="btn-save" onclick="saveRecord()">💾 ENREGISTRER CETTE FICHE</button>
+            <button type="button" id="save-btn" class="btn-save" onclick="saveRecord()">☁️ ENREGISTRER DANS LE CLOUD</button>
         </form>
     </div>
 
     <div id="content-2" class="form-content">
-        <div class="section-title">BASE DE DONNÉES BRUTE (N = <span id="n-total">0</span>)</div>
+        <div class="section-title">BASE DE DONNÉES EN LIGNE (N = <span id="n-total">0</span>)</div>
         <button id="btn-delete-multi" class="btn-delete-selected" onclick="deleteSelected()">🗑️ Supprimer la sélection</button>
         <div style="overflow-x:auto;">
             <table>
@@ -374,8 +380,6 @@
         </div>
 
         <div class="section-title">3. FACTEURS ASSOCIÉS (Obj. Spécifique 4)</div>
-        <p style="font-size:12px; color:#666;">Recherche des liens entre profil et performance.</p>
-        
         <div class="row">
             <div class="stat-card">
                 <div class="stat-title">Association : Service vs Pratique</div>
@@ -430,17 +434,46 @@
     </div>
 </div>
 
-<script>
-    let database = JSON.parse(localStorage.getItem('survey_database')) || [];
+<div id="toast">Donnée synchronisée !</div>
+
+<script type="module">
+    // 1. IMPORT DES FONCTIONS FIREBASE
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    // --- ⬇️ COLLE TES CLES FIREBASE ICI ⬇️ ---
+    const firebaseConfig = {
+        apiKey: "AlzaSyAdEKZFfinxpHcThi4vh8EMGJ9ZgqchxEl",
+authDomain: "nero-15812.firebaseapp.com", projectld: "nero-15812". storageBucket: "nero-15812. firebasestorage.app", messagingSenderld: "957894727402" appld: "1:957894727402:web:5c319686c580c23700e993"
+    };
+    // --- ⬆️ FIN DE LA CONFIGURATION ⬆️ ---
+
+    // 2. INITIALISATION
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const surveysCollection = collection(db, "enquetes_rdc_cancer");
+
+    let database = []; // Variable locale qui sera mise à jour par le Cloud
     let isAdmin = false;
 
-    window.onload = function() {
-        initCodeDropdown();
-        updateUI(); 
-    };
+    // 3. ECOUTE EN TEMPS RÉEL (C'est la magie qui remplace localStorage)
+    onSnapshot(surveysCollection, (snapshot) => {
+        database = [];
+        snapshot.forEach((doc) => {
+            let data = doc.data();
+            data.firestoreId = doc.id; // On garde l'ID unique du cloud pour pouvoir supprimer
+            database.push(data);
+        });
+        
+        // Tri par date (facultatif, ici on garde l'ordre d'arrivée)
+        updateUI();
+        showToast("Données mises à jour depuis le Cloud");
+    });
 
-    function initCodeDropdown() {
+    // 4. FONCTIONS GLOBALES (Accessibles depuis le HTML)
+    window.initCodeDropdown = function() {
         const sel = document.getElementById('code-enquete');
+        sel.innerHTML = "";
         for(let i=1; i<=200; i++) { 
             let o = document.createElement('option'); 
             o.value = "INF-" + i.toString().padStart(3, '0'); 
@@ -449,24 +482,15 @@
         }
     }
 
-    function requestAdmin() {
-        if(isAdmin) return; 
-        let code = prompt("Veuillez entrer le code d'accès administrateur :");
-        if(code === "1398") {
-            isAdmin = true;
-            document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
-            document.getElementById('btn-auth').style.display = 'none'; 
-            alert("Accès autorisé. Les onglets d'analyse sont maintenant visibles.");
-            updateUI();
-        } else {
-            alert("Code incorrect !");
-        }
-    }
+    window.saveRecord = async function() {
+        const btn = document.getElementById('save-btn');
+        btn.disabled = true;
+        btn.innerText = "Envoi en cours...";
 
-    function saveRecord() {
         let r = {
             id: document.getElementById('code-enquete').value,
-            consentement: document.getElementById('consentement').value, 
+            createdAt: Timestamp.now(), // Ajout de la date
+            consentement: document.getElementById('consentement').value,
             service: document.getElementById('service').value,
             niveau: document.getElementById('niveau').value,
             anciennete: document.getElementById('anciennete').value,
@@ -489,9 +513,10 @@
             prac_zone: document.getElementById('prac-zone').value,
             prac_mouv: getCheckedValues('group-mouv'),
             obstacles: getCheckedValues('group-obstacles'),
-            reco_verbatim: document.getElementById('reco-verbatim').value 
+            reco_verbatim: document.getElementById('reco-verbatim').value
         };
 
+        // Calculs (Identiques)
         let ptsS = (r.q_cause === "vrai" ? 1 : 0) + (r.q_age !== "20" ? 1 : 0) + (r.q_aes === "apres" ? 1 : 0);
         ['age', 'famille', 'alcool', 'obesite', 'menopause'].forEach(k => { if(r.risques.includes(k)) ptsS++; });
         ['nodule', 'retraction', 'peau', 'ecoulement'].forEach(k => { if(r.signes.includes(k)) ptsS++; });
@@ -509,24 +534,66 @@
         ptsP += (mv >= 2 ? 4 : (mv === 1 ? 2 : 0));
         r.scorePratique = Math.round((ptsP / 20) * 100);
 
-        database.push(r);
-        localStorage.setItem('survey_database', JSON.stringify(database));
-        
-        alert(`Fiche ${r.id} enregistrée avec succès !`);
-        document.getElementById('kapForm').reset();
-        document.getElementById('code-enquete').selectedIndex = (database.length) % 200;
-        document.getElementById('sexe').value = "F";
-        updateUI();
-    }
-
-    function deleteOne(index) {
-        if(confirm("Supprimer cette fiche ?")) {
-            database.splice(index, 1);
-            saveAndRefresh();
+        try {
+            // ENVOI VERS FIREBASE
+            await addDoc(surveysCollection, r);
+            alert(`Fiche ${r.id} envoyée dans le Cloud avec succès !`);
+            document.getElementById('kapForm').reset();
+            document.getElementById('sexe').value = "F";
+            // On ne fait pas updateUI ici car onSnapshot le fera automatiquement
+        } catch (e) {
+            console.error("Erreur: ", e);
+            alert("Erreur lors de l'envoi. Vérifiez votre connexion internet.");
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "☁️ ENREGISTRER DANS LE CLOUD";
         }
-    }
+    };
 
-    function viewDetails(index) {
+    window.deleteOne = async function(index) {
+        if(!confirm("Supprimer définitivement cette fiche du Cloud ?")) return;
+        let idToDelete = database[index].firestoreId;
+        try {
+            await deleteDoc(doc(db, "enquetes_rdc_cancer", idToDelete));
+        } catch(e) {
+            alert("Erreur suppression: " + e.message);
+        }
+    };
+
+    window.deleteSelected = async function() {
+        if(!confirm("Supprimer la sélection du Cloud ?")) return;
+        const checkboxes = Array.from(document.querySelectorAll('.row-check'));
+        let promises = [];
+        checkboxes.forEach((cb, idx) => {
+            if(cb.checked) {
+                let idToDelete = database[idx].firestoreId;
+                promises.push(deleteDoc(doc(db, "enquetes_rdc_cancer", idToDelete)));
+            }
+        });
+        await Promise.all(promises);
+    };
+
+    // --- FONCTIONS UI & LOGIQUE (INCHANGÉES MAIS ADAPTÉES AU SCOPE) ---
+    window.onload = function() {
+        initCodeDropdown();
+        // updateUI sera appelé par onSnapshot quand les données arrivent
+    };
+
+    window.requestAdmin = function() {
+        if(isAdmin) return; 
+        let code = prompt("Code administrateur :");
+        if(code === "1398") {
+            isAdmin = true;
+            document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
+            document.getElementById('btn-auth').style.display = 'none';
+            alert("Connexion Admin réussie. Vous voyez les données en temps réel.");
+            updateUI();
+        } else {
+            alert("Code incorrect !");
+        }
+    };
+
+    window.viewDetails = function(index) {
         let d = database[index];
         document.getElementById('modal-title-id').innerText = d.id;
         
@@ -542,9 +609,9 @@
             <div class="detail-row"><span class="detail-label">Score Pratique</span><span class="detail-val">${d.scorePratique}%</span></div>
 
             <div class="sub-title">RÉPONSES DÉTAILLÉES</div>
-            <div class="detail-row"><span class="detail-label">Facteurs Risque Cochés</span><span class="detail-val">${d.risques.join(', ') || 'Aucun'}</span></div>
-            <div class="detail-row"><span class="detail-label">Signes Alerte Cochés</span><span class="detail-val">${d.signes.join(', ') || 'Aucun'}</span></div>
-            <div class="detail-row"><span class="detail-label">Obstacles Cités</span><span class="detail-val">${d.obstacles.join(', ') || 'Aucun'}</span></div>
+            <div class="detail-row"><span class="detail-label">Facteurs Risque Cochés</span><span class="detail-val">${(d.risques||[]).join(', ') || 'Aucun'}</span></div>
+            <div class="detail-row"><span class="detail-label">Signes Alerte Cochés</span><span class="detail-val">${(d.signes||[]).join(', ') || 'Aucun'}</span></div>
+            <div class="detail-row"><span class="detail-label">Obstacles Cités</span><span class="detail-val">${(d.obstacles||[]).join(', ') || 'Aucun'}</span></div>
             
             <div class="sub-title">RECOMMANDATIONS DE L'ENQUÊTÉE</div>
             <div class="detail-val-long">${d.reco_verbatim || "Aucune suggestion."}</div>
@@ -552,32 +619,21 @@
         
         document.getElementById('modal-body-content').innerHTML = html;
         document.getElementById('detailModal').style.display = 'flex';
-    }
+    };
 
-    function closeModal(e) { if(e.target.id === 'detailModal') document.getElementById('detailModal').style.display = 'none'; }
-    function closeModalBtn() { document.getElementById('detailModal').style.display = 'none'; }
+    window.closeModal = function(e) { if(e.target.id === 'detailModal') document.getElementById('detailModal').style.display = 'none'; };
+    window.closeModalBtn = function() { document.getElementById('detailModal').style.display = 'none'; };
 
-    function toggleSelectAll(source) {
+    window.toggleSelectAll = function(source) {
         document.querySelectorAll('.row-check').forEach(cb => cb.checked = source.checked);
         toggleDeleteButton();
-    }
-    function toggleDeleteButton() {
+    };
+    window.toggleDeleteButton = function() {
         const checked = document.querySelectorAll('.row-check:checked').length;
         document.getElementById('btn-delete-multi').style.display = checked > 0 ? 'block' : 'none';
-    }
-    function deleteSelected() {
-        if(confirm("Supprimer les fiches sélectionnées ?")) {
-            const checkboxes = Array.from(document.querySelectorAll('.row-check'));
-            database = database.filter((_, index) => !checkboxes[index].checked);
-            saveAndRefresh();
-        }
-    }
-    function saveAndRefresh() {
-        localStorage.setItem('survey_database', JSON.stringify(database));
-        updateUI();
-    }
+    };
 
-    function updateUI() {
+    window.updateUI = function() {
         const count = database.length;
         document.getElementById('count-badge').textContent = count;
         document.getElementById('n-total').textContent = count;
@@ -600,9 +656,9 @@
         `).join('');
 
         if(isAdmin) updateAnalytics();
-    }
+    };
 
-    function updateAnalytics() {
+    window.updateAnalytics = function() {
         if(database.length === 0) return;
 
         let highS = database.filter(r => r.scoreSavoir >= 60);
@@ -649,7 +705,7 @@
         ]);
 
         let obsMap = {};
-        database.forEach(r => r.obstacles.forEach(o => obsMap[o] = (obsMap[o]||0)+1));
+        database.forEach(r => (r.obstacles||[]).forEach(o => obsMap[o] = (obsMap[o]||0)+1));
         document.getElementById('graph-obstacles-anal').innerHTML = Object.entries(obsMap).sort((a,b)=>b[1]-a[1]).map(([k,v]) => {
             let p = Math.round((v/database.length)*100);
             return `<div class="bar-container"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:#b03060;">${p}%</div></div><div class="bar-value">${v}</div></div>`;
@@ -663,9 +719,9 @@
         `;
 
         generateDynamicReport(highP, obsMap);
-    }
+    };
 
-    function generateDynamicReport(goodPracticeCount, obsMap) {
+    window.generateDynamicReport = function(goodPracticeCount, obsMap) {
         let total = database.length;
         let pPractice = Math.round((goodPracticeCount/total)*100);
         let topObstacle = Object.keys(obsMap).sort((a,b) => obsMap[b]-obsMap[a])[0] || "Aucun";
@@ -684,27 +740,27 @@
         } else if (topObstacle === "Formation") {
              recs += `<div class="reco-box"><div class="reco-title">🔵 BESOIN COGNITIF</div>Le personnel réclame plus de formation. Distribuer des aides-mémoires visuels dans les services.</div>`;
         }
-
         document.getElementById('dynamic-report').innerHTML = report + recs;
-    }
+    };
 
-    function getCheckedValues(id) { return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value); }
-    function getRadioValue(n) { let e = document.querySelector(`input[name="${n}"]:checked`); return e ? e.value : 0; }
-    function getColor(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); }
-    function getAvg(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; }
-    function renderBars(id, data) {
+    // Utils
+    window.getCheckedValues = function(id) { return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value); };
+    window.getRadioValue = function(n) { let e = document.querySelector(`input[name="${n}"]:checked`); return e ? e.value : 0; };
+    window.getColor = function(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); };
+    window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
+    window.renderBars = function(id, data) {
         document.getElementById(id).innerHTML = data.map(i => {
-            let p = i.t ? Math.round((i.v/i.t)*100) : 0; 
+            let p = i.t ? Math.round((i.v/i.t)*100) : 0;
             return `<div class="bar-container"><div class="bar-label">${i.l}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:${i.c}">${p}%</div></div><div class="bar-value">${i.v}</div></div>`;
         }).join('');
-    }
-    function switchTab(i) {
+    };
+    window.switchTab = function(i) {
         document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.getElementById('content-'+i).classList.add('active');
         document.querySelectorAll('.tab')[i-1].classList.add('active');
-    }
-    function exportToCSV() {
+    };
+    window.exportToCSV = function() {
         let h = "ID,Consentement,Sexe,Service,Savoir(%),Attitude(/5),Pratique(%),Recommandations\n";
         let r = database.map(r => {
             let cleanReco = (r.reco_verbatim || "").replace(/"/g, '""').replace(/(\r\n|\n|\r)/gm, " ");
@@ -713,6 +769,13 @@
         let l = document.createElement("a");
         l.href = "data:text/csv;charset=utf-8," + encodeURI("\ufeff"+h+r);
         l.download = "Rapport_CAP_Cancer_RDC.csv"; l.click();
+    };
+    
+    function showToast(message) {
+        var x = document.getElementById("toast");
+        x.className = "show";
+        x.innerText = message;
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
 </script>
 </body>
