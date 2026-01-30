@@ -2,30 +2,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enquête CAP - Cancer du Sein (HGR RDC) - Version Cloud Complète</title>
+    <title>Enquête CAP - Cancer du Sein (HGR RDC) - Version Complète</title>
     <style>
-        /* --- STYLE GLOBAL --- */
+        /* --- STYLE GLOBAL (CONSERVÉ INTACT) --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
         .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 900px;}
         
+        /* Navigation */
         .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 100; }
         .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; transition: 0.2s; }
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
         
-        .admin-only { display: none !important; } 
-        .admin-visible { display: inline-block !important; } 
+        /* Sécurité */
+        .admin-only { display: none !important; }
+        .admin-visible { display: inline-block !important; }
         
         .btn-auth { margin-left: auto; background: #333; color: white; padding: 10px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
         .btn-excel { background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-left: 10px;}
 
+        /* Actions */
         .btn-delete-selected { background: #c62828; color: white; padding: 8px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: none; }
         .btn-delete-single { background: none; border: 1px solid #c62828; color: #c62828; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; margin-left: 5px; }
         .btn-view-single { background: none; border: 1px solid #0288d1; color: #0288d1; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; }
+        .btn-view-single:hover { background: #0288d1; color: white; }
 
+        /* Contenu */
         .form-content { padding: 30px; display: none; }
         .form-content.active { display: block; animation: fadeIn 0.5s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        /* Sections */
         .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 30px 0 15px 0; text-transform: uppercase; font-size: 14px; display: flex; align-items: center; justify-content: space-between; }
         .sub-title { font-weight: bold; color: #b03060; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         
@@ -33,110 +39,386 @@
         .field { display: flex; flex-direction: column; }
         label { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #222; }
         select, input[type="text"], input[type="number"], textarea { padding: 10px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; background: #fff; width: 100%; box-sizing: border-box; }
+        textarea { resize: vertical; font-family: inherit; }
 
+        /* Tables & Check */
         table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 12px; }
-        th { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; text-align: center; }
-        td { border: 1px solid #eee; padding: 10px; text-align: center; }
+        th { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; }
+        td { border: 1px solid #eee; padding: 10px; text-align: center; vertical-align: middle; }
         .td-left { text-align: left; padding-left: 15px; width: 50%; }
 
         .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; background: #fdfdfd; padding: 15px; border: 1px solid #eee; border-radius: 8px; }
         .check-item { display: flex; align-items: center; font-size: 13px; cursor: pointer; }
-        .check-item input { margin-right: 12px; transform: scale(1.2); }
+        .check-item input { margin-right: 12px; transform: scale(1.2); cursor: pointer; }
 
-        .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; }
+        .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-save:hover { background: #880e4f; transform: translateY(-2px); }
+        .btn-save:disabled { background: #ccc; cursor: not-allowed; }
         
-        .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        /* Stats */
+        .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .stat-title { font-weight: bold; color: #555; margin-bottom: 15px; font-size: 14px; border-bottom: 2px solid #b03060; display: inline-block; }
+        
+        .bar-container { display: flex; align-items: center; margin-bottom: 12px; font-size: 12px; }
+        .bar-label { width: 220px; font-weight: 600; color: #444; }
         .bar-track { flex-grow: 1; background: #f0f0f0; height: 20px; border-radius: 10px; margin: 0 15px; overflow: hidden; }
-        .bar-fill { height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; transition: width 1s; }
+        .bar-fill { height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: bold; transition: width 1s; }
+        .bar-value { width: 40px; text-align: right; font-weight: bold; color: #b03060; }
+
+        .interpretation-box { background: #e3f2fd; border-left: 5px solid #2196f3; padding: 15px; font-size: 13px; color: #0d47a1; margin-top: 15px; border-radius: 4px; }
+        .counter-badge { background: #b03060; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; vertical-align: middle; margin-left: 5px;}
+
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; justify-content: center; align-items: center; }
+        .modal-content { background: white; width: 80%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
+        .modal-close { font-size: 24px; cursor: pointer; color: #888; }
+        .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; font-size: 13px; }
+        .detail-label { font-weight: bold; color: #555; }
+        .detail-val { color: #b03060; font-weight: 600; text-align: right; width: 50%; }
+        .detail-val-long { color: #333; font-style: italic; text-align: left; width: 100%; background: #f9f9f9; padding: 8px; margin-top: 5px; border-radius: 4px; }
         
-        #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); }
-        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        .reco-box { background: #fff3e0; border: 1px solid #ffe0b2; padding: 15px; border-radius: 6px; margin-bottom: 10px; }
+        .reco-title { color: #e65100; font-weight: bold; margin-bottom: 5px; }
+
+        /* Toast Notification */
+        #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 17px; }
+        #toast.show { visibility: visible; -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-tabs">
-        <button class="tab active" onclick="switchTab(1)">COLLECTE <span id="count-badge" class="counter-badge">...</span></button>
-        <button class="tab admin-only" id="tab-2" onclick="switchTab(2)">MATRICE DE DÉPOUILLEMENT</button>
-        <button class="tab admin-only" id="tab-3" onclick="switchTab(3)">RÉSULTATS & ANALYSE</button>
-        <button class="tab admin-only" id="tab-4" onclick="switchTab(4)">CONCLUSION</button>
+        <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">...</span></button>
+        <button class="tab admin-only" id="tab-2" onclick="switchTab(2)">2. MATRICE DE DÉPOUILLEMENT</button>
+        <button class="tab admin-only" id="tab-3" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE PROTOCOLE</button>
+        <button class="tab admin-only" id="tab-4" onclick="switchTab(4)">4. CONCLUSION & RECOMMANDATIONS</button>
+        
         <button type="button" class="btn-auth" id="btn-auth" onclick="window.requestAdmin()">🔒 ACCÈS ADMIN</button>
+        <button type="button" class="btn-excel admin-only" id="btn-export" onclick="window.exportToCSV()">📊 EXPORT CSV</button>
     </div>
 
     <div id="content-1" class="form-content active">
         <form id="kapForm">
             <div class="section-title">I. IDENTIFICATION & PROFIL PROFESSIONNEL</div>
             <div class="row">
-                <div class="field"><label>Code Enquêté(e)</label><select id="code-enquete"></select></div>
-                <div class="field"><label style="color:#b03060;">Consentement Éclairé</label><select id="consentement"><option value="oui">Oui</option><option value="non">Non</option></select></div>
-                <div class="field"><label>Service d'affectation</label>
+                <div class="field">
+                    <label>1. Code Enquêté(e)</label>
+                    <select id="code-enquete"></select>
+                </div>
+                <div class="field">
+                    <label style="color:#b03060;">2. Consentement Éclairé</label>
+                    <select id="consentement">
+                        <option value="oui">Oui, a accepté de participer</option>
+                        <option value="non">Non (Refus)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>3. Service d'affectation</label>
                     <select id="service">
-                        <option value="" disabled selected>Choisir...</option>
-                        <option>Gynécologie-Obstétrique</option><option>Médecine Interne</option><option>Chirurgie</option><option>Urgences / Autre</option>
+                        <option value="" disabled selected>Choisir un service...</option>
+                        <option>Gynécologie-Obstétrique</option>
+                        <option>Médecine Interne</option>
+                        <option>Chirurgie</option>
+                        <option>Urgences / Autre</option>
                     </select>
                 </div>
             </div>
             <div class="row">
-                <div class="field"><label>Niveau d'étude</label><select id="niveau"><option>A2</option><option>A1</option><option>A0</option></select></div>
-                <div class="field"><label>Ancienneté (années)</label><input type="number" id="anciennete"></div>
-                <div class="field"><label>Sexe</label><select id="sexe"><option value="F">Féminin</option><option value="M">Masculin</option></select></div>
-            </div>
-            <div class="row">
-                <div class="field"><label>État Civil</label><select id="etat-civil"><option>Célibataire</option><option>Mariée</option><option>Divorcée</option><option>Veuve</option></select></div>
-                <div class="field"><label>Province d'exercice</label><select id="province"><option>Kinshasa</option><option>Kongo Central</option><option>Haut-Katanga</option><option>Nord/Sud Kivu</option><option>Autre</option></select></div>
-                <div class="field"><label>Catégorie Professionnelle</label><select id="cat-pro"><option>Médecin</option><option>Infirmier(e)</option><option>Sage-femme</option></select></div>
-            </div>
-
-            <div class="section-title">II. CONNAISSANCES THÉORIQUES</div>
-            <div class="sub-title">Biologie & Classification (Source Document RDC)</div>
-            <div class="row">
-                <div class="field"><label>Entendu parler de la classification moléculaire ?</label><select id="q-moleculaire"><option value="non">Non</option><option value="oui">Oui</option></select></div>
-                <div class="field"><label>Connaissez-vous le terme "HER2 Low" ?</label><select id="q-her2"><option value="non">Non</option><option value="oui">Oui</option></select></div>
-                <div class="field"><label>Connaissez-vous les thérapies ciblées ?</label><select id="q-therapie"><option value="non">Non</option><option value="oui">Oui</option></select></div>
-            </div>
-
-            <div class="sub-title">Épidémiologie & Dépistage</div>
-            <div class="row">
-                <div class="field"><label>1ère cause de décès par cancer en RDC ?</label><select id="q-cause"><option value="vrai">Vrai</option><option value="faux">Faux</option></select></div>
-                <div class="field"><label>Moment idéal pour l'AES ?</label><select id="q-moment-aes"><option value="apres">7-10 jours après règles</option><option value="regles">Pendant</option></select></div>
+                <div class="field">
+                    <label>4. Niveau d'étude</label>
+                    <select id="niveau">
+                        <option value="" disabled selected>Niveau...</option>
+                        <option>A2 (Secondaire)</option>
+                        <option>A1 (Gradué)</option>
+                        <option>A0 (Licencié/Master)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>5. Ancienneté (années)</label>
+                    <input type="number" id="anciennete" min="0" placeholder="Ex: 5">
+                </div>
+                <div class="field">
+                    <label>6. Sexe</label>
+                    <select id="sexe">
+                        <option value="F" selected>F (Féminin)</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="sub-title">Facteurs de risque (Scientifiques)</div>
+            <div class="row" style="background:#f9f9f9; padding:10px; border-radius:6px; border:1px dashed #ccc;">
+                <div class="field">
+                    <label>État Civil</label>
+                    <select id="etat-civil">
+                        <option value="" disabled selected>Choisir...</option>
+                        <option>Célibataire</option>
+                        <option>Mariée</option>
+                        <option>Divorcée</option>
+                        <option>Veuve</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Province d'exercice</label>
+                    <select id="province">
+                        <option value="" disabled selected>Choisir...</option>
+                        <option>Kinshasa</option>
+                        <option>Kongo Central</option>
+                        <option>Haut-Katanga</option>
+                        <option>Nord/Sud Kivu</option>
+                        <option>Autre Province (Voir PDF)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Catégorie Pro. Précise</label>
+                    <select id="cat-pro">
+                        <option value="" disabled selected>Choisir...</option>
+                        <option>Médecin Généraliste</option>
+                        <option>Spécialiste / Résident</option>
+                        <option>Infirmier(e)</option>
+                        <option>Autre professionnel santé</option>
+                    </select>
+                </div>
+                 <div class="field">
+                    <label>Âge du participant</label>
+                    <input type="number" id="age-participant" placeholder="Ex: 30">
+                </div>
+            </div>
+
+            <div class="section-title">II. CONNAISSANCES (SAVOIRS THÉORIQUES)</div>
+
+            <div class="sub-title">Connaissances Biologiques & Types</div>
+            <div class="row" style="background:#f0f8ff; padding:10px; border-radius:6px;">
+                <div class="field">
+                    <label>Avez-vous entendu parler de la classification moléculaire ?</label>
+                    <select id="q-moleculaire">
+                        <option value="non">Non</option><option value="oui">Oui</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Connaissez-vous le terme "HER2 Low" ou "Faible" ?</label>
+                    <select id="q-her2">
+                        <option value="non">Non</option><option value="oui">Oui</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Connaissez-vous les thérapies ciblées ?</label>
+                    <select id="q-therapie">
+                        <option value="non">Non</option><option value="oui">Oui</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="sub-title">7. Épidémiologie & Dépistage</div>
+            <div class="row">
+                <div class="field">
+                    <label>Le cancer du sein est la 1ère cause de décès par cancer (RDC) :</label>
+                    <select id="q-cause">
+                        <option value="" disabled selected>Réponse...</option>
+                        <option value="vrai">Vrai</option>
+                        <option value="faux">Faux</option>
+                        <option value="jsp">Je ne sais pas</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Âge recommandé 1ère mammographie :</label>
+                    <select id="q-age-mammo">
+                        <option value="" disabled selected>Âge...</option>
+                        <option value="20">Dès 20 ans</option>
+                        <option value="35">Vers 35-40 ans</option>
+                        <option value="50">Vers 50 ans</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Moment idéal pour Auto-Examen (AES) :</label>
+                    <select id="q-moment-aes">
+                        <option value="" disabled selected>Moment...</option>
+                        <option value="regles">Pendant les règles</option>
+                        <option value="apres">7 à 10 jours après début règles</option>
+                        <option value="nimporte">N’importe quand</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="sub-title">8. Facteurs de risque (Cochez ceux prouvés)</div>
             <div class="check-group" id="group-risques">
-                <label class="check-item"><input type="checkbox" value="age"> Âge (>50 ans)</label>
+                <label class="check-item"><input type="checkbox" value="age"> Âge avancé (>50 ans)</label>
+                <label class="check-item"><input type="checkbox" value="multi"> Multiparité</label>
                 <label class="check-item"><input type="checkbox" value="famille"> Antécédents familiaux</label>
                 <label class="check-item"><input type="checkbox" value="alcool"> Alcool / Tabac</label>
+                <label class="check-item"><input type="checkbox" value="obesite"> Obésité et sédentarité</label>
+                <label class="check-item"><input type="checkbox" value="allaitement"> Allaitement prolongé</label>
+                <label class="check-item"><input type="checkbox" value="menopause"> Ménopause tardive (>55 ans)</label>
                 <label class="check-item"><input type="checkbox" value="graisse"> Régime riche en graisses</label>
-                <label class="check-item"><input type="checkbox" value="contraceptif"> Contraceptifs oraux</label>
+                <label class="check-item"><input type="checkbox" value="contraceptif"> Prise de contraceptifs oraux</label>
+                <label class="check-item"><input type="checkbox" value="gros_seins"> Avoir des gros seins</label>
+                <label class="check-item"><input type="checkbox" value="radiation"> Exposition rayons radioactifs</label>
             </div>
 
-            <div class="sub-title">Signes d’alerte</div>
+            <div class="sub-title">9. Signes d’alerte</div>
             <div class="check-group" id="group-signes">
-                <label class="check-item"><input type="checkbox" value="nodule"> Nodule dur</label>
-                <label class="check-item"><input type="checkbox" value="ulceration"> Ulcération du sein</label>
+                <label class="check-item"><input type="checkbox" value="nodule"> Nodule dur et indolore</label>
+                <label class="check-item"><input type="checkbox" value="retraction"> Rétraction du mamelon</label>
                 <label class="check-item"><input type="checkbox" value="peau"> Aspect peau d’orange</label>
-                <label class="check-item"><input type="checkbox" value="asymetrie"> Asymétrie nouvelle</label>
+                <label class="check-item"><input type="checkbox" value="ecoulement"> Écoulement mamelonnaire</label>
+                <label class="check-item"><input type="checkbox" value="douleur"> Douleur cyclique</label>
+                <label class="check-item"><input type="checkbox" value="ulceration"> Ulcération au niveau du sein</label>
+                <label class="check-item"><input type="checkbox" value="poids"> Diminution du poids inexpliquée</label>
+                <label class="check-item"><input type="checkbox" value="asymetrie"> Modification forme / Asymétrie</label>
             </div>
 
-            <div class="section-title">III. ATTITUDES & PRATIQUES</div>
+            <div class="sub-title">10-14. Connaissance Mammographie</div>
+            <div class="row">
+                <div class="field">
+                    <label>La mammographie est importante pour détection précoce :</label>
+                    <select id="q-mammo-imp">
+                        <option value="" disabled selected>Réponse...</option>
+                        <option>Oui</option><option>Non</option><option>Je ne sais pas</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Rôle principal :</label>
+                    <select id="q-mammo-role">
+                        <option value="" disabled selected>Rôle...</option>
+                        <option value="detecter">Détecter lésions avant symptômes</option>
+                        <option value="traiter">Traiter le cancer</option>
+                        <option value="douleur">Soulager douleur</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Fréquence (Femme sans risque) :</label>
+                    <select id="q-mammo-freq">
+                        <option value="" disabled selected>Fréquence...</option>
+                        <option value="1">Tous les ans</option>
+                        <option value="2">Tous les 2 ans</option>
+                        <option value="5">Tous les 5 ans</option>
+                        <option value="0">Je ne sais pas</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section-title">III. ATTITUDES & PERCEPTIONS (Échelle 1-5)</div>
             <table>
-                <thead><tr><th class="td-left">Énoncé</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th class="td-left">Énoncé</th>
+                        <th>1<br><small>Pas du tout</small></th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5<br><small>Tout à fait</small></th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr><td class="td-left">L'éducation à l'AES est mon rôle.</td><td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5"></td></tr>
+                    <tr>
+                        <td class="td-left">L’éducation à l’AES fait partie de mon rôle.</td>
+                        <td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5"></td>
+                    </tr>
+                    <tr>
+                        <td class="td-left">Je me sens capable de détecter un nodule de petite taille.</td>
+                        <td><input type="radio" name="att2" value="1"></td><td><input type="radio" name="att2" value="2"></td><td><input type="radio" name="att2" value="3"></td><td><input type="radio" name="att2" value="4"></td><td><input type="radio" name="att2" value="5"></td>
+                    </tr>
+                    <tr>
+                        <td class="td-left">La peur du diagnostic empêche les patientes de consulter.</td>
+                        <td><input type="radio" name="att3" value="1"></td><td><input type="radio" name="att3" value="2"></td><td><input type="radio" name="att3" value="3"></td><td><input type="radio" name="att3" value="4"></td><td><input type="radio" name="att3" value="5"></td>
+                    </tr>
+                    <tr>
+                        <td class="td-left">Je suis mal à l’aise d’aborder l’intimité avec les âgées.</td>
+                        <td><input type="radio" name="att4" value="1"></td><td><input type="radio" name="att4" value="2"></td><td><input type="radio" name="att4" value="3"></td><td><input type="radio" name="att4" value="4"></td><td><input type="radio" name="att4" value="5"></td>
+                    </tr>
+                    <tr>
+                        <td class="td-left">Le dépistage ne sert à rien (coût des traitements).</td>
+                        <td><input type="radio" name="att5" value="1"></td><td><input type="radio" name="att5" value="2"></td><td><input type="radio" name="att5" value="3"></td><td><input type="radio" name="att5" value="4"></td><td><input type="radio" name="att5" value="5"></td>
+                    </tr>
                 </tbody>
             </table>
 
-            <div class="sub-title">Technique de Palpation</div>
+            <div class="section-title">IV. PRATIQUES (Savoir-Faire)</div>
+            
             <div class="row">
-                <div class="field"><label>Partie de la main ?</label><select id="prac-main"><option value="pulpe">La pulpe des 3 doigts</option><option value="pointe">La pointe</option></select></div>
-                <div class="field"><label>Zone indispensable ?</label><select id="prac-zone"><option value="axillaire">Le creux axillaire</option><option value="mamelon">Mamelon</option></select></div>
+                <div class="field">
+                    <label>15. Pratique personnelle (AES sur vous) :</label>
+                    <select id="prac-perso">
+                        <option value="" disabled selected>Fréquence...</option>
+                        <option value="mois">Tous les mois</option>
+                        <option value="temps">De temps en temps</option>
+                        <option value="jamais">Jamais</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>16. Examen des patientes (Fréquence) :</label>
+                    <select id="prac-pro-freq">
+                        <option value="" disabled selected>Fréquence...</option>
+                        <option value="syst">Systématiquement</option>
+                        <option value="plainte">Uniquement si plainte</option>
+                        <option value="rare">Rarement / Jamais</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="section-title">IV. POLITIQUE DE SANTÉ</div>
+            <div class="sub-title">Technique de Palpation</div>
             <div class="row">
-                <div class="field"><label>Connaissance du CNLC ?</label><select id="connaissance-cnlc"><option value="non">Non</option><option value="oui">Oui</option></select></div>
-                <div class="field"><label>Intérêt Registre National ?</label><select id="interet-registre"><option value="oui">Oui</option><option value="non">Non</option></select></div>
+                <div class="field">
+                    <label>Partie de la main utilisée ?</label>
+                    <select id="prac-main">
+                        <option value="" disabled selected>Choisir...</option>
+                        <option value="pointe">La pointe des doigts</option>
+                        <option value="pulpe">La pulpe des 3 doigts du milieu</option>
+                        <option value="paume">La paume entière</option>
+                        <option value="pince">Le pouce et l'index</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Zone "oubliée" à inclure absolument ?</label>
+                    <select id="prac-zone">
+                        <option value="" disabled selected>Zone...</option>
+                        <option value="mamelon">Le mamelon</option>
+                        <option value="sillon">Le sillon sous-mammaire</option>
+                        <option value="axillaire">Le creux axillaire (aisselle)</option>
+                    </select>
+                </div>
+            </div>
+
+            <label style="margin:10px 0; display:block; font-weight:bold; color:#b03060;">Mouvements effectués (Cochez les réponses) :</label>
+            <div class="check-group" id="group-mouv">
+                <label class="check-item"><input type="checkbox" value="circulaire"> Circulaire (Spirale)</label>
+                <label class="check-item"><input type="checkbox" value="vertical"> Vertical (Bandelettes)</label>
+                <label class="check-item"><input type="checkbox" value="radial"> Radial (Étoile)</label>
+                <label class="check-item"><input type="checkbox" value="aleatoire"> Aléatoire (Sans ordre)</label>
+            </div>
+
+            <div class="section-title">V. OBSTACLES IDENTIFIÉS (3 principaux)</div>
+            <div class="check-group" id="group-obstacles">
+                <label class="check-item"><input type="checkbox" value="Temps"> Manque de temps</label>
+                <label class="check-item"><input type="checkbox" value="Intimité"> Manque d’intimité</label>
+                <label class="check-item"><input type="checkbox" value="Culture"> Croyances culturelles / Pudeur</label>
+                <label class="check-item"><input type="checkbox" value="Coût"> Coût des examens</label>
+                <label class="check-item"><input type="checkbox" value="Formation"> Manque de formation</label>
+                <label class="check-item"><input type="checkbox" value="Protocole"> Absence de protocole</label>
+            </div>
+
+            <div class="section-title">VI. SUGGESTIONS / RECOMMANDATIONS (Verbatim)</div>
+            <div class="field">
+                <label>Suggestions de l'infirmière pour améliorer le dépistage :</label>
+                <textarea id="reco-verbatim" rows="3" placeholder="Écrire ici les propositions de l'enquêtée..."></textarea>
+            </div>
+
+            <div class="section-title">VII. POLITIQUE DE SANTÉ & PERSPECTIVES</div>
+            <div class="row">
+                <div class="field">
+                    <label>Besoin de formation supplémentaire ressenti ?</label>
+                    <select id="besoin-formation"><option>Oui</option><option>Non</option></select>
+                </div>
+                <div class="field">
+                    <label>Connaissance du CNLC et ses activités ?</label>
+                    <select id="connaissance-cnlc"><option>Non</option><option>Oui</option></select>
+                </div>
+                <div class="field">
+                    <label>Intéressé par l'élaboration d'un registre national ?</label>
+                    <select id="interet-registre"><option>Oui</option><option>Non</option></select>
+                </div>
             </div>
 
             <button type="button" id="save-btn" class="btn-save" onclick="window.saveRecord()">☁️ ENREGISTRER DANS LE CLOUD</button>
@@ -144,17 +426,106 @@
     </div>
 
     <div id="content-2" class="form-content">
-        <div class="section-title">BASE DE DONNÉES (N = <span id="n-total">0</span>)</div>
-        <table id="database-table"><thead><tr><th>Code</th><th>Province</th><th>Savoir %</th><th>Pratique %</th><th>Actions</th></tr></thead><tbody id="database-body"></tbody></table>
+        <div class="section-title">BASE DE DONNÉES EN LIGNE (N = <span id="n-total">0</span>)</div>
+        <button id="btn-delete-multi" class="btn-delete-selected" onclick="window.deleteSelected()">🗑️ Supprimer la sélection</button>
+        <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="select-all" onclick="window.toggleSelectAll(this)"></th>
+                        <th>Code</th><th>Sexe</th><th>Service</th><th>Exp (ans)</th>
+                        <th>Score Savoir (%)</th><th>Score Pratique (%)</th>
+                        <th>Diagnostic</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="database-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="content-3" class="form-content">
+        <div class="section-title">1. ÉVALUATION DES SAVOIRS ET PRATIQUES (Obj. Spécifiques 1 & 3)</div>
+        <div class="row">
+            <div class="stat-card">
+                <div class="stat-title">Niveau de Connaissances (Obj. 1)</div>
+                <div id="graph-savoir"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Qualité de la Pratique (Obj. 3)</div>
+                <div id="graph-pratique"></div>
+            </div>
+        </div>
+
+        <div class="section-title">2. IDENTIFICATION DES ATTITUDES (Obj. Spécifique 2)</div>
+        <div class="stat-card">
+            <div class="stat-title">Répartition des Attitudes face au dépistage</div>
+            <p style="font-size:12px; color:#666; margin-bottom:10px;">Attitude Positive (Score > 3.5/5) vs Attitude Négative/Neutre.</p>
+            <div id="graph-attitudes"></div>
+        </div>
+
+        <div class="section-title">3. FACTEURS ASSOCIÉS (Obj. Spécifique 4)</div>
+        <div class="row">
+            <div class="stat-card">
+                <div class="stat-title">Association : Service vs Pratique</div>
+                <div id="graph-cross-service"></div>
+                <div id="interp-service" class="interpretation-box"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Association : Niveau d'étude vs Pratique</div>
+                <div id="graph-cross-niveau"></div>
+                <div id="interp-niveau" class="interpretation-box"></div>
+            </div>
+        </div>
+
+        <div class="stat-card" style="margin-top:15px;">
+            <div class="stat-title">Facteur Clé : Impact des Connaissances sur la Pratique</div>
+            <div id="graph-correlation"></div>
+            <p style="font-size:12px; color:#666; margin-top:5px;">Vérification de l'hypothèse : "Mieux on connait, mieux on pratique".</p>
+        </div>
+
+        <div class="section-title">4. SYNTHÈSE DES GROUPES</div>
+        <table style="background:#444; color:white; border-radius:8px; overflow:hidden;">
+            <thead>
+                <tr>
+                    <th style="text-align:left; padding:15px;">Groupe d'analyse</th>
+                    <th>Effectif (N)</th>
+                    <th>Attitude Moyenne (/5)</th>
+                    <th>Score Pratique Moyen (%)</th>
+                </tr>
+            </thead>
+            <tbody id="cross-body" style="background:white; color:#333;"></tbody>
+        </table>
+
+        <div class="section-title">5. OBSTACLES IDENTIFIÉS</div>
+        <div id="graph-obstacles-anal"></div>
+    </div>
+
+    <div id="content-4" class="form-content">
+        <div class="section-title">SYNTHÈSE AUTOMATISÉE ET RECOMMANDATIONS</div>
+        <div id="dynamic-report" style="font-size:14px; line-height:1.6; color:#333;"></div>
+        <br><hr><br>
+        <button type="button" class="btn-excel" onclick="window.exportToCSV()">📥 TÉLÉCHARGER LA BASE COMPLÈTE (.CSV)</button>
     </div>
 </div>
 
-<div id="toast">Opération réussie !</div>
+<div id="detailModal" class="modal-overlay" onclick="window.closeModal(event)">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 style="margin:0; color:#b03060;">Détails de la fiche <span id="modal-title-id"></span></h3>
+            <span class="modal-close" onclick="window.closeModalBtn()">&times;</span>
+        </div>
+        <div id="modal-body-content"></div>
+    </div>
+</div>
+
+<div id="toast">Donnée synchronisée !</div>
 
 <script type="module">
+    // 1. IMPORT DES FONCTIONS FIREBASE
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, Timestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
+    // CONFIGURATION FIREBASE
     const firebaseConfig = {
         apiKey: "AlzaSyAdEKZFfinxpHcThi4vh8EMGJ9ZgqchxEl",
         authDomain: "nero-15812.firebaseapp.com",
@@ -164,81 +535,381 @@
         appId: "1:957894727402:web:5c319686c580c23700e993"
     };
 
+    // 2. INITIALISATION
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const surveysCollection = collection(db, "enquetes_rdc_cancer");
 
-    let database = [];
+    let database = []; // Variable locale qui sera mise à jour par le Cloud
     let isAdmin = false;
 
+    // 3. ECOUTE EN TEMPS RÉEL
     onSnapshot(surveysCollection, (snapshot) => {
         database = [];
-        snapshot.forEach(doc => { database.push({ ...doc.data(), firestoreId: doc.id }); });
-        updateUI();
+        snapshot.forEach((doc) => {
+            let data = doc.data();
+            data.firestoreId = doc.id; // On garde l'ID unique du cloud
+            database.push(data);
+        });
+        
+        updateUI(); // Met à jour l'UI dès que les données changent
+        showToast("Données mises à jour depuis le Cloud");
     });
 
-    window.saveRecord = async function() {
-        const btn = document.getElementById('save-btn');
-        btn.disabled = true; btn.innerText = "Traitement...";
+    // 4. FONCTIONS GLOBALES (Accessibles depuis le HTML via window)
+    window.initCodeDropdown = function() {
+        const sel = document.getElementById('code-enquete');
+        sel.innerHTML = "";
+        for(let i=1; i<=200; i++) { 
+            let o = document.createElement('option'); 
+            o.value = "INF-" + i.toString().padStart(3, '0'); 
+            o.text = "Fiche N° " + i; 
+            sel.appendChild(o); 
+        }
+    }
 
-        let r = {
-            id: document.getElementById('code-enquete').value,
-            createdAt: Timestamp.now(),
-            service: document.getElementById('service').value,
-            province: document.getElementById('province').value,
-            q_moleculaire: document.getElementById('q-moleculaire').value,
-            q_her2: document.getElementById('q-her2').value,
-            risques: Array.from(document.querySelectorAll('#group-risques input:checked')).map(i => i.value),
-            signes: Array.from(document.querySelectorAll('#group-signes input:checked')).map(i => i.value),
-            prac_main: document.getElementById('prac-main').value,
-            prac_zone: document.getElementById('prac-zone').value,
-        };
-
-        // Calcul Scores
-        let ptsS = (r.q_moleculaire === "oui" ? 2 : 0) + (r.q_her2 === "oui" ? 2 : 0) + r.risques.length + r.signes.length;
-        r.scoreSavoir = Math.min(100, Math.round((ptsS / 20) * 100));
-        r.scorePratique = (r.prac_main === "pulpe" ? 50 : 0) + (r.prac_zone === "axillaire" ? 50 : 0);
-
-        try {
-            await addDoc(surveysCollection, r);
-            alert("Données sauvegardées !");
-            document.getElementById('kapForm').reset();
-        } catch (e) { alert("Erreur de connexion."); }
-        finally { btn.disabled = false; btn.innerText = "☁️ ENREGISTRER DANS LE CLOUD"; }
-    };
-
+    // AUTHENTIFICATION ADMIN CORRIGÉE
     window.requestAdmin = function() {
-        let code = prompt("Code admin :");
+        if(isAdmin) return; 
+        let code = prompt("Code administrateur :");
         if(code === "1398") {
             isAdmin = true;
-            document.querySelectorAll('.admin-only').forEach(el => el.classList.add('admin-visible'));
+            // On affiche les éléments
+            document.querySelectorAll('.admin-only').forEach(el => {
+                el.classList.add('admin-visible');
+                el.style.display = 'inline-block'; // Force l'affichage inline pour les onglets
+            });
             document.getElementById('btn-auth').style.display = 'none';
+            alert("Connexion Admin réussie. Vous voyez les données en temps réel.");
+            
+            // IMPORTANT : On force la mise à jour des graphiques et on change d'onglet
+            updateUI(); 
+            window.switchTab(2); 
+        } else {
+            alert("Code incorrect !");
         }
     };
 
-    window.updateUI = function() {
-        document.getElementById('count-badge').textContent = database.length;
-        document.getElementById('n-total').textContent = database.length;
-        const tbody = document.getElementById('database-body');
-        tbody.innerHTML = database.map(row => `
-            <tr><td>${row.id}</td><td>${row.province || '-'}</td><td>${row.scoreSavoir}%</td><td>${row.scorePratique}%</td><td><button>👁️</button></td></tr>
-        `).join('');
+    window.saveRecord = async function() {
+        const btn = document.getElementById('save-btn');
+        btn.disabled = true;
+        btn.innerText = "Envoi en cours...";
+
+        // CAPTURE DES DONNÉES INCLUANT LES NOUVEAUX CHAMPS DU PDF
+        let r = {
+            id: document.getElementById('code-enquete').value,
+            createdAt: Timestamp.now(),
+            consentement: document.getElementById('consentement').value,
+            service: document.getElementById('service').value,
+            niveau: document.getElementById('niveau').value,
+            anciennete: document.getElementById('anciennete').value,
+            sexe: document.getElementById('sexe').value,
+            
+            // Nouveaux champs démographiques
+            etat_civil: document.getElementById('etat-civil').value,
+            province: document.getElementById('province').value,
+            cat_pro: document.getElementById('cat-pro').value,
+            age_participant: document.getElementById('age-participant').value,
+
+            // Nouveaux champs connaissances biologiques
+            q_moleculaire: document.getElementById('q-moleculaire').value,
+            q_her2: document.getElementById('q-her2').value,
+            q_therapie: document.getElementById('q-therapie').value,
+            
+            // Nouveaux champs politique
+            besoin_formation: document.getElementById('besoin-formation').value,
+            connaissance_cnlc: document.getElementById('connaissance-cnlc').value,
+            interet_registre: document.getElementById('interet-registre').value,
+
+            q_cause: document.getElementById('q-cause').value,
+            q_age: document.getElementById('q-age-mammo').value,
+            q_aes: document.getElementById('q-moment-aes').value,
+            risques: getCheckedValues('group-risques'),
+            signes: getCheckedValues('group-signes'),
+            mammo_role: document.getElementById('q-mammo-role').value,
+            mammo_freq: document.getElementById('q-mammo-freq').value,
+            att1: parseInt(getRadioValue('att1')),
+            att2: parseInt(getRadioValue('att2')),
+            att3: parseInt(getRadioValue('att3')),
+            att4: parseInt(getRadioValue('att4')), 
+            att5: parseInt(getRadioValue('att5')), 
+            prac_perso: document.getElementById('prac-perso').value,
+            prac_freq: document.getElementById('prac-pro-freq').value,
+            prac_main: document.getElementById('prac-main').value,
+            prac_zone: document.getElementById('prac-zone').value,
+            prac_mouv: getCheckedValues('group-mouv'),
+            obstacles: getCheckedValues('group-obstacles'),
+            reco_verbatim: document.getElementById('reco-verbatim').value
+        };
+
+        // CALCULS DU SCORE SAVOIR (MIS A JOUR AVEC LES NOUVELLES CONNAISSANCES)
+        let ptsS = (r.q_cause === "vrai" ? 1 : 0) + (r.q_age !== "20" ? 1 : 0) + (r.q_aes === "apres" ? 1 : 0);
+        
+        // Bonus pour connaissances pointues (PDF)
+        if(r.q_moleculaire === "oui") ptsS += 1;
+        if(r.q_her2 === "oui") ptsS += 1;
+        if(r.q_therapie === "oui") ptsS += 1;
+
+        // Liste des risques étendue avec le PDF
+        ['age', 'famille', 'alcool', 'obesite', 'menopause', 'graisse', 'contraceptif', 'radiation'].forEach(k => { if(r.risques.includes(k)) ptsS++; });
+        
+        // Liste des signes étendue avec le PDF
+        ['nodule', 'retraction', 'peau', 'ecoulement', 'ulceration', 'poids', 'asymetrie'].forEach(k => { if(r.signes.includes(k)) ptsS++; });
+        
+        if(r.mammo_role === "detecter") ptsS += 2;
+        if(r.mammo_freq === "2") ptsS += 1;
+        
+        // Diviseur ajusté (env. 25 points possibles maintenant) pour garder le %
+        r.scoreSavoir = Math.round((ptsS / 25) * 100);
+
+        // SCORE ATTITUDE
+        let sumAtt = r.att1 + r.att2 + r.att3 + (6-r.att4) + (6-r.att5);
+        r.scoreAttitude = (sumAtt / 5).toFixed(1);
+
+        // SCORE PRATIQUE
+        let ptsP = (r.prac_perso === "mois" ? 3 : 0) + (r.prac_freq === "syst" ? 5 : 0);
+        if(r.prac_main === "pulpe") ptsP += 4;
+        if(r.prac_zone === "axillaire") ptsP += 4;
+        let mv = r.prac_mouv.filter(m => ['circulaire', 'vertical', 'radial'].includes(m)).length;
+        ptsP += (mv >= 2 ? 4 : (mv === 1 ? 2 : 0));
+        r.scorePratique = Math.round((ptsP / 20) * 100);
+
+        try {
+            await addDoc(surveysCollection, r);
+            alert(`Fiche ${r.id} envoyée dans le Cloud avec succès !`);
+            document.getElementById('kapForm').reset();
+            document.getElementById('sexe').value = "F";
+            // Pas besoin d'updateUI, onSnapshot s'en occupe
+        } catch (e) {
+            console.error("Erreur: ", e);
+            alert("Erreur lors de l'envoi. Vérifiez votre connexion internet.");
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "☁️ ENREGISTRER DANS LE CLOUD";
+        }
     };
 
+    window.deleteOne = async function(index) {
+        if(!confirm("Supprimer définitivement cette fiche du Cloud ?")) return;
+        let idToDelete = database[index].firestoreId;
+        try {
+            await deleteDoc(doc(db, "enquetes_rdc_cancer", idToDelete));
+        } catch(e) {
+            alert("Erreur suppression: " + e.message);
+        }
+    };
+
+    window.deleteSelected = async function() {
+        if(!confirm("Supprimer la sélection du Cloud ?")) return;
+        const checkboxes = Array.from(document.querySelectorAll('.row-check'));
+        let promises = [];
+        checkboxes.forEach((cb, idx) => {
+            if(cb.checked) {
+                let idToDelete = database[idx].firestoreId;
+                promises.push(deleteDoc(doc(db, "enquetes_rdc_cancer", idToDelete)));
+            }
+        });
+        await Promise.all(promises);
+    };
+
+    window.viewDetails = function(index) {
+        let d = database[index];
+        document.getElementById('modal-title-id').innerText = d.id;
+        
+        let html = `
+            <div class="sub-title">IDENTITÉ</div>
+            <div class="detail-row"><span class="detail-label">Consentement</span><span class="detail-val">${d.consentement}</span></div>
+            <div class="detail-row"><span class="detail-label">Service</span><span class="detail-val">${d.service}</span></div>
+            <div class="detail-row"><span class="detail-label">Niveau</span><span class="detail-val">${d.niveau}</span></div>
+            <div class="detail-row"><span class="detail-label">Cat. Pro</span><span class="detail-val">${d.cat_pro || '-'}</span></div>
+            <div class="detail-row"><span class="detail-label">Province</span><span class="detail-val">${d.province || '-'}</span></div>
+
+            <div class="sub-title">SCORES</div>
+            <div class="detail-row"><span class="detail-label">Score Savoir</span><span class="detail-val">${d.scoreSavoir}%</span></div>
+            <div class="detail-row"><span class="detail-label">Score Pratique</span><span class="detail-val">${d.scorePratique}%</span></div>
+
+            <div class="sub-title">CONNAISSANCES POINTUES</div>
+            <div class="detail-row"><span class="detail-label">Moléculaire ?</span><span class="detail-val">${d.q_moleculaire}</span></div>
+            <div class="detail-row"><span class="detail-label">HER2 ?</span><span class="detail-val">${d.q_her2}</span></div>
+
+            <div class="sub-title">RÉPONSES DÉTAILLÉES</div>
+            <div class="detail-row"><span class="detail-label">Facteurs Risque Cochés</span><span class="detail-val">${(d.risques||[]).join(', ') || 'Aucun'}</span></div>
+            <div class="detail-row"><span class="detail-label">Signes Alerte Cochés</span><span class="detail-val">${(d.signes||[]).join(', ') || 'Aucun'}</span></div>
+            <div class="detail-row"><span class="detail-label">Obstacles Cités</span><span class="detail-val">${(d.obstacles||[]).join(', ') || 'Aucun'}</span></div>
+            
+            <div class="sub-title">POLITIQUE & FORMATION</div>
+            <div class="detail-row"><span class="detail-label">Connaît CNLC ?</span><span class="detail-val">${d.connaissance_cnlc}</span></div>
+            <div class="detail-row"><span class="detail-label">Veut Registre ?</span><span class="detail-val">${d.interet_registre}</span></div>
+
+            <div class="sub-title">RECOMMANDATIONS DE L'ENQUÊTÉE</div>
+            <div class="detail-val-long">${d.reco_verbatim || "Aucune suggestion."}</div>
+        `;
+        
+        document.getElementById('modal-body-content').innerHTML = html;
+        document.getElementById('detailModal').style.display = 'flex';
+    };
+
+    window.closeModal = function(e) { if(e.target.id === 'detailModal') document.getElementById('detailModal').style.display = 'none'; };
+    window.closeModalBtn = function() { document.getElementById('detailModal').style.display = 'none'; };
+
+    window.toggleSelectAll = function(source) {
+        document.querySelectorAll('.row-check').forEach(cb => cb.checked = source.checked);
+        window.toggleDeleteButton();
+    };
+    
+    window.toggleDeleteButton = function() {
+        const checked = document.querySelectorAll('.row-check:checked').length;
+        document.getElementById('btn-delete-multi').style.display = checked > 0 ? 'block' : 'none';
+    };
+
+    window.updateUI = function() {
+        const count = database.length;
+        document.getElementById('count-badge').textContent = count;
+        document.getElementById('n-total').textContent = count;
+        document.getElementById('select-all').checked = false;
+        window.toggleDeleteButton();
+
+        const tbody = document.getElementById('database-body');
+        tbody.innerHTML = database.map((row, index) => `
+            <tr>
+                <td><input type="checkbox" class="row-check" onclick="window.toggleDeleteButton()"></td>
+                <td><b>${row.id}</b></td><td>${row.sexe}</td><td>${row.service}</td><td>${row.anciennete}</td>
+                <td style="color:${window.getColor(row.scoreSavoir)}">${row.scoreSavoir}%</td>
+                <td style="color:${window.getColor(row.scorePratique)}">${row.scorePratique}%</td>
+                <td>${row.scoreSavoir >= 70 && row.scorePratique >= 70 ? '🟢 Expert' : '🟠 Moyen'}</td>
+                <td>
+                    <button class="btn-view-single" onclick="window.viewDetails(${index})">👁️ Voir</button>
+                    <button class="btn-delete-single" onclick="window.deleteOne(${index})">Effacer</button>
+                </td>
+            </tr>
+        `).join('');
+
+        if(isAdmin) window.updateAnalytics();
+    };
+
+    window.updateAnalytics = function() {
+        if(database.length === 0) return;
+
+        let highS = database.filter(r => r.scoreSavoir >= 60);
+        let lowS = database.filter(r => r.scoreSavoir < 60);
+        window.renderBars('graph-savoir', [
+            {l: 'Connaissances Solides', v: highS.length, t: database.length, c: '#2e7d32'},
+            {l: 'Lacunes Importantes', v: lowS.length, t: database.length, c: '#c62828'}
+        ]);
+
+        let highP = database.filter(r => r.scorePratique >= 70).length;
+        window.renderBars('graph-pratique', [
+            {l: 'Pratique Conforme', v: highP, t: database.length, c: '#1565c0'},
+            {l: 'Pratique Insuffisante', v: database.length - highP, t: database.length, c: '#f57f17'}
+        ]);
+
+        let attPos = database.filter(r => parseFloat(r.scoreAttitude) > 3.5).length;
+        window.renderBars('graph-attitudes', [
+            {l: 'Attitude Positive (>3.5/5)', v: attPos, t: database.length, c: '#43a047'},
+            {l: 'Attitude Mitigée/Négative', v: database.length - attPos, t: database.length, c: '#d81b60'}
+        ]);
+
+        let services = ["Gynécologie-Obstétrique", "Médecine Interne", "Chirurgie", "Urgences / Autre"];
+        let serviceData = services.map(s => {
+            let group = database.filter(r => r.service === s);
+            return { l: s, v: Math.round(window.getAvg(group, 'scorePratique')), t: 100, c: '#8e24aa' };
+        });
+        window.renderBars('graph-cross-service', serviceData);
+        
+        let bestS = serviceData.reduce((prev, curr) => prev.v > curr.v ? prev : curr);
+        document.getElementById('interp-service').innerHTML = `💡 <b>Analyse (Obj 4) :</b> Le service <b>${bestS.l}</b> est un facteur associé à une meilleure pratique (${bestS.v}%).`;
+
+        let niveaux = ["A2 (Secondaire)", "A1 (Gradué)", "A0 (Licencié/Master)"];
+        let niveauData = niveaux.map(n => {
+            let group = database.filter(r => r.niveau === n);
+            return { l: n, v: Math.round(window.getAvg(group, 'scorePratique')), t: 100, c: '#00897b' };
+        });
+        window.renderBars('graph-cross-niveau', niveauData);
+
+        let pracChezHighS = Math.round(window.getAvg(highS, 'scorePratique'));
+        let pracChezLowS = Math.round(window.getAvg(lowS, 'scorePratique'));
+        window.renderBars('graph-correlation', [
+            {l: 'Pratique chez ceux qui SAVENT', v: pracChezHighS, t: 100, c: '#1a237e'},
+            {l: 'Pratique chez ceux qui NE SAVENT PAS', v: pracChezLowS, t: 100, c: '#b71c1c'}
+        ]);
+
+        let obsMap = {};
+        database.forEach(r => (r.obstacles||[]).forEach(o => obsMap[o] = (obsMap[o]||0)+1));
+        document.getElementById('graph-obstacles-anal').innerHTML = Object.entries(obsMap).sort((a,b)=>b[1]-a[1]).map(([k,v]) => {
+            let p = Math.round((v/database.length)*100);
+            return `<div class="bar-container"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:#b03060;">${p}%</div></div><div class="bar-value">${v}</div></div>`;
+        }).join('');
+
+        let avgAttH = window.getAvg(highS, 'scoreAttitude'), avgPracH = window.getAvg(highS, 'scorePratique');
+        let avgAttL = window.getAvg(lowS, 'scoreAttitude'), avgPracL = window.getAvg(lowS, 'scorePratique');
+        document.getElementById('cross-body').innerHTML = `
+            <tr><td style="padding:15px;">Bonnes Connaissances</td><td>${highS.length}</td><td>${avgAttH}</td><td>${avgPracH}%</td></tr>
+            <tr><td style="padding:15px;">Connaissances Faibles</td><td>${lowS.length}</td><td>${avgAttL}</td><td>${avgPracL}%</td></tr>
+        `;
+
+        window.generateDynamicReport(highP, obsMap);
+    };
+
+    window.generateDynamicReport = function(goodPracticeCount, obsMap) {
+        let total = database.length;
+        let pPractice = Math.round((goodPracticeCount/total)*100);
+        let topObstacle = Object.keys(obsMap).sort((a,b) => obsMap[b]-obsMap[a])[0] || "Aucun";
+
+        let report = `<p>Sur un total de <b>${total} participants</b>, l'analyse en temps réel révèle que <b>${pPractice}%</b> du personnel possède une maîtrise pratique satisfaisante de l'examen clinique des seins.</p>`;
+        
+        let recs = "";
+        if(pPractice < 50) {
+            recs += `<div class="reco-box"><div class="reco-title">🔴 PRIORITÉ : FORMATION PRATIQUE</div>Le niveau de compétence pratique est critique (< 50%). Il est urgent d'organiser des ateliers de simulation sur mannequins.</div>`;
+        } else {
+            recs += `<div class="reco-box"><div class="reco-title">🟢 MAINTIEN DES ACQUIS</div>Le niveau pratique est encourageant. Instaurer un mentorat par les pairs pour maintenir ces acquis.</div>`;
+        }
+
+        if(topObstacle === "Temps") {
+            recs += `<div class="reco-box"><div class="reco-title">🟠 ORGANISATION DU TRAVAIL</div>Le manque de temps est l'obstacle majeur. Recommandation : Intégrer le dépistage dans la fiche de prise de paramètres vitaux systématiques.</div>`;
+        } else if (topObstacle === "Formation") {
+             recs += `<div class="reco-box"><div class="reco-title">🔵 BESOIN COGNITIF</div>Le personnel réclame plus de formation. Distribuer des aides-mémoires visuels dans les services.</div>`;
+        }
+        document.getElementById('dynamic-report').innerHTML = report + recs;
+    };
+
+    // UTILS
+    window.getCheckedValues = function(id) { return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value); };
+    window.getRadioValue = function(n) { let e = document.querySelector(`input[name="${n}"]:checked`); return e ? e.value : 0; };
+    window.getColor = function(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); };
+    window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
+    window.renderBars = function(id, data) {
+        document.getElementById(id).innerHTML = data.map(i => {
+            let p = i.t ? Math.round((i.v/i.t)*100) : 0;
+            return `<div class="bar-container"><div class="bar-label">${i.l}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:${i.c}">${p}%</div></div><div class="bar-value">${i.v}</div></div>`;
+        }).join('');
+    };
     window.switchTab = function(i) {
         document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.getElementById('content-'+i).classList.add('active');
         document.querySelectorAll('.tab')[i-1].classList.add('active');
     };
-
-    // Init codes
-    const sel = document.getElementById('code-enquete');
-    for(let i=1; i<=100; i++) { 
-        let o = document.createElement('option'); 
-        o.value = "RDC-"+i; o.text = "Fiche "+i; 
-        sel.appendChild(o); 
+    window.exportToCSV = function() {
+        // En-tête enrichi
+        let h = "ID,Consentement,Sexe,Age,Etat_Civil,Province,Cat_Pro,Savoir(%),Attitude(/5),Pratique(%),CNLC,Recommandations\n";
+        let r = database.map(r => {
+            let cleanReco = (r.reco_verbatim || "").replace(/"/g, '""').replace(/(\r\n|\n|\r)/gm, " ");
+            return `${r.id},${r.consentement},${r.sexe},${r.age_participant},${r.etat_civil},${r.province},${r.cat_pro},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},${r.connaissance_cnlc},"${cleanReco}"`;
+        }).join("\n");
+        let l = document.createElement("a");
+        l.href = "data:text/csv;charset=utf-8," + encodeURI("\ufeff"+h+r);
+        l.download = "Rapport_CAP_Cancer_RDC.csv"; l.click();
+    };
+    
+    function showToast(message) {
+        var x = document.getElementById("toast");
+        x.className = "show";
+        x.innerText = message;
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
+
+    // Lancement
+    window.initCodeDropdown();
 </script>
 </body>
 </html>
