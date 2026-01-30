@@ -2,9 +2,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enquête CAP - Cancer du Sein (HGR Kinshasa - RDC) - Données Simulées</title>
+    <title>Enquête CAP - Cancer du Sein (HGR RDC) - Version Complète</title>
     <style>
-        /* --- STYLE GLOBAL --- */
+        /* --- STYLE GLOBAL (CONSERVÉ INTACT) --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
         .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 900px;}
         
@@ -13,9 +13,7 @@
         .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; transition: 0.2s; }
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
         
-        /* Simulation Mode Badge */
-        .sim-badge { background: #ff9800; color: white; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-left: 10px; }
-
+        /* Sécurité */
         .admin-only { display: none !important; }
         .admin-visible { display: inline-block !important; }
         
@@ -94,12 +92,11 @@
 
 <div class="container">
     <div class="header-tabs">
-        <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">178</span></button>
+        <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">...</span></button>
         <button class="tab admin-only" id="tab-2" onclick="switchTab(2)">2. MATRICE DE DÉPOUILLEMENT</button>
         <button class="tab admin-only" id="tab-3" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE PROTOCOLE</button>
         <button class="tab admin-only" id="tab-4" onclick="switchTab(4)">4. CONCLUSION & RECOMMANDATIONS</button>
         
-        <div class="sim-badge">DATA: KINSHASA (N=178)</div>
         <button type="button" class="btn-auth" id="btn-auth" onclick="window.requestAdmin()">🔒 ACCÈS ADMIN</button>
         <button type="button" class="btn-excel admin-only" id="btn-export" onclick="window.exportToCSV()">📊 EXPORT CSV</button>
     </div>
@@ -524,11 +521,11 @@
 <div id="toast">Donnée synchronisée !</div>
 
 <script type="module">
-    // 1. IMPORT FIREBASE (Maintien de la compatibilité)
+    // 1. IMPORT DES FONCTIONS FIREBASE
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    // Configuration factice pour la simulation si besoin
+    // CONFIGURATION FIREBASE
     const firebaseConfig = {
         apiKey: "AlzaSyAdEKZFfinxpHcThi4vh8EMGJ9ZgqchxEl",
         authDomain: "nero-15812.firebaseapp.com",
@@ -538,102 +535,35 @@
         appId: "1:957894727402:web:5c319686c580c23700e993"
     };
 
+    // 2. INITIALISATION
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    
-    // --- MODE SIMULATION ---
-    // Puisqu'on ne peut pas écrire 178 entrées dans votre Firebase réel sans permission,
-    // on utilise une base locale pré-remplie pour la démonstration.
-    
-    let database = []; 
+    const surveysCollection = collection(db, "enquetes_rdc_cancer");
+
+    let database = []; // Variable locale qui sera mise à jour par le Cloud
     let isAdmin = false;
 
-    // FONCTION DE GÉNÉRATION DES DONNÉES FICTIVES (KINSHASA RDC)
-    window.generateSimulatedData = function() {
-        const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences / Autre'];
-        const niveaux = ['A2 (Secondaire)', 'A1 (Gradué)', 'A1 (Gradué)', 'A0 (Licencié/Master)']; // Plus de A1 car très fréquent
-        const verbatims = [
-            "Il faut multiplier les campagnes à la télévision.",
-            "Les patientes arrivent toujours trop tard, stade avancé.",
-            "Nous manquons de matériel pour les examens corrects.",
-            "Le coût de la mammographie est trop élevé pour les mamans.",
-            "Besoin de formation continue dans nos hôpitaux.",
-            "La pudeur empêche souvent l'examen complet.",
-            "Il faut intégrer l'examen dans la routine prénatale.",
-            "Rien à signaler.",
-            "Le gouvernement doit aider le CNLC.",
-            "Il faut sensibiliser les maris aussi."
-        ];
-
-        let simulatedDB = [];
-
-        for (let i = 1; i <= 178; i++) {
-            // Logique de simulation semi-aléatoire
-            let service = services[Math.floor(Math.random() * services.length)];
-            let niveau = niveaux[Math.floor(Math.random() * niveaux.length)];
-            let age = Math.floor(Math.random() * (60 - 24) + 24);
-            let anciennete = Math.max(1, age - 22);
-            
-            // Influence du service sur le savoir
-            let isGyneco = service === 'Gynécologie-Obstétrique';
-            let baseSavoir = isGyneco ? 60 : 40; 
-            let scoreSavoir = Math.min(100, Math.floor(baseSavoir + Math.random() * 40));
-            
-            // Influence du savoir sur la pratique
-            let scorePratique = Math.min(100, Math.floor((scoreSavoir * 0.7) + Math.random() * 30));
-
-            // Obstacles typiques RDC
-            let obstaclesList = [];
-            if(Math.random() > 0.3) obstaclesList.push("Coût");
-            if(Math.random() > 0.4) obstaclesList.push("Temps");
-            if(Math.random() > 0.6) obstaclesList.push("Formation");
-            if(Math.random() > 0.8) obstaclesList.push("Culture");
-
-            simulatedDB.push({
-                firestoreId: "sim-" + i,
-                id: "INF-KIN-" + i.toString().padStart(3, '0'),
-                consentement: "oui",
-                service: service,
-                niveau: niveau,
-                anciennete: anciennete,
-                sexe: "F",
-                etat_civil: Math.random() > 0.4 ? "Mariée" : "Célibataire",
-                province: "Kinshasa",
-                cat_pro: "Infirmier(e)",
-                age_participant: age,
-                q_moleculaire: Math.random() > 0.8 ? "oui" : "non", // Peu connu
-                q_her2: Math.random() > 0.9 ? "oui" : "non", // Très peu connu
-                connaissance_cnlc: Math.random() > 0.6 ? "oui" : "non",
-                interet_registre: "Oui",
-                scoreSavoir: scoreSavoir,
-                scorePratique: scorePratique,
-                scoreAttitude: (2.5 + Math.random() * 2.5).toFixed(1), // Entre 2.5 et 5
-                obstacles: obstaclesList,
-                risques: ["age", "famille"], // Simplifié pour simu
-                signes: ["nodule", "douleur"], // Simplifié pour simu
-                reco_verbatim: verbatims[Math.floor(Math.random() * verbatims.length)]
-            });
-        }
-        return simulatedDB;
-    };
-
-    // INIT : Charger les données simulées immédiatement
-    database = window.generateSimulatedData();
-    
-    // Simuler le délai de chargement puis afficher
-    setTimeout(() => {
-        window.updateUI();
-        showToast("178 Fiches chargées (Simulation Kinshasa)");
-    }, 500);
+    // 3. ECOUTE EN TEMPS RÉEL
+    onSnapshot(surveysCollection, (snapshot) => {
+        database = [];
+        snapshot.forEach((doc) => {
+            let data = doc.data();
+            data.firestoreId = doc.id; // On garde l'ID unique du cloud
+            database.push(data);
+        });
+        
+        updateUI(); // Met à jour l'UI dès que les données changent
+        showToast("Données mises à jour depuis le Cloud");
+    });
 
     // 4. FONCTIONS GLOBALES (Accessibles depuis le HTML via window)
     window.initCodeDropdown = function() {
         const sel = document.getElementById('code-enquete');
         sel.innerHTML = "";
-        for(let i=179; i<=300; i++) { 
+        for(let i=1; i<=200; i++) { 
             let o = document.createElement('option'); 
-            o.value = "INF-KIN-" + i.toString().padStart(3, '0'); 
-            o.text = "Nouvelle Fiche N° " + i; 
+            o.value = "INF-" + i.toString().padStart(3, '0'); 
+            o.text = "Fiche N° " + i; 
             sel.appendChild(o); 
         }
     }
@@ -641,44 +571,145 @@
     // AUTHENTIFICATION ADMIN CORRIGÉE
     window.requestAdmin = function() {
         if(isAdmin) return; 
-        // CODE SIMPLE POUR LA DEMO : 1234
-        let code = prompt("Code administrateur (Entrez 1234) :");
-        if(code === "1234") {
+        let code = prompt("Code administrateur :");
+        if(code === "1398") {
             isAdmin = true;
+            // On affiche les éléments
             document.querySelectorAll('.admin-only').forEach(el => {
                 el.classList.add('admin-visible');
-                el.style.display = 'inline-block'; 
+                el.style.display = 'inline-block'; // Force l'affichage inline pour les onglets
             });
             document.getElementById('btn-auth').style.display = 'none';
-            alert("Mode Admin Activé : Visualisation des 178 fiches.");
+            alert("Connexion Admin réussie. Vous voyez les données en temps réel.");
             
+            // IMPORTANT : On force la mise à jour des graphiques et on change d'onglet
             updateUI(); 
-            window.switchTab(2); // Aller direct aux données
+            window.switchTab(2); 
         } else {
             alert("Code incorrect !");
         }
     };
 
-    window.saveRecord = function() {
-        alert("En mode simulation, l'ajout est désactivé pour ne pas mélanger les données réelles et fictives.");
-    };
+    window.saveRecord = async function() {
+        const btn = document.getElementById('save-btn');
+        btn.disabled = true;
+        btn.innerText = "Envoi en cours...";
 
-    window.deleteOne = function(index) {
-        if(!confirm("Supprimer cette fiche (Simulation) ?")) return;
-        database.splice(index, 1);
-        updateUI();
-    };
+        // CAPTURE DES DONNÉES INCLUANT LES NOUVEAUX CHAMPS DU PDF
+        let r = {
+            id: document.getElementById('code-enquete').value,
+            createdAt: Timestamp.now(),
+            consentement: document.getElementById('consentement').value,
+            service: document.getElementById('service').value,
+            niveau: document.getElementById('niveau').value,
+            anciennete: document.getElementById('anciennete').value,
+            sexe: document.getElementById('sexe').value,
+            
+            // Nouveaux champs démographiques
+            etat_civil: document.getElementById('etat-civil').value,
+            province: document.getElementById('province').value,
+            cat_pro: document.getElementById('cat-pro').value,
+            age_participant: document.getElementById('age-participant').value,
 
-    window.deleteSelected = function() {
-        if(!confirm("Supprimer la sélection (Simulation) ?")) return;
-        const checkboxes = Array.from(document.querySelectorAll('.row-check'));
-        // On supprime en partant de la fin pour ne pas casser les index
-        for (let i = checkboxes.length - 1; i >= 0; i--) {
-            if (checkboxes[i].checked) {
-                database.splice(i, 1);
-            }
+            // Nouveaux champs connaissances biologiques
+            q_moleculaire: document.getElementById('q-moleculaire').value,
+            q_her2: document.getElementById('q-her2').value,
+            q_therapie: document.getElementById('q-therapie').value,
+            
+            // Nouveaux champs politique
+            besoin_formation: document.getElementById('besoin-formation').value,
+            connaissance_cnlc: document.getElementById('connaissance-cnlc').value,
+            interet_registre: document.getElementById('interet-registre').value,
+
+            q_cause: document.getElementById('q-cause').value,
+            q_age: document.getElementById('q-age-mammo').value,
+            q_aes: document.getElementById('q-moment-aes').value,
+            risques: getCheckedValues('group-risques'),
+            signes: getCheckedValues('group-signes'),
+            mammo_role: document.getElementById('q-mammo-role').value,
+            mammo_freq: document.getElementById('q-mammo-freq').value,
+            att1: parseInt(getRadioValue('att1')),
+            att2: parseInt(getRadioValue('att2')),
+            att3: parseInt(getRadioValue('att3')),
+            att4: parseInt(getRadioValue('att4')), 
+            att5: parseInt(getRadioValue('att5')), 
+            prac_perso: document.getElementById('prac-perso').value,
+            prac_freq: document.getElementById('prac-pro-freq').value,
+            prac_main: document.getElementById('prac-main').value,
+            prac_zone: document.getElementById('prac-zone').value,
+            prac_mouv: getCheckedValues('group-mouv'),
+            obstacles: getCheckedValues('group-obstacles'),
+            reco_verbatim: document.getElementById('reco-verbatim').value
+        };
+
+        // CALCULS DU SCORE SAVOIR (MIS A JOUR AVEC LES NOUVELLES CONNAISSANCES)
+        let ptsS = (r.q_cause === "vrai" ? 1 : 0) + (r.q_age !== "20" ? 1 : 0) + (r.q_aes === "apres" ? 1 : 0);
+        
+        // Bonus pour connaissances pointues (PDF)
+        if(r.q_moleculaire === "oui") ptsS += 1;
+        if(r.q_her2 === "oui") ptsS += 1;
+        if(r.q_therapie === "oui") ptsS += 1;
+
+        // Liste des risques étendue avec le PDF
+        ['age', 'famille', 'alcool', 'obesite', 'menopause', 'graisse', 'contraceptif', 'radiation'].forEach(k => { if(r.risques.includes(k)) ptsS++; });
+        
+        // Liste des signes étendue avec le PDF
+        ['nodule', 'retraction', 'peau', 'ecoulement', 'ulceration', 'poids', 'asymetrie'].forEach(k => { if(r.signes.includes(k)) ptsS++; });
+        
+        if(r.mammo_role === "detecter") ptsS += 2;
+        if(r.mammo_freq === "2") ptsS += 1;
+        
+        // Diviseur ajusté (env. 25 points possibles maintenant) pour garder le %
+        r.scoreSavoir = Math.round((ptsS / 25) * 100);
+
+        // SCORE ATTITUDE
+        let sumAtt = r.att1 + r.att2 + r.att3 + (6-r.att4) + (6-r.att5);
+        r.scoreAttitude = (sumAtt / 5).toFixed(1);
+
+        // SCORE PRATIQUE
+        let ptsP = (r.prac_perso === "mois" ? 3 : 0) + (r.prac_freq === "syst" ? 5 : 0);
+        if(r.prac_main === "pulpe") ptsP += 4;
+        if(r.prac_zone === "axillaire") ptsP += 4;
+        let mv = r.prac_mouv.filter(m => ['circulaire', 'vertical', 'radial'].includes(m)).length;
+        ptsP += (mv >= 2 ? 4 : (mv === 1 ? 2 : 0));
+        r.scorePratique = Math.round((ptsP / 20) * 100);
+
+        try {
+            await addDoc(surveysCollection, r);
+            alert(`Fiche ${r.id} envoyée dans le Cloud avec succès !`);
+            document.getElementById('kapForm').reset();
+            document.getElementById('sexe').value = "F";
+            // Pas besoin d'updateUI, onSnapshot s'en occupe
+        } catch (e) {
+            console.error("Erreur: ", e);
+            alert("Erreur lors de l'envoi. Vérifiez votre connexion internet.");
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "☁️ ENREGISTRER DANS LE CLOUD";
         }
-        updateUI();
+    };
+
+    window.deleteOne = async function(index) {
+        if(!confirm("Supprimer définitivement cette fiche du Cloud ?")) return;
+        let idToDelete = database[index].firestoreId;
+        try {
+            await deleteDoc(doc(db, "enquetes_rdc_cancer", idToDelete));
+        } catch(e) {
+            alert("Erreur suppression: " + e.message);
+        }
+    };
+
+    window.deleteSelected = async function() {
+        if(!confirm("Supprimer la sélection du Cloud ?")) return;
+        const checkboxes = Array.from(document.querySelectorAll('.row-check'));
+        let promises = [];
+        checkboxes.forEach((cb, idx) => {
+            if(cb.checked) {
+                let idToDelete = database[idx].firestoreId;
+                promises.push(deleteDoc(doc(db, "enquetes_rdc_cancer", idToDelete)));
+            }
+        });
+        await Promise.all(promises);
     };
 
     window.viewDetails = function(index) {
@@ -690,20 +721,28 @@
             <div class="detail-row"><span class="detail-label">Consentement</span><span class="detail-val">${d.consentement}</span></div>
             <div class="detail-row"><span class="detail-label">Service</span><span class="detail-val">${d.service}</span></div>
             <div class="detail-row"><span class="detail-label">Niveau</span><span class="detail-val">${d.niveau}</span></div>
-            <div class="detail-row"><span class="detail-label">Age</span><span class="detail-val">${d.age_participant} ans</span></div>
+            <div class="detail-row"><span class="detail-label">Cat. Pro</span><span class="detail-val">${d.cat_pro || '-'}</span></div>
             <div class="detail-row"><span class="detail-label">Province</span><span class="detail-val">${d.province || '-'}</span></div>
 
             <div class="sub-title">SCORES</div>
             <div class="detail-row"><span class="detail-label">Score Savoir</span><span class="detail-val">${d.scoreSavoir}%</span></div>
             <div class="detail-row"><span class="detail-label">Score Pratique</span><span class="detail-val">${d.scorePratique}%</span></div>
-            <div class="detail-row"><span class="detail-label">Attitude</span><span class="detail-val">${d.scoreAttitude}/5</span></div>
 
             <div class="sub-title">CONNAISSANCES POINTUES</div>
             <div class="detail-row"><span class="detail-label">Moléculaire ?</span><span class="detail-val">${d.q_moleculaire}</span></div>
+            <div class="detail-row"><span class="detail-label">HER2 ?</span><span class="detail-val">${d.q_her2}</span></div>
+
+            <div class="sub-title">RÉPONSES DÉTAILLÉES</div>
+            <div class="detail-row"><span class="detail-label">Facteurs Risque Cochés</span><span class="detail-val">${(d.risques||[]).join(', ') || 'Aucun'}</span></div>
+            <div class="detail-row"><span class="detail-label">Signes Alerte Cochés</span><span class="detail-val">${(d.signes||[]).join(', ') || 'Aucun'}</span></div>
+            <div class="detail-row"><span class="detail-label">Obstacles Cités</span><span class="detail-val">${(d.obstacles||[]).join(', ') || 'Aucun'}</span></div>
             
-            <div class="sub-title">OBSTACLES & RECOMMANDATIONS</div>
-            <div class="detail-row"><span class="detail-label">Obstacles</span><span class="detail-val">${(d.obstacles||[]).join(', ') || 'Aucun'}</span></div>
-            <div class="detail-val-long">"${d.reco_verbatim || "Aucune suggestion."}"</div>
+            <div class="sub-title">POLITIQUE & FORMATION</div>
+            <div class="detail-row"><span class="detail-label">Connaît CNLC ?</span><span class="detail-val">${d.connaissance_cnlc}</span></div>
+            <div class="detail-row"><span class="detail-label">Veut Registre ?</span><span class="detail-val">${d.interet_registre}</span></div>
+
+            <div class="sub-title">RECOMMANDATIONS DE L'ENQUÊTÉE</div>
+            <div class="detail-val-long">${d.reco_verbatim || "Aucune suggestion."}</div>
         `;
         
         document.getElementById('modal-body-content').innerHTML = html;
@@ -731,16 +770,13 @@
         window.toggleDeleteButton();
 
         const tbody = document.getElementById('database-body');
-        // Affiche seulement les 50 premiers pour ne pas ralentir le DOM si liste longue
-        let displayData = database.slice(0, 100); 
-        
-        tbody.innerHTML = displayData.map((row, index) => `
+        tbody.innerHTML = database.map((row, index) => `
             <tr>
                 <td><input type="checkbox" class="row-check" onclick="window.toggleDeleteButton()"></td>
                 <td><b>${row.id}</b></td><td>${row.sexe}</td><td>${row.service}</td><td>${row.anciennete}</td>
                 <td style="color:${window.getColor(row.scoreSavoir)}">${row.scoreSavoir}%</td>
                 <td style="color:${window.getColor(row.scorePratique)}">${row.scorePratique}%</td>
-                <td>${row.scoreSavoir >= 70 && row.scorePratique >= 70 ? '🟢 Expert' : (row.scorePratique < 50 ? '🔴 Critique' : '🟠 Moyen')}</td>
+                <td>${row.scoreSavoir >= 70 && row.scorePratique >= 70 ? '🟢 Expert' : '🟠 Moyen'}</td>
                 <td>
                     <button class="btn-view-single" onclick="window.viewDetails(${index})">👁️ Voir</button>
                     <button class="btn-delete-single" onclick="window.deleteOne(${index})">Effacer</button>
@@ -757,8 +793,8 @@
         let highS = database.filter(r => r.scoreSavoir >= 60);
         let lowS = database.filter(r => r.scoreSavoir < 60);
         window.renderBars('graph-savoir', [
-            {l: 'Connaissances Solides (>60%)', v: highS.length, t: database.length, c: '#2e7d32'},
-            {l: 'Lacunes Importantes (<60%)', v: lowS.length, t: database.length, c: '#c62828'}
+            {l: 'Connaissances Solides', v: highS.length, t: database.length, c: '#2e7d32'},
+            {l: 'Lacunes Importantes', v: lowS.length, t: database.length, c: '#c62828'}
         ]);
 
         let highP = database.filter(r => r.scorePratique >= 70).length;
@@ -776,13 +812,12 @@
         let services = ["Gynécologie-Obstétrique", "Médecine Interne", "Chirurgie", "Urgences / Autre"];
         let serviceData = services.map(s => {
             let group = database.filter(r => r.service === s);
-            let avg = window.getAvg(group, 'scorePratique');
-            return { l: s, v: Math.round(avg), t: 100, c: '#8e24aa' };
+            return { l: s, v: Math.round(window.getAvg(group, 'scorePratique')), t: 100, c: '#8e24aa' };
         });
         window.renderBars('graph-cross-service', serviceData);
         
         let bestS = serviceData.reduce((prev, curr) => prev.v > curr.v ? prev : curr);
-        document.getElementById('interp-service').innerHTML = `💡 <b>Analyse (Obj 4) :</b> Le service <b>${bestS.l}</b> est un facteur associé à une meilleure pratique (${bestS.v}%). Cela confirme l'hypothèse de l'exposition clinique.`;
+        document.getElementById('interp-service').innerHTML = `💡 <b>Analyse (Obj 4) :</b> Le service <b>${bestS.l}</b> est un facteur associé à une meilleure pratique (${bestS.v}%).`;
 
         let niveaux = ["A2 (Secondaire)", "A1 (Gradué)", "A0 (Licencié/Master)"];
         let niveauData = niveaux.map(n => {
@@ -820,7 +855,7 @@
         let pPractice = Math.round((goodPracticeCount/total)*100);
         let topObstacle = Object.keys(obsMap).sort((a,b) => obsMap[b]-obsMap[a])[0] || "Aucun";
 
-        let report = `<p>Sur un total de <b>${total} participants</b> (Province de Kinshasa), l'analyse en temps réel révèle que <b>${pPractice}%</b> du personnel possède une maîtrise pratique satisfaisante de l'examen clinique des seins.</p>`;
+        let report = `<p>Sur un total de <b>${total} participants</b>, l'analyse en temps réel révèle que <b>${pPractice}%</b> du personnel possède une maîtrise pratique satisfaisante de l'examen clinique des seins.</p>`;
         
         let recs = "";
         if(pPractice < 50) {
@@ -829,8 +864,8 @@
             recs += `<div class="reco-box"><div class="reco-title">🟢 MAINTIEN DES ACQUIS</div>Le niveau pratique est encourageant. Instaurer un mentorat par les pairs pour maintenir ces acquis.</div>`;
         }
 
-        if(topObstacle === "Coût") {
-            recs += `<div class="reco-box"><div class="reco-title">💰 BARRIÈRE FINANCIÈRE</div>Le coût est l'obstacle majeur cité par les infirmières. Recommandation : Plaider pour la gratuité du dépistage lors d'Octobre Rose.</div>`;
+        if(topObstacle === "Temps") {
+            recs += `<div class="reco-box"><div class="reco-title">🟠 ORGANISATION DU TRAVAIL</div>Le manque de temps est l'obstacle majeur. Recommandation : Intégrer le dépistage dans la fiche de prise de paramètres vitaux systématiques.</div>`;
         } else if (topObstacle === "Formation") {
              recs += `<div class="reco-box"><div class="reco-title">🔵 BESOIN COGNITIF</div>Le personnel réclame plus de formation. Distribuer des aides-mémoires visuels dans les services.</div>`;
         }
@@ -838,6 +873,8 @@
     };
 
     // UTILS
+    window.getCheckedValues = function(id) { return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value); };
+    window.getRadioValue = function(n) { let e = document.querySelector(`input[name="${n}"]:checked`); return e ? e.value : 0; };
     window.getColor = function(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); };
     window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
     window.renderBars = function(id, data) {
@@ -853,15 +890,15 @@
         document.querySelectorAll('.tab')[i-1].classList.add('active');
     };
     window.exportToCSV = function() {
-        let h = "ID,Consentement,Sexe,Age,Etat_Civil,Province,Service,Niveau,Savoir(%),Attitude(/5),Pratique(%),Obstacles,Recommandations\n";
+        // En-tête enrichi
+        let h = "ID,Consentement,Sexe,Age,Etat_Civil,Province,Cat_Pro,Savoir(%),Attitude(/5),Pratique(%),CNLC,Recommandations\n";
         let r = database.map(r => {
             let cleanReco = (r.reco_verbatim || "").replace(/"/g, '""').replace(/(\r\n|\n|\r)/gm, " ");
-            let obs = (r.obstacles || []).join(";");
-            return `${r.id},${r.consentement},${r.sexe},${r.age_participant},${r.etat_civil},${r.province},${r.service},${r.niveau},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},"${obs}","${cleanReco}"`;
+            return `${r.id},${r.consentement},${r.sexe},${r.age_participant},${r.etat_civil},${r.province},${r.cat_pro},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},${r.connaissance_cnlc},"${cleanReco}"`;
         }).join("\n");
         let l = document.createElement("a");
         l.href = "data:text/csv;charset=utf-8," + encodeURI("\ufeff"+h+r);
-        l.download = "Rapport_CAP_Kinshasa_Simul_178.csv"; l.click();
+        l.download = "Rapport_CAP_Cancer_RDC.csv"; l.click();
     };
     
     function showToast(message) {
@@ -871,6 +908,7 @@
         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
 
+    // Lancement
     window.initCodeDropdown();
 </script>
 </body>
