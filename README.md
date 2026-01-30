@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enquête CAP - Cancer du Sein (HGR RDC) - Version Cloud Complète</title>
+    <title>Enquête CAP - Cancer du Sein (HGR RDC) - Version Complète</title>
     <style>
-        /* --- STYLE GLOBAL (IDENTIQUE CODE 2) --- */
+        /* --- STYLE GLOBAL (CONSERVÉ INTACT) --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
         .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 900px;}
         
@@ -14,9 +14,9 @@
         .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; transition: 0.2s; }
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
         
-        /* Sécurité - Caché par défaut */
-        .admin-only { display: none !important; } /* Force le masquage */
-        .admin-visible { display: inline-block !important; } /* Classe pour afficher */
+        /* Sécurité */
+        .admin-only { display: none !important; }
+        .admin-visible { display: inline-block !important; }
         
         .btn-auth { margin-left: auto; background: #333; color: white; padding: 10px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
         .btn-excel { background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-left: 10px;}
@@ -113,7 +113,7 @@
                 <div class="field">
                     <label style="color:#b03060;">2. Consentement Éclairé</label>
                     <select id="consentement">
-                        <option value="oui">Oui, a accepté de participer</option>
+                        [span_0](start_span)<option value="oui">Oui, a accepté de participer[span_0](end_span)</option>
                         <option value="non">Non (Refus)</option>
                     </select>
                 </div>
@@ -143,14 +143,74 @@
                     <input type="number" id="anciennete" min="0" placeholder="Ex: 5">
                 </div>
                 <div class="field">
-                    <label>6. Sexe</label>
+                    <label>6. [span_1](start_span)Sexe[span_1](end_span)</label>
                     <select id="sexe">
                         <option value="F" selected>F (Féminin)</option>
                     </select>
                 </div>
             </div>
 
+            <div class="row" style="background:#f9f9f9; padding:10px; border-radius:6px; border:1px dashed #ccc;">
+                <div class="field">
+                    [span_2](start_span)<label>État Civil[span_2](end_span)</label>
+                    <select id="etat-civil">
+                        <option value="" disabled selected>Choisir...</option>
+                        <option>Célibataire</option>
+                        <option>Mariée</option>
+                        <option>Divorcée</option>
+                        <option>Veuve</option>
+                    </select>
+                </div>
+                <div class="field">
+                    [span_3](start_span)<label>Province d'exercice[span_3](end_span)</label>
+                    <select id="province">
+                        <option value="" disabled selected>Choisir...</option>
+                        <option>Kinshasa</option>
+                        <option>Kongo Central</option>
+                        <option>Haut-Katanga</option>
+                        <option>Nord/Sud Kivu</option>
+                        <option>Autre Province (Voir PDF)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Catégorie Pro. [span_4](start_span)Précise[span_4](end_span)</label>
+                    <select id="cat-pro">
+                        <option value="" disabled selected>Choisir...</option>
+                        <option>Médecin Généraliste</option>
+                        <option>Spécialiste / Résident</option>
+                        <option>Infirmier(e)</option>
+                        <option>Autre professionnel santé</option>
+                    </select>
+                </div>
+                 <div class="field">
+                    [span_5](start_span)<label>Âge du participant[span_5](end_span)</label>
+                    <input type="number" id="age-participant" placeholder="Ex: 30">
+                </div>
+            </div>
+
             <div class="section-title">II. CONNAISSANCES (SAVOIRS THÉORIQUES)</div>
+
+            [span_6](start_span)[span_7](start_span)<div class="sub-title">Connaissances Biologiques & Types[span_6](end_span)[span_7](end_span)</div>
+            <div class="row" style="background:#f0f8ff; padding:10px; border-radius:6px;">
+                <div class="field">
+                    [span_8](start_span)<label>Avez-vous entendu parler de la classification moléculaire ?[span_8](end_span)</label>
+                    <select id="q-moleculaire">
+                        <option value="non">Non</option><option value="oui">Oui</option>
+                    </select>
+                </div>
+                <div class="field">
+                    [span_9](start_span)<label>Connaissez-vous le terme "HER2 Low" ou "Faible" ?[span_9](end_span)</label>
+                    <select id="q-her2">
+                        <option value="non">Non</option><option value="oui">Oui</option>
+                    </select>
+                </div>
+                <div class="field">
+                    [span_10](start_span)<label>Connaissez-vous les thérapies ciblées ?[span_10](end_span)</label>
+                    <select id="q-therapie">
+                        <option value="non">Non</option><option value="oui">Oui</option>
+                    </select>
+                </div>
+            </div>
             
             <div class="sub-title">7. Épidémiologie & Dépistage</div>
             <div class="row">
@@ -164,7 +224,7 @@
                     </select>
                 </div>
                 <div class="field">
-                    <label>Âge recommandé 1ère mammographie :</label>
+                    [span_11](start_span)<label>Âge recommandé 1ère mammographie :[span_11](end_span)</label>
                     <select id="q-age-mammo">
                         <option value="" disabled selected>Âge...</option>
                         <option value="20">Dès 20 ans</option>
@@ -173,7 +233,7 @@
                     </select>
                 </div>
                 <div class="field">
-                    <label>Moment idéal pour Auto-Examen (AES) :</label>
+                    [span_12](start_span)<label>Moment idéal pour Auto-Examen (AES) :[span_12](end_span)</label>
                     <select id="q-moment-aes">
                         <option value="" disabled selected>Moment...</option>
                         <option value="regles">Pendant les règles</option>
@@ -183,30 +243,37 @@
                 </div>
             </div>
 
-            <div class="sub-title">8. Facteurs de risque (Cochez ceux prouvés scientifiquement)</div>
+            <div class="sub-title">8. Facteurs de risque (Cochez ceux prouvés)</div>
             <div class="check-group" id="group-risques">
-                <label class="check-item"><input type="checkbox" value="age"> Âge avancé (>50 ans)</label>
-                <label class="check-item"><input type="checkbox" value="multi"> Multiparité (NB: Risque faible/Protecteur)</label>
-                <label class="check-item"><input type="checkbox" value="famille"> Antécédents familiaux</label>
-                <label class="check-item"><input type="checkbox" value="alcool"> Alcool / Tabac</label>
-                <label class="check-item"><input type="checkbox" value="obesite"> Obésité et sédentarité</label>
-                <label class="check-item"><input type="checkbox" value="allaitement"> Allaitement prolongé (NB: Protecteur)</label>
-                <label class="check-item"><input type="checkbox" value="menopause"> Ménopause tardive (>55 ans)</label>
+                [span_13](start_span)<label class="check-item"><input type="checkbox" value="age"> Âge avancé (>50 ans)[span_13](end_span)</label>
+                <label class="check-item"><input type="checkbox" value="multi"> Multiparité</label>
+                [span_14](start_span)<label class="check-item"><input type="checkbox" value="famille"> Antécédents familiaux[span_14](end_span)</label>
+                [span_15](start_span)<label class="check-item"><input type="checkbox" value="alcool"> Alcool / Tabac[span_15](end_span)</label>
+                [span_16](start_span)<label class="check-item"><input type="checkbox" value="obesite"> Obésité et sédentarité[span_16](end_span)</label>
+                <label class="check-item"><input type="checkbox" value="allaitement"> Allaitement prolongé</label>
+                [span_17](start_span)<label class="check-item"><input type="checkbox" value="menopause"> Ménopause tardive (>55 ans)[span_17](end_span)</label>
+                [span_18](start_span)<label class="check-item"><input type="checkbox" value="graisse"> Régime riche en graisses[span_18](end_span)</label>
+                [span_19](start_span)<label class="check-item"><input type="checkbox" value="contraceptif"> Prise de contraceptifs oraux[span_19](end_span)</label>
+                [span_20](start_span)<label class="check-item"><input type="checkbox" value="gros_seins"> Avoir des gros seins[span_20](end_span)</label>
+                [span_21](start_span)<label class="check-item"><input type="checkbox" value="radiation"> Exposition rayons radioactifs[span_21](end_span)</label>
             </div>
 
             <div class="sub-title">9. Signes d’alerte</div>
             <div class="check-group" id="group-signes">
-                <label class="check-item"><input type="checkbox" value="nodule"> Nodule dur et indolore</label>
-                <label class="check-item"><input type="checkbox" value="retraction"> Rétraction du mamelon</label>
+                [span_22](start_span)<label class="check-item"><input type="checkbox" value="nodule"> Nodule dur et indolore[span_22](end_span)</label>
+                [span_23](start_span)<label class="check-item"><input type="checkbox" value="retraction"> Rétraction du mamelon[span_23](end_span)</label>
                 <label class="check-item"><input type="checkbox" value="peau"> Aspect peau d’orange</label>
-                <label class="check-item"><input type="checkbox" value="ecoulement"> Écoulement mamelonnaire</label>
-                <label class="check-item"><input type="checkbox" value="douleur"> Douleur cyclique (Souvent bénin)</label>
+                [span_24](start_span)<label class="check-item"><input type="checkbox" value="ecoulement"> Écoulement mamelonnaire[span_24](end_span)</label>
+                [span_25](start_span)<label class="check-item"><input type="checkbox" value="douleur"> Douleur cyclique[span_25](end_span)</label>
+                [span_26](start_span)<label class="check-item"><input type="checkbox" value="ulceration"> Ulcération au niveau du sein[span_26](end_span)</label>
+                [span_27](start_span)<label class="check-item"><input type="checkbox" value="poids"> Diminution du poids inexpliquée[span_27](end_span)</label>
+                [span_28](start_span)<label class="check-item"><input type="checkbox" value="asymetrie"> Modification forme / Asymétrie[span_28](end_span)</label>
             </div>
 
             <div class="sub-title">10-14. Connaissance Mammographie</div>
             <div class="row">
                 <div class="field">
-                    <label>La mammographie est importante pour détection précoce :</label>
+                    [span_29](start_span)<label>La mammographie est importante pour détection précoce :[span_29](end_span)</label>
                     <select id="q-mammo-imp">
                         <option value="" disabled selected>Réponse...</option>
                         <option>Oui</option><option>Non</option><option>Je ne sais pas</option>
@@ -222,7 +289,7 @@
                     </select>
                 </div>
                 <div class="field">
-                    <label>Fréquence (Femme sans risque) :</label>
+                    [span_30](start_span)<label>Fréquence (Femme sans risque) :[span_30](end_span)</label>
                     <select id="q-mammo-freq">
                         <option value="" disabled selected>Fréquence...</option>
                         <option value="1">Tous les ans</option>
@@ -273,7 +340,7 @@
             
             <div class="row">
                 <div class="field">
-                    <label>15. Pratique personnelle (AES sur vous) :</label>
+                    <label>15. [span_31](start_span)Pratique personnelle (AES sur vous) :[span_31](end_span)</label>
                     <select id="prac-perso">
                         <option value="" disabled selected>Fréquence...</option>
                         <option value="mois">Tous les mois</option>
@@ -282,7 +349,7 @@
                     </select>
                 </div>
                 <div class="field">
-                    <label>16. Examen des patientes (Fréquence) :</label>
+                    <label>16. [span_32](start_span)Examen des patientes (Fréquence) :[span_32](end_span)</label>
                     <select id="prac-pro-freq">
                         <option value="" disabled selected>Fréquence...</option>
                         <option value="syst">Systématiquement</option>
@@ -292,7 +359,7 @@
                 </div>
             </div>
 
-            <div class="sub-title">Technique de Palpation</div>
+            [span_33](start_span)<div class="sub-title">Technique de Palpation[span_33](end_span)</div>
             <div class="row">
                 <div class="field">
                     <label>Partie de la main utilisée ?</label>
@@ -305,7 +372,7 @@
                     </select>
                 </div>
                 <div class="field">
-                    <label>Zone "oubliée" à inclure absolument ?</label>
+                    [span_34](start_span)<label>Zone "oubliée" à inclure absolument ?[span_34](end_span)</label>
                     <select id="prac-zone">
                         <option value="" disabled selected>Zone...</option>
                         <option value="mamelon">Le mamelon</option>
@@ -333,10 +400,26 @@
                 <label class="check-item"><input type="checkbox" value="Protocole"> Absence de protocole</label>
             </div>
 
-            <div class="section-title">VI. SUGGESTIONS / RECOMMANDATIONS (Verbatim)</div>
+            <div class="section-title">VI. [span_35](start_span)SUGGESTIONS / RECOMMANDATIONS (Verbatim)[span_35](end_span)</div>
             <div class="field">
                 <label>Suggestions de l'infirmière pour améliorer le dépistage :</label>
                 <textarea id="reco-verbatim" rows="3" placeholder="Écrire ici les propositions de l'enquêtée..."></textarea>
+            </div>
+
+            <div class="section-title">VII. [span_36](start_span)[span_37](start_span)POLITIQUE DE SANTÉ & PERSPECTIVES[span_36](end_span)[span_37](end_span)</div>
+            <div class="row">
+                <div class="field">
+                    [span_38](start_span)<label>Besoin de formation supplémentaire ressenti ?[span_38](end_span)</label>
+                    <select id="besoin-formation"><option>Oui</option><option>Non</option></select>
+                </div>
+                <div class="field">
+                    [span_39](start_span)<label>Connaissance du CNLC et ses activités ?[span_39](end_span)</label>
+                    <select id="connaissance-cnlc"><option>Non</option><option>Oui</option></select>
+                </div>
+                <div class="field">
+                    [span_40](start_span)<label>Intéressé par l'élaboration d'un registre national ?[span_40](end_span)</label>
+                    <select id="interet-registre"><option>Oui</option><option>Non</option></select>
+                </div>
             </div>
 
             <button type="button" id="save-btn" class="btn-save" onclick="window.saveRecord()">☁️ ENREGISTRER DANS LE CLOUD</button>
@@ -513,6 +596,7 @@
         btn.disabled = true;
         btn.innerText = "Envoi en cours...";
 
+        // CAPTURE DES DONNÉES INCLUANT LES NOUVEAUX CHAMPS DU PDF
         let r = {
             id: document.getElementById('code-enquete').value,
             createdAt: Timestamp.now(),
@@ -521,6 +605,23 @@
             niveau: document.getElementById('niveau').value,
             anciennete: document.getElementById('anciennete').value,
             sexe: document.getElementById('sexe').value,
+            
+            // Nouveaux champs démographiques
+            etat_civil: document.getElementById('etat-civil').value,
+            province: document.getElementById('province').value,
+            cat_pro: document.getElementById('cat-pro').value,
+            age_participant: document.getElementById('age-participant').value,
+
+            // Nouveaux champs connaissances biologiques
+            q_moleculaire: document.getElementById('q-moleculaire').value,
+            q_her2: document.getElementById('q-her2').value,
+            q_therapie: document.getElementById('q-therapie').value,
+            
+            // Nouveaux champs politique
+            besoin_formation: document.getElementById('besoin-formation').value,
+            connaissance_cnlc: document.getElementById('connaissance-cnlc').value,
+            interet_registre: document.getElementById('interet-registre').value,
+
             q_cause: document.getElementById('q-cause').value,
             q_age: document.getElementById('q-age-mammo').value,
             q_aes: document.getElementById('q-moment-aes').value,
@@ -542,17 +643,31 @@
             reco_verbatim: document.getElementById('reco-verbatim').value
         };
 
-        // Calculs
+        // CALCULS DU SCORE SAVOIR (MIS A JOUR AVEC LES NOUVELLES CONNAISSANCES)
         let ptsS = (r.q_cause === "vrai" ? 1 : 0) + (r.q_age !== "20" ? 1 : 0) + (r.q_aes === "apres" ? 1 : 0);
-        ['age', 'famille', 'alcool', 'obesite', 'menopause'].forEach(k => { if(r.risques.includes(k)) ptsS++; });
-        ['nodule', 'retraction', 'peau', 'ecoulement'].forEach(k => { if(r.signes.includes(k)) ptsS++; });
+        
+        // Bonus pour connaissances pointues (PDF)
+        if(r.q_moleculaire === "oui") ptsS += 1;
+        if(r.q_her2 === "oui") ptsS += 1;
+        if(r.q_therapie === "oui") ptsS += 1;
+
+        // Liste des risques étendue avec le PDF
+        ['age', 'famille', 'alcool', 'obesite', 'menopause', 'graisse', 'contraceptif', 'radiation'].forEach(k => { if(r.risques.includes(k)) ptsS++; });
+        
+        // Liste des signes étendue avec le PDF
+        ['nodule', 'retraction', 'peau', 'ecoulement', 'ulceration', 'poids', 'asymetrie'].forEach(k => { if(r.signes.includes(k)) ptsS++; });
+        
         if(r.mammo_role === "detecter") ptsS += 2;
         if(r.mammo_freq === "2") ptsS += 1;
-        r.scoreSavoir = Math.round((ptsS / 15) * 100);
+        
+        // Diviseur ajusté (env. 25 points possibles maintenant) pour garder le %
+        r.scoreSavoir = Math.round((ptsS / 25) * 100);
 
+        // SCORE ATTITUDE
         let sumAtt = r.att1 + r.att2 + r.att3 + (6-r.att4) + (6-r.att5);
         r.scoreAttitude = (sumAtt / 5).toFixed(1);
 
+        // SCORE PRATIQUE
         let ptsP = (r.prac_perso === "mois" ? 3 : 0) + (r.prac_freq === "syst" ? 5 : 0);
         if(r.prac_main === "pulpe") ptsP += 4;
         if(r.prac_zone === "axillaire") ptsP += 4;
@@ -607,17 +722,26 @@
             <div class="detail-row"><span class="detail-label">Consentement</span><span class="detail-val">${d.consentement}</span></div>
             <div class="detail-row"><span class="detail-label">Service</span><span class="detail-val">${d.service}</span></div>
             <div class="detail-row"><span class="detail-label">Niveau</span><span class="detail-val">${d.niveau}</span></div>
-            <div class="detail-row"><span class="detail-label">Ancienneté</span><span class="detail-val">${d.anciennete} ans</span></div>
+            <div class="detail-row"><span class="detail-label">Cat. Pro</span><span class="detail-val">${d.cat_pro || '-'}</span></div>
+            <div class="detail-row"><span class="detail-label">Province</span><span class="detail-val">${d.province || '-'}</span></div>
 
             <div class="sub-title">SCORES</div>
             <div class="detail-row"><span class="detail-label">Score Savoir</span><span class="detail-val">${d.scoreSavoir}%</span></div>
             <div class="detail-row"><span class="detail-label">Score Pratique</span><span class="detail-val">${d.scorePratique}%</span></div>
+
+            <div class="sub-title">CONNAISSANCES POINTUES</div>
+            <div class="detail-row"><span class="detail-label">Moléculaire ?</span><span class="detail-val">${d.q_moleculaire}</span></div>
+            <div class="detail-row"><span class="detail-label">HER2 ?</span><span class="detail-val">${d.q_her2}</span></div>
 
             <div class="sub-title">RÉPONSES DÉTAILLÉES</div>
             <div class="detail-row"><span class="detail-label">Facteurs Risque Cochés</span><span class="detail-val">${(d.risques||[]).join(', ') || 'Aucun'}</span></div>
             <div class="detail-row"><span class="detail-label">Signes Alerte Cochés</span><span class="detail-val">${(d.signes||[]).join(', ') || 'Aucun'}</span></div>
             <div class="detail-row"><span class="detail-label">Obstacles Cités</span><span class="detail-val">${(d.obstacles||[]).join(', ') || 'Aucun'}</span></div>
             
+            <div class="sub-title">POLITIQUE & FORMATION</div>
+            <div class="detail-row"><span class="detail-label">Connaît CNLC ?</span><span class="detail-val">${d.connaissance_cnlc}</span></div>
+            <div class="detail-row"><span class="detail-label">Veut Registre ?</span><span class="detail-val">${d.interet_registre}</span></div>
+
             <div class="sub-title">RECOMMANDATIONS DE L'ENQUÊTÉE</div>
             <div class="detail-val-long">${d.reco_verbatim || "Aucune suggestion."}</div>
         `;
@@ -767,10 +891,11 @@
         document.querySelectorAll('.tab')[i-1].classList.add('active');
     };
     window.exportToCSV = function() {
-        let h = "ID,Consentement,Sexe,Service,Savoir(%),Attitude(/5),Pratique(%),Recommandations\n";
+        // En-tête enrichi
+        let h = "ID,Consentement,Sexe,Age,Etat_Civil,Province,Cat_Pro,Savoir(%),Attitude(/5),Pratique(%),CNLC,Recommandations\n";
         let r = database.map(r => {
             let cleanReco = (r.reco_verbatim || "").replace(/"/g, '""').replace(/(\r\n|\n|\r)/gm, " ");
-            return `${r.id},${r.consentement},${r.sexe},${r.service},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},"${cleanReco}"`;
+            return `${r.id},${r.consentement},${r.sexe},${r.age_participant},${r.etat_civil},${r.province},${r.cat_pro},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},${r.connaissance_cnlc},"${cleanReco}"`;
         }).join("\n");
         let l = document.createElement("a");
         l.href = "data:text/csv;charset=utf-8," + encodeURI("\ufeff"+h+r);
