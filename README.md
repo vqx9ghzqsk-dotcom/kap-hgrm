@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -59,6 +58,8 @@
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; justify-content: center; align-items: center; }
         .modal-content { background: white; width: 80%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 25px; border-radius: 12px; }
+        .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; }
+        .detail-label { font-weight: bold; }
         
         #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
@@ -299,27 +300,20 @@
     };
 
     // --- INITIALISATION CLOUD ---
-    // Vérifie si le cloud est vide, si oui, injecte les 178 fiches
     async function checkAndSeedDatabase() {
         const q = query(kapCollection, limit(1));
         const snapshot = await getDocs(q);
         if (snapshot.empty) {
             console.log("Cloud vide. Synchronisation des 178 fiches...");
             const initialData = window.generateSimulatedData();
-            for (const record of initialData) {
-                await addDoc(kapCollection, record);
-            }
+            for (const record of initialData) { await addDoc(kapCollection, record); }
             showToast("Cloud initialisé avec 178 fiches.");
         }
     }
 
-    // Écoute en temps réel du Cloud
+    // Écoute en temps réel
     onSnapshot(kapCollection, (snapshot) => {
-        database = snapshot.docs.map(doc => ({
-            firestoreId: doc.id,
-            ...doc.data()
-        }));
-        // Tri par code
+        database = snapshot.docs.map(doc => ({ firestoreId: doc.id, ...doc.data() }));
         database.sort((a, b) => b.id.localeCompare(a.id));
         window.updateUI();
         window.initCodeDropdown();
@@ -342,20 +336,18 @@
 
     window.saveRecord = async function() {
         const btn = document.getElementById('save-btn');
-        btn.disabled = true;
-        btn.innerText = "⏳ SYNCHRONISATION...";
+        btn.disabled = true; btn.innerText = "⏳ SYNCHRONISATION...";
 
         const niveau = document.getElementById('niveau').value;
         const service = document.getElementById('service').value;
 
         if(!niveau || !service) {
             alert("Veuillez remplir le Service et le Niveau.");
-            btn.disabled = false;
-            btn.innerText = "☁️ ENREGISTRER DANS LE CLOUD";
+            btn.disabled = false; btn.innerText = "☁️ ENREGISTRER DANS LE CLOUD";
             return;
         }
 
-        // Calculs automatiques
+        // Calculs automatiques des scores
         let sSavoir = (document.getElementById('q-cause').value === 'vrai' ? 50 : 10) + (document.querySelectorAll('#group-risques input:checked').length * 10);
         let sPratique = (document.getElementById('prac-pro-freq').value === 'syst' ? 60 : 20);
 
@@ -382,8 +374,7 @@
         } catch (e) {
             alert("Erreur Cloud.");
         } finally {
-            btn.disabled = false;
-            btn.innerText = "☁️ ENREGISTRER DANS LE CLOUD";
+            btn.disabled = false; btn.innerText = "☁️ ENREGISTRER DANS LE CLOUD";
         }
     };
 
