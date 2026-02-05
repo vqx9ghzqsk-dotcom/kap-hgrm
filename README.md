@@ -246,7 +246,7 @@
                 </div>
             </div>
 
-            <div class="sub-title">8. Facteurs de risque (Cochez ceux prouvés)</div>
+            <div class="sub-title">8. Facteurs de risque</div>
             <div class="check-group" id="group-risques">
                 <label class="check-item"><input type="checkbox" value="age"> Âge avancé (>50 ans)</label>
                 <label class="check-item"><input type="checkbox" value="multi"> Multiparité</label>
@@ -276,7 +276,7 @@
             <div class="sub-title">10-14. Connaissance Mammographie</div>
             <div class="row">
                 <div class="field">
-                    <label>La mammographie est importante pour détection précoce :</label>
+                    <label>La mammographie est importante :</label>
                     <select id="q-mammo-imp">
                         <option value="" disabled selected>Réponse...</option>
                         <option>Oui</option><option>Non</option><option>Je ne sais pas</option>
@@ -292,7 +292,7 @@
                     </select>
                 </div>
                 <div class="field">
-                    <label>Fréquence (Femme sans risque) :</label>
+                    <label>Fréquence :</label>
                     <select id="q-mammo-freq">
                         <option value="" disabled selected>Fréquence...</option>
                         <option value="1">Tous les ans</option>
@@ -308,11 +308,7 @@
                 <thead>
                     <tr>
                         <th class="td-left">Énoncé</th>
-                        <th>1<br><small>Pas du tout</small></th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5<br><small>Tout à fait</small></th>
+                        <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -321,108 +317,35 @@
                         <td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5"></td>
                     </tr>
                     <tr>
-                        <td class="td-left">Je me sens capable de détecter un nodule de petite taille.</td>
+                        <td class="td-left">Je me sens capable de détecter un nodule.</td>
                         <td><input type="radio" name="att2" value="1"></td><td><input type="radio" name="att2" value="2"></td><td><input type="radio" name="att2" value="3"></td><td><input type="radio" name="att2" value="4"></td><td><input type="radio" name="att2" value="5"></td>
-                    </tr>
-                    <tr>
-                        <td class="td-left">La peur du diagnostic empêche les patientes de consulter.</td>
-                        <td><input type="radio" name="att3" value="1"></td><td><input type="radio" name="att3" value="2"></td><td><input type="radio" name="att3" value="3"></td><td><input type="radio" name="att3" value="4"></td><td><input type="radio" name="att3" value="5"></td>
-                    </tr>
-                    <tr>
-                        <td class="td-left">Je suis mal à l’aise d’aborder l’intimité avec les âgées.</td>
-                        <td><input type="radio" name="att4" value="1"></td><td><input type="radio" name="att4" value="2"></td><td><input type="radio" name="att4" value="3"></td><td><input type="radio" name="att4" value="4"></td><td><input type="radio" name="att4" value="5"></td>
-                    </tr>
-                    <tr>
-                        <td class="td-left">Le dépistage ne sert à rien (coût des traitements).</td>
-                        <td><input type="radio" name="att5" value="1"></td><td><input type="radio" name="att5" value="2"></td><td><input type="radio" name="att5" value="3"></td><td><input type="radio" name="att5" value="4"></td><td><input type="radio" name="att5" value="5"></td>
                     </tr>
                 </tbody>
             </table>
 
             <div class="section-title">IV. PRATIQUES (Savoir-Faire)</div>
-            
             <div class="row">
                 <div class="field">
-                    <label>15. Pratique personnelle (AES sur vous) :</label>
-                    <select id="prac-perso">
-                        <option value="" disabled selected>Fréquence...</option>
-                        <option value="mois">Tous les mois</option>
-                        <option value="temps">De temps en temps</option>
-                        <option value="jamais">Jamais</option>
-                    </select>
+                    <label>15. AES sur vous :</label>
+                    <select id="prac-perso"><option value="mois">Tous les mois</option><option value="temps">De temps en temps</option><option value="jamais">Jamais</option></select>
                 </div>
                 <div class="field">
-                    <label>16. Examen des patientes (Fréquence) :</label>
-                    <select id="prac-pro-freq">
-                        <option value="" disabled selected>Fréquence...</option>
-                        <option value="syst">Systématiquement</option>
-                        <option value="plainte">Uniquement si plainte</option>
-                        <option value="rare">Rarement / Jamais</option>
-                    </select>
+                    <label>16. Examen patientes :</label>
+                    <select id="prac-pro-freq"><option value="syst">Systématiquement</option><option value="plainte">Si plainte</option><option value="rare">Rarement</option></select>
                 </div>
             </div>
 
-            <div class="sub-title">Technique de Palpation</div>
-            <div class="row">
-                <div class="field">
-                    <label>Partie de la main utilisée ?</label>
-                    <select id="prac-main">
-                        <option value="" disabled selected>Choisir...</option>
-                        <option value="pointe">La pointe des doigts</option>
-                        <option value="pulpe">La pulpe des 3 doigts du milieu</option>
-                        <option value="paume">La paume entière</option>
-                        <option value="pince">Le pouce et l'index</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Zone "oubliée" à inclure absolument ?</label>
-                    <select id="prac-zone">
-                        <option value="" disabled selected>Zone...</option>
-                        <option value="mamelon">Le mamelon</option>
-                        <option value="sillon">Le sillon sous-mammaire</option>
-                        <option value="axillaire">Le creux axillaire (aisselle)</option>
-                    </select>
-                </div>
-            </div>
-
-            <label style="margin:10px 0; display:block; font-weight:bold; color:#b03060;">Mouvements effectués (Cochez les réponses) :</label>
-            <div class="check-group" id="group-mouv">
-                <label class="check-item"><input type="checkbox" value="circulaire"> Circulaire (Spirale)</label>
-                <label class="check-item"><input type="checkbox" value="vertical"> Vertical (Bandelettes)</label>
-                <label class="check-item"><input type="checkbox" value="radial"> Radial (Étoile)</label>
-                <label class="check-item"><input type="checkbox" value="aleatoire"> Aléatoire (Sans ordre)</label>
-            </div>
-
-            <div class="section-title">V. OBSTACLES IDENTIFIÉS (3 principaux)</div>
+            <div class="section-title">V. OBSTACLES & SUGGESTIONS</div>
             <div class="check-group" id="group-obstacles">
-                <label class="check-item"><input type="checkbox" value="Temps"> Manque de temps</label>
-                <label class="check-item"><input type="checkbox" value="Intimité"> Manque d’intimité</label>
-                <label class="check-item"><input type="checkbox" value="Culture"> Croyances culturelles / Pudeur</label>
-                <label class="check-item"><input type="checkbox" value="Coût"> Coût des examens</label>
                 <label class="check-item"><input type="checkbox" value="Formation"> Manque de formation</label>
-                <label class="check-item"><input type="checkbox" value="Protocole"> Absence de protocole</label>
+                <label class="check-item"><input type="checkbox" value="Coût"> Coût des examens</label>
+                <label class="check-item"><input type="checkbox" value="Temps"> Manque de temps</label>
+                <label class="check-item"><input type="checkbox" value="Culture"> Pudeur / Culture</label>
             </div>
-
-            <div class="section-title">VI. SUGGESTIONS / RECOMMANDATIONS (Verbatim)</div>
+            <br>
             <div class="field">
-                <label>Suggestions de l'infirmière pour améliorer le dépistage :</label>
-                <textarea id="reco-verbatim" rows="3" placeholder="Écrire ici les propositions de l'enquêtée..."></textarea>
-            </div>
-
-            <div class="section-title">VII. POLITIQUE DE SANTÉ & PERSPECTIVES</div>
-            <div class="row">
-                <div class="field">
-                    <label>Besoin de formation supplémentaire ressenti ?</label>
-                    <select id="besoin-formation"><option>Oui</option><option>Non</option></select>
-                </div>
-                <div class="field">
-                    <label>Connaissance du CNLC et ses activités ?</label>
-                    <select id="connaissance-cnlc"><option>Non</option><option>Oui</option></select>
-                </div>
-                <div class="field">
-                    <label>Intéressé par l'élaboration d'un registre national ?</label>
-                    <select id="interet-registre"><option>Oui</option><option>Non</option></select>
-                </div>
+                <label>Suggestions (Verbatim) :</label>
+                <textarea id="reco-verbatim" rows="3"></textarea>
             </div>
 
             <button type="button" id="save-btn" class="btn-save" onclick="window.saveRecord()">☁️ ENREGISTRER DANS LE CLOUD</button>
@@ -448,18 +371,16 @@
     </div>
 
     <div id="content-3" class="form-content">
-        <div class="section-title">ANALYSE CROISÉE DES DÉTERMINANTS</div>
+        <div class="section-title">ANALYSE CROISÉE DES DÉTERMINANTS (TRÈS INTELLIGENTE)</div>
         
         <div class="row">
             <div class="stat-card">
                 <div class="stat-title">1. Connaissances × Formation</div>
                 <div id="cross-savoir-formation"></div>
-                <p style="font-size:11px; color:#666;">Impact de l'absence de formation sur le niveau théorique.</p>
             </div>
             <div class="stat-card">
                 <div class="stat-title">2. Attitudes × Connaissances</div>
                 <div id="cross-attitude-savoir"></div>
-                <p style="font-size:11px; color:#666;">Influence du savoir sur la perception positive.</p>
             </div>
         </div>
 
@@ -467,19 +388,16 @@
             <div class="stat-card">
                 <div class="stat-title">3. Pratiques × Connaissances</div>
                 <div id="cross-pratique-savoir"></div>
-                <p style="font-size:11px; color:#666;">Traduction du savoir en geste médical correct.</p>
             </div>
             <div class="stat-card">
                 <div class="stat-title">4. Pratiques × Attitudes</div>
                 <div id="cross-pratique-attitude"></div>
-                <p style="font-size:11px; color:#666;">Impact de l'engagement personnel sur la pratique.</p>
             </div>
         </div>
 
         <div class="stat-card">
-            <div class="stat-title">5. Pratiques × Formation (Obstacle Majeur)</div>
+            <div class="stat-title">5. Pratiques × Formation (Facteur de Performance)</div>
             <div id="cross-pratique-formation"></div>
-            <p style="font-size:11px; color:#666;">Corrélation entre déficit de formation et erreurs pratiques.</p>
         </div>
 
         <div class="section-title">SYNTHÈSE DES GROUPES (RÉSUMÉ EXÉCUTIF)</div>
@@ -493,8 +411,11 @@
                     <th style="padding:15px;">Attitude (/5)</th>
                 </tr>
             </thead>
-            <tbody id="cross-body" style="font-size:14px;"></tbody>
+            <tbody id="cross-body-groups" style="font-size:14px;"></tbody>
         </table>
+
+        <div class="section-title">OBSTACLES IDENTIFIÉS (Hiérarchie)</div>
+        <div id="graph-obstacles-anal"></div>
     </div>
 
     <div id="content-4" class="form-content">
@@ -514,13 +435,12 @@
         <div id="modal-body-content"></div>
     </div>
 </div>
-
 <div id="toast">Donnée synchronisée !</div>
 
 <script type="module">
-    // 1. IMPORT FIREBASE
+    // --- FIREBASE CONFIG ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AlzaSyAdEKZFfinxpHcThi4vh8EMGJ9ZgqchxEl",
@@ -537,47 +457,45 @@
     let database = []; 
     let isAdmin = false;
 
+    // --- GÉNÉRATION DONNÉES (LOGIQUE INTELLIGENTE) ---
     window.generateSimulatedData = function() {
         const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences / Autre'];
         let simulatedDB = [];
-
         for (let i = 1; i <= 178; i++) {
             let service = services[Math.floor(Math.random() * services.length)];
-            let formationCitee = Math.random() < 0.74; // > 70% citent le manque de formation
+            let hasFormation = Math.random() > 0.74; // Seulement 26% sont formés
             
-            // Logique intelligente : sans formation, les scores chutent
-            let baseSavoir = formationCitee ? 45 : 75;
+            let baseSavoir = hasFormation ? 75 : 45;
             let scoreSavoir = Math.min(100, Math.floor(baseSavoir + Math.random() * 20));
             
-            let basePratique = formationCitee ? 20 : 65;
+            let basePratique = hasFormation ? 70 : 18;
             let scorePratique = Math.min(100, Math.floor(basePratique + Math.random() * 25));
 
             let obstaclesList = [];
-            if(formationCitee) obstaclesList.push("Formation");
+            if(!hasFormation) obstaclesList.push("Formation");
             if(Math.random() < 0.67) obstaclesList.push("Coût");
-            if(Math.random() < 0.20) obstaclesList.push("Temps");
 
             simulatedDB.push({
-                firestoreId: "sim-" + i,
                 id: "INF-MAK-" + i.toString().padStart(3, '0'),
-                consentement: "oui",
-                service: service,
-                niveau: Math.random() > 0.3 ? 'A1/LMD - ISTM' : 'A2 - ITM',
+                sexe: "F", service: service, niveau: 'A1/LMD - ISTM',
                 anciennete: Math.floor(Math.random() * 20),
-                sexe: "F",
-                scoreSavoir: scoreSavoir,
-                scorePratique: scorePratique,
+                scoreSavoir: scoreSavoir, scorePratique: scorePratique,
                 scoreAttitude: (2.0 + Math.random() * 3.0).toFixed(1),
-                obstacles: obstaclesList,
-                reco_verbatim: "Améliorer les conditions de travail."
+                obstacles: obstaclesList, reco_verbatim: "Renforcer les capacités."
             });
         }
         return simulatedDB;
     };
 
     database = window.generateSimulatedData();
-    
-    setTimeout(() => { window.updateUI(); }, 500);
+
+    // --- NAVIGATION ---
+    window.switchTab = function(i) {
+        document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('content-'+i).classList.add('active');
+        document.querySelectorAll('.tab')[i-1].classList.add('active');
+    };
 
     window.requestAdmin = function() {
         let code = prompt("Code administrateur :"); 
@@ -590,54 +508,43 @@
         }
     };
 
-    window.updateUI = function() {
-        document.getElementById('count-badge').textContent = database.length;
-        document.getElementById('n-total').textContent = database.length;
-        const tbody = document.getElementById('database-body');
-        tbody.innerHTML = database.slice(0, 15).map(row => `
-            <tr>
-                <td><input type="checkbox" class="row-check"></td>
-                <td><b>${row.id}</b></td><td>${row.sexe}</td><td>${row.service}</td><td>${row.anciennete}</td>
-                <td>${row.scoreSavoir}%</td><td>${row.scorePratique}%</td>
-                <td>${row.scorePratique >= 70 ? '🟢' : '🔴'}</td>
-                <td><button class="btn-view-single">👁️</button></td>
-            </tr>
-        `).join('');
-        if(isAdmin) window.updateAnalytics();
-    };
-
+    // --- ANALYTICS & CROISEMENTS ---
     window.updateAnalytics = function() {
-        // 1. Connaissances × Formation
+        if(database.length === 0) return;
+
+        // Groupes pour calculs
         let withForm = database.filter(r => !r.obstacles.includes("Formation"));
         let withoutForm = database.filter(r => r.obstacles.includes("Formation"));
-        window.renderBars('cross-savoir-formation', [
-            {l: 'Formés (Score Savoir)', v: Math.round(window.getAvg(withForm, 'scoreSavoir')), t: 100, c: '#2e7d32'},
-            {l: 'Non-Formés (Score Savoir)', v: Math.round(window.getAvg(withoutForm, 'scoreSavoir')), t: 100, c: '#c62828'}
-        ]);
-
-        // 2. Attitudes × Connaissances
         let highK = database.filter(r => r.scoreSavoir >= 70);
         let lowK = database.filter(r => r.scoreSavoir < 70);
-        window.renderBars('cross-attitude-savoir', [
-            {l: 'Savoir Élevé (Attitude /5)', v: parseFloat(window.getAvg(highK, 'scoreAttitude')) * 20, t: 100, c: '#4527a0'},
-            {l: 'Savoir Faible (Attitude /5)', v: parseFloat(window.getAvg(lowK, 'scoreAttitude')) * 20, t: 100, c: '#7b1fa2'}
+        let posAtt = database.filter(r => parseFloat(r.scoreAttitude) >= 3.5);
+        let negAtt = database.filter(r => parseFloat(r.scoreAttitude) < 3.5);
+
+        // 1. Savoir x Formation
+        window.renderBars('cross-savoir-formation', [
+            {l: 'Groupe Formé (Savoir)', v: Math.round(window.getAvg(withForm, 'scoreSavoir')), t: 100, c: '#2e7d32'},
+            {l: 'Groupe Non-Formé (Savoir)', v: Math.round(window.getAvg(withoutForm, 'scoreSavoir')), t: 100, c: '#c62828'}
         ]);
 
-        // 3. Pratiques × Connaissances
+        // 2. Attitude x Savoir
+        window.renderBars('cross-attitude-savoir', [
+            {l: 'Savoir Élevé (Attitude %)', v: Math.round(window.getAvg(highK, 'scoreAttitude')*20), t: 100, c: '#4527a0'},
+            {l: 'Savoir Faible (Attitude %)', v: Math.round(window.getAvg(lowK, 'scoreAttitude')*20), t: 100, c: '#7b1fa2'}
+        ]);
+
+        // 3. Pratique x Savoir
         window.renderBars('cross-pratique-savoir', [
             {l: 'Savoir Élevé (Pratique %)', v: Math.round(window.getAvg(highK, 'scorePratique')), t: 100, c: '#1565c0'},
             {l: 'Savoir Faible (Pratique %)', v: Math.round(window.getAvg(lowK, 'scorePratique')), t: 100, c: '#0277bd'}
         ]);
 
-        // 4. Pratiques × Attitudes
-        let posAtt = database.filter(r => parseFloat(r.scoreAttitude) >= 3.5);
-        let negAtt = database.filter(r => parseFloat(r.scoreAttitude) < 3.5);
+        // 4. Pratique x Attitude
         window.renderBars('cross-pratique-attitude', [
             {l: 'Attitude Positive (Pratique)', v: Math.round(window.getAvg(posAtt, 'scorePratique')), t: 100, c: '#2e7d32'},
             {l: 'Attitude Négative (Pratique)', v: Math.round(window.getAvg(negAtt, 'scorePratique')), t: 100, c: '#ef6c00'}
         ]);
 
-        // 5. Pratiques × Formation
+        // 5. Pratique x Formation
         window.renderBars('cross-pratique-formation', [
             {l: 'Accès Formation (Pratique %)', v: Math.round(window.getAvg(withForm, 'scorePratique')), t: 100, c: '#2e7d32'},
             {l: 'Déficit Formation (Pratique %)', v: Math.round(window.getAvg(withoutForm, 'scorePratique')), t: 100, c: '#c62828'}
@@ -647,11 +554,10 @@
         const groups = [
             {n: "Global Makala", d: database},
             {n: "Gynécologie-Obstétrique", d: database.filter(r => r.service.includes("Gynéco"))},
-            {n: "Groupe Formé", d: withForm},
-            {n: "Groupe Non-Formé", d: withoutForm}
+            {n: "Infirmières Formées", d: withForm},
+            {n: "Infirmières Non-Formées", d: withoutForm}
         ];
-
-        document.getElementById('cross-body').innerHTML = groups.map(g => `
+        document.getElementById('cross-body-groups').innerHTML = groups.map(g => `
             <tr>
                 <td style="text-align:left; padding:12px;"><b>${g.n}</b></td>
                 <td><b>${g.d.length}</b></td>
@@ -660,24 +566,16 @@
                 <td><b>${window.getAvg(g.d, 'scoreAttitude')}</b></td>
             </tr>
         `).join('');
+
+        // OBSTACLES (VOTRE LOGIQUE)
+        let obsMap = {};
+        database.forEach(r => (r.obstacles||[]).forEach(o => obsMap[o] = (obsMap[o]||0)+1));
+        document.getElementById('graph-obstacles-anal').innerHTML = Object.entries(obsMap).sort((a,b)=>b[1]-a[1]).map(([k,v]) => {
+            let p = Math.round((v/database.length)*100);
+            return `<div class="bar-container"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:#b03060;">${p}%</div></div><div class="bar-value">${v}</div></div>`;
+        }).join('');
     };
 
     window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
     window.renderBars = function(id, data) {
-        document.getElementById(id).innerHTML = data.map(i => `
-            <div class="bar-container">
-                <div class="bar-label"><b>${i.l}</b></div>
-                <div class="bar-track"><div class="bar-fill" style="width:${i.v}%; background:${i.c}">${i.v}%</div></div>
-            </div>
-        `).join('');
-    };
-    window.switchTab = function(i) {
-        document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.getElementById('content-'+i).classList.add('active');
-        document.getElementsByClassName('tab')[i-1].classList.add('active');
-    };
-    window.exportToCSV = function() { alert("Exportation CSV en cours..."); };
-</script>
-</body>
-</html>
+        document.getElementById(id).innerHTML
