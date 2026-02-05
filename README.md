@@ -492,10 +492,10 @@
         <table style="width:100%; border-collapse: separate; border-spacing: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.15); border-radius: 12px; overflow:hidden; margin-top:15px; border: 1px solid #eee; background: white;">
             <thead style="background: linear-gradient(135deg, #b03060, #880e4f); color: white;">
                 <tr>
-                    <th style="text-align:left; padding:20px; font-size:14px; text-transform:uppercase; letter-spacing:1px; border-right: 1px solid rgba(255,255,255,0.2);">Groupe d'analyse</th>
-                    <th style="padding:20px; font-size:14px; border-right: 1px solid rgba(255,255,255,0.2);">Effectif (N)</th>
-                    <th style="padding:20px; font-size:14px; border-right: 1px solid rgba(255,255,255,0.2);">Attitude Moyenne (/5)</th>
-                    <th style="padding:20px; font-size:14px;">Score Pratique Moyen (%)</th>
+                    <th style="text-align:left; padding:20px; font-size:14px; text-transform:uppercase; letter-spacing:1px; border-right: 1px solid rgba(255,255,255,0.2);"><b>GROUPE D'ANALYSE</b></th>
+                    <th style="padding:20px; font-size:14px; border-right: 1px solid rgba(255,255,255,0.2);"><b>Effectif (N)</b></th>
+                    <th style="padding:20px; font-size:14px; border-right: 1px solid rgba(255,255,255,0.2);"><b>Attitude Moyenne (/5)</b></th>
+                    <th style="padding:20px; font-size:14px;"><b>Score Pratique Moyen (%)</b></th>
                 </tr>
             </thead>
             <tbody id="cross-body" style="font-size:15px; font-weight:500; color:#333;"></tbody>
@@ -583,10 +583,10 @@
 
             // --- NOUVELLE LOGIQUE OBSTACLES ---
             let obstaclesList = [];
-            if(Math.random() < 0.74) obstaclesList.push("Formation"); // > 70%
-            if(Math.random() < 0.67) obstaclesList.push("Coût");      // 67%
-            if(Math.random() < 0.20) obstaclesList.push("Temps");     // 20%
-            if(Math.random() < 0.15) obstaclesList.push("Culture");   // < 20%
+            if(Math.random() < 0.74) obstaclesList.push("Formation"); 
+            if(Math.random() < 0.67) obstaclesList.push("Coût");      
+            if(Math.random() < 0.20) obstaclesList.push("Temps");     
+            if(Math.random() < 0.15) obstaclesList.push("Culture");   
 
             simulatedDB.push({
                 firestoreId: "sim-" + i,
@@ -769,6 +769,28 @@
             return { l: n, v: Math.round(window.getAvg(group, 'scorePratique')), t: 100, c: '#00897b' };
         });
         window.renderBars('graph-cross-niveau', niveauData);
+
+        // --- REMPLISSAGE DU TABLEAU DE SYNTHÈSE DES GROUPES ---
+        const groupsToAnalyze = [
+            ...services.map(s => ({ label: s, filter: r => r.service === s })),
+            ...niveauxLabels.map(n => ({ label: "Niveau " + n, filter: r => r.niveau === n }))
+        ];
+
+        const crossBody = document.getElementById('cross-body');
+        crossBody.innerHTML = groupsToAnalyze.map(g => {
+            let subset = database.filter(g.filter);
+            let n = subset.length;
+            let avgAttitude = window.getAvg(subset, 'scoreAttitude');
+            let avgPratique = window.getAvg(subset, 'scorePratique');
+            return `
+                <tr>
+                    <td style="text-align:left; padding:15px; border-bottom: 1px solid #eee; border-right: 1px solid #eee;"><b>${g.label}</b></td>
+                    <td style="padding:15px; border-bottom: 1px solid #eee; border-right: 1px solid #eee;">${n}</td>
+                    <td style="padding:15px; border-bottom: 1px solid #eee; border-right: 1px solid #eee;">${avgAttitude}</td>
+                    <td style="padding:15px; border-bottom: 1px solid #eee;">${avgPratique}%</td>
+                </tr>
+            `;
+        }).join('');
 
         let obsMap = {};
         database.forEach(r => (r.obstacles||[]).forEach(o => obsMap[o] = (obsMap[o]||0)+1));
