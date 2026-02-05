@@ -135,14 +135,13 @@
                     <label>4. Niveau d'étude</label>
                     <select id="niveau">
                         <option value="" disabled selected>Niveau...</option>
-                        <option>A2 (Secondaire)</option>
-                        <option>A1 (Gradué)</option>
-                        <option>A0 (Licencié/Master)</option>
+                        <option value="A2 - ITM">A2 - Niveau technique (4 ans post-primaire - ITM)</option>
+                        <option value="A1/LMD - ISTM">A1/LMD - Niveau supérieur (3 ans post-bac - ISTM)</option>
                     </select>
                 </div>
                 <div class="field">
                     <label>5. Ancienneté (années)</label>
-                    <input type="number" id="anciennete" min="0" placeholder="Ex: 5">
+                    <input type="number" id="anciennete" min="0" max="20" placeholder="Ex: 5">
                 </div>
                 <div class="field">
                     <label>6. Sexe</label>
@@ -543,16 +542,14 @@
     const db = getFirestore(app);
     
     // --- MODE SIMULATION ---
-    // Puisqu'on ne peut pas écrire 178 entrées dans votre Firebase réel sans permission,
-    // on utilise une base locale pré-remplie pour la démonstration.
-    
     let database = []; 
     let isAdmin = false;
 
     // FONCTION DE GÉNÉRATION DES DONNÉES FICTIVES (KINSHASA RDC)
     window.generateSimulatedData = function() {
         const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences / Autre'];
-        const niveaux = ['A2 (Secondaire)', 'A1 (Gradué)', 'A1 (Gradué)', 'A0 (Licencié/Master)']; // Plus de A1 car très fréquent
+        // MODIFICATION : Uniquement deux niveaux d'études
+        const niveaux = ['A2 - ITM', 'A1/LMD - ISTM']; 
         const verbatims = [
             "Il faut multiplier les campagnes à la télévision.",
             "Les patientes arrivent toujours trop tard, stade avancé.",
@@ -569,21 +566,18 @@
         let simulatedDB = [];
 
         for (let i = 1; i <= 178; i++) {
-            // Logique de simulation semi-aléatoire
             let service = services[Math.floor(Math.random() * services.length)];
             let niveau = niveaux[Math.floor(Math.random() * niveaux.length)];
-            let age = Math.floor(Math.random() * (60 - 24) + 24);
-            let anciennete = Math.max(1, age - 22);
             
-            // Influence du service sur le savoir
+            // MODIFICATION : Ancienneté limitée à 20 ans
+            let anciennete = Math.floor(Math.random() * 21); // 0 à 20 ans
+            let age = 22 + anciennete + Math.floor(Math.random() * 5); 
+
             let isGyneco = service === 'Gynécologie-Obstétrique';
             let baseSavoir = isGyneco ? 60 : 40; 
             let scoreSavoir = Math.min(100, Math.floor(baseSavoir + Math.random() * 40));
-            
-            // Influence du savoir sur la pratique
             let scorePratique = Math.min(100, Math.floor((scoreSavoir * 0.7) + Math.random() * 30));
 
-            // Obstacles typiques RDC
             let obstaclesList = [];
             if(Math.random() > 0.3) obstaclesList.push("Coût");
             if(Math.random() > 0.4) obstaclesList.push("Temps");
@@ -602,32 +596,29 @@
                 province: "Kinshasa",
                 cat_pro: "Infirmier(e)",
                 age_participant: age,
-                q_moleculaire: Math.random() > 0.8 ? "oui" : "non", // Peu connu
-                q_her2: Math.random() > 0.9 ? "oui" : "non", // Très peu connu
+                q_moleculaire: Math.random() > 0.8 ? "oui" : "non",
+                q_her2: Math.random() > 0.9 ? "oui" : "non",
                 connaissance_cnlc: Math.random() > 0.6 ? "oui" : "non",
                 interet_registre: "Oui",
                 scoreSavoir: scoreSavoir,
                 scorePratique: scorePratique,
-                scoreAttitude: (2.5 + Math.random() * 2.5).toFixed(1), // Entre 2.5 et 5
+                scoreAttitude: (2.5 + Math.random() * 2.5).toFixed(1),
                 obstacles: obstaclesList,
-                risques: ["age", "famille"], // Simplifié pour simu
-                signes: ["nodule", "douleur"], // Simplifié pour simu
+                risques: ["age", "famille"],
+                signes: ["nodule", "douleur"],
                 reco_verbatim: verbatims[Math.floor(Math.random() * verbatims.length)]
             });
         }
         return simulatedDB;
     };
 
-    // INIT : Charger les données simulées immédiatement
     database = window.generateSimulatedData();
     
-    // Simuler le délai de chargement puis afficher
     setTimeout(() => {
         window.updateUI();
         showToast("178 Fiches chargées (Simulation Kinshasa)");
     }, 500);
 
-    // 4. FONCTIONS GLOBALES (Accessibles depuis le HTML via window)
     window.initCodeDropdown = function() {
         const sel = document.getElementById('code-enquete');
         sel.innerHTML = "";
@@ -639,14 +630,10 @@
         }
     }
 
-    // AUTHENTIFICATION ADMIN CORRIGÉE ET SÉCURISÉE
     window.requestAdmin = function() {
         if(isAdmin) return; 
-        
-        // MODIFICATION ICI : Code changé à 1398 et indice retiré
         let code = prompt("Code administrateur :"); 
-        
-        if(code === "1398") { // Nouveau code
+        if(code === "1398") {
             isAdmin = true;
             document.querySelectorAll('.admin-only').forEach(el => {
                 el.classList.add('admin-visible');
@@ -654,16 +641,15 @@
             });
             document.getElementById('btn-auth').style.display = 'none';
             alert("Mode Admin Activé : Visualisation des 178 fiches.");
-            
             updateUI(); 
-            window.switchTab(2); // Aller direct aux données
+            window.switchTab(2);
         } else {
             alert("Code incorrect !");
         }
     };
 
     window.saveRecord = function() {
-        alert("En mode simulation, l'ajout est désactivé pour ne pas mélanger les données réelles et fictives.");
+        alert("En mode simulation, l'ajout est désactivé.");
     };
 
     window.deleteOne = function(index) {
@@ -675,7 +661,6 @@
     window.deleteSelected = function() {
         if(!confirm("Supprimer la sélection (Simulation) ?")) return;
         const checkboxes = Array.from(document.querySelectorAll('.row-check'));
-        // On supprime en partant de la fin pour ne pas casser les index
         for (let i = checkboxes.length - 1; i >= 0; i--) {
             if (checkboxes[i].checked) {
                 database.splice(i, 1);
@@ -687,28 +672,16 @@
     window.viewDetails = function(index) {
         let d = database[index];
         document.getElementById('modal-title-id').innerText = d.id;
-        
         let html = `
             <div class="sub-title">IDENTITÉ</div>
-            <div class="detail-row"><span class="detail-label">Consentement</span><span class="detail-val">${d.consentement}</span></div>
             <div class="detail-row"><span class="detail-label">Service</span><span class="detail-val">${d.service}</span></div>
             <div class="detail-row"><span class="detail-label">Niveau</span><span class="detail-val">${d.niveau}</span></div>
-            <div class="detail-row"><span class="detail-label">Age</span><span class="detail-val">${d.age_participant} ans</span></div>
-            <div class="detail-row"><span class="detail-label">Province</span><span class="detail-val">${d.province || '-'}</span></div>
-
+            <div class="detail-row"><span class="detail-label">Ancienneté</span><span class="detail-val">${d.anciennete} ans</span></div>
             <div class="sub-title">SCORES</div>
             <div class="detail-row"><span class="detail-label">Score Savoir</span><span class="detail-val">${d.scoreSavoir}%</span></div>
             <div class="detail-row"><span class="detail-label">Score Pratique</span><span class="detail-val">${d.scorePratique}%</span></div>
-            <div class="detail-row"><span class="detail-label">Attitude</span><span class="detail-val">${d.scoreAttitude}/5</span></div>
-
-            <div class="sub-title">CONNAISSANCES POINTUES</div>
-            <div class="detail-row"><span class="detail-label">Moléculaire ?</span><span class="detail-val">${d.q_moleculaire}</span></div>
-            
-            <div class="sub-title">OBSTACLES & RECOMMANDATIONS</div>
-            <div class="detail-row"><span class="detail-label">Obstacles</span><span class="detail-val">${(d.obstacles||[]).join(', ') || 'Aucun'}</span></div>
             <div class="detail-val-long">"${d.reco_verbatim || "Aucune suggestion."}"</div>
         `;
-        
         document.getElementById('modal-body-content').innerHTML = html;
         document.getElementById('detailModal').style.display = 'flex';
     };
@@ -734,7 +707,6 @@
         window.toggleDeleteButton();
 
         const tbody = document.getElementById('database-body');
-        // Affiche seulement les 50 premiers pour ne pas ralentir le DOM si liste longue
         let displayData = database.slice(0, 100); 
         
         tbody.innerHTML = displayData.map((row, index) => `
@@ -785,10 +757,11 @@
         window.renderBars('graph-cross-service', serviceData);
         
         let bestS = serviceData.reduce((prev, curr) => prev.v > curr.v ? prev : curr);
-        document.getElementById('interp-service').innerHTML = `💡 <b>Analyse (Obj 4) :</b> Le service <b>${bestS.l}</b> est un facteur associé à une meilleure pratique (${bestS.v}%). Cela confirme l'hypothèse de l'exposition clinique.`;
+        document.getElementById('interp-service').innerHTML = `💡 <b>Analyse (Obj 4) :</b> Le service <b>${bestS.l}</b> est un facteur associé à une meilleure pratique (${bestS.v}%).`;
 
-        let niveaux = ["A2 (Secondaire)", "A1 (Gradué)", "A0 (Licencié/Master)"];
-        let niveauData = niveaux.map(n => {
+        // MODIFICATION : Mise à jour des catégories d'études pour les graphiques
+        let niveauxLabels = ["A2 - ITM", "A1/LMD - ISTM"];
+        let niveauData = niveauxLabels.map(n => {
             let group = database.filter(r => r.niveau === n);
             return { l: n, v: Math.round(window.getAvg(group, 'scorePratique')), t: 100, c: '#00897b' };
         });
@@ -822,25 +795,12 @@
         let total = database.length;
         let pPractice = Math.round((goodPracticeCount/total)*100);
         let topObstacle = Object.keys(obsMap).sort((a,b) => obsMap[b]-obsMap[a])[0] || "Aucun";
-
-        let report = `<p>Sur un total de <b>${total} participants</b> (Province de Kinshasa), l'analyse en temps réel révèle que <b>${pPractice}%</b> du personnel possède une maîtrise pratique satisfaisante de l'examen clinique des seins.</p>`;
-        
+        let report = `<p>Sur un total de <b>${total} participants</b> (Province de Kinshasa), l'analyse révèle que <b>${pPractice}%</b> du personnel maîtrise la pratique.</p>`;
         let recs = "";
-        if(pPractice < 50) {
-            recs += `<div class="reco-box"><div class="reco-title">🔴 PRIORITÉ : FORMATION PRATIQUE</div>Le niveau de compétence pratique est critique (< 50%). Il est urgent d'organiser des ateliers de simulation sur mannequins.</div>`;
-        } else {
-            recs += `<div class="reco-box"><div class="reco-title">🟢 MAINTIEN DES ACQUIS</div>Le niveau pratique est encourageant. Instaurer un mentorat par les pairs pour maintenir ces acquis.</div>`;
-        }
-
-        if(topObstacle === "Coût") {
-            recs += `<div class="reco-box"><div class="reco-title">💰 BARRIÈRE FINANCIÈRE</div>Le coût est l'obstacle majeur cité par les infirmières. Recommandation : Plaider pour la gratuité du dépistage lors d'Octobre Rose.</div>`;
-        } else if (topObstacle === "Formation") {
-             recs += `<div class="reco-box"><div class="reco-title">🔵 BESOIN COGNITIF</div>Le personnel réclame plus de formation. Distribuer des aides-mémoires visuels dans les services.</div>`;
-        }
+        if(pPractice < 50) recs += `<div class="reco-box"><div class="reco-title">🔴 PRIORITÉ : FORMATION PRATIQUE</div>Niveau critique.</div>`;
         document.getElementById('dynamic-report').innerHTML = report + recs;
     };
 
-    // UTILS
     window.getColor = function(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); };
     window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
     window.renderBars = function(id, data) {
@@ -856,11 +816,10 @@
         document.querySelectorAll('.tab')[i-1].classList.add('active');
     };
     window.exportToCSV = function() {
-        let h = "ID,Consentement,Sexe,Age,Etat_Civil,Province,Service,Niveau,Savoir(%),Attitude(/5),Pratique(%),Obstacles,Recommandations\n";
+        let h = "ID,Consentement,Sexe,Age,Etat_Civil,Province,Service,Niveau,Anciennete,Savoir(%),Attitude(/5),Pratique(%),Obstacles,Recommandations\n";
         let r = database.map(r => {
             let cleanReco = (r.reco_verbatim || "").replace(/"/g, '""').replace(/(\r\n|\n|\r)/gm, " ");
-            let obs = (r.obstacles || []).join(";");
-            return `${r.id},${r.consentement},${r.sexe},${r.age_participant},${r.etat_civil},${r.province},${r.service},${r.niveau},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},"${obs}","${cleanReco}"`;
+            return `${r.id},${r.consentement},${r.sexe},${r.age_participant},${r.etat_civil},${r.province},${r.service},${r.niveau},${r.anciennete},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},"${(r.obstacles || []).join(";")}", "${cleanReco}"`;
         }).join("\n");
         let l = document.createElement("a");
         l.href = "data:text/csv;charset=utf-8," + encodeURI("\ufeff"+h+r);
@@ -873,7 +832,6 @@
         x.innerText = message;
         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
-
     window.initCodeDropdown();
 </script>
 </body>
