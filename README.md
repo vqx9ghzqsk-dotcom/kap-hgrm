@@ -487,16 +487,17 @@
         </div>
 
         <div class="section-title">4. SYNTHÈSE DES GROUPES</div>
-        <table style="background:#444; color:white; border-radius:8px; overflow:hidden;">
-            <thead>
+        
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.15); border-radius: 12px; overflow:hidden; margin-top:15px; border: 1px solid #eee; background: white;">
+            <thead style="background: linear-gradient(135deg, #b03060, #880e4f); color: white;">
                 <tr>
-                    <th style="text-align:left; padding:15px;">Groupe d'analyse</th>
-                    <th>Effectif (N)</th>
-                    <th>Attitude Moyenne (/5)</th>
-                    <th>Score Pratique Moyen (%)</th>
+                    <th style="text-align:left; padding:20px; font-size:14px; text-transform:uppercase; letter-spacing:1px; border-right: 1px solid rgba(255,255,255,0.2);">Groupe d'analyse</th>
+                    <th style="padding:20px; font-size:14px; border-right: 1px solid rgba(255,255,255,0.2);">Effectif (N)</th>
+                    <th style="padding:20px; font-size:14px; border-right: 1px solid rgba(255,255,255,0.2);">Attitude Moyenne (/5)</th>
+                    <th style="padding:20px; font-size:14px;">Score Pratique Moyen (%)</th>
                 </tr>
             </thead>
-            <tbody id="cross-body" style="background:white; color:#333;"></tbody>
+            <tbody id="cross-body" style="font-size:15px; font-weight:500; color:#333;"></tbody>
         </table>
 
         <div class="section-title">5. OBSTACLES IDENTIFIÉS</div>
@@ -808,8 +809,8 @@
         let avgAttH = window.getAvg(highS, 'scoreAttitude'), avgPracH = window.getAvg(highS, 'scorePratique');
         let avgAttL = window.getAvg(lowS, 'scoreAttitude'), avgPracL = window.getAvg(lowS, 'scorePratique');
         document.getElementById('cross-body').innerHTML = `
-            <tr><td style="padding:15px;">Bonnes Connaissances</td><td>${highS.length}</td><td>${avgAttH}</td><td>${avgPracH}%</td></tr>
-            <tr><td style="padding:15px;">Connaissances Faibles</td><td>${lowS.length}</td><td>${avgAttL}</td><td>${avgPracL}%</td></tr>
+            <tr><td style="padding:20px; border-bottom:1px solid #eee;">Bonnes Connaissances</td><td style="border-bottom:1px solid #eee;">${highS.length}</td><td style="border-bottom:1px solid #eee;">${avgAttH}</td><td style="border-bottom:1px solid #eee;">${avgPracH}%</td></tr>
+            <tr><td style="padding:20px;">Connaissances Faibles</td><td>${lowS.length}</td><td>${avgAttL}</td><td>${avgPracL}%</td></tr>
         `;
 
         window.generateDynamicReport(highP, obsMap);
