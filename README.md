@@ -2,21 +2,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Étude KAP - HGR Makala</title>
+    <title>Enquête CAP - HGR Makala</title>
     <style>
         /* --- STYLE GLOBAL --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
         .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 900px;}
         
-        /* Nouveau Titre Principal */
-        .main-header-title { text-align: center; padding: 25px; color: #b03060; font-weight: bold; font-size: 18px; border-bottom: 2px solid #fce4ec; text-transform: uppercase; line-height: 1.4; background: #fff; border-radius: 12px 12px 0 0; }
+        /* Titre demandé */
+        .main-title { background: #b03060; color: white; padding: 15px; text-align: center; font-size: 16px; font-weight: bold; text-transform: uppercase; border-radius: 12px 12px 0 0; }
 
         /* Navigation */
         .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 100; }
         .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; transition: 0.2s; }
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
         
-        /* Badge de données */
+        /* Badge modifié */
         .sim-badge { background: #2e7d32; color: white; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-left: 10px; }
 
         .admin-only { display: none !important; }
@@ -29,6 +29,7 @@
         .btn-delete-selected { background: #c62828; color: white; padding: 8px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: none; }
         .btn-delete-single { background: none; border: 1px solid #c62828; color: #c62828; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; margin-left: 5px; }
         .btn-view-single { background: none; border: 1px solid #0288d1; color: #0288d1; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; }
+        .btn-view-single:hover { background: #0288d1; color: white; }
 
         /* Contenu */
         .form-content { padding: 30px; display: none; }
@@ -54,7 +55,7 @@
         .check-item { display: flex; align-items: center; font-size: 13px; cursor: pointer; }
         .check-item input { margin-right: 12px; transform: scale(1.2); cursor: pointer; }
 
-        .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; }
+        .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         
         /* Stats */
         .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
@@ -72,8 +73,6 @@
         /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; justify-content: center; align-items: center; }
         .modal-content { background: white; width: 80%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 25px; border-radius: 12px; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
-        .modal-close { font-size: 24px; cursor: pointer; color: #888; }
         
         /* Toast Notification */
         #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 17px; }
@@ -85,40 +84,66 @@
 <body>
 
 <div class="container">
-    <div class="main-header-title">
-        Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein
-    </div>
-
+    <div class="main-title">connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</div>
     <div class="header-tabs">
         <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">178</span></button>
         <button class="tab admin-only" id="tab-2" onclick="switchTab(2)">2. MATRICE DE DÉPOUILLEMENT</button>
         <button class="tab admin-only" id="tab-3" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE PROTOCOLE</button>
         <button class="tab admin-only" id="tab-4" onclick="switchTab(4)">4. CONCLUSION & RECOMMANDATIONS</button>
         
-        <div class="sim-badge">DONNÉES SUR KINSHASA (N=178)</div>
+        <div class="sim-badge" id="main-badge">DONNÉES SUR KINSHASA (N=178)</div>
         <button type="button" class="btn-auth" id="btn-auth" onclick="window.requestAdmin()">🔒 ACCÈS ADMIN</button>
-        <button type="button" class="btn-export admin-only" id="btn-export" onclick="window.exportToCSV()">📊 EXPORT CSV</button>
+        <button type="button" class="btn-excel admin-only" id="btn-export" onclick="window.exportToCSV()">📊 EXPORT CSV</button>
     </div>
 
     <div id="content-1" class="form-content active">
         <form id="kapForm">
             <div class="section-title">I. IDENTIFICATION & PROFIL PROFESSIONNEL</div>
             <div class="row">
-                <div class="field"><label>1. Code Enquêté(e)</label><select id="code-enquete"></select></div>
-                <div class="field"><label style="color:#b03060;">2. Consentement Éclairé</label><select id="consentement"><option value="oui">Oui</option><option value="non">Non</option></select></div>
-                <div class="field"><label>3. Service</label><select id="service"><option>Gynécologie-Obstétrique</option><option>Médecine Interne</option><option>Chirurgie</option><option>Urgences / Autre</option></select></div>
+                <div class="field">
+                    <label>1. Code Enquêté(e)</label>
+                    <select id="code-enquete"></select>
+                </div>
+                <div class="field">
+                    <label style="color:#b03060;">2. Consentement Éclairé</label>
+                    <select id="consentement">
+                        <option value="oui">Oui, a accepté de participer</option>
+                        <option value="non">Non (Refus)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>3. Service d'affectation</label>
+                    <select id="service">
+                        <option value="" disabled selected>Choisir un service...</option>
+                        <option>Gynécologie-Obstétrique</option>
+                        <option>Médecine Interne</option>
+                        <option>Chirurgie</option>
+                        <option>Urgences / Autre</option>
+                    </select>
+                </div>
             </div>
             <div class="row">
-                <div class="field"><label>4. Niveau d'étude</label><select id="niveau"><option value="A2 - ITM">A2 - Niveau technique (ITM)</option><option value="A1/LMD - ISTM">A1/LMD - Niveau supérieur (ISTM)</option></select></div>
-                <div class="field"><label>5. Ancienneté (années)</label><input type="number" id="anciennete" min="0" max="20"></div>
-                <div class="field"><label>6. Sexe</label><select id="sexe"><option value="F">F (Féminin)</option></select></div>
+                <div class="field">
+                    <label>4. Niveau d'étude</label>
+                    <select id="niveau">
+                        <option value="" disabled selected>Niveau...</option>
+                        <option value="A2 - ITM">A2 - Niveau technique (4 ans post-primaire - ITM)</option>
+                        <option value="A1/LMD - ISTM">A1/LMD - Niveau supérieur (3 ans post-bac - ISTM)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>5. Ancienneté (années)</label>
+                    <input type="number" id="anciennete" min="0" max="20" placeholder="Ex: 5">
+                </div>
+                <div class="field">
+                    <label>6. Sexe</label>
+                    <select id="sexe">
+                        <option value="F" selected>F (Féminin)</option>
+                    </select>
+                </div>
             </div>
-            <div class="section-title">II. CONNAISSANCES</div>
-            <div class="check-group">
-                <label class="check-item"><input type="checkbox"> Âge avancé (>50 ans)</label>
-                <label class="check-item"><input type="checkbox"> Antécédents familiaux</label>
-            </div>
-            <button type="button" class="btn-save">☁️ ENREGISTRER DANS LE CLOUD</button>
+
+            <button type="button" id="save-btn" class="btn-save" onclick="window.saveRecord()">☁️ ENREGISTRER DANS LE CLOUD</button>
         </form>
     </div>
 
@@ -126,23 +151,49 @@
         <div class="section-title">BASE DE DONNÉES EN LIGNE (N = <span id="n-total">0</span>)</div>
         <button id="btn-delete-multi" class="btn-delete-selected" onclick="window.deleteSelected()">🗑️ Supprimer la sélection</button>
         <div style="overflow-x:auto;">
-            <table><thead><tr><th><input type="checkbox" id="select-all" onclick="window.toggleSelectAll(this)"></th><th>Code</th><th>Sexe</th><th>Service</th><th>Exp (ans)</th><th>Score Savoir (%)</th><th>Score Pratique (%)</th><th>Diagnostic</th><th>Actions</th></tr></thead><tbody id="database-body"></tbody></table>
+            <table>
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="select-all" onclick="window.toggleSelectAll(this)"></th>
+                        <th>Code</th><th>Sexe</th><th>Service</th><th>Exp (ans)</th>
+                        <th>Score Savoir (%)</th><th>Score Pratique (%)</th>
+                        <th>Diagnostic</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="database-body"></tbody>
+            </table>
         </div>
     </div>
 
     <div id="content-3" class="form-content">
-        <div class="section-title">RÉSULTATS STATISTIQUES</div>
+        <div class="section-title">1. ÉVALUATION DES SAVOIRS ET PRATIQUES</div>
         <div class="row">
-            <div class="stat-card"><div class="stat-title">Niveau de Connaissances</div><div id="graph-savoir"></div></div>
-            <div class="stat-card"><div class="stat-title">Qualité de la Pratique</div><div id="graph-pratique"></div></div>
+            <div class="stat-card">
+                <div class="stat-title">Niveau de Connaissances</div>
+                <div id="graph-savoir"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Qualité de la Pratique</div>
+                <div id="graph-pratique"></div>
+            </div>
         </div>
-        <div class="section-title">OBSTACLES IDENTIFIÉS</div>
-        <div class="stat-card"><div id="graph-obstacles-anal"></div></div>
+
+        <div class="section-title">2. FACTEURS ASSOCIÉS</div>
+        <div class="row">
+            <div class="stat-card">
+                <div class="stat-title">Association : Niveau d'étude vs Pratique</div>
+                <div id="graph-cross-niveau"></div>
+                <div id="interp-niveau" class="interpretation-box"></div>
+            </div>
+        </div>
+
+        <div class="section-title">3. OBSTACLES IDENTIFIÉS</div>
+        <div id="graph-obstacles-anal"></div>
     </div>
 
     <div id="content-4" class="form-content">
-        <div class="section-title">CONCLUSION</div>
-        <div id="dynamic-report"></div>
+        <div class="section-title">SYNTHÈSE ET RECOMMANDATIONS</div>
+        <div id="dynamic-report" style="font-size:14px; line-height:1.6; color:#333;"></div>
     </div>
 </div>
 
@@ -152,9 +203,10 @@
     let database = []; 
     let isAdmin = false;
 
-    // --- LOGIQUE DE GÉNÉRATION DES DONNÉES (KINSHASA RDC) ---
+    // FONCTION DE GÉNÉRATION AVEC LOGIQUE DES POURCENTAGES DEMANDÉS
     window.generateSimulatedData = function() {
         const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences / Autre'];
+        const niveaux = ['A2 - ITM', 'A1/LMD - ISTM']; 
         let simulatedDB = [];
 
         for (let i = 1; i <= 178; i++) {
@@ -164,21 +216,17 @@
             // Logique Pratique A2 (15-20%)
             let scorePratique;
             if (niveau === 'A2 - ITM') {
-                scorePratique = Math.floor(12 + Math.random() * 11); 
+                scorePratique = Math.floor(14 + Math.random() * 7); 
             } else {
-                scorePratique = Math.floor(40 + Math.random() * 40);
+                scorePratique = Math.floor(45 + Math.random() * 30);
             }
 
-            // --- MODIFICATION DES OBSTACLES ---
+            // --- MODIFICATION DES OBSTACLES SELON VOS POURCENTAGES ---
             let obstaclesList = [];
-            // Formation > 70% (on vise ~74%)
-            if(Math.random() < 0.74) obstaclesList.push("Formation");
-            // Coût = 67%
-            if(Math.random() < 0.67) obstaclesList.push("Coût");
-            // Temps = 20%
-            if(Math.random() < 0.20) obstaclesList.push("Temps");
-            // Culture < 20% (on vise ~12%)
-            if(Math.random() < 0.12) obstaclesList.push("Culture");
+            if(Math.random() < 0.74) obstaclesList.push("Formation"); // Sera > 70%
+            if(Math.random() < 0.67) obstaclesList.push("Coût");      // 67%
+            if(Math.random() < 0.20) obstaclesList.push("Temps");     // 20%
+            if(Math.random() < 0.15) obstaclesList.push("Culture");   // < 20%
 
             simulatedDB.push({
                 id: "INF-KIN-" + i.toString().padStart(3, '0'),
@@ -188,7 +236,7 @@
                 anciennete: Math.floor(Math.random() * 15),
                 scoreSavoir: scoreSavoir,
                 scorePratique: scorePratique,
-                scoreAttitude: (2.5 + Math.random() * 2.5).toFixed(1),
+                scoreAttitude: (2.5 + Math.random() * 2).toFixed(1),
                 obstacles: obstaclesList
             });
         }
@@ -206,10 +254,10 @@
         let code = prompt("Code administrateur :"); 
         if(code === "1398") {
             isAdmin = true;
-            document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
+            document.querySelectorAll('.admin-only').forEach(el => el.classList.add('admin-visible'));
             document.getElementById('btn-auth').style.display = 'none';
             updateUI(); 
-            window.switchTab(3);
+            window.switchTab(2);
         }
     };
 
@@ -217,32 +265,47 @@
         document.getElementById('count-badge').textContent = database.length;
         document.getElementById('n-total').textContent = database.length;
         const tbody = document.getElementById('database-body');
-        tbody.innerHTML = database.slice(0, 50).map((row) => `
-            <tr><td><input type="checkbox"></td><td><b>${row.id}</b></td><td>${row.sexe}</td><td>${row.service}</td><td>${row.anciennete}</td><td>${row.scoreSavoir}%</td><td>${row.scorePratique}%</td><td>🟢 Valide</td><td>-</td></tr>
+        tbody.innerHTML = database.slice(0, 50).map((row, index) => `
+            <tr>
+                <td><input type="checkbox" class="row-check"></td>
+                <td><b>${row.id}</b></td><td>${row.sexe}</td><td>${row.service}</td><td>${row.anciennete}</td>
+                <td style="color:${window.getColor(row.scoreSavoir)}">${row.scoreSavoir}%</td>
+                <td style="color:${window.getColor(row.scorePratique)}">${row.scorePratique}%</td>
+                <td>${row.scorePratique < 40 ? '🔴 Critique' : '🟠 Moyen'}</td>
+                <td><button class="btn-view-single">👁️</button></td>
+            </tr>
         `).join('');
         if(isAdmin) window.updateAnalytics();
     };
 
     window.updateAnalytics = function() {
+        // Graphique Obstacles trié pour mettre la Formation en 1er
         let obsMap = {"Formation": 0, "Coût": 0, "Temps": 0, "Culture": 0};
-        database.forEach(r => r.obstacles.forEach(o => obsMap[o]++));
-
+        database.forEach(r => (r.obstacles||[]).forEach(o => { if(obsMap.hasOwnProperty(o)) obsMap[o]++; }));
+        
         document.getElementById('graph-obstacles-anal').innerHTML = Object.entries(obsMap)
-            .sort((a,b) => b[1] - a[1]) // Tri décroissant (Formation sera 1er)
+            .sort((a,b) => b[1] - a[1]) // Tri décroissant
             .map(([k,v]) => {
                 let p = Math.round((v/database.length)*100);
                 return `<div class="bar-container"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:#b03060;">${p}%</div></div><div class="bar-value">${v}</div></div>`;
             }).join('');
-            
-        // Autres graphiques simplifiés
-        window.renderBars('graph-savoir', [{l: 'Moyenne Globale', v: 62, t: 100, c: '#2e7d32'}]);
-        window.renderBars('graph-pratique', [{l: 'Moyenne Globale', v: 45, t: 100, c: '#1565c0'}]);
+
+        // Autres graphes simples
+        let nivData = ["A2 - ITM", "A1/LMD - ISTM"].map(n => ({
+            l: n, v: Math.round(window.getAvg(database.filter(r => r.niveau === n), 'scorePratique')), t: 100, c: '#00897b'
+        }));
+        window.renderBars('graph-cross-niveau', nivData);
     };
 
     window.renderBars = function(id, data) {
-        document.getElementById(id).innerHTML = data.map(i => `<div class="bar-container"><div class="bar-label">${i.l}</div><div class="bar-track"><div class="bar-fill" style="width:${i.v}%; background:${i.c}">${i.v}%</div></div></div>`).join('');
+        document.getElementById(id).innerHTML = data.map(i => {
+            let p = i.t ? Math.round((i.v/i.t)*100) : 0;
+            return `<div class="bar-container"><div class="bar-label">${i.l}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:${i.c}">${p}%</div></div><div class="bar-value">${i.v}</div></div>`;
+        }).join('');
     };
 
+    window.getColor = function(s) { return s >= 70 ? '#2e7d32' : '#f57f17'; };
+    window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
     window.switchTab = function(i) {
         document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
