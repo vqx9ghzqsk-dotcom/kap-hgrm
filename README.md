@@ -568,17 +568,26 @@
         for (let i = 1; i <= 178; i++) {
             let service = services[Math.floor(Math.random() * services.length)];
             
-            // MODIFICATION DEMANDÉE : Attribution du niveau A1 à hauteur de 70%
+            // Attribution du niveau A1 à hauteur de 70%
             let niveau = (Math.random() < 0.70) ? 'A1/LMD - ISTM' : 'A2 - ITM';
             
-            // MODIFICATION : Ancienneté limitée à 20 ans
+            // Ancienneté limitée à 20 ans
             let anciennete = Math.floor(Math.random() * 21); // 0 à 20 ans
             let age = 22 + anciennete + Math.floor(Math.random() * 5); 
 
             let isGyneco = service === 'Gynécologie-Obstétrique';
             let baseSavoir = isGyneco ? 60 : 40; 
             let scoreSavoir = Math.min(100, Math.floor(baseSavoir + Math.random() * 40));
-            let scorePratique = Math.min(100, Math.floor((scoreSavoir * 0.7) + Math.random() * 30));
+            
+            // --- MODIFICATION DEMANDÉE : Pratique A2 autour de 15-20% ---
+            let scorePratique;
+            if (niveau === 'A2 - ITM') {
+                // On génère une valeur entre 12% et 22% pour garantir la moyenne demandée
+                scorePratique = Math.floor(12 + Math.random() * 11); 
+            } else {
+                // Pour les LMD, on garde la logique de corrélation
+                scorePratique = Math.min(100, Math.floor((scoreSavoir * 0.7) + Math.random() * 30));
+            }
 
             let obstaclesList = [];
             if(Math.random() > 0.3) obstaclesList.push("Coût");
