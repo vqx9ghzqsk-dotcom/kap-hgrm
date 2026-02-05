@@ -492,7 +492,7 @@
         <table style="width:100%; border-collapse: separate; border-spacing: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.15); border-radius: 12px; overflow:hidden; margin-top:15px; border: 1px solid #eee; background: white;">
             <thead style="background: linear-gradient(135deg, #b03060, #880e4f); color: white;">
                 <tr>
-                    <th style="text-align:left; padding:20px; font-size:13px; text-transform:uppercase; letter-spacing:1px; border-right: 1px solid rgba(255,255,255,0.2);"><b>GROUPE D'ANALYSE</b></th>
+                    <th style="text-align:left; padding:20px; font-size:13px; text-transform:uppercase; letter-spacing:1px; border-right: 1px solid rgba(255,255,255,0.2);"><b>GROUPE d'ANALYSE</b></th>
                     <th style="padding:20px; font-size:13px; border-right: 1px solid rgba(255,255,255,0.2);"><b>Effectif (N)</b></th>
                     <th style="padding:20px; font-size:13px; border-right: 1px solid rgba(255,255,255,0.2);"><b>Attitude (/5)</b></th>
                     <th style="padding:20px; font-size:13px; border-right: 1px solid rgba(255,255,255,0.2);"><b>Score Pratique (%)</b></th>
@@ -653,8 +653,71 @@
         }
     };
 
+    /** * --- MODIFICATION : AJOUT DE DONNÉES ACTIF ---
+     */
     window.saveRecord = function() {
-        alert("En mode simulation, l'ajout est désactivé.");
+        const code = document.getElementById('code-enquete').value;
+        const service = document.getElementById('service').value;
+        const niveau = document.getElementById('niveau').value;
+
+        if(!service || !niveau) {
+            alert("Veuillez remplir au moins le Service et le Niveau d'étude.");
+            return;
+        }
+
+        // Calcul du score Savoir (Basé sur les réponses clés)
+        let sSavoir = 0;
+        if(document.getElementById('q-cause').value === 'vrai') sSavoir += 20;
+        if(document.getElementById('q-age-mammo').value === '35') sSavoir += 20;
+        if(document.getElementById('q-moment-aes').value === 'apres') sSavoir += 20;
+        sSavoir += (document.querySelectorAll('#group-risques input:checked').length * 5);
+        sSavoir = Math.min(100, sSavoir + 10);
+
+        // Calcul score Pratique
+        let sPratique = 0;
+        if(document.getElementById('prac-pro-freq').value === 'syst') sPratique += 40;
+        if(document.getElementById('prac-main').value === 'pulpe') sPratique += 30;
+        sPratique += (document.querySelectorAll('#group-mouv input:checked').length * 10);
+        sPratique = Math.min(100, sPratique);
+
+        // Score Attitude (Moyenne des radios 1-5)
+        let sAtt = 0;
+        for(let i=1; i<=5; i++){
+            let val = document.querySelector(`input[name="att${i}"]:checked`)?.value || 3;
+            sAtt += parseInt(val);
+        }
+        sAtt = (sAtt / 5).toFixed(1);
+
+        const newEntry = {
+            firestoreId: "manual-" + Date.now(),
+            id: code,
+            consentement: document.getElementById('consentement').value,
+            service: service,
+            niveau: niveau,
+            anciennete: parseInt(document.getElementById('anciennete').value) || 0,
+            sexe: "F",
+            etat_civil: document.getElementById('etat-civil').value,
+            province: document.getElementById('province').value,
+            cat_pro: document.getElementById('cat-pro').value,
+            age_participant: parseInt(document.getElementById('age-participant').value) || 0,
+            scoreSavoir: sSavoir,
+            scorePratique: sPratique,
+            scoreAttitude: sAtt,
+            obstacles: Array.from(document.querySelectorAll('#group-obstacles input:checked')).map(i => i.value),
+            reco_verbatim: document.getElementById('reco-verbatim').value
+        };
+
+        // Ajout à la base locale
+        database.unshift(newEntry);
+        
+        // Refresh UI
+        window.updateUI();
+        window.initCodeDropdown();
+        showToast("Fiche " + code + " enregistrée avec succès !");
+        
+        // Reset du formulaire
+        document.getElementById('kapForm').reset();
+        window.scrollTo(0,0);
     };
 
     window.deleteOne = function(index) {
@@ -771,7 +834,6 @@
         });
         window.renderBars('graph-cross-niveau', niveauData);
 
-        // --- SYNTHÈSE DES GROUPES OPTIMISÉE ---
         const groupsToAnalyze = [
             ...services.map(s => ({ label: s, filter: r => r.service === s })),
             ...niveauxLabels.map(n => ({ label: "Niveau " + n, filter: r => r.niveau === n }))
@@ -784,7 +846,6 @@
             let avgAttitude = window.getAvg(subset, 'scoreAttitude');
             let avgPratique = window.getAvg(subset, 'scorePratique');
             
-            // Logique de couleur et statut
             let colorP = avgPratique >= 70 ? '#2e7d32' : (avgPratique >= 50 ? '#f57f17' : '#c62828');
             let status = avgPratique >= 70 ? '🟢 Satisfaisant' : (avgPratique >= 50 ? '🟠 À renforcer' : '🔴 Critique');
             
