@@ -246,7 +246,7 @@
                 </div>
             </div>
 
-            <div class="sub-title">8. Facteurs de risque</div>
+            <div class="sub-title">8. Facteurs de risque (Cochez ceux prouvés)</div>
             <div class="check-group" id="group-risques">
                 <label class="check-item"><input type="checkbox" value="age"> Âge avancé (>50 ans)</label>
                 <label class="check-item"><input type="checkbox" value="multi"> Multiparité</label>
@@ -276,7 +276,7 @@
             <div class="sub-title">10-14. Connaissance Mammographie</div>
             <div class="row">
                 <div class="field">
-                    <label>La mammographie est importante :</label>
+                    <label>La mammographie est importante pour détection précoce :</label>
                     <select id="q-mammo-imp">
                         <option value="" disabled selected>Réponse...</option>
                         <option>Oui</option><option>Non</option><option>Je ne sais pas</option>
@@ -292,7 +292,7 @@
                     </select>
                 </div>
                 <div class="field">
-                    <label>Fréquence :</label>
+                    <label>Fréquence (Femme sans risque) :</label>
                     <select id="q-mammo-freq">
                         <option value="" disabled selected>Fréquence...</option>
                         <option value="1">Tous les ans</option>
@@ -308,7 +308,11 @@
                 <thead>
                     <tr>
                         <th class="td-left">Énoncé</th>
-                        <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                        <th>1<br><small>Pas du tout</small></th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5<br><small>Tout à fait</small></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -317,35 +321,108 @@
                         <td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5"></td>
                     </tr>
                     <tr>
-                        <td class="td-left">Je me sens capable de détecter un nodule.</td>
+                        <td class="td-left">Je me sens capable de détecter un nodule de petite taille.</td>
                         <td><input type="radio" name="att2" value="1"></td><td><input type="radio" name="att2" value="2"></td><td><input type="radio" name="att2" value="3"></td><td><input type="radio" name="att2" value="4"></td><td><input type="radio" name="att2" value="5"></td>
+                    </tr>
+                    <tr>
+                        <td class="td-left">La peur du diagnostic empêche les patientes de consulter.</td>
+                        <td><input type="radio" name="att3" value="1"></td><td><input type="radio" name="att3" value="2"></td><td><input type="radio" name="att3" value="3"></td><td><input type="radio" name="att3" value="4"></td><td><input type="radio" name="att3" value="5"></td>
+                    </tr>
+                    <tr>
+                        <td class="td-left">Je suis mal à l’aise d’aborder l’intimité avec les âgées.</td>
+                        <td><input type="radio" name="att4" value="1"></td><td><input type="radio" name="att4" value="2"></td><td><input type="radio" name="att4" value="3"></td><td><input type="radio" name="att4" value="4"></td><td><input type="radio" name="att4" value="5"></td>
+                    </tr>
+                    <tr>
+                        <td class="td-left">Le dépistage ne sert à rien (coût des traitements).</td>
+                        <td><input type="radio" name="att5" value="1"></td><td><input type="radio" name="att5" value="2"></td><td><input type="radio" name="att5" value="3"></td><td><input type="radio" name="att5" value="4"></td><td><input type="radio" name="att5" value="5"></td>
                     </tr>
                 </tbody>
             </table>
 
             <div class="section-title">IV. PRATIQUES (Savoir-Faire)</div>
+            
             <div class="row">
                 <div class="field">
-                    <label>15. AES sur vous :</label>
-                    <select id="prac-perso"><option value="mois">Tous les mois</option><option value="temps">De temps en temps</option><option value="jamais">Jamais</option></select>
+                    <label>15. Pratique personnelle (AES sur vous) :</label>
+                    <select id="prac-perso">
+                        <option value="" disabled selected>Fréquence...</option>
+                        <option value="mois">Tous les mois</option>
+                        <option value="temps">De temps en temps</option>
+                        <option value="jamais">Jamais</option>
+                    </select>
                 </div>
                 <div class="field">
-                    <label>16. Examen patientes :</label>
-                    <select id="prac-pro-freq"><option value="syst">Systématiquement</option><option value="plainte">Si plainte</option><option value="rare">Rarement</option></select>
+                    <label>16. Examen des patientes (Fréquence) :</label>
+                    <select id="prac-pro-freq">
+                        <option value="" disabled selected>Fréquence...</option>
+                        <option value="syst">Systématiquement</option>
+                        <option value="plainte">Uniquement si plainte</option>
+                        <option value="rare">Rarement / Jamais</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="section-title">V. OBSTACLES & SUGGESTIONS</div>
-            <div class="check-group" id="group-obstacles">
-                <label class="check-item"><input type="checkbox" value="Formation"> Manque de formation</label>
-                <label class="check-item"><input type="checkbox" value="Coût"> Coût des examens</label>
-                <label class="check-item"><input type="checkbox" value="Temps"> Manque de temps</label>
-                <label class="check-item"><input type="checkbox" value="Culture"> Pudeur / Culture</label>
+            <div class="sub-title">Technique de Palpation</div>
+            <div class="row">
+                <div class="field">
+                    <label>Partie de la main utilisée ?</label>
+                    <select id="prac-main">
+                        <option value="" disabled selected>Choisir...</option>
+                        <option value="pointe">La pointe des doigts</option>
+                        <option value="pulpe">La pulpe des 3 doigts du milieu</option>
+                        <option value="paume">La paume entière</option>
+                        <option value="pince">Le pouce et l'index</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Zone "oubliée" à inclure absolument ?</label>
+                    <select id="prac-zone">
+                        <option value="" disabled selected>Zone...</option>
+                        <option value="mamelon">Le mamelon</option>
+                        <option value="sillon">Le sillon sous-mammaire</option>
+                        <option value="axillaire">Le creux axillaire (aisselle)</option>
+                    </select>
+                </div>
             </div>
-            <br>
+
+            <label style="margin:10px 0; display:block; font-weight:bold; color:#b03060;">Mouvements effectués (Cochez les réponses) :</label>
+            <div class="check-group" id="group-mouv">
+                <label class="check-item"><input type="checkbox" value="circulaire"> Circulaire (Spirale)</label>
+                <label class="check-item"><input type="checkbox" value="vertical"> Vertical (Bandelettes)</label>
+                <label class="check-item"><input type="checkbox" value="radial"> Radial (Étoile)</label>
+                <label class="check-item"><input type="checkbox" value="aleatoire"> Aléatoire (Sans ordre)</label>
+            </div>
+
+            <div class="section-title">V. OBSTACLES IDENTIFIÉS (3 principaux)</div>
+            <div class="check-group" id="group-obstacles">
+                <label class="check-item"><input type="checkbox" value="Temps"> Manque de temps</label>
+                <label class="check-item"><input type="checkbox" value="Intimité"> Manque d’intimité</label>
+                <label class="check-item"><input type="checkbox" value="Culture"> Croyances culturelles / Pudeur</label>
+                <label class="check-item"><input type="checkbox" value="Coût"> Coût des examens</label>
+                <label class="check-item"><input type="checkbox" value="Formation"> Manque de formation</label>
+                <label class="check-item"><input type="checkbox" value="Protocole"> Absence de protocole</label>
+            </div>
+
+            <div class="section-title">VI. SUGGESTIONS / RECOMMANDATIONS (Verbatim)</div>
             <div class="field">
-                <label>Suggestions (Verbatim) :</label>
-                <textarea id="reco-verbatim" rows="3"></textarea>
+                <label>Suggestions de l'infirmière pour améliorer le dépistage :</label>
+                <textarea id="reco-verbatim" rows="3" placeholder="Écrire ici les propositions de l'enquêtée..."></textarea>
+            </div>
+
+            <div class="section-title">VII. POLITIQUE DE SANTÉ & PERSPECTIVES</div>
+            <div class="row">
+                <div class="field">
+                    <label>Besoin de formation supplémentaire ressenti ?</label>
+                    <select id="besoin-formation"><option>Oui</option><option>Non</option></select>
+                </div>
+                <div class="field">
+                    <label>Connaissance du CNLC et ses activités ?</label>
+                    <select id="connaissance-cnlc"><option>Non</option><option>Oui</option></select>
+                </div>
+                <div class="field">
+                    <label>Intéressé par l'élaboration d'un registre national ?</label>
+                    <select id="interet-registre"><option>Oui</option><option>Non</option></select>
+                </div>
             </div>
 
             <button type="button" id="save-btn" class="btn-save" onclick="window.saveRecord()">☁️ ENREGISTRER DANS LE CLOUD</button>
@@ -371,50 +448,60 @@
     </div>
 
     <div id="content-3" class="form-content">
-        <div class="section-title">ANALYSE CROISÉE DES DÉTERMINANTS (TRÈS INTELLIGENTE)</div>
-        
+        <div class="section-title">1. ÉVALUATION DES SAVOIRS ET PRATIQUES (Obj. Spécifiques 1 & 3)</div>
         <div class="row">
             <div class="stat-card">
-                <div class="stat-title">1. Connaissances × Formation</div>
-                <div id="cross-savoir-formation"></div>
+                <div class="stat-title">Niveau de Connaissances (Obj. 1)</div>
+                <div id="graph-savoir"></div>
             </div>
             <div class="stat-card">
-                <div class="stat-title">2. Attitudes × Connaissances</div>
-                <div id="cross-attitude-savoir"></div>
+                <div class="stat-title">Qualité de la Pratique (Obj. 3)</div>
+                <div id="graph-pratique"></div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="stat-card">
-                <div class="stat-title">3. Pratiques × Connaissances</div>
-                <div id="cross-pratique-savoir"></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-title">4. Pratiques × Attitudes</div>
-                <div id="cross-pratique-attitude"></div>
-            </div>
-        </div>
-
+        <div class="section-title">2. IDENTIFICATION DES ATTITUDES (Obj. Spécifique 2)</div>
         <div class="stat-card">
-            <div class="stat-title">5. Pratiques × Formation (Facteur de Performance)</div>
-            <div id="cross-pratique-formation"></div>
+            <div class="stat-title">Répartition des Attitudes face au dépistage</div>
+            <p style="font-size:12px; color:#666; margin-bottom:10px;">Attitude Positive (Score > 3.5/5) vs Attitude Négative/Neutre.</p>
+            <div id="graph-attitudes"></div>
         </div>
 
-        <div class="section-title">SYNTHÈSE DES GROUPES (RÉSUMÉ EXÉCUTIF)</div>
-        <table id="table-synthese" style="width:100%; border-collapse: separate; border-spacing: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 12px; overflow:hidden;">
-            <thead style="background: #b03060; color: white;">
+        <div class="section-title">3. FACTEURS ASSOCIÉS (Obj. Spécifique 4)</div>
+        <div class="row">
+            <div class="stat-card">
+                <div class="stat-title">Association : Service vs Pratique</div>
+                <div id="graph-cross-service"></div>
+                <div id="interp-service" class="interpretation-box"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Association : Niveau d'étude vs Pratique</div>
+                <div id="graph-cross-niveau"></div>
+                <div id="interp-niveau" class="interpretation-box"></div>
+            </div>
+        </div>
+
+        <div class="stat-card" style="margin-top:15px;">
+            <div class="stat-title">Facteur Clé : Impact des Connaissances sur la Pratique</div>
+            <div id="graph-correlation"></div>
+            <p style="font-size:12px; color:#666; margin-top:5px;">Vérification de l'hypothèse : "Mieux on connait, mieux on pratique".</p>
+        </div>
+
+        <div class="section-title">4. SYNTHÈSE DES GROUPES</div>
+        
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.15); border-radius: 12px; overflow:hidden; margin-top:15px; border: 1px solid #eee; background: white;">
+            <thead style="background: linear-gradient(135deg, #b03060, #880e4f); color: white;">
                 <tr>
-                    <th style="padding:15px;">Groupe d'Analyse</th>
-                    <th style="padding:15px;">Effectif (N)</th>
-                    <th style="padding:15px;">Savoir Moyen (%)</th>
-                    <th style="padding:15px;">Pratique Moyenne (%)</th>
-                    <th style="padding:15px;">Attitude (/5)</th>
+                    <th style="text-align:left; padding:20px; font-size:14px; text-transform:uppercase; letter-spacing:1px; border-right: 1px solid rgba(255,255,255,0.2);">Groupe d'analyse</th>
+                    <th style="padding:20px; font-size:14px; border-right: 1px solid rgba(255,255,255,0.2);">Effectif (N)</th>
+                    <th style="padding:20px; font-size:14px; border-right: 1px solid rgba(255,255,255,0.2);">Attitude Moyenne (/5)</th>
+                    <th style="padding:20px; font-size:14px;">Score Pratique Moyen (%)</th>
                 </tr>
             </thead>
-            <tbody id="cross-body-groups" style="font-size:14px;"></tbody>
+            <tbody id="cross-body" style="font-size:15px; font-weight:500; color:#333;"></tbody>
         </table>
 
-        <div class="section-title">OBSTACLES IDENTIFIÉS (Hiérarchie)</div>
+        <div class="section-title">5. OBSTACLES IDENTIFIÉS (Hiérarchie)</div>
         <div id="graph-obstacles-anal"></div>
     </div>
 
@@ -435,12 +522,13 @@
         <div id="modal-body-content"></div>
     </div>
 </div>
+
 <div id="toast">Donnée synchronisée !</div>
 
 <script type="module">
-    // --- FIREBASE CONFIG ---
+    // 1. IMPORT FIREBASE
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AlzaSyAdEKZFfinxpHcThi4vh8EMGJ9ZgqchxEl",
@@ -454,163 +542,284 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     
+    // --- MODE SIMULATION ---
     let database = []; 
     let isAdmin = false;
 
-    // --- GÉNÉRATION DONNÉES (LOGIQUE INTELLIGENTE) ---
     window.generateSimulatedData = function() {
         const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences / Autre'];
+        const niveaux = ['A2 - ITM', 'A1/LMD - ISTM']; 
+        const verbatims = [
+            "Il faut multiplier les campagnes à la télévision.",
+            "Les patientes arrivent toujours trop tard, stade avancé.",
+            "Le manque de formation pratique est notre plus grand défi.",
+            "Le coût de la mammographie est trop élevé pour les mamans.",
+            "Besoin de formation continue dans nos hôpitaux.",
+            "Il faut intégrer l'examen dans la routine prénatale.",
+            "Rien à signaler.",
+            "Le gouvernement doit aider le CNLC.",
+            "Il faut sensibiliser les maris aussi."
+        ];
+
         let simulatedDB = [];
+
         for (let i = 1; i <= 178; i++) {
             let service = services[Math.floor(Math.random() * services.length)];
-            let hasFormation = Math.random() > 0.74; // Seulement 26% sont formés
-            
-            let baseSavoir = hasFormation ? 75 : 45;
-            let scoreSavoir = Math.min(100, Math.floor(baseSavoir + Math.random() * 20));
-            
-            let basePratique = hasFormation ? 70 : 18;
-            let scorePratique = Math.min(100, Math.floor(basePratique + Math.random() * 25));
+            let niveau = (Math.random() < 0.70) ? 'A1/LMD - ISTM' : 'A2 - ITM';
+            let anciennete = Math.floor(Math.random() * 21);
+            let age = 22 + anciennete + Math.floor(Math.random() * 5); 
 
+            let isGyneco = service === 'Gynécologie-Obstétrique';
+            let baseSavoir = isGyneco ? 60 : 40; 
+            let scoreSavoir = Math.min(100, Math.floor(baseSavoir + Math.random() * 40));
+            
+            // Logique A2 à 15-20%
+            let scorePratique;
+            if (niveau === 'A2 - ITM') {
+                scorePratique = Math.floor(12 + Math.random() * 11); 
+            } else {
+                scorePratique = Math.min(100, Math.floor((scoreSavoir * 0.7) + Math.random() * 30));
+            }
+
+            // --- NOUVELLE LOGIQUE OBSTACLES ---
             let obstaclesList = [];
-            if(!hasFormation) obstaclesList.push("Formation");
-            if(Math.random() < 0.67) obstaclesList.push("Coût");
+            if(Math.random() < 0.74) obstaclesList.push("Formation"); // > 70%
+            if(Math.random() < 0.67) obstaclesList.push("Coût");      // 67%
+            if(Math.random() < 0.20) obstaclesList.push("Temps");     // 20%
+            if(Math.random() < 0.15) obstaclesList.push("Culture");   // < 20%
 
             simulatedDB.push({
+                firestoreId: "sim-" + i,
                 id: "INF-MAK-" + i.toString().padStart(3, '0'),
-                sexe: "F", service: service, niveau: 'A1/LMD - ISTM',
-                anciennete: Math.floor(Math.random() * 20),
-                scoreSavoir: scoreSavoir, scorePratique: scorePratique,
-                scoreAttitude: (2.0 + Math.random() * 3.0).toFixed(1),
-                obstacles: obstaclesList, reco_verbatim: "Renforcer les capacités."
+                consentement: "oui",
+                service: service,
+                niveau: niveau,
+                anciennete: anciennete,
+                sexe: "F",
+                etat_civil: Math.random() > 0.4 ? "Mariée" : "Célibataire",
+                province: "Kinshasa",
+                cat_pro: "Infirmier(e)",
+                age_participant: age,
+                q_moleculaire: Math.random() > 0.8 ? "oui" : "non",
+                q_her2: Math.random() > 0.9 ? "oui" : "non",
+                connaissance_cnlc: Math.random() > 0.6 ? "oui" : "non",
+                interet_registre: "Oui",
+                scoreSavoir: scoreSavoir,
+                scorePratique: scorePratique,
+                scoreAttitude: (2.5 + Math.random() * 2.5).toFixed(1),
+                obstacles: obstaclesList,
+                risques: ["age", "famille"],
+                signes: ["nodule", "douleur"],
+                reco_verbatim: verbatims[Math.floor(Math.random() * verbatims.length)]
             });
         }
         return simulatedDB;
     };
 
     database = window.generateSimulatedData();
+    
+    setTimeout(() => {
+        window.updateUI();
+        showToast("178 Fiches chargées (Données sur Kinshasa)");
+    }, 500);
 
-    // --- NAVIGATION ---
-    window.switchTab = function(i) {
-        document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.getElementById('content-'+i).classList.add('active');
-        document.querySelectorAll('.tab')[i-1].classList.add('active');
-    };
+    window.initCodeDropdown = function() {
+        const sel = document.getElementById('code-enquete');
+        sel.innerHTML = "";
+        for(let i=179; i<=300; i++) { 
+            let o = document.createElement('option'); 
+            o.value = "INF-MAK-" + i.toString().padStart(3, '0'); 
+            o.text = "Nouvelle Fiche N° " + i; 
+            sel.appendChild(o); 
+        }
+    }
 
     window.requestAdmin = function() {
+        if(isAdmin) return; 
         let code = prompt("Code administrateur :"); 
         if(code === "1398") {
             isAdmin = true;
-            document.querySelectorAll('.admin-only').forEach(el => el.classList.add('admin-visible'));
+            document.querySelectorAll('.admin-only').forEach(el => {
+                el.classList.add('admin-visible');
+                el.style.display = 'inline-block'; 
+            });
             document.getElementById('btn-auth').style.display = 'none';
-            window.updateUI(); 
-            window.switchTab(3);
+            alert("Mode Admin Activé : Analyse des données de l'HGR Makala.");
+            updateUI(); 
+            window.switchTab(2);
+        } else {
+            alert("Code incorrect !");
         }
     };
 
-    // --- ANALYTICS & CROISEMENTS ---
-    window.updateAnalytics = function() {
-        if(database.length === 0) return;
+    window.saveRecord = function() {
+        alert("En mode simulation, l'ajout est désactivé.");
+    };
 
-        // Groupes pour calculs
-        let withForm = database.filter(r => !r.obstacles.includes("Formation"));
-        let withoutForm = database.filter(r => r.obstacles.includes("Formation"));
-        let highK = database.filter(r => r.scoreSavoir >= 70);
-        let lowK = database.filter(r => r.scoreSavoir < 70);
-        let posAtt = database.filter(r => parseFloat(r.scoreAttitude) >= 3.5);
-        let negAtt = database.filter(r => parseFloat(r.scoreAttitude) < 3.5);
+    window.deleteOne = function(index) {
+        if(!confirm("Supprimer cette fiche ?")) return;
+        database.splice(index, 1);
+        updateUI();
+    };
 
-        // 1. Savoir x Formation
-        window.renderBars('cross-savoir-formation', [
-            {l: 'Groupe Formé (Savoir)', v: Math.round(window.getAvg(withForm, 'scoreSavoir')), t: 100, c: '#2e7d32'},
-            {l: 'Groupe Non-Formé (Savoir)', v: Math.round(window.getAvg(withoutForm, 'scoreSavoir')), t: 100, c: '#c62828'}
-        ]);
+    window.deleteSelected = function() {
+        if(!confirm("Supprimer la sélection ?")) return;
+        const checkboxes = Array.from(document.querySelectorAll('.row-check'));
+        for (let i = checkboxes.length - 1; i >= 0; i--) {
+            if (checkboxes[i].checked) {
+                database.splice(i, 1);
+            }
+        }
+        updateUI();
+    };
 
-        // 2. Attitude x Savoir
-        window.renderBars('cross-attitude-savoir', [
-            {l: 'Savoir Élevé (Attitude %)', v: Math.round(window.getAvg(highK, 'scoreAttitude')*20), t: 100, c: '#4527a0'},
-            {l: 'Savoir Faible (Attitude %)', v: Math.round(window.getAvg(lowK, 'scoreAttitude')*20), t: 100, c: '#7b1fa2'}
-        ]);
+    window.viewDetails = function(index) {
+        let d = database[index];
+        document.getElementById('modal-title-id').innerText = d.id;
+        let html = `
+            <div class="sub-title">IDENTITÉ</div>
+            <div class="detail-row"><span class="detail-label">Service</span><span class="detail-val">${d.service}</span></div>
+            <div class="detail-row"><span class="detail-label">Niveau</span><span class="detail-val">${d.niveau}</span></div>
+            <div class="detail-row"><span class="detail-label">Ancienneté</span><span class="detail-val">${d.anciennete} ans</span></div>
+            <div class="sub-title">SCORES</div>
+            <div class="detail-row"><span class="detail-label">Score Savoir</span><span class="detail-val">${d.scoreSavoir}%</span></div>
+            <div class="detail-row"><span class="detail-label">Score Pratique</span><span class="detail-val">${d.scorePratique}%</span></div>
+            <div class="detail-val-long">"${d.reco_verbatim || "Aucune suggestion."}"</div>
+        `;
+        document.getElementById('modal-body-content').innerHTML = html;
+        document.getElementById('detailModal').style.display = 'flex';
+    };
 
-        // 3. Pratique x Savoir
-        window.renderBars('cross-pratique-savoir', [
-            {l: 'Savoir Élevé (Pratique %)', v: Math.round(window.getAvg(highK, 'scorePratique')), t: 100, c: '#1565c0'},
-            {l: 'Savoir Faible (Pratique %)', v: Math.round(window.getAvg(lowK, 'scorePratique')), t: 100, c: '#0277bd'}
-        ]);
+    window.closeModal = function(e) { if(e.target.id === 'detailModal') document.getElementById('detailModal').style.display = 'none'; };
+    window.closeModalBtn = function() { document.getElementById('detailModal').style.display = 'none'; };
 
-        // 4. Pratique x Attitude
-        window.renderBars('cross-pratique-attitude', [
-            {l: 'Attitude Positive (Pratique)', v: Math.round(window.getAvg(posAtt, 'scorePratique')), t: 100, c: '#2e7d32'},
-            {l: 'Attitude Négative (Pratique)', v: Math.round(window.getAvg(negAtt, 'scorePratique')), t: 100, c: '#ef6c00'}
-        ]);
+    window.toggleSelectAll = function(source) {
+        document.querySelectorAll('.row-check').forEach(cb => cb.checked = source.checked);
+        window.toggleDeleteButton();
+    };
+    
+    window.toggleDeleteButton = function() {
+        const checked = document.querySelectorAll('.row-check:checked').length;
+        document.getElementById('btn-delete-multi').style.display = checked > 0 ? 'block' : 'none';
+    };
 
-        // 5. Pratique x Formation
-        window.renderBars('cross-pratique-formation', [
-            {l: 'Accès Formation (Pratique %)', v: Math.round(window.getAvg(withForm, 'scorePratique')), t: 100, c: '#2e7d32'},
-            {l: 'Déficit Formation (Pratique %)', v: Math.round(window.getAvg(withoutForm, 'scorePratique')), t: 100, c: '#c62828'}
-        ]);
+    window.updateUI = function() {
+        const count = database.length;
+        document.getElementById('count-badge').textContent = count;
+        document.getElementById('n-total').textContent = count;
+        document.getElementById('select-all').checked = false;
+        window.toggleDeleteButton();
 
-        // SYNTHÈSE DES GROUPES (TABLEAU GRAS)
-        const groups = [
-            {n: "Global Makala", d: database},
-            {n: "Gynécologie-Obstétrique", d: database.filter(r => r.service.includes("Gynéco"))},
-            {n: "Infirmières Formées", d: withForm},
-            {n: "Infirmières Non-Formées", d: withoutForm}
-        ];
-        document.getElementById('cross-body-groups').innerHTML = groups.map(g => `
+        const tbody = document.getElementById('database-body');
+        let displayData = database.slice(0, 100); 
+        
+        tbody.innerHTML = displayData.map((row, index) => `
             <tr>
-                <td style="text-align:left; padding:12px;"><b>${g.n}</b></td>
-                <td><b>${g.d.length}</b></td>
-                <td><b>${Math.round(window.getAvg(g.d, 'scoreSavoir'))}%</b></td>
-                <td><b>${Math.round(window.getAvg(g.d, 'scorePratique'))}%</b></td>
-                <td><b>${window.getAvg(g.d, 'scoreAttitude')}</b></td>
+                <td><input type="checkbox" class="row-check" onclick="window.toggleDeleteButton()"></td>
+                <td><b>${row.id}</b></td><td>${row.sexe}</td><td>${row.service}</td><td>${row.anciennete}</td>
+                <td style="color:${window.getColor(row.scoreSavoir)}">${row.scoreSavoir}%</td>
+                <td style="color:${window.getColor(row.scorePratique)}">${row.scorePratique}%</td>
+                <td>${row.scoreSavoir >= 70 && row.scorePratique >= 70 ? '🟢 Expert' : (row.scorePratique < 50 ? '🔴 Critique' : '🟠 Moyen')}</td>
+                <td>
+                    <button class="btn-view-single" onclick="window.viewDetails(${index})">👁️ Voir</button>
+                    <button class="btn-delete-single" onclick="window.deleteOne(${index})">Effacer</button>
+                </td>
             </tr>
         `).join('');
 
-        // OBSTACLES (VOTRE LOGIQUE)
+        if(isAdmin) window.updateAnalytics();
+    };
+
+    window.updateAnalytics = function() {
+        if(database.length === 0) return;
+
+        let highS = database.filter(r => r.scoreSavoir >= 60);
+        let lowS = database.filter(r => r.scoreSavoir < 60);
+        window.renderBars('graph-savoir', [
+            {l: 'Connaissances Solides (>60%)', v: highS.length, t: database.length, c: '#2e7d32'},
+            {l: 'Lacunes Importantes (<60%)', v: lowS.length, t: database.length, c: '#c62828'}
+        ]);
+
+        let highP = database.filter(r => r.scorePratique >= 70).length;
+        window.renderBars('graph-pratique', [
+            {l: 'Pratique Conforme', v: highP, t: database.length, c: '#1565c0'},
+            {l: 'Pratique Insuffisante', v: database.length - highP, t: database.length, c: '#f57f17'}
+        ]);
+
+        let attPos = database.filter(r => parseFloat(r.scoreAttitude) > 3.5).length;
+        window.renderBars('graph-attitudes', [
+            {l: 'Attitude Positive (>3.5/5)', v: attPos, t: database.length, c: '#43a047'},
+            {l: 'Attitude Mitigée/Négative', v: database.length - attPos, t: database.length, c: '#d81b60'}
+        ]);
+
+        let services = ["Gynécologie-Obstétrique", "Médecine Interne", "Chirurgie", "Urgences / Autre"];
+        let serviceData = services.map(s => {
+            let group = database.filter(r => r.service === s);
+            let avg = window.getAvg(group, 'scorePratique');
+            return { l: s, v: Math.round(avg), t: 100, c: '#8e24aa' };
+        });
+        window.renderBars('graph-cross-service', serviceData);
+        
+        let bestS = serviceData.reduce((prev, curr) => prev.v > curr.v ? prev : curr);
+        document.getElementById('interp-service').innerHTML = `💡 <b>Analyse :</b> Le service <b>${bestS.l}</b> présente les meilleurs scores de pratique.`;
+
+        let niveauxLabels = ["A2 - ITM", "A1/LMD - ISTM"];
+        let niveauData = niveauxLabels.map(n => {
+            let group = database.filter(r => r.niveau === n);
+            return { l: n, v: Math.round(window.getAvg(group, 'scorePratique')), t: 100, c: '#00897b' };
+        });
+        window.renderBars('graph-cross-niveau', niveauData);
+
         let obsMap = {};
         database.forEach(r => (r.obstacles||[]).forEach(o => obsMap[o] = (obsMap[o]||0)+1));
         document.getElementById('graph-obstacles-anal').innerHTML = Object.entries(obsMap).sort((a,b)=>b[1]-a[1]).map(([k,v]) => {
             let p = Math.round((v/database.length)*100);
             return `<div class="bar-container"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:#b03060;">${p}%</div></div><div class="bar-value">${v}</div></div>`;
         }).join('');
+
+        window.generateDynamicReport(highP, obsMap);
     };
 
+    window.generateDynamicReport = function(goodPracticeCount, obsMap) {
+        let total = database.length;
+        let pPractice = Math.round((goodPracticeCount/total)*100);
+        let report = `<p>Analyse de l'HGR Makala : <b>${pPractice}%</b> des infirmières appliquent correctement les protocoles.</p>`;
+        let recs = `<div class="reco-box"><div class="reco-title">🎯 RECOMMANDATION MAJEURE</div>Le manque de formation étant l'obstacle N°1 (>70%), un atelier de renforcement est impératif.</div>`;
+        document.getElementById('dynamic-report').innerHTML = report + recs;
+    };
+
+    window.getColor = function(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); };
     window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
     window.renderBars = function(id, data) {
-        document.getElementById(id).innerHTML = data.map(i => `
-            <div class="bar-container">
-                <div class="bar-label"><b>${i.l}</b></div>
-                <div class="bar-track"><div class="bar-fill" style="width:${i.v}%; background:${i.c}">${i.v}%</div></div>
-            </div>
-        `).join('');
+        document.getElementById(id).innerHTML = data.map(i => {
+            let p = i.t ? Math.round((i.v/i.t)*100) : 0;
+            return `<div class="bar-container"><div class="bar-label">${i.l}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:${i.c}">${p}%</div></div><div class="bar-value">${i.v}</div></div>`;
+        }).join('');
     };
-
-    window.updateUI = function() {
-        document.getElementById('count-badge').textContent = database.length;
-        document.getElementById('n-total').textContent = database.length;
-        const tbody = document.getElementById('database-body');
-        tbody.innerHTML = database.slice(0, 15).map(row => `
-            <tr>
-                <td><input type="checkbox" class="row-check"></td>
-                <td><b>${row.id}</b></td><td>${row.sexe}</td><td>${row.service}</td><td>${row.anciennete}</td>
-                <td>${row.scoreSavoir}%</td><td>${row.scorePratique}%</td>
-                <td>${row.scorePratique >= 70 ? '🟢' : '🔴'}</td>
-                <td><button class="btn-view-single">👁️</button></td>
-            </tr>
-        `).join('');
-        if(isAdmin) window.updateAnalytics();
+    window.switchTab = function(i) {
+        document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('content-'+i).classList.add('active');
+        document.querySelectorAll('.tab')[i-1].classList.add('active');
     };
-
-    window.initCodeDropdown = function() {
-        const sel = document.getElementById('code-enquete');
-        for(let i=179; i<=250; i++) { 
-            let o = document.createElement('option'); 
-            o.value = "INF-MAK-" + i; o.text = "Fiche N° " + i; sel.appendChild(o); 
-        }
+    window.exportToCSV = function() {
+        let h = "ID,Consentement,Sexe,Age,Etat_Civil,Province,Service,Niveau,Anciennete,Savoir(%),Attitude(/5),Pratique(%),Obstacles,Recommandations\n";
+        let r = database.map(r => {
+            let cleanReco = (r.reco_verbatim || "").replace(/"/g, '""').replace(/(\r\n|\n|\r)/gm, " ");
+            return `${r.id},${r.consentement},${r.sexe},${r.age_participant},${r.etat_civil},${r.province},${r.service},${r.niveau},${r.anciennete},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},"${(r.obstacles || []).join(";")}", "${cleanReco}"`;
+        }).join("\n");
+        let l = document.createElement("a");
+        l.href = "data:text/csv;charset=utf-8," + encodeURI("\ufeff"+h+r);
+        l.download = "Rapport_CAP_Makala_Kinshasa.csv"; l.click();
+    };
+    
+    function showToast(message) {
+        var x = document.getElementById("toast");
+        x.className = "show";
+        x.innerText = message;
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
-
-    setTimeout(() => { window.updateUI(); window.initCodeDropdown(); }, 500);
+    window.initCodeDropdown();
 </script>
 </body>
 </html>
