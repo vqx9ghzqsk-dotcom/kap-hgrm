@@ -548,7 +548,7 @@
     // FONCTION DE GÉNÉRATION DES DONNÉES FICTIVES (KINSHASA RDC)
     window.generateSimulatedData = function() {
         const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences / Autre'];
-        // MODIFICATION : Uniquement deux niveaux d'études
+        // Liste des niveaux
         const niveaux = ['A2 - ITM', 'A1/LMD - ISTM']; 
         const verbatims = [
             "Il faut multiplier les campagnes à la télévision.",
@@ -567,7 +567,9 @@
 
         for (let i = 1; i <= 178; i++) {
             let service = services[Math.floor(Math.random() * services.length)];
-            let niveau = niveaux[Math.floor(Math.random() * niveaux.length)];
+            
+            // MODIFICATION DEMANDÉE : Attribution du niveau A1 à hauteur de 70%
+            let niveau = (Math.random() < 0.70) ? 'A1/LMD - ISTM' : 'A2 - ITM';
             
             // MODIFICATION : Ancienneté limitée à 20 ans
             let anciennete = Math.floor(Math.random() * 21); // 0 à 20 ans
@@ -759,7 +761,7 @@
         let bestS = serviceData.reduce((prev, curr) => prev.v > curr.v ? prev : curr);
         document.getElementById('interp-service').innerHTML = `💡 <b>Analyse (Obj 4) :</b> Le service <b>${bestS.l}</b> est un facteur associé à une meilleure pratique (${bestS.v}%).`;
 
-        // MODIFICATION : Mise à jour des catégories d'études pour les graphiques
+        // Mise à jour des catégories d'études pour les graphiques
         let niveauxLabels = ["A2 - ITM", "A1/LMD - ISTM"];
         let niveauData = niveauxLabels.map(n => {
             let group = database.filter(r => r.niveau === n);
