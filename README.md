@@ -639,12 +639,14 @@
         }
     }
 
-    // AUTHENTIFICATION ADMIN CORRIGÉE
+    // AUTHENTIFICATION ADMIN CORRIGÉE ET SÉCURISÉE
     window.requestAdmin = function() {
         if(isAdmin) return; 
-        // CODE SIMPLE POUR LA DEMO : 1234
-        let code = prompt("Code administrateur (Entrez 1234) :");
-        if(code === "1234") {
+        
+        // MODIFICATION ICI : Code changé à 1398 et indice retiré
+        let code = prompt("Code administrateur :"); 
+        
+        if(code === "1398") { // Nouveau code
             isAdmin = true;
             document.querySelectorAll('.admin-only').forEach(el => {
                 el.classList.add('admin-visible');
