@@ -740,15 +740,52 @@
     window.viewDetails = function(index) {
         let d = database[index];
         document.getElementById('modal-title-id').innerText = d.id;
+        
+        // Fonction locale pour formater les listes ou les valeurs vides
+        const val = (v) => (v === undefined || v === null || v === "") ? "Non précisé" : v;
+        const list = (arr) => (Array.isArray(arr) && arr.length > 0) ? arr.join(", ") : "Aucun";
+
         let html = `
-            <div class="sub-title">IDENTITÉ</div>
-            <div class="detail-row"><span class="detail-label">Service</span><span class="detail-val">${d.service}</span></div>
-            <div class="detail-row"><span class="detail-label">Niveau</span><span class="detail-val">${d.niveau}</span></div>
-            <div class="detail-row"><span class="detail-label">Ancienneté</span><span class="detail-val">${d.anciennete} ans</span></div>
-            <div class="sub-title">SCORES</div>
-            <div class="detail-row"><span class="detail-label">Score Savoir</span><span class="detail-val">${d.scoreSavoir}%</span></div>
-            <div class="detail-row"><span class="detail-label">Score Pratique</span><span class="detail-val">${d.scorePratique}%</span></div>
-            <div class="detail-val-long">"${d.reco_verbatim || "Aucune suggestion."}"</div>
+            <div class="sub-title">I. IDENTIFICATION</div>
+            <div class="row" style="margin-bottom:0;">
+                <div class="detail-row" style="width:48%; display:inline-block; border-bottom:1px solid #eee;"><span class="detail-label">Consentement :</span> <span class="detail-val">${val(d.consentement)}</span></div>
+                <div class="detail-row" style="width:48%; display:inline-block; border-bottom:1px solid #eee;"><span class="detail-label">Âge :</span> <span class="detail-val">${val(d.age_participant)} ans</span></div>
+            </div>
+            <div class="detail-row"><span class="detail-label">Sexe :</span> <span class="detail-val">${val(d.sexe)}</span></div>
+            <div class="detail-row"><span class="detail-label">État Civil :</span> <span class="detail-val">${val(d.etat_civil)}</span></div>
+            <div class="detail-row"><span class="detail-label">Province :</span> <span class="detail-val">${val(d.province)}</span></div>
+            <div class="detail-row"><span class="detail-label">Service :</span> <span class="detail-val">${val(d.service)}</span></div>
+            <div class="detail-row"><span class="detail-label">Catégorie Pro :</span> <span class="detail-val">${val(d.cat_pro)}</span></div>
+            <div class="detail-row"><span class="detail-label">Niveau d'étude :</span> <span class="detail-val">${val(d.niveau)}</span></div>
+            <div class="detail-row"><span class="detail-label">Ancienneté :</span> <span class="detail-val">${val(d.anciennete)} ans</span></div>
+
+            <div class="sub-title">II. CONNAISSANCES & SAVOIRS</div>
+            <div class="detail-row"><span class="detail-label">Classif. Moléculaire :</span> <span class="detail-val">${val(d.q_moleculaire)}</span></div>
+            <div class="detail-row"><span class="detail-label">HER2 Low :</span> <span class="detail-val">${val(d.q_her2)}</span></div>
+            
+            <div class="detail-val-long" style="margin-top:10px; background:#e3f2fd; color:#0d47a1;">
+                <b>Facteurs de risque identifiés :</b><br>
+                ${list(d.risques)}
+            </div>
+            <div class="detail-val-long" style="margin-top:5px; background:#fff3e0; color:#e65100;">
+                <b>Signes d'alerte connus :</b><br>
+                ${list(d.signes)}
+            </div>
+
+            <div class="sub-title">III. PRATIQUES & ATTITUDES</div>
+            <div class="detail-row"><span class="detail-label">Score Savoir :</span> <span class="detail-val" style="color:${window.getColor(d.scoreSavoir)}">${d.scoreSavoir}%</span></div>
+            <div class="detail-row"><span class="detail-label">Score Pratique :</span> <span class="detail-val" style="color:${window.getColor(d.scorePratique)}">${d.scorePratique}%</span></div>
+            <div class="detail-row"><span class="detail-label">Score Attitude :</span> <span class="detail-val">${d.scoreAttitude} / 5</span></div>
+            
+            <div class="sub-title">IV. OBSTACLES & POLITIQUES</div>
+            <div class="detail-val-long" style="background:#ffebee; color:#c62828;">
+                <b>Obstacles cités :</b> ${list(d.obstacles)}
+            </div>
+            <div class="detail-row"><span class="detail-label">Connaissance CNLC :</span> <span class="detail-val">${val(d.connaissance_cnlc)}</span></div>
+            <div class="detail-row"><span class="detail-label">Intérêt Registre :</span> <span class="detail-val">${val(d.interet_registre)}</span></div>
+
+            <div class="sub-title">V. VERBATIM / SUGGESTIONS</div>
+            <div class="detail-val-long">"${val(d.reco_verbatim)}"</div>
         `;
         document.getElementById('modal-body-content').innerHTML = html;
         document.getElementById('detailModal').style.display = 'flex';
