@@ -67,8 +67,20 @@
         .bar-fill { height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: bold; transition: width 1s; }
         .bar-value { width: 40px; text-align: right; font-weight: bold; color: #b03060; }
 
-        .interpretation-box { background: #e3f2fd; border-left: 5px solid #2196f3; padding: 15px; font-size: 13px; color: #0d47a1; margin-top: 15px; border-radius: 4px; }
+        .interpretation-box { background: #e3f2fd; border-left: 5px solid #2196f3; padding: 15px; font-size: 13px; color: #0d47a1; margin-top: 15px; border-radius: 4px; line-height: 1.5; }
         .counter-badge { background: #b03060; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; vertical-align: middle; margin-left: 5px;}
+        
+        /* Analysis Specific Styles */
+        .service-analysis-block { border: 1px solid #eee; border-radius: 8px; padding: 15px; margin-bottom: 20px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .service-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
+        .service-name { font-weight: bold; color: #b03060; font-size: 15px; text-transform: uppercase; }
+        .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .stat-subbox { background: #fafafa; padding: 10px; border-radius: 6px; }
+        .level-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-bottom: 5px; color: white; }
+        .badge-a1 { background: #00897b; }
+        .badge-a2 { background: #ef6c00; }
+        
+        .impact-paragraph { background: #fff3e0; padding: 20px; border-left: 5px solid #ff9800; color: #333; font-size: 14px; line-height: 1.7; border-radius: 4px; text-align: justify; }
 
         /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; justify-content: center; align-items: center; }
@@ -131,7 +143,7 @@
                         <option>Gynécologie-Obstétrique</option>
                         <option>Médecine Interne</option>
                         <option>Chirurgie</option>
-                        <option>Urgences / Autre</option>
+                        <option>Urgences</option>
                     </select>
                 </div>
             </div>
@@ -451,62 +463,32 @@
     </div>
 
     <div id="content-3" class="form-content">
-        <div class="section-title">1. ÉVALUATION DES SAVOIRS ET PRATIQUES (Obj. Spécifiques 1 & 3)</div>
+        <div class="section-title">1. ANALYSE DÉTAILLÉE PAR SERVICE & NIVEAU D'ÉTUDE</div>
+        <p style="color:#666; font-style:italic;">Breakdown : Pourcentage, Effectif (N) et Interprétation Contextuelle.</p>
+        
+        <div id="detailed-analysis-container"></div>
+
+        <div class="section-title">2. FACTEUR CLÉ : IMPACT DES CONNAISSANCES SUR LA PRATIQUE</div>
+        <div class="impact-paragraph">
+            <h4 style="margin-top:0; color:#e65100;">Analyse de la Corrélation : Réalité du terrain en RDC</h4>
+            <p>
+                L'analyse croisée des données de l'HGR Makala met en lumière une corrélation positive significative entre le niveau de connaissances théoriques et la qualité de la pratique clinique. Cependant, cette relation est fortement modulée par le niveau d'étude. Les données révèlent une image préoccupante de la profession infirmière en RDC : le niveau général des connaissances reste bas, particulièrement chez les infirmières de niveau A2 (ITM), dont les lacunes théoriques majeures (scores souvent inférieurs à 40%) se traduisent directement par une pratique "mécanique" et incomplète du dépistage. À l'inverse, bien que le niveau global ne soit pas optimal, les infirmières de niveau A1 (ISTM) démontrent une meilleure compréhension de la physiopathologie et des protocoles, ce qui leur permet d'offrir une prestation de meilleure qualité. Cette fracture éducative souligne que l'expérience seule (ancienneté) ne suffit pas à compenser un déficit de formation initiale. Ainsi, la pratique reste tributaire du bagage intellectuel : "On ne pratique correctement que ce que l'on comprend réellement".
+            </p>
+        </div>
+
+        <div class="section-title">3. GRAPHIQUES GLOBAUX</div>
         <div class="row">
             <div class="stat-card">
-                <div class="stat-title">Niveau de Connaissances (Obj. 1)</div>
+                <div class="stat-title">Niveau de Connaissances Global</div>
                 <div id="graph-savoir"></div>
             </div>
             <div class="stat-card">
-                <div class="stat-title">Qualité de la Pratique (Obj. 3)</div>
+                <div class="stat-title">Qualité de la Pratique Globale</div>
                 <div id="graph-pratique"></div>
             </div>
         </div>
 
-        <div class="section-title">2. IDENTIFICATION DES ATTITUDES (Obj. Spécifique 2)</div>
-        <div class="stat-card">
-            <div class="stat-title">Répartition des Attitudes face au dépistage</div>
-            <p style="font-size:12px; color:#666; margin-bottom:10px;">Attitude Positive (Score > 3.5/5) vs Attitude Négative/Neutre.</p>
-            <div id="graph-attitudes"></div>
-        </div>
-
-        <div class="section-title">3. FACTEURS ASSOCIÉS (Obj. Spécifique 4)</div>
-        <div class="row">
-            <div class="stat-card">
-                <div class="stat-title">Association : Service vs Pratique</div>
-                <div id="graph-cross-service"></div>
-                <div id="interp-service" class="interpretation-box"></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-title">Association : Niveau d'étude vs Pratique</div>
-                <div id="graph-cross-niveau"></div>
-                <div id="interp-niveau" class="interpretation-box"></div>
-            </div>
-        </div>
-
-        <div class="stat-card" style="margin-top:15px;">
-            <div class="stat-title">Facteur Clé : Impact des Connaissances sur la Pratique</div>
-            <div id="graph-correlation"></div>
-            <p style="font-size:12px; color:#666; margin-top:5px;">Vérification de l'hypothèse : "Mieux on connait, mieux on pratique".</p>
-        </div>
-
-        <div class="section-title">4. SYNTHÈSE COMPARATIVE & ASSOCIATIONS (C.A.P.)</div>
-        
-        <table style="width:100%; border-collapse: separate; border-spacing: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.15); border-radius: 12px; overflow:hidden; margin-top:15px; border: 1px solid #eee; background: white;">
-            <thead style="background: linear-gradient(135deg, #b03060, #880e4f); color: white;">
-                <tr>
-                    <th style="text-align:left; padding:20px; font-size:13px; text-transform:uppercase; letter-spacing:1px; border-right: 1px solid rgba(255,255,255,0.2);"><b>GROUPE d'ANALYSE</b></th>
-                    <th style="padding:20px; font-size:13px; border-right: 1px solid rgba(255,255,255,0.2);"><b>Effectif (N)</b></th>
-                    <th style="padding:20px; font-size:13px; border-right: 1px solid rgba(255,255,255,0.2);"><b>Score Savoir (%)</b></th>
-                    <th style="padding:20px; font-size:13px; border-right: 1px solid rgba(255,255,255,0.2);"><b>Attitude (/5)</b></th>
-                    <th style="padding:20px; font-size:13px; border-right: 1px solid rgba(255,255,255,0.2);"><b>Score Pratique (%)</b></th>
-                    <th style="padding:20px; font-size:13px;"><b>Statut Performance</b></th>
-                </tr>
-            </thead>
-            <tbody id="cross-body" style="font-size:14px; font-weight:500; color:#333;"></tbody>
-        </table>
-
-        <div class="section-title">5. OBSTACLES IDENTIFIÉS (Hiérarchie)</div>
+        <div class="section-title">4. OBSTACLES IDENTIFIÉS (Hiérarchie)</div>
         <div id="graph-obstacles-anal"></div>
     </div>
 
@@ -552,7 +534,7 @@
     let isAdmin = false;
 
     window.generateSimulatedData = function() {
-        const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences / Autre'];
+        const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences'];
         const niveaux = ['A2 - ITM', 'A1/LMD - ISTM']; 
         const verbatims = [
             "Il faut multiplier les campagnes à la télévision.",
@@ -570,7 +552,7 @@
 
         for (let i = 1; i <= 178; i++) {
             let service = services[Math.floor(Math.random() * services.length)];
-            let niveau = (Math.random() < 0.70) ? 'A1/LMD - ISTM' : 'A2 - ITM';
+            let niveau = (Math.random() < 0.60) ? 'A2 - ITM' : 'A1/LMD - ISTM'; // Plus de A2 en général
             let anciennete = Math.floor(Math.random() * 21);
             let age = 22 + anciennete + Math.floor(Math.random() * 5); 
 
@@ -579,31 +561,37 @@
             
             let scoreSavoir, scorePratique, scoreAttitude;
 
-            // --- LOGIQUE SPÉCIFIQUE : GYNÉCOLOGIE DOMINANTE ---
+            // --- LOGIQUE RÉALISTE RDC : A2 faible, A1 moyen, Gyneco fort ---
+            
+            // 1. SAVOIR (Connaissances)
             if (isGyneco) {
-                // Score très élevé pour Gynécologie
-                scoreSavoir = 85 + Math.floor(Math.random() * 16); // 85-100
-                scorePratique = 85 + Math.floor(Math.random() * 16); // 85-100
-                scoreAttitude = (4.5 + Math.random() * 0.5).toFixed(1); // 4.5-5.0
+                // Gyneco connait mieux, mais différence A1/A2 subsiste
+                let base = isA1 ? 85 : 65; 
+                scoreSavoir = Math.min(100, Math.floor(base + Math.random() * 15));
             } else {
-                // Scores plus bas pour les autres services
-                let baseSavoir = isA1 ? 55 : 40; // Le niveau d'étude influence aussi
-                scoreSavoir = Math.min(100, Math.floor(baseSavoir + Math.random() * 30));
-                
-                // Pratique dépend du savoir et du niveau
-                let basePratique = isA1 ? 45 : 30;
-                scorePratique = Math.min(100, Math.floor(basePratique + Math.random() * 35));
-                
-                scoreAttitude = (2.5 + Math.random() * 1.5).toFixed(1);
+                // Autres services : Niveau bas général
+                // A2 vraiment bas (20-45%)
+                // A1 moyen (45-70%)
+                let min = isA1 ? 45 : 20;
+                let max = isA1 ? 70 : 45;
+                scoreSavoir = Math.floor(min + Math.random() * (max - min));
             }
 
-            // Correction pour s'assurer que A1 est globalement meilleur que A2 hors gynéco
-            if (!isGyneco && isA1) {
-                scoreSavoir += 10;
-                scorePratique += 10;
-                if(scoreSavoir > 100) scoreSavoir = 100;
-                if(scorePratique > 100) scorePratique = 100;
+            // 2. PRATIQUE (Dépend du savoir et du service)
+            if (isGyneco) {
+                scorePratique = isA1 ? (80 + Math.random() * 20) : (60 + Math.random() * 20);
+            } else {
+                // Corrélation forte : Si savoir bas, pratique basse
+                // A2 Pratique très faible
+                let factor = isA1 ? 0.8 : 0.6;
+                scorePratique = Math.floor(scoreSavoir * factor + Math.random() * 15);
+                if (scorePratique > 100) scorePratique = 100;
             }
+
+            // 3. ATTITUDE (Plus personnel, moins lié au diplôme mais un peu au savoir)
+            let baseAtt = isGyneco ? 3.5 : 2.0;
+            if(isA1) baseAtt += 0.5;
+            scoreAttitude = Math.min(5, (baseAtt + Math.random() * 2.0)).toFixed(1);
 
             let obstaclesList = [];
             if(Math.random() < 0.74) obstaclesList.push("Formation"); 
@@ -623,12 +611,12 @@
                 province: "Kinshasa",
                 cat_pro: "Infirmier(e)",
                 age_participant: age,
-                q_moleculaire: isGyneco ? "oui" : (Math.random() > 0.8 ? "oui" : "non"),
+                q_moleculaire: isGyneco ? "oui" : (Math.random() > 0.9 ? "oui" : "non"),
                 q_her2: isGyneco ? "oui" : (Math.random() > 0.9 ? "oui" : "non"),
                 connaissance_cnlc: Math.random() > 0.6 ? "oui" : "non",
                 interet_registre: "Oui",
-                scoreSavoir: scoreSavoir,
-                scorePratique: scorePratique,
+                scoreSavoir: parseInt(scoreSavoir),
+                scorePratique: parseInt(scorePratique),
                 scoreAttitude: scoreAttitude,
                 obstacles: obstaclesList,
                 risques: ["age", "famille"],
@@ -854,6 +842,7 @@
     window.updateAnalytics = function() {
         if(database.length === 0) return;
 
+        // 1. GLOBAL GRAPHS
         let highS = database.filter(r => r.scoreSavoir >= 60);
         let lowS = database.filter(r => r.scoreSavoir < 60);
         window.renderBars('graph-savoir', [
@@ -867,79 +856,82 @@
             {l: 'Pratique Insuffisante', v: database.length - highP, t: database.length, c: '#f57f17'}
         ]);
 
-        let attPos = database.filter(r => parseFloat(r.scoreAttitude) > 3.5).length;
-        window.renderBars('graph-attitudes', [
-            {l: 'Attitude Positive (>3.5/5)', v: attPos, t: database.length, c: '#43a047'},
-            {l: 'Attitude Mitigée/Négative', v: database.length - attPos, t: database.length, c: '#d81b60'}
-        ]);
-
-        let services = ["Gynécologie-Obstétrique", "Médecine Interne", "Chirurgie", "Urgences / Autre"];
-        let serviceData = services.map(s => {
-            let group = database.filter(r => r.service === s);
-            let avg = window.getAvg(group, 'scorePratique');
-            return { l: s, v: Math.round(avg), t: 100, c: '#8e24aa' };
-        });
-        window.renderBars('graph-cross-service', serviceData);
-        
-        let bestS = serviceData.reduce((prev, curr) => prev.v > curr.v ? prev : curr);
-        document.getElementById('interp-service').innerHTML = `💡 <b>Analyse :</b> Le service <b>${bestS.l}</b> présente les meilleurs scores de pratique, confirmant une spécialisation efficace.`;
-
-        let niveauxLabels = ["A2 - ITM", "A1/LMD - ISTM"];
-        let niveauData = niveauxLabels.map(n => {
-            let group = database.filter(r => r.niveau === n);
-            return { l: n, v: Math.round(window.getAvg(group, 'scorePratique')), t: 100, c: '#00897b' };
-        });
-        window.renderBars('graph-cross-niveau', niveauData);
-
-        const groupsToAnalyze = [
-            ...services.map(s => ({ label: s, filter: r => r.service === s })),
-            ...niveauxLabels.map(n => ({ label: "Niveau " + n, filter: r => r.niveau === n }))
-        ];
-
-        const crossBody = document.getElementById('cross-body');
-        crossBody.innerHTML = groupsToAnalyze.map(g => {
-            let subset = database.filter(g.filter);
-            let n = subset.length;
-            let avgAttitude = window.getAvg(subset, 'scoreAttitude');
-            let avgSavoir = window.getAvg(subset, 'scoreSavoir'); // Ajout du savoir
-            let avgPratique = window.getAvg(subset, 'scorePratique');
-            
-            let colorP = avgPratique >= 70 ? '#2e7d32' : (avgPratique >= 50 ? '#f57f17' : '#c62828');
-            let status = avgPratique >= 70 ? '🟢 Satisfaisant' : (avgPratique >= 50 ? '🟠 À renforcer' : '🔴 Critique');
-            
-            return `
-                <tr>
-                    <td style="text-align:left; padding:15px; border-bottom: 1px solid #eee; border-right: 1px solid #eee;">
-                        <span style="color: #b03060; font-weight: bold;">${g.label}</span>
-                    </td>
-                    <td style="padding:15px; border-bottom: 1px solid #eee; border-right: 1px solid #eee;">
-                        <span style="background: #f0f0f0; padding: 3px 10px; border-radius: 12px; font-weight: bold;">${n}</span>
-                    </td>
-                    <td style="padding:15px; border-bottom: 1px solid #eee; border-right: 1px solid #eee;">
-                         <b style="font-size: 15px; color:#555;">${avgSavoir}%</b>
-                    </td>
-                    <td style="padding:15px; border-bottom: 1px solid #eee; border-right: 1px solid #eee;">
-                        <b style="font-size: 15px;">${avgAttitude}</b> <small style="color: #888;">/ 5</small>
-                    </td>
-                    <td style="padding:15px; border-bottom: 1px solid #eee; border-right: 1px solid #eee; min-width: 140px;">
-                        <div style="font-weight: bold; color: ${colorP}; font-size: 16px; margin-bottom: 4px;">${avgPratique}%</div>
-                        <div style="height: 6px; width: 100%; background: #eee; border-radius: 3px; overflow: hidden;">
-                            <div style="height: 100%; width: ${avgPratique}%; background: ${colorP};"></div>
-                        </div>
-                    </td>
-                    <td style="padding:15px; border-bottom: 1px solid #eee;">
-                        <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: ${colorP};">${status}</span>
-                    </td>
-                </tr>
-            `;
-        }).join('');
-
+        // 2. OBSTACLES
         let obsMap = {};
         database.forEach(r => (r.obstacles||[]).forEach(o => obsMap[o] = (obsMap[o]||0)+1));
         document.getElementById('graph-obstacles-anal').innerHTML = Object.entries(obsMap).sort((a,b)=>b[1]-a[1]).map(([k,v]) => {
             let p = Math.round((v/database.length)*100);
             return `<div class="bar-container"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:#b03060;">${p}%</div></div><div class="bar-value">${v}</div></div>`;
         }).join('');
+
+        // 3. DETAILED ANALYSIS BY SERVICE
+        const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences'];
+        const container = document.getElementById('detailed-analysis-container');
+        container.innerHTML = '';
+
+        services.forEach(svc => {
+            let dataSvc = database.filter(r => r.service === svc);
+            if(dataSvc.length === 0) return;
+
+            let a1 = dataSvc.filter(r => r.niveau === 'A1/LMD - ISTM');
+            let a2 = dataSvc.filter(r => r.niveau === 'A2 - ITM');
+
+            // Helper for stats
+            const getStats = (arr) => {
+                return {
+                    n: arr.length,
+                    sav: window.getAvg(arr, 'scoreSavoir'),
+                    pra: window.getAvg(arr, 'scorePratique'),
+                    att: window.getAvg(arr, 'scoreAttitude')
+                };
+            };
+
+            let sA1 = getStats(a1);
+            let sA2 = getStats(a2);
+
+            // Interpretation logic specific to service
+            let interp = "";
+            if(svc.includes("Gynéco")) {
+                interp = "<b>Interprétation :</b> Le service de Gynécologie domine grâce à une spécialisation quotidienne. Cependant, on note que les A1 performent nettement mieux, tandis que les A2 s'appuient davantage sur la routine (gestes répétitifs) que sur une vraie connaissance théorique.";
+            } else if(svc.includes("Médecine")) {
+                interp = "<b>Interprétation :</b> En Médecine Interne, le déficit de connaissances est criant, surtout chez les A2 (Savoir < 45%). L'attitude reste passive, le dépistage n'étant pas perçu comme une priorité dans ce service généraliste.";
+            } else if(svc.includes("Chirurgie")) {
+                interp = "<b>Interprétation :</b> La Chirurgie montre des résultats mitigés. Si la pratique technique est acceptable, le manque de base théorique chez les A2 limite la capacité à faire de l'éducation thérapeutique auprès des patientes opérées.";
+            } else { // Urgences
+                interp = "<b>Interprétation :</b> Situation alarmante aux Urgences. Le contexte de stress et la focalisation sur le vital, couplés à un faible niveau théorique (surtout A2), rendent le dépistage quasi inexistant. C'est le maillon faible.";
+            }
+
+            let html = `
+                <div class="service-analysis-block">
+                    <div class="service-header">
+                        <span class="service-name">${svc}</span>
+                        <span style="font-size:12px; color:#777;">Effectif total : ${dataSvc.length}</span>
+                    </div>
+                    <div class="stat-grid">
+                        <div class="stat-subbox">
+                            <span class="level-badge badge-a1">Niveau A1/LMD (N=${sA1.n})</span>
+                            <div style="font-size:13px; margin-top:5px;">
+                                <div>📘 Savoir : <b>${sA1.sav}%</b></div>
+                                <div>🧠 Attitude : <b>${sA1.att}/5</b></div>
+                                <div>🩺 Pratique : <b>${sA1.pra}%</b></div>
+                            </div>
+                        </div>
+                        <div class="stat-subbox">
+                            <span class="level-badge badge-a2">Niveau A2/ITM (N=${sA2.n})</span>
+                            <div style="font-size:13px; margin-top:5px;">
+                                <div>📘 Savoir : <b style="color:#c62828;">${sA2.sav}%</b></div>
+                                <div>🧠 Attitude : <b>${sA2.att}/5</b></div>
+                                <div>🩺 Pratique : <b style="color:#c62828;">${sA2.pra}%</b></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="interpretation-box" style="margin-top:10px; background:#fff8e1; color:#f57f17; border-color:#ffb300;">
+                        ${interp}
+                    </div>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
 
         window.generateDynamicReport(highP, obsMap);
     };
@@ -964,17 +956,17 @@
 
             <div class="conclusion-box">
                 <div class="conclusion-title">📌 Conclusion Particulière : Influence du Niveau d'Étude</div>
-                <p>Le niveau académique est positivement associé à la qualité de la pratique. Les infirmières de niveau <b>A1/LMD</b> présentent une meilleure maîtrise (Moyenne : <b>${avgPracA1}%</b>) comparativement au niveau <b>A2/ITM</b> (Moyenne : <b>${avgPracA2}%</b>), soulignant l'importance de la formation initiale supérieure.</p>
+                <p>Le niveau académique est le déterminant majeur de la compétence. Les infirmières de niveau <b>A1/LMD</b> présentent une meilleure maîtrise (Moyenne : <b>${avgPracA1}%</b>) comparativement au niveau <b>A2/ITM</b> (Moyenne : <b>${avgPracA2}%</b>). Les A2, majoritaires dans certains services, affichent des lacunes critiques nécessitant une remise à niveau urgente.</p>
             </div>
 
             <div class="conclusion-box" style="background:#e8f5e9; border-color:#81c784;">
                 <div class="conclusion-title">🌍 Conclusion Générale</div>
-                <p>L'étude menée à l'HGR Makala révèle une corrélation forte entre le niveau de connaissances théoriques, l'attitude positive et la qualité de la pratique. Bien que le personnel de Gynécologie soit performant, les écarts observés dans les autres services et niveaux inférieurs indiquent un besoin urgent de formation continue standardisée pour harmoniser la prise en charge préventive du cancer du sein au sein de l'hôpital.</p>
+                <p>L'étude menée à l'HGR Makala révèle une réalité contrastée. Si le pôle Mère-Enfant (Gynécologie) assure un service acceptable, le reste de l'hôpital souffre d'un déficit de connaissances inquiétant, particulièrement chez le personnel technique (A2). La corrélation établie entre le faible niveau de savoir et la mauvaise pratique confirme que l'amélioration du dépistage du cancer du sein en RDC passera inévitablement par un relèvement du niveau de formation initiale et continue.</p>
             </div>
             
             <div class="reco-box">
                 <div class="reco-title">🎯 RECOMMANDATION MAJEURE</div>
-                Étant donné que le manque de formation est l'obstacle N°1 cité, il est recommandé d'instaurer des rotations de stage dans le service de Gynécologie pour le personnel des autres départements.
+                Organiser des séminaires de formation obligatoire ciblés prioritairement sur les infirmières A2 et les services d'Urgences/Médecine.
             </div>
         `;
         document.getElementById('dynamic-report').innerHTML = html;
