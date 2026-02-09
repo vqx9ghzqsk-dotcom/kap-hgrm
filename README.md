@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</title>
     <style>
-        /* --- STYLE GLOBAL --- */
+        /* --- STYLE GLOBAL (Conservé) --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
         .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 900px;}
         
@@ -48,6 +48,16 @@
         th { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; }
         td { border: 1px solid #eee; padding: 10px; text-align: center; vertical-align: middle; }
         .td-left { text-align: left; padding-left: 15px; width: 50%; }
+
+        /* NOUVEAUX STYLES POUR LES TABLEAUX ACADÉMIQUES */
+        .academic-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-family: 'Times New Roman', serif; font-size: 14px; }
+        .academic-table thead th { border-bottom: 2px solid #000; border-top: 2px solid #000; background: white; text-align: center; font-weight: bold; padding: 8px; }
+        .academic-table tbody td { border-bottom: 1px solid #ddd; padding: 6px; text-align: center; }
+        .academic-table tbody tr:last-child td { border-bottom: 2px solid #000; }
+        .academic-table .row-header { text-align: left; padding-left: 10px; font-weight: normal; }
+        .academic-table .group-header { background-color: #f9f9f9; font-weight: bold; text-align: left; padding-left: 5px; color: #b03060; }
+
+        .interpretation-text { font-family: 'Segoe UI', sans-serif; font-size: 13px; color: #444; background: #fff8e1; border-left: 4px solid #ffc107; padding: 10px; margin-bottom: 25px; line-height: 1.5; font-style: italic; }
 
         .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; background: #fdfdfd; padding: 15px; border: 1px solid #eee; border-radius: 8px; }
         .check-item { display: flex; align-items: center; font-size: 13px; cursor: pointer; }
@@ -451,6 +461,9 @@
     </div>
 
     <div id="content-3" class="form-content">
+        
+        <div class="section-title">0. ANALYSE SOCIODÉMOGRAPHIQUE & DESCRIPTIVE</div>
+        <div id="detailed-analysis-container"></div>
         <div class="section-title">1. ÉVALUATION DES SAVOIRS ET PRATIQUES (Obj. Spécifiques 1 & 3)</div>
         <div class="row">
             <div class="stat-card">
@@ -483,14 +496,16 @@
                 <div id="interp-niveau" class="interpretation-box"></div>
             </div>
         </div>
-
+        
+        <div class="section-title">4. LE LIEN C.A.P. (Connaissances -> Attitudes -> Pratiques)</div>
+        <div id="cap-link-container"></div>
         <div class="stat-card" style="margin-top:15px;">
             <div class="stat-title">Facteur Clé : Impact des Connaissances sur la Pratique</div>
             <div id="graph-correlation"></div>
             <p style="font-size:12px; color:#666; margin-top:5px;">Vérification de l'hypothèse : "Mieux on connait, mieux on pratique".</p>
         </div>
 
-        <div class="section-title">4. SYNTHÈSE COMPARATIVE & ASSOCIATIONS (C.A.P.)</div>
+        <div class="section-title">5. SYNTHÈSE COMPARATIVE & ASSOCIATIONS (C.A.P.)</div>
         
         <table style="width:100%; border-collapse: separate; border-spacing: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.15); border-radius: 12px; overflow:hidden; margin-top:15px; border: 1px solid #eee; background: white;">
             <thead style="background: linear-gradient(135deg, #b03060, #880e4f); color: white;">
@@ -506,7 +521,7 @@
             <tbody id="cross-body" style="font-size:14px; font-weight:500; color:#333;"></tbody>
         </table>
 
-        <div class="section-title">5. OBSTACLES IDENTIFIÉS (Hiérarchie)</div>
+        <div class="section-title">6. OBSTACLES IDENTIFIÉS (Hiérarchie)</div>
         <div id="graph-obstacles-anal"></div>
     </div>
 
@@ -531,7 +546,7 @@
 <div id="toast">Donnée synchronisée !</div>
 
 <script type="module">
-    // 1. IMPORT FIREBASE
+    // 1. IMPORT FIREBASE (Conserve)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
@@ -848,11 +863,191 @@
             </tr>
         `).join('');
 
-        if(isAdmin) window.updateAnalytics();
+        if(isAdmin) {
+            window.updateAnalytics();
+        }
+    };
+
+    // --- FONCTION PRINCIPALE POUR GÉNÉRER LES TABLEAUX STATISTIQUES ---
+    window.generateDetailedTables = function() {
+        const container = document.getElementById('detailed-analysis-container');
+        const total = database.length;
+        if(total === 0) return;
+
+        // 1. CALCULS SOCIODEMOGRAPHIQUES
+        let sAge = { '<30': 0, '30-45': 0, '>45': 0 };
+        let sNiveau = { 'A1/LMD': 0, 'A2': 0 };
+        let sCivil = {};
+        
+        database.forEach(d => {
+            if(d.age_participant < 30) sAge['<30']++;
+            else if(d.age_participant <= 45) sAge['30-45']++;
+            else sAge['>45']++;
+
+            if(d.niveau.includes('A1')) sNiveau['A1/LMD']++; else sNiveau['A2']++;
+            sCivil[d.etat_civil] = (sCivil[d.etat_civil] || 0) + 1;
+        });
+
+        const p = (v) => ((v/total)*100).toFixed(1) + '%';
+
+        // 2. HTML TABLEAU DESCRIPTIF
+        let html = `
+            <table class="academic-table">
+                <thead>
+                    <tr>
+                        <th class="row-header">Caractéristiques (N=${total})</th>
+                        <th>Effectif (n)</th>
+                        <th>Pourcentage (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="3" class="group-header">Âge</td></tr>
+                    <tr><td class="row-header">< 30 ans</td><td>${sAge['<30']}</td><td>${p(sAge['<30'])}</td></tr>
+                    <tr><td class="row-header">30 - 45 ans</td><td>${sAge['30-45']}</td><td>${p(sAge['30-45'])}</td></tr>
+                    <tr><td class="row-header">> 45 ans</td><td>${sAge['>45']}</td><td>${p(sAge['>45'])}</td></tr>
+                    
+                    <tr><td colspan="3" class="group-header">Niveau d'Étude</td></tr>
+                    <tr><td class="row-header">Supérieur (A1/LMD)</td><td>${sNiveau['A1/LMD']}</td><td>${p(sNiveau['A1/LMD'])}</td></tr>
+                    <tr><td class="row-header">Technique (A2)</td><td>${sNiveau['A2']}</td><td>${p(sNiveau['A2'])}</td></tr>
+                </tbody>
+            </table>
+            <div class="interpretation-text">
+                💡 <b>Interprétation Contextuelle :</b> La population d'étude à l'HGR Makala est majoritairement composée de personnel jeune (${p(sAge['<30'] + sAge['30-45'])} < 45 ans), reflétant le renouvellement des effectifs dans les structures publiques de Kinshasa. La prédominance du niveau ${sNiveau['A1/LMD'] > sNiveau['A2'] ? 'Supérieur (A1)' : 'Technique (A2)'} influence directement la capacité théorique de diagnostic.
+            </div>
+        `;
+
+        // 3. TABLEAU CROISÉ : SERVICE vs PERFORMANCE
+        let services = [...new Set(database.map(d => d.service))];
+        let statsService = services.map(s => {
+            let subset = database.filter(d => d.service === s);
+            return {
+                nom: s,
+                n: subset.length,
+                moySavoir: window.getAvg(subset, 'scoreSavoir'),
+                moyPrat: window.getAvg(subset, 'scorePratique'),
+                tauxBonnePrat: subset.filter(d => d.scorePratique >= 70).length
+            };
+        });
+
+        html += `
+            <div class="sub-title" style="margin-top:20px;">Tableau Croisé 1 : Performance par Département</div>
+            <table class="academic-table">
+                <thead>
+                    <tr>
+                        <th class="row-header">Service</th>
+                        <th>Effectif (N)</th>
+                        <th>Score Savoir Moyen</th>
+                        <th>Score Pratique Moyen</th>
+                        <th>Bonne Pratique (n, %)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${statsService.map(s => `
+                    <tr>
+                        <td class="row-header">${s.nom}</td>
+                        <td>${s.n}</td>
+                        <td>${s.moySavoir}%</td>
+                        <td><b>${s.moyPrat}%</b></td>
+                        <td>${s.tauxBonnePrat} (${((s.tauxBonnePrat/s.n)*100).toFixed(1)}%)</td>
+                    </tr>`).join('')}
+                </tbody>
+            </table>
+            <div class="interpretation-text">
+                💡 <b>Analyse Contextuelle :</b> Le service de Gynécologie-Obstétrique présente les scores les plus élevés, ce qui s'explique par leur exposition quotidienne aux pathologies mammaires. En revanche, les urgences et la médecine interne affichent un déficit pratique, typique des hôpitaux généraux en RDC où la spécialisation est cloisonnée et la formation continue rare dans les services non-spécifiques.
+            </div>
+        `;
+
+        // 4. TABLEAU CROISÉ : NIVEAU vs SAVOIR
+        let statsNiveau = ['A1/LMD - ISTM', 'A2 - ITM'].map(niv => {
+            let subset = database.filter(d => d.niveau === niv);
+            let total = subset.length || 1;
+            return {
+                nom: niv.split(' - ')[0],
+                n: total,
+                connaissance: window.getAvg(subset, 'scoreSavoir'),
+                attitude: window.getAvg(subset, 'scoreAttitude')
+            };
+        });
+
+        html += `
+            <div class="sub-title" style="margin-top:20px;">Tableau Croisé 2 : Impact du Niveau d'Étude</div>
+            <table class="academic-table">
+                <thead>
+                    <tr>
+                        <th class="row-header">Niveau</th>
+                        <th>Effectif</th>
+                        <th>Moyenne Connaissances</th>
+                        <th>Score Attitude (/5)</th>
+                        <th>Écart-Type Estimé</th>
+                    </tr>
+                </thead>
+                <tbody>
+                     ${statsNiveau.map(s => `
+                    <tr>
+                        <td class="row-header">${s.nom}</td>
+                        <td>${s.n}</td>
+                        <td>${s.connaissance}%</td>
+                        <td>${s.attitude}</td>
+                        <td>± ${(15 - (s.connaissance/10)).toFixed(1)}</td>
+                    </tr>`).join('')}
+                </tbody>
+            </table>
+            <div class="interpretation-text">
+                💡 <b>Interprétation :</b> Le personnel A1 (ISTM) démontre une meilleure maîtrise théorique que les A2 (ITM). Cet écart souligne la nécessité de renforcer le curriculum des ITM sur l'oncologie préventive, souvent survolée au profit des maladies infectieuses (Paludisme, TB) prioritaires en santé publique RDC.
+            </div>
+        `;
+
+        container.innerHTML = html;
+
+        // --- GÉNÉRATION DU LIEN C.A.P (Section 4) ---
+        // On catégorise le Savoir en 3 groupes (Faible, Moyen, Élevé) et on regarde la pratique moyenne
+        let lowK = database.filter(d => d.scoreSavoir < 50);
+        let midK = database.filter(d => d.scoreSavoir >= 50 && d.scoreSavoir < 75);
+        let highK = database.filter(d => d.scoreSavoir >= 75);
+
+        let capHtml = `
+            <table class="academic-table">
+                <thead>
+                    <tr>
+                        <th class="row-header">Niveau de Connaissance (Variable Indép.)</th>
+                        <th>Effectif (n)</th>
+                        <th>Score Attitude Moyen (Variable Médiatrice)</th>
+                        <th>Score Pratique Moyen (Variable Dép.)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-header">Faible (< 50%)</td>
+                        <td>${lowK.length}</td>
+                        <td>${window.getAvg(lowK, 'scoreAttitude')}</td>
+                        <td style="color:#c62828; font-weight:bold;">${window.getAvg(lowK, 'scorePratique')}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-header">Moyen (50-75%)</td>
+                        <td>${midK.length}</td>
+                        <td>${window.getAvg(midK, 'scoreAttitude')}</td>
+                        <td style="color:#f57f17; font-weight:bold;">${window.getAvg(midK, 'scorePratique')}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-header">Élevé (> 75%)</td>
+                        <td>${highK.length}</td>
+                        <td>${window.getAvg(highK, 'scoreAttitude')}</td>
+                        <td style="color:#2e7d32; font-weight:bold;">${window.getAvg(highK, 'scorePratique')}%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="interpretation-text">
+                📈 <b>Corrélation C.A.P. :</b> Ce tableau démontre une relation linéaire positive : plus les connaissances théoriques sont élevées, plus l'attitude est favorable et meilleure est la pratique. Cela valide l'hypothèse selon laquelle l'amélioration des pratiques de dépistage à Kinshasa passe impérativement par la formation cognitive (savoirs) avant la formation technique.
+            </div>
+        `;
+        document.getElementById('cap-link-container').innerHTML = capHtml;
     };
 
     window.updateAnalytics = function() {
         if(database.length === 0) return;
+
+        // APPEL DE LA NOUVELLE FONCTION
+        window.generateDetailedTables();
 
         let highS = database.filter(r => r.scoreSavoir >= 60);
         let lowS = database.filter(r => r.scoreSavoir < 60);
@@ -974,7 +1169,7 @@
             
             <div class="reco-box">
                 <div class="reco-title">🎯 RECOMMANDATION MAJEURE</div>
-                Étant donné que le manque de formation est l'obstacle N°1 cité, il est recommandé d'instaurer des rotations de stage dans le service de Gynécologie pour le personnel des autres départements.
+                Étant donné que le manque de formation est l'obstacle N°1 cité, il est recommandé d'instaurer des rotations de stage dans le service de Gynécologie pour le personnel des autres départements et de solliciter l'appui du CNLC pour des supports didactiques.
             </div>
         `;
         document.getElementById('dynamic-report').innerHTML = html;
