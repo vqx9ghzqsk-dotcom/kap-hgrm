@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -79,7 +78,18 @@
 
         .counter-badge { background: #b03060; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; vertical-align: middle; margin-left: 5px;}
 
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; justify-content: center; align-items: center; }
+        .modal-content { background: white; width: 80%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
+        .modal-close { font-size: 24px; cursor: pointer; color: #888; }
+        .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; font-size: 13px; }
+        .detail-label { font-weight: bold; color: #555; }
+        .detail-val { color: #b03060; font-weight: 600; text-align: right; width: 50%; }
+        .detail-val-long { color: #333; font-style: italic; text-align: left; width: 100%; background: #f9f9f9; padding: 8px; margin-top: 5px; border-radius: 4px; }
+        
         .conclusion-box { background: #f1f8e9; border: 1px solid #c5e1a5; padding: 15px; border-radius: 6px; margin-bottom: 15px; font-size: 14px;}
+        .conclusion-title { color: #2e7d32; font-weight: bold; margin-bottom: 8px; font-size:14px; }
 
         /* Toast Notification */
         #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 17px; }
@@ -148,18 +158,11 @@
     <div id="content-3" class="form-content">
         
         <div class="section-title">1. Caractéristiques sociodémographiques des participants (N = 178)</div>
-        <div class="interpretation-text">L’étude a porté sur un total de 178 infirmiers(ères).</div>
+        <div class="interpretation-text">
+            L’étude a porté sur un total de 178 infirmiers(ères).
+        </div>
         
         <div class="sub-title">🔸 Répartition selon l’âge</div>
-        <table class="academic-table" style="max-width: 600px;">
-            <thead><tr><th class="row-header">Tranche d'âge</th><th>Effectif (n)</th><th>Pourcentage (%)</th></tr></thead>
-            <tbody>
-                <tr><td class="row-header">< 30 ans</td><td>58</td><td>32,6%</td></tr>
-                <tr><td class="row-header">30 – 45 ans</td><td>116</td><td>65,2%</td></tr>
-                <tr><td class="row-header">> 45 ans</td><td>4</td><td>2,2%</td></tr>
-                <tr style="font-weight:bold; background:#f9f9f9;"><td class="row-header">Total</td><td>178</td><td>100%</td></tr>
-            </tbody>
-        </table>
         <div class="interpretation-text">
             La tranche d’âge dominante était celle de 30–45 ans, représentant 65,2% (n = 116) des participants.<br>
             Les infirmiers de moins de 30 ans représentaient 32,6% (n = 58), tandis que ceux de plus de 45 ans constituaient 2,2% (n = 4).<br><br>
@@ -167,14 +170,6 @@
         </div>
 
         <div class="sub-title">🔸 Répartition selon le niveau d’étude</div>
-        <table class="academic-table" style="max-width: 600px;">
-            <thead><tr><th class="row-header">Niveau d'étude</th><th>Effectif (n)</th><th>Pourcentage (%)</th></tr></thead>
-            <tbody>
-                <tr><td class="row-header">A1/LMD (Supérieur)</td><td>120</td><td>67,4%</td></tr>
-                <tr><td class="row-header">A2 (Technique)</td><td>58</td><td>32,6%</td></tr>
-                <tr style="font-weight:bold; background:#f9f9f9;"><td class="row-header">Total</td><td>178</td><td>100%</td></tr>
-            </tbody>
-        </table>
         <div class="interpretation-text">
             La majorité des participants avaient un niveau A1/LMD, soit 67,4% (n = 120).<br>
             Les infirmiers de niveau A2 représentaient 32,6% (n = 58).<br><br>
@@ -183,8 +178,10 @@
 
         <div class="section-title">2. Évaluation des connaissances (Objectif spécifique 1)</div>
         <div class="stat-card">
-            <div class="bar-container"><div class="bar-label">Connaissances solides</div><div class="bar-track"><div class="bar-fill" style="width:83.1%; background:#2e7d32;">83,1%</div></div><div class="bar-value">148</div></div>
-            <div class="bar-container"><div class="bar-label">Lacunes importantes</div><div class="bar-track"><div class="bar-fill" style="width:16.9%; background:#c62828;">16,9%</div></div><div class="bar-value">30</div></div>
+            <div id="graph-savoir">
+                <div class="bar-container"><div class="bar-label">Connaissances solides</div><div class="bar-track"><div class="bar-fill" style="width:83.1%; background:#2e7d32;">83,1%</div></div><div class="bar-value">148</div></div>
+                <div class="bar-container"><div class="bar-label">Lacunes importantes</div><div class="bar-track"><div class="bar-fill" style="width:16.9%; background:#c62828;">16,9%</div></div><div class="bar-value">30</div></div>
+            </div>
         </div>
         <div class="interpretation-text">
             Sur l’ensemble des 178 participants :<br>
@@ -195,8 +192,10 @@
 
         <div class="section-title">3. Identification des attitudes face au dépistage (Objectif spécifique 2)</div>
         <div class="stat-card">
-            <div class="bar-container"><div class="bar-label">Attitude positive</div><div class="bar-track"><div class="bar-fill" style="width:48.9%; background:#43a047;">48,9%</div></div><div class="bar-value">87</div></div>
-            <div class="bar-container"><div class="bar-label">Attitude mitigée ou négative</div><div class="bar-track"><div class="bar-fill" style="width:51.1%; background:#d81b60;">51,1%</div></div><div class="bar-value">91</div></div>
+            <div id="graph-attitudes">
+                <div class="bar-container"><div class="bar-label">Attitude positive</div><div class="bar-track"><div class="bar-fill" style="width:48.9%; background:#43a047;">48,9%</div></div><div class="bar-value">87</div></div>
+                <div class="bar-container"><div class="bar-label">Attitude mitigée ou négative</div><div class="bar-track"><div class="bar-fill" style="width:51.1%; background:#d81b60;">51,1%</div></div><div class="bar-value">91</div></div>
+            </div>
         </div>
         <div class="interpretation-text">
             L’analyse des attitudes montre que :<br>
@@ -207,8 +206,10 @@
 
         <div class="section-title">4. Évaluation de la qualité des pratiques (Objectif spécifique 3)</div>
         <div class="stat-card">
-            <div class="bar-container"><div class="bar-label">Pratique conforme</div><div class="bar-track"><div class="bar-fill" style="width:50.6%; background:#1565c0;">50,6%</div></div><div class="bar-value">90</div></div>
-            <div class="bar-container"><div class="bar-label">Pratique insuffisante</div><div class="bar-track"><div class="bar-fill" style="width:49.4%; background:#f57f17;">49,4%</div></div><div class="bar-value">88</div></div>
+            <div id="graph-pratique">
+                <div class="bar-container"><div class="bar-label">Pratique conforme</div><div class="bar-track"><div class="bar-fill" style="width:50.6%; background:#1565c0;">50,6%</div></div><div class="bar-value">90</div></div>
+                <div class="bar-container"><div class="bar-label">Pratique insuffisante</div><div class="bar-track"><div class="bar-fill" style="width:49.4%; background:#f57f17;">49,4%</div></div><div class="bar-value">88</div></div>
+            </div>
         </div>
         <div class="interpretation-text">
             Concernant la pratique professionnelle :<br>
@@ -223,9 +224,9 @@
         <table class="academic-table" style="max-width: 600px;">
             <thead><tr><th class="row-header">Niveau de connaissance</th><th>n</th><th>%</th></tr></thead>
             <tbody>
-                <tr><td class="row-header">Faible (<50%)</td><td>19</td><td>10,7%</td></tr>
+                <tr><td class="row-header">Faible (&lt;50%)</td><td>19</td><td>10,7%</td></tr>
                 <tr><td class="row-header">Moyen (50–75%)</td><td>56</td><td>31,5%</td></tr>
-                <tr><td class="row-header">Élevé (>75%)</td><td>103</td><td>57,9%</td></tr>
+                <tr><td class="row-header">Élevé (&gt;75%)</td><td>103</td><td>57,9%</td></tr>
                 <tr style="font-weight:bold; background:#f9f9f9;"><td class="row-header">Total</td><td>178</td><td>100%</td></tr>
             </tbody>
         </table>
@@ -234,33 +235,38 @@
             • Niveau faible → 50,6%<br>
             • Niveau moyen → 59,4%<br>
             • Niveau élevé → 81,2%<br><br>
-            Cela suggère que plus le niveau de connaissances augmente, plus la qualité de la pratique s’améliore, confirmant l’hypothèse <b>« mieux on connaît, mieux on pratique »</b>.
+            Cela suggère que plus le niveau de connaissances augmente, plus la qualité de la pratique s’améliore, confirmant l’hypothèse « mieux on connaît, mieux on pratique ».
         </div>
 
         <div class="section-title">6. Facteurs associés (Objectif spécifique 4)</div>
         
         <div class="sub-title">🔹 Association entre Service et Bonne Pratique</div>
-        <div class="interpretation-text"><b>Bonnes pratiques (base = 90)</b></div>
-        <table class="academic-table">
+        <div class="interpretation-text">
+            Les pourcentages ont été calculés à l’intérieur de chaque service (base = effectif du service).<br><br>
+            <b>Bonnes pratiques (base = 90)</b>
+        </div>
+        <table class="academic-table" style="max-width: 600px;">
             <thead><tr><th class="row-header">Service</th><th>n</th><th>%</th></tr></thead>
             <tbody>
                 <tr><td class="row-header">Gynécologie-Obstétrique</td><td>48</td><td>53,3%</td></tr>
                 <tr><td class="row-header">Médecine Interne</td><td>16</td><td>17,8%</td></tr>
                 <tr><td class="row-header">Chirurgie</td><td>16</td><td>17,8%</td></tr>
                 <tr><td class="row-header">Urgences / Autres</td><td>10</td><td>11,1%</td></tr>
-                <tr style="font-weight:bold;"><td class="row-header">Total</td><td>90</td><td>100%</td></tr>
+                <tr style="font-weight:bold; background:#f9f9f9;"><td class="row-header">Total</td><td>90</td><td>100%</td></tr>
             </tbody>
         </table>
 
-        <div class="interpretation-text"><b>Pratiques insuffisantes (base = 88)</b></div>
-        <table class="academic-table">
+        <div class="interpretation-text">
+            <br><b>Pratiques insuffisantes (base = 88)</b>
+        </div>
+        <table class="academic-table" style="max-width: 600px;">
             <thead><tr><th class="row-header">Service</th><th>n</th><th>%</th></tr></thead>
             <tbody>
                 <tr><td class="row-header">Gynécologie-Obstétrique</td><td>0</td><td>0%</td></tr>
                 <tr><td class="row-header">Médecine Interne</td><td>28</td><td>31,8%</td></tr>
                 <tr><td class="row-header">Chirurgie</td><td>33</td><td>37,5%</td></tr>
                 <tr><td class="row-header">Urgences / Autres</td><td>27</td><td>30,7%</td></tr>
-                <tr style="font-weight:bold;"><td class="row-header">Total</td><td>88</td><td>100%</td></tr>
+                <tr style="font-weight:bold; background:#f9f9f9;"><td class="row-header">Total</td><td>88</td><td>100%</td></tr>
             </tbody>
         </table>
 
@@ -274,22 +280,10 @@
 
         <div class="sub-title">🔹 Association entre Niveau d’étude et Pratique</div>
         <div class="interpretation-text">
-            Les pourcentages sont calculés à l’intérieur de chaque niveau d’étude sur une base de 100% :<br><br>
-            • <b>78% des A1/LMD</b> avaient une bonne pratique (contre 22% n'ayant pas de bonne pratique).<br>
-            • <b>57% des A2</b> avaient une bonne pratique (contre 43% n'ayant pas de bonne pratique).<br><br>
+            Les pourcentages sont calculés à l’intérieur de chaque niveau d’étude :<br>
+            • 78% des A1/LMD avaient une bonne pratique par rapport aux autres qui n’en ont pas sur 100%<br>
+            • 57% des A2 avaient une bonne pratique par rapport aux autres qui n’en ont pas sur 100%<br><br>
             Cela suggère que le niveau d’étude supérieur est associé à une meilleure qualité de pratique.
-        </div>
-
-        <div class="section-title">🔎 Conclusion partielle des résultats</div>
-        <div class="conclusion-box">
-            L’analyse montre :<br>
-            <ul style="margin-top: 10px; margin-bottom: 0;">
-                <li>Un bon niveau global de connaissances (83,1%)</li>
-                <li>Une attitude globalement mitigée (51,1% négative/mitigée)</li>
-                <li>Une pratique partagée (50,6% conforme)</li>
-                <li>Une forte influence du service d’affectation et du niveau d’étude sur la qualité des pratiques</li>
-                <li>Une relation positive confirmée entre le niveau de connaissances et la qualité de la pratique</li>
-            </ul>
         </div>
         
     </div>
@@ -298,10 +292,11 @@
 <div id="toast">Opération réussie !</div>
 
 <script>
-    // --- LOGIQUE DE SIMULATION ---
+    // --- MODE SIMULATION ADAPTÉ ---
     let database = []; 
     let isAdmin = false;
 
+    // Génération de 178 fiches fictives pour remplir la matrice (Onglet 2)
     window.generateSimulatedData = function() {
         let simulatedDB = [];
         for (let i = 1; i <= 178; i++) {
@@ -313,8 +308,8 @@
                 niveau: niveau,
                 sexe: "F",
                 anciennete: Math.floor(Math.random() * 15) + 1,
-                scoreSavoir: Math.floor(Math.random() * 30) + 65,
-                scorePratique: Math.floor(Math.random() * 40) + 50
+                scoreSavoir: Math.floor(Math.random() * 40) + 60, // Fictif pour affichage
+                scorePratique: Math.floor(Math.random() * 50) + 40 // Fictif pour affichage
             });
         }
         return simulatedDB;
@@ -322,23 +317,65 @@
 
     database = window.generateSimulatedData();
     
+    setTimeout(() => {
+        window.updateUI();
+        showToast("178 Fiches chargées avec succès.");
+    }, 500);
+
+    window.initCodeDropdown = function() {
+        const sel = document.getElementById('code-enquete');
+        sel.innerHTML = "";
+        for(let i=179; i<=200; i++) { 
+            let o = document.createElement('option'); 
+            o.value = "INF-MAK-" + i.toString().padStart(3, '0'); 
+            o.text = "Nouvelle Fiche N° " + i; 
+            sel.appendChild(o); 
+        }
+    }
+
+    window.requestAdmin = function() {
+        if(isAdmin) return; 
+        let code = prompt("Code administrateur :"); 
+        if(code === "1398") {
+            isAdmin = true;
+            document.querySelectorAll('.admin-only').forEach(el => {
+                el.classList.add('admin-visible');
+                el.style.display = 'inline-block'; 
+            });
+            document.getElementById('btn-auth').style.display = 'none';
+            alert("Mode Admin Activé.");
+            updateUI(); 
+            window.switchTab(2);
+        } else {
+            alert("Code incorrect !");
+        }
+    };
+
+    // Modification majeure ici : on affiche TOUTE la base de données sans 'slice' restrictif.
     window.updateUI = function() {
         const count = database.length;
         document.getElementById('count-badge').textContent = count;
         document.getElementById('n-total').textContent = count;
+        
         const tbody = document.getElementById('database-body');
-        tbody.innerHTML = database.map((row, index) => `
+        
+        // CORRECTION 1 : On ne limite plus à 100 lignes.
+        let displayData = database; 
+        
+        tbody.innerHTML = displayData.map((row, index) => `
             <tr>
                 <td><input type="checkbox" class="row-check"></td>
                 <td><b>${row.id}</b></td><td>${row.sexe}</td><td>${row.service}</td><td>${row.niveau}</td>
                 <td style="color:${window.getColor(row.scoreSavoir)}">${row.scoreSavoir}%</td>
                 <td style="color:${window.getColor(row.scorePratique)}">${row.scorePratique}%</td>
-                <td><button class="btn-delete-single">Effacer</button></td>
+                <td>
+                    <button class="btn-delete-single" onclick="window.deleteOne(${index})">Effacer</button>
+                </td>
             </tr>
         `).join('');
     };
 
-    window.getColor = function(s) { return s >= 75 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); };
+    window.getColor = function(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); };
 
     window.switchTab = function(i) {
         document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
@@ -347,38 +384,14 @@
         document.querySelectorAll('.tab')[i-1].classList.add('active');
     };
 
-    window.requestAdmin = function() {
-        if(isAdmin) return; 
-        let code = prompt("Code administrateur :"); 
-        if(code === "1398") {
-            isAdmin = true;
-            document.querySelectorAll('.admin-only').forEach(el => { el.style.display = 'inline-block'; });
-            document.getElementById('btn-auth').style.display = 'none';
-            alert("Mode Admin Activé.");
-            updateUI(); 
-            window.switchTab(3);
-        } else {
-            alert("Code incorrect !");
-        }
-    };
-
     function showToast(message) {
         var x = document.getElementById("toast");
         x.className = "show";
         x.innerText = message;
         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
-
-    window.initCodeDropdown = function() {
-        const sel = document.getElementById('code-enquete');
-        for(let i=179; i<=200; i++) { 
-            let o = document.createElement('option'); 
-            o.value = "INF-MAK-" + i; o.text = "Fiche " + i; sel.appendChild(o); 
-        }
-    };
     
     window.initCodeDropdown();
-    window.updateUI();
 </script>
 </body>
 </html>
