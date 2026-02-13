@@ -1,8 +1,9 @@
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</title>
+    <title>Connaissances, attitudes et pratiques - HGR Makala</title>
     <style>
         /* --- STYLE GLOBAL --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
@@ -25,9 +26,7 @@
         /* Actions */
         .btn-delete-selected { background: #c62828; color: white; padding: 8px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: none; }
         .btn-delete-single { background: none; border: 1px solid #c62828; color: #c62828; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; margin-left: 5px; }
-        .btn-view-single { background: none; border: 1px solid #0288d1; color: #0288d1; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; }
-        .btn-view-single:hover { background: #0288d1; color: white; }
-
+        
         /* Contenu */
         .form-content { padding: 30px; display: none; }
         .form-content.active { display: block; animation: fadeIn 0.5s; }
@@ -41,13 +40,11 @@
         .field { display: flex; flex-direction: column; }
         label { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #222; }
         select, input[type="text"], input[type="number"], textarea { padding: 10px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; background: #fff; width: 100%; box-sizing: border-box; }
-        textarea { resize: vertical; font-family: inherit; }
-
-        /* Tables & Check */
+        
+        /* Tables */
         table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 12px; }
         th { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; }
         td { border: 1px solid #eee; padding: 10px; text-align: center; vertical-align: middle; }
-        .td-left { text-align: left; padding-left: 15px; width: 50%; }
 
         /* TABLEAUX ACADÉMIQUES */
         .academic-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-family: 'Times New Roman', serif; font-size: 15px; }
@@ -55,20 +52,14 @@
         .academic-table tbody td { border-bottom: 1px solid #ddd; padding: 8px; text-align: center; }
         .academic-table tbody tr:last-child td { border-bottom: 2px solid #000; }
         .academic-table .row-header { text-align: left; padding-left: 10px; font-weight: bold; }
-        .academic-table .group-header { background-color: #f9f9f9; font-weight: bold; text-align: left; padding-left: 5px; color: #b03060; }
 
-        .interpretation-text { font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #333; margin-bottom: 25px; line-height: 1.6; }
-
-        .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; background: #fdfdfd; padding: 15px; border: 1px solid #eee; border-radius: 8px; }
-        .check-item { display: flex; align-items: center; font-size: 13px; cursor: pointer; }
-        .check-item input { margin-right: 12px; transform: scale(1.2); cursor: pointer; }
+        .interpretation-text { font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #333; margin-bottom: 25px; line-height: 1.6; text-align: justify;}
 
         .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .btn-save:hover { background: #880e4f; transform: translateY(-2px); }
         
         /* Stats */
         .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .stat-title { font-weight: bold; color: #555; margin-bottom: 15px; font-size: 15px; border-bottom: 2px solid #b03060; display: inline-block; }
         
         .bar-container { display: flex; align-items: center; margin-bottom: 12px; font-size: 13px; }
         .bar-label { width: 220px; font-weight: 600; color: #444; }
@@ -77,19 +68,6 @@
         .bar-value { width: 50px; text-align: right; font-weight: bold; color: #b03060; }
 
         .counter-badge { background: #b03060; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; vertical-align: middle; margin-left: 5px;}
-
-        /* Modal */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; justify-content: center; align-items: center; }
-        .modal-content { background: white; width: 80%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
-        .modal-close { font-size: 24px; cursor: pointer; color: #888; }
-        .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; font-size: 13px; }
-        .detail-label { font-weight: bold; color: #555; }
-        .detail-val { color: #b03060; font-weight: 600; text-align: right; width: 50%; }
-        .detail-val-long { color: #333; font-style: italic; text-align: left; width: 100%; background: #f9f9f9; padding: 8px; margin-top: 5px; border-radius: 4px; }
-        
-        .conclusion-box { background: #f1f8e9; border: 1px solid #c5e1a5; padding: 15px; border-radius: 6px; margin-bottom: 15px; font-size: 14px;}
-        .conclusion-title { color: #2e7d32; font-weight: bold; margin-bottom: 8px; font-size:14px; }
 
         /* Toast Notification */
         #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 17px; }
@@ -162,32 +140,34 @@
         
         <div class="sub-title">🔸 Répartition selon l’âge</div>
         <table class="academic-table" style="max-width: 600px;">
-            <thead><tr><th class="row-header">Tranche d'âge</th><th>Effectif (n)</th><th>Pourcentage (%)</th></tr></thead>
-            <tbody>
-                <tr><td class="row-header">< 30 ans</td><td>58</td><td>32,6%</td></tr>
-                <tr><td class="row-header">30 – 45 ans</td><td>116</td><td>65,2%</td></tr>
-                <tr><td class="row-header">> 45 ans</td><td>4</td><td>2,2%</td></tr>
-                <tr style="font-weight:bold; background:#f9f9f9;"><td class="row-header">Total</td><td>178</td><td>100%</td></tr>
-            </tbody>
-        </table>
+             <thead><tr><th class="row-header">Tranche d'âge</th><th>Effectif (n)</th><th>Pourcentage (%)</th></tr></thead>
+             <tbody>
+                 <tr><td class="row-header">< 30 ans</td><td>58</td><td>32,6%</td></tr>
+                 <tr><td class="row-header">30 – 45 ans</td><td>116</td><td>65,2%</td></tr>
+                 <tr><td class="row-header">> 45 ans</td><td>4</td><td>2,2%</td></tr>
+                 <tr style="font-weight:bold; background:#f9f9f9;"><td class="row-header">Total</td><td>178</td><td>100%</td></tr>
+             </tbody>
+         </table>
         <div class="interpretation-text">
             La tranche d’âge dominante était celle de 30–45 ans, représentant 65,2% (n = 116) des participants.<br>
-            Les infirmiers de moins de 30 ans représentaient 32,6% (n = 58), tandis que ceux de plus de 45 ans constituaient 2,2% (n = 4).<br>
+            Les infirmiers de moins de 30 ans représentaient 32,6% (n = 58), tandis que ceux de plus de 45 ans constituaient 2,2% (n = 4).<br><br>
             La somme des pourcentages est égale à 100%.
         </div>
+        
+        <hr style="border:0; border-top:1px solid #ddd; margin: 20px 0;">
 
         <div class="sub-title">🔸 Répartition selon le niveau d’étude</div>
         <table class="academic-table" style="max-width: 600px;">
-            <thead><tr><th class="row-header">Niveau d'étude</th><th>Effectif (n)</th><th>Pourcentage (%)</th></tr></thead>
-            <tbody>
-                <tr><td class="row-header">A1/LMD (Supérieur)</td><td>120</td><td>67,4%</td></tr>
-                <tr><td class="row-header">A2 (Technique)</td><td>58</td><td>32,6%</td></tr>
-                <tr style="font-weight:bold; background:#f9f9f9;"><td class="row-header">Total</td><td>178</td><td>100%</td></tr>
-            </tbody>
-        </table>
+             <thead><tr><th class="row-header">Niveau d'étude</th><th>Effectif (n)</th><th>Pourcentage (%)</th></tr></thead>
+             <tbody>
+                 <tr><td class="row-header">A1/LMD (Supérieur)</td><td>120</td><td>67,4%</td></tr>
+                 <tr><td class="row-header">A2 (Technique)</td><td>58</td><td>32,6%</td></tr>
+                 <tr style="font-weight:bold; background:#f9f9f9;"><td class="row-header">Total</td><td>178</td><td>100%</td></tr>
+             </tbody>
+         </table>
         <div class="interpretation-text">
             La majorité des participants avaient un niveau A1/LMD, soit 67,4% (n = 120).<br>
-            Les infirmiers de niveau A2 représentaient 32,6% (n = 58).<br>
+            Les infirmiers de niveau A2 représentaient 32,6% (n = 58).<br><br>
             La répartition totale correspond à 100%.
         </div>
 
@@ -209,7 +189,7 @@
         <div class="stat-card">
             <div id="graph-attitudes">
                 <div class="bar-container"><div class="bar-label">Attitude positive</div><div class="bar-track"><div class="bar-fill" style="width:48.9%; background:#43a047;">48,9%</div></div><div class="bar-value">87</div></div>
-                <div class="bar-container"><div class="bar-label">Attitude mitigée ou négative</div><div class="bar-track"><div class="bar-fill" style="width:51.1%; background:#d81b60;">51,1%</div></div><div class="bar-value">91</div></div>
+                <div class="bar-container"><div class="bar-label">Attitude mitigée/négative</div><div class="bar-track"><div class="bar-fill" style="width:51.1%; background:#d81b60;">51,1%</div></div><div class="bar-value">91</div></div>
             </div>
         </div>
         <div class="interpretation-text">
@@ -269,6 +249,8 @@
         <div class="interpretation-text">
             Le service de Gynécologie-Obstétrique présente le taux de conformité le plus élevé (100%), contrairement aux autres services où la pratique demeure insuffisante.
         </div>
+        
+        <hr style="border:0; border-top:1px solid #ddd; margin: 20px 0;">
 
         <div class="sub-title">🔹 Association entre Niveau d’étude et Pratique</div>
         <div class="interpretation-text">
@@ -277,18 +259,6 @@
             • <b>A2</b> : 57% présentent une bonne pratique<br><br>
             Cela suggère que le niveau d’étude supérieur est associé à une meilleure qualité de pratique.
         </div>
-
-        <div class="section-title">🔎 Conclusion partielle des résultats</div>
-        <div class="conclusion-box">
-            L’analyse montre :<br>
-            <ul style="margin-top: 10px; margin-bottom: 0;">
-                <li>Un bon niveau global de connaissances (83,1%)</li>
-                <li>Une attitude globalement mitigée</li>
-                <li>Une pratique partagée (50,6% conforme)</li>
-                <li>Une forte influence du service d’affectation et du niveau d’étude sur la qualité des pratiques</li>
-                <li>Une relation positive entre connaissances et pratique</li>
-            </ul>
-        </div>
         
     </div>
 </div>
@@ -296,7 +266,7 @@
 <div id="toast">Opération réussie !</div>
 
 <script>
-    // --- MODE SIMULATION ADAPTÉ ---
+    // --- MODE SIMULATION (INTACT) ---
     let database = []; 
     let isAdmin = false;
 
@@ -312,8 +282,8 @@
                 niveau: niveau,
                 sexe: "F",
                 anciennete: Math.floor(Math.random() * 15) + 1,
-                scoreSavoir: Math.floor(Math.random() * 40) + 60, // Fictif pour affichage
-                scorePratique: Math.floor(Math.random() * 50) + 40 // Fictif pour affichage
+                scoreSavoir: Math.floor(Math.random() * 40) + 60, 
+                scorePratique: Math.floor(Math.random() * 50) + 40 
             });
         }
         return simulatedDB;
@@ -355,7 +325,6 @@
         }
     };
 
-    // Modification majeure ici : on affiche TOUTE la base de données sans 'slice' restrictif.
     window.updateUI = function() {
         const count = database.length;
         document.getElementById('count-badge').textContent = count;
@@ -363,7 +332,6 @@
         
         const tbody = document.getElementById('database-body');
         
-        // CORRECTION 1 : On ne limite plus à 100 lignes.
         let displayData = database; 
         
         tbody.innerHTML = displayData.map((row, index) => `
