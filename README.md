@@ -847,7 +847,8 @@
         window.toggleDeleteButton();
 
         const tbody = document.getElementById('database-body');
-        let displayData = database.slice(0, 100); 
+        // CORRECTION 1: Suppression du slice pour afficher toutes les données
+        let displayData = database; 
         
         tbody.innerHTML = displayData.map((row, index) => `
             <tr>
@@ -888,7 +889,8 @@
             sCivil[d.etat_civil] = (sCivil[d.etat_civil] || 0) + 1;
         });
 
-        const p = (v) => ((v/total)*100).toFixed(1) + '%';
+        // CORRECTION 2: Augmentation de la précision à 2 décimales pour éviter les erreurs d'arrondi visuelles
+        const p = (v) => ((v/total)*100).toFixed(2) + '%';
 
         // 2. HTML TABLEAU DESCRIPTIF
         let html = `
@@ -912,7 +914,7 @@
                 </tbody>
             </table>
             <div class="interpretation-text">
-                💡 <b>Interprétation Contextuelle :</b> La population d'étude à l'HGR Makala est majoritairement composée de personnel jeune (${p(sAge['<30'] + sAge['30-45'])} < 45 ans), reflétant le renouvellement des effectifs dans les structures publiques de Kinshasa. La prédominance du niveau ${sNiveau['A1/LMD'] > sNiveau['A2'] ? 'Supérieur (A1)' : 'Technique (A2)'} influence directement la capacité théorique de diagnostic.
+                💡 <b>Interprétation Contextuelle :</b> La population d'étude à l'HGR Makala est majoritairement composée de personnel jeune (< 45 ans), reflétant le renouvellement des effectifs dans les structures publiques de Kinshasa. La prédominance du niveau ${sNiveau['A1/LMD'] > sNiveau['A2'] ? 'Supérieur (A1)' : 'Technique (A2)'} influence directement la capacité théorique de diagnostic.
             </div>
         `;
 
@@ -1177,9 +1179,12 @@
 
     window.getColor = function(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); };
     window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
+    
+    // CORRECTION 3: Suppression de Math.round pour permettre des décimales précises dans les barres
     window.renderBars = function(id, data) {
         document.getElementById(id).innerHTML = data.map(i => {
-            let p = i.t ? Math.round((i.v/i.t)*100) : 0;
+            // Utilisation de toFixed(1) au lieu de Math.round pour éviter l'effet 33+33+33 = 99
+            let p = i.t ? ((i.v/i.t)*100).toFixed(1) : 0;
             return `<div class="bar-container"><div class="bar-label">${i.l}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:${i.c}">${p}%</div></div><div class="bar-value">${i.v}</div></div>`;
         }).join('');
     };
