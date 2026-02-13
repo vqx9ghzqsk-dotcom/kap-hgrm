@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analyse KAP - Cancer du Sein - Makala</title>
+    <title>Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</title>
     <style>
         /* --- STYLE GLOBAL --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
@@ -14,47 +14,76 @@
         .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; transition: 0.2s; }
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
         
+        /* Simulation Mode Badge */
         .sim-badge { background: #ff9800; color: white; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-left: 10px; }
+
         .admin-only { display: none !important; }
         .admin-visible { display: inline-block !important; }
         
         .btn-auth { margin-left: auto; background: #333; color: white; padding: 10px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .btn-excel { background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-left: 10px;}
+
+        /* Actions */
+        .btn-delete-selected { background: #c62828; color: white; padding: 8px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: none; }
+        .btn-delete-single { background: none; border: 1px solid #c62828; color: #c62828; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; margin-left: 5px; }
+        .btn-view-single { background: none; border: 1px solid #0288d1; color: #0288d1; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; }
+        .btn-view-single:hover { background: #0288d1; color: white; }
 
         /* Contenu */
         .form-content { padding: 30px; display: none; }
         .form-content.active { display: block; animation: fadeIn 0.5s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Sections & Titres */
-        .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 30px 0 15px 0; text-transform: uppercase; font-size: 14px; }
-        .sub-title { font-weight: bold; color: #b03060; margin-top: 25px; border-bottom: 2px solid #eee; padding-bottom: 8px; margin-bottom: 15px; }
+        /* Sections */
+        .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 30px 0 15px 0; text-transform: uppercase; font-size: 14px; display: flex; align-items: center; justify-content: space-between; }
+        .sub-title { font-weight: bold; color: #b03060; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         
-        /* Tableaux Académiques */
-        .academic-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-family: 'Times New Roman', serif; font-size: 15px; border-top: 2px solid #000; border-bottom: 2px solid #000; }
-        .academic-table th { padding: 10px; text-align: center; border-bottom: 1px solid #000; background: #fcfcfc; }
-        .academic-table td { padding: 8px; text-align: center; border-bottom: 1px solid #eee; }
-        .row-header { text-align: left !important; font-weight: bold; padding-left: 15px !important; }
+        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 15px; }
+        .field { display: flex; flex-direction: column; }
+        label { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #222; }
+        select, input[type="text"], input[type="number"], textarea { padding: 10px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; background: #fff; width: 100%; box-sizing: border-box; }
+        textarea { resize: vertical; font-family: inherit; }
 
-        .interpretation-text { font-size: 14px; color: #333; line-height: 1.6; margin-bottom: 25px; background: #fff; padding: 10px; border-radius: 5px; }
-        .sep { border: 0; height: 1px; background: #ddd; margin: 30px 0; }
+        /* Tables & Check */
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 12px; }
+        th { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; }
+        td { border: 1px solid #eee; padding: 10px; text-align: center; vertical-align: middle; }
+        .td-left { text-align: left; padding-left: 15px; width: 50%; }
 
-        /* Stats Visuelles */
-        .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        /* TABLEAUX ACADÉMIQUES */
+        .academic-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-family: 'Times New Roman', serif; font-size: 15px; }
+        .academic-table thead th { border-bottom: 2px solid #000; border-top: 2px solid #000; background: white; text-align: center; font-weight: bold; padding: 8px; }
+        .academic-table tbody td { border-bottom: 1px solid #ddd; padding: 8px; text-align: center; }
+        .academic-table tbody tr:last-child td { border-bottom: 2px solid #000; }
+        .academic-table .row-header { text-align: left; padding-left: 10px; font-weight: bold; }
+        .academic-table .group-header { background-color: #f9f9f9; font-weight: bold; text-align: left; padding-left: 5px; color: #b03060; }
+
+        .interpretation-text { font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #333; margin-bottom: 25px; line-height: 1.6; }
+
+        .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; background: #fdfdfd; padding: 15px; border: 1px solid #eee; border-radius: 8px; }
+        .check-item { display: flex; align-items: center; font-size: 13px; cursor: pointer; }
+        .check-item input { margin-right: 12px; transform: scale(1.2); cursor: pointer; }
+
+        .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-save:hover { background: #880e4f; transform: translateY(-2px); }
+        
+        /* Stats */
+        .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .stat-title { font-weight: bold; color: #555; margin-bottom: 15px; font-size: 15px; border-bottom: 2px solid #b03060; display: inline-block; }
+        
         .bar-container { display: flex; align-items: center; margin-bottom: 12px; font-size: 13px; }
         .bar-label { width: 220px; font-weight: 600; color: #444; }
         .bar-track { flex-grow: 1; background: #f0f0f0; height: 20px; border-radius: 10px; margin: 0 15px; overflow: hidden; }
-        .bar-fill { height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; font-weight: bold; }
+        .bar-fill { height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; font-weight: bold; transition: width 1s; }
         .bar-value { width: 50px; text-align: right; font-weight: bold; color: #b03060; }
 
-        .conclusion-box { background: #f1f8e9; border: 1px solid #c5e1a5; padding: 15px; border-radius: 6px; color: #2e7d32; font-size: 14px; }
-        
-        /* Matrice */
-        table.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        table.data-table th { background: #f8f9fa; border: 1px solid #ddd; padding: 8px; }
-        table.data-table td { border: 1px solid #eee; padding: 8px; text-align: center; }
+        .counter-badge { background: #b03060; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; vertical-align: middle; margin-left: 5px;}
 
-        #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 4px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); }
-        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        .conclusion-box { background: #f1f8e9; border: 1px solid #c5e1a5; padding: 15px; border-radius: 6px; margin-bottom: 15px; font-size: 14px;}
+
+        /* Toast Notification */
+        #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 17px; }
+        #toast.show { visibility: visible; -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
@@ -63,30 +92,55 @@
 
 <div class="container">
     <div class="header-tabs">
-        <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" style="background:#b03060; color:white; padding:2px 6px; border-radius:10px;">178</span></button>
+        <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">178</span></button>
         <button class="tab admin-only" id="tab-2" onclick="switchTab(2)">2. MATRICE DE DÉPOUILLEMENT</button>
         <button class="tab admin-only" id="tab-3" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE PROTOCOLE</button>
         
-        <div class="sim-badge">HGR MAKALA (N=178)</div>
-        <button type="button" class="btn-auth" id="btn-auth" onclick="requestAdmin()">🔒 ACCÈS ADMIN</button>
+        <div class="sim-badge">DONNÉES: KINSHASA (N=178)</div>
+        <button type="button" class="btn-auth" id="btn-auth" onclick="window.requestAdmin()">🔒 ACCÈS ADMIN</button>
+        <button type="button" class="btn-excel admin-only" id="btn-export" onclick="window.exportToCSV()">📊 EXPORT CSV</button>
     </div>
 
     <div id="content-1" class="form-content active">
-        <h2 style="color:#b03060; text-align:center;">Collecte de données</h2>
-        <div style="text-align:center; padding: 50px; border: 2px dashed #ccc; border-radius: 10px; background: #fafafa;">
-            <p>Le formulaire est prêt pour une nouvelle saisie (Fiche N°179).</p>
-            <button class="tab active" style="padding: 15px 30px;">DÉMARRER LA SAISIE</button>
-        </div>
+        <h2 style="color:#b03060; font-size: 18px; text-align:center; margin-bottom: 25px;">Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</h2>
+        
+        <form id="kapForm">
+            <div class="section-title">I. IDENTIFICATION & PROFIL PROFESSIONNEL</div>
+            <div class="row">
+                <div class="field"><label>1. Code Enquêté(e)</label><select id="code-enquete"></select></div>
+                <div class="field"><label style="color:#b03060;">2. Consentement</label><select id="consentement"><option value="oui">Oui</option><option value="non">Non</option></select></div>
+                <div class="field">
+                    <label>3. Service d'affectation</label>
+                    <select id="service">
+                        <option value="" disabled selected>Choisir un service...</option>
+                        <option>Gynécologie-Obstétrique</option><option>Médecine Interne</option><option>Chirurgie</option><option>Urgences / Autre</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="field"><label>4. Niveau d'étude</label><select id="niveau"><option value="" disabled selected>Niveau...</option><option value="A2 - ITM">A2 - Niveau technique</option><option value="A1/LMD - ISTM">A1/LMD - Niveau supérieur</option></select></div>
+                <div class="field"><label>5. Ancienneté (années)</label><input type="number" id="anciennete" min="0" max="40" placeholder="Ex: 5"></div>
+                <div class="field"><label>6. Sexe</label><select id="sexe"><option value="F" selected>F</option></select></div>
+            </div>
+            
+            <button type="button" id="save-btn" class="btn-save" onclick="window.saveRecord()">☁️ ENREGISTRER LA FICHE</button>
+        </form>
     </div>
 
     <div id="content-2" class="form-content">
-        <div class="section-title">Base de données des 178 infirmiers</div>
-        <div style="overflow-x:auto; max-height: 600px;">
-            <table class="data-table">
+        <div class="section-title">BASE DE DONNÉES EN LIGNE (N = <span id="n-total">0</span>)</div>
+        <button id="btn-delete-multi" class="btn-delete-selected" onclick="window.deleteSelected()">🗑️ Supprimer la sélection</button>
+        <div style="overflow-x:auto; max-height: 600px; overflow-y:auto;">
+            <table>
                 <thead>
-                    <tr><th>Code</th><th>Sexe</th><th>Service</th><th>Niveau</th><th>Savoir (%)</th><th>Pratique</th></tr>
+                    <tr>
+                        <th><input type="checkbox" id="select-all" onclick="window.toggleSelectAll(this)"></th>
+                        <th>Code</th><th>Sexe</th><th>Service</th><th>Niveau</th>
+                        <th>Score Savoir (%)</th><th>Score Pratique (%)</th>
+                        <th>Actions</th>
+                    </tr>
                 </thead>
-                <tbody id="db-body"></tbody>
+                <tbody id="database-body"></tbody>
             </table>
         </div>
     </div>
@@ -103,16 +157,14 @@
                 <tr><td class="row-header">< 30 ans</td><td>58</td><td>32,6%</td></tr>
                 <tr><td class="row-header">30 – 45 ans</td><td>116</td><td>65,2%</td></tr>
                 <tr><td class="row-header">> 45 ans</td><td>4</td><td>2,2%</td></tr>
-                <tr style="font-weight:bold;"><td class="row-header">Total</td><td>178</td><td>100%</td></tr>
+                <tr style="font-weight:bold; background:#f9f9f9;"><td class="row-header">Total</td><td>178</td><td>100%</td></tr>
             </tbody>
         </table>
         <div class="interpretation-text">
-            La tranche d’âge dominante était celle de <b>30–45 ans</b>, représentant <b>65,2% (n = 116)</b> des participants.<br>
-            Les infirmiers de moins de 30 ans représentaient 32,6% (n = 58), tandis que ceux de plus de 45 ans constituaient 2,2% (n = 4).<br>
+            La tranche d’âge dominante était celle de 30–45 ans, représentant 65,2% (n = 116) des participants.<br>
+            Les infirmiers de moins de 30 ans représentaient 32,6% (n = 58), tandis que ceux de plus de 45 ans constituaient 2,2% (n = 4).<br><br>
             La somme des pourcentages est égale à 100%.
         </div>
-
-        <hr class="sep">
 
         <div class="sub-title">🔸 Répartition selon le niveau d’étude</div>
         <table class="academic-table" style="max-width: 600px;">
@@ -120,14 +172,14 @@
             <tbody>
                 <tr><td class="row-header">A1/LMD (Supérieur)</td><td>120</td><td>67,4%</td></tr>
                 <tr><td class="row-header">A2 (Technique)</td><td>58</td><td>32,6%</td></tr>
-                <tr style="font-weight:bold;"><td class="row-header">Total</td><td>178</td><td>100%</td></tr>
+                <tr style="font-weight:bold; background:#f9f9f9;"><td class="row-header">Total</td><td>178</td><td>100%</td></tr>
             </tbody>
         </table>
         <div class="interpretation-text">
-            La majorité des participants avaient un niveau <b>A1/LMD, soit 67,4% (n = 120)</b>. Les infirmiers de niveau A2 représentaient 32,6% (n = 58). La répartition totale correspond à 100%.
+            La majorité des participants avaient un niveau A1/LMD, soit 67,4% (n = 120).<br>
+            Les infirmiers de niveau A2 représentaient 32,6% (n = 58).<br><br>
+            La répartition totale correspond à 100%.
         </div>
-
-        <hr class="sep">
 
         <div class="section-title">2. Évaluation des connaissances (Objectif spécifique 1)</div>
         <div class="stat-card">
@@ -136,12 +188,10 @@
         </div>
         <div class="interpretation-text">
             Sur l’ensemble des 178 participants :<br>
-            • <b>83,1% (n = 148)</b> présentaient des connaissances solides<br>
-            • <b>16,9% (n = 30)</b> présentaient des lacunes importantes<br><br>
+            • 83,1% (n = 148) présentaient des connaissances solides<br>
+            • 16,9% (n = 30) présentaient des lacunes importantes<br><br>
             Ces proportions totalisent 100%, indiquant une prédominance d’un bon niveau de connaissances théoriques.
         </div>
-
-        <hr class="sep">
 
         <div class="section-title">3. Identification des attitudes face au dépistage (Objectif spécifique 2)</div>
         <div class="stat-card">
@@ -150,12 +200,10 @@
         </div>
         <div class="interpretation-text">
             L’analyse des attitudes montre que :<br>
-            • <b>48,9% (n = 87)</b> avaient une attitude positive<br>
-            • <b>51,1% (n = 91)</b> présentaient une attitude mitigée ou négative<br><br>
+            • 48,9% (n = 87) avaient une attitude positive<br>
+            • 51,1% (n = 91) présentaient une attitude mitigée ou négative<br><br>
             La répartition est équilibrée et totalise 100%.
         </div>
-
-        <hr class="sep">
 
         <div class="section-title">4. Évaluation de la qualité des pratiques (Objectif spécifique 3)</div>
         <div class="stat-card">
@@ -164,81 +212,84 @@
         </div>
         <div class="interpretation-text">
             Concernant la pratique professionnelle :<br>
-            • <b>50,6% (n = 90)</b> avaient une pratique conforme<br>
-            • <b>49,4% (n = 88)</b> avaient une pratique insuffisante<br><br>
-            La somme des pourcentages est égale à 100%. Malgré un bon niveau de connaissances, la pratique reste partagée entre conformité et insuffisance.
+            • 50,6% (n = 90) avaient une pratique conforme<br>
+            • 49,4% (n = 88) avaient une pratique insuffisante<br><br>
+            La somme des pourcentages est égale à 100%.<br><br>
+            Malgré un bon niveau de connaissances, la pratique reste partagée entre conformité et insuffisance.
         </div>
 
-        <hr class="sep">
-
         <div class="section-title">5. Analyse du lien C.A.P. (Connaissances – Attitudes – Pratiques)</div>
+        <div class="interpretation-text">La répartition des niveaux de connaissances était la suivante :</div>
         <table class="academic-table" style="max-width: 600px;">
             <thead><tr><th class="row-header">Niveau de connaissance</th><th>n</th><th>%</th></tr></thead>
             <tbody>
                 <tr><td class="row-header">Faible (<50%)</td><td>19</td><td>10,7%</td></tr>
                 <tr><td class="row-header">Moyen (50–75%)</td><td>56</td><td>31,5%</td></tr>
                 <tr><td class="row-header">Élevé (>75%)</td><td>103</td><td>57,9%</td></tr>
-                <tr style="font-weight:bold;"><td class="row-header">Total</td><td>178</td><td>100%</td></tr>
+                <tr style="font-weight:bold; background:#f9f9f9;"><td class="row-header">Total</td><td>178</td><td>100%</td></tr>
             </tbody>
         </table>
         <div class="interpretation-text">
             On observe une relation positive entre le niveau de connaissance et le score moyen de pratique :<br>
-            • Niveau faible → <b>50,6%</b><br>
-            • Niveau moyen → <b>59,4%</b><br>
-            • Niveau élevé → <b>81,2%</b><br><br>
+            • Niveau faible → 50,6%<br>
+            • Niveau moyen → 59,4%<br>
+            • Niveau élevé → 81,2%<br><br>
             Cela suggère que plus le niveau de connaissances augmente, plus la qualité de la pratique s’améliore, confirmant l’hypothèse <b>« mieux on connaît, mieux on pratique »</b>.
         </div>
-
-        <hr class="sep">
 
         <div class="section-title">6. Facteurs associés (Objectif spécifique 4)</div>
         
         <div class="sub-title">🔹 Association entre Service et Bonne Pratique</div>
-        <div class="interpretation-text"><i>Analyse sur la base des 90 infirmiers ayant une bonne pratique :</i></div>
+        <div class="interpretation-text"><b>Bonnes pratiques (base = 90)</b></div>
         <table class="academic-table">
-            <thead><tr><th class="row-header">Service</th><th>Effectif (n)</th><th>Pourcentage (%)</th></tr></thead>
+            <thead><tr><th class="row-header">Service</th><th>n</th><th>%</th></tr></thead>
             <tbody>
                 <tr><td class="row-header">Gynécologie-Obstétrique</td><td>48</td><td>53,3%</td></tr>
                 <tr><td class="row-header">Médecine Interne</td><td>16</td><td>17,8%</td></tr>
                 <tr><td class="row-header">Chirurgie</td><td>16</td><td>17,8%</td></tr>
                 <tr><td class="row-header">Urgences / Autres</td><td>10</td><td>11,1%</td></tr>
-                <tr style="font-weight:bold;"><td class="row-header">Total Bonnes Pratiques</td><td>90</td><td>100%</td></tr>
+                <tr style="font-weight:bold;"><td class="row-header">Total</td><td>90</td><td>100%</td></tr>
             </tbody>
         </table>
 
-        <div class="interpretation-text"><i>Analyse sur la base des 88 infirmiers ayant une pratique insuffisante :</i></div>
+        <div class="interpretation-text"><b>Pratiques insuffisantes (base = 88)</b></div>
         <table class="academic-table">
-            <thead><tr><th class="row-header">Service</th><th>Effectif (n)</th><th>Pourcentage (%)</th></tr></thead>
+            <thead><tr><th class="row-header">Service</th><th>n</th><th>%</th></tr></thead>
             <tbody>
                 <tr><td class="row-header">Gynécologie-Obstétrique</td><td>0</td><td>0%</td></tr>
                 <tr><td class="row-header">Médecine Interne</td><td>28</td><td>31,8%</td></tr>
                 <tr><td class="row-header">Chirurgie</td><td>33</td><td>37,5%</td></tr>
                 <tr><td class="row-header">Urgences / Autres</td><td>27</td><td>30,7%</td></tr>
-                <tr style="font-weight:bold;"><td class="row-header">Total Insuffisances</td><td>88</td><td>100%</td></tr>
+                <tr style="font-weight:bold;"><td class="row-header">Total</td><td>88</td><td>100%</td></tr>
             </tbody>
         </table>
 
-        <div class="interpretation-text" style="background:#f9f9f9; border-left: 4px solid #b03060; padding-left: 15px;">
-            <b>Interprétation :</b><br>
-            • <b>53,3%</b> des bonnes pratiques proviennent du service de Gynécologie-Obstétrique.<br>
-            • <b>Aucune pratique insuffisante</b> n’a été observée en Gynécologie.<br>
-            • La majorité des pratiques insuffisantes provient du service de <b>Chirurgie (37,5%)</b>.<br>
+        <div class="interpretation-text">
+            <b>Interprétation:</b><br>
+            • 53,3% des bonnes pratiques proviennent du service de Gynécologie-Obstétrique.<br>
+            • Aucune pratique insuffisante n’a été observée en Gynécologie.<br>
+            • La majorité des pratiques insuffisantes provient du service de Chirurgie (37,5%).<br>
             • Les services non spécialisés dans le dépistage du cancer du sein concentrent l’essentiel des insuffisances.
         </div>
 
-        <hr class="sep">
-
         <div class="sub-title">🔹 Association entre Niveau d’étude et Pratique</div>
         <div class="interpretation-text">
-            Les pourcentages sont calculés à l’intérieur de chaque groupe de niveau d’étude :<br><br>
-            • <b>78% des infirmiers de niveau A1/LMD</b> présentent une bonne pratique (les 22% restants ayant une pratique insuffisante).<br>
-            • <b>57% des infirmiers de niveau A2</b> présentent une bonne pratique (les 43% restants ayant une pratique insuffisante).<br><br>
-            Cela suggère que le niveau d’étude supérieur est statistiquement associé à une meilleure qualité de pratique professionnelle.
+            Les pourcentages sont calculés à l’intérieur de chaque niveau d’étude sur une base de 100% :<br><br>
+            • <b>78% des A1/LMD</b> avaient une bonne pratique (contre 22% n'ayant pas de bonne pratique).<br>
+            • <b>57% des A2</b> avaient une bonne pratique (contre 43% n'ayant pas de bonne pratique).<br><br>
+            Cela suggère que le niveau d’étude supérieur est associé à une meilleure qualité de pratique.
         </div>
 
         <div class="section-title">🔎 Conclusion partielle des résultats</div>
         <div class="conclusion-box">
-            L’analyse démontre un bon niveau global de connaissances théoriques (83,1%). Cependant, la qualité de la pratique (50,6% conforme) est fortement influencée par deux facteurs majeurs : le <b>service d’affectation</b> (Expertise en Gynécologie) et le <b>niveau de formation initiale</b> (A1/LMD). On valide ainsi l’importance du renforcement des capacités dans les services de Chirurgie et Médecine Interne.
+            L’analyse montre :<br>
+            <ul style="margin-top: 10px; margin-bottom: 0;">
+                <li>Un bon niveau global de connaissances (83,1%)</li>
+                <li>Une attitude globalement mitigée (51,1% négative/mitigée)</li>
+                <li>Une pratique partagée (50,6% conforme)</li>
+                <li>Une forte influence du service d’affectation et du niveau d’étude sur la qualité des pratiques</li>
+                <li>Une relation positive confirmée entre le niveau de connaissances et la qualité de la pratique</li>
+            </ul>
         </div>
         
     </div>
@@ -247,60 +298,47 @@
 <div id="toast">Opération réussie !</div>
 
 <script>
-    let database = [];
+    // --- LOGIQUE DE SIMULATION ---
+    let database = []; 
     let isAdmin = false;
 
-    // Simulation intelligente des 178 fiches pour correspondre exactement à tes chiffres
-    function generateDatabase() {
-        let db = [];
+    window.generateSimulatedData = function() {
+        let simulatedDB = [];
         for (let i = 1; i <= 178; i++) {
-            let service = "";
-            let pratique = "";
+            let service = i <= 48 ? 'Gynécologie-Obstétrique' : (i <= 92 ? 'Médecine Interne' : (i <= 141 ? 'Chirurgie' : 'Urgences / Autre'));
             let niveau = i <= 120 ? 'A1/LMD - ISTM' : 'A2 - ITM';
-
-            // Distribution pour correspondre aux 90 bonnes pratiques et 88 insuffisantes
-            if (i <= 48) { service = "Gynécologie-Obstétrique"; pratique = "Conforme"; }
-            else if (i <= 48 + 16) { service = "Médecine Interne"; pratique = "Conforme"; }
-            else if (i <= 48 + 16 + 16) { service = "Chirurgie"; pratique = "Conforme"; }
-            else if (i <= 48 + 16 + 16 + 10) { service = "Urgences / Autre"; pratique = "Conforme"; }
-            else if (i <= 90 + 28) { service = "Médecine Interne"; pratique = "Insuffisante"; }
-            else if (i <= 90 + 28 + 33) { service = "Chirurgie"; pratique = "Insuffisante"; }
-            else { service = "Urgences / Autre"; pratique = "Insuffisante"; }
-
-            db.push({
+            simulatedDB.push({
                 id: "INF-MAK-" + i.toString().padStart(3, '0'),
-                sexe: "F",
                 service: service,
                 niveau: niveau,
-                savoir: Math.floor(Math.random() * 30) + 65,
-                pratique: pratique
+                sexe: "F",
+                anciennete: Math.floor(Math.random() * 15) + 1,
+                scoreSavoir: Math.floor(Math.random() * 30) + 65,
+                scorePratique: Math.floor(Math.random() * 40) + 50
             });
         }
-        database = db;
-        renderMatrix();
-    }
+        return simulatedDB;
+    };
 
-    function renderMatrix() {
-        const tbody = document.getElementById('db-body');
-        tbody.innerHTML = database.map(row => `
+    database = window.generateSimulatedData();
+    
+    window.updateUI = function() {
+        const count = database.length;
+        document.getElementById('count-badge').textContent = count;
+        document.getElementById('n-total').textContent = count;
+        const tbody = document.getElementById('database-body');
+        tbody.innerHTML = database.map((row, index) => `
             <tr>
+                <td><input type="checkbox" class="row-check"></td>
                 <td><b>${row.id}</b></td><td>${row.sexe}</td><td>${row.service}</td><td>${row.niveau}</td>
-                <td style="color:#2e7d32; font-weight:bold;">${row.savoir}%</td>
-                <td style="color:${row.pratique === 'Conforme' ? '#1565c0' : '#f57f17'}; font-weight:bold;">${row.pratique}</td>
+                <td style="color:${window.getColor(row.scoreSavoir)}">${row.scoreSavoir}%</td>
+                <td style="color:${window.getColor(row.scorePratique)}">${row.scorePratique}%</td>
+                <td><button class="btn-delete-single">Effacer</button></td>
             </tr>
         `).join('');
-    }
-
-    window.requestAdmin = function() {
-        if(isAdmin) return; 
-        if(prompt("Code administrateur :") === "1398") {
-            isAdmin = true;
-            document.querySelectorAll('.admin-only').forEach(el => el.classList.add('admin-visible'));
-            document.getElementById('btn-auth').style.display = 'none';
-            showToast("Mode Admin Activé");
-            switchTab(3);
-        }
     };
+
+    window.getColor = function(s) { return s >= 75 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); };
 
     window.switchTab = function(i) {
         document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
@@ -309,14 +347,38 @@
         document.querySelectorAll('.tab')[i-1].classList.add('active');
     };
 
-    function showToast(m) {
-        let x = document.getElementById("toast");
-        x.innerText = m; x.className = "show";
-        setTimeout(() => x.className = "", 3000);
+    window.requestAdmin = function() {
+        if(isAdmin) return; 
+        let code = prompt("Code administrateur :"); 
+        if(code === "1398") {
+            isAdmin = true;
+            document.querySelectorAll('.admin-only').forEach(el => { el.style.display = 'inline-block'; });
+            document.getElementById('btn-auth').style.display = 'none';
+            alert("Mode Admin Activé.");
+            updateUI(); 
+            window.switchTab(3);
+        } else {
+            alert("Code incorrect !");
+        }
+    };
+
+    function showToast(message) {
+        var x = document.getElementById("toast");
+        x.className = "show";
+        x.innerText = message;
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
 
-    // Lancement
-    generateDatabase();
+    window.initCodeDropdown = function() {
+        const sel = document.getElementById('code-enquete');
+        for(let i=179; i<=200; i++) { 
+            let o = document.createElement('option'); 
+            o.value = "INF-MAK-" + i; o.text = "Fiche " + i; sel.appendChild(o); 
+        }
+    };
+    
+    window.initCodeDropdown();
+    window.updateUI();
 </script>
 </body>
 </html>
