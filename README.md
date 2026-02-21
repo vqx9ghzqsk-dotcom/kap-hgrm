@@ -462,6 +462,8 @@
 
     <div id="content-3" class="form-content">
         
+        <button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab3Word()">📥 TÉLÉCHARGER TOUTES LES DONNÉES DE L'ONGLET 3 (WORD)</button>
+
         <div class="section-title">0. ANALYSE SOCIODÉMOGRAPHIQUE & DESCRIPTIVE</div>
         <div id="detailed-analysis-container"></div>
         <div class="section-title">1. ÉVALUATION DES SAVOIRS ET PRATIQUES (Obj. Spécifiques 1 & 3)</div>
@@ -1206,6 +1208,39 @@
         l.href = "data:text/csv;charset=utf-8," + encodeURI("\ufeff"+h+r);
         l.download = "Rapport_CAP_Makala_Kinshasa.csv"; l.click();
     };
+
+    // --- NOUVELLE FONCTION AJOUTÉE POUR EXPORTER L'ONGLET 3 ---
+    window.exportTab3Word = function() {
+        let content3 = document.getElementById('content-3').cloneNode(true);
+        let buttons = content3.querySelectorAll('button');
+        buttons.forEach(b => b.remove()); // Retirer les boutons du document final
+        
+        let html = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>";
+        html += "<head><meta charset='utf-8'><title>Analyse Onglet 3</title>";
+        html += "<style>";
+        html += "body { font-family: 'Segoe UI', Arial, sans-serif; }";
+        html += "table { border-collapse: collapse; width: 100%; margin-bottom: 20px; font-size: 12px; }";
+        html += "th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }";
+        html += "th { background-color: #f8f9fa; font-weight: bold; }";
+        html += ".section-title { background: #fce4ec; color: #b03060; padding: 10px; font-weight: bold; margin-top:20px; font-size: 14px; text-transform: uppercase; }";
+        html += ".interpretation-text { font-style: italic; background: #fff8e1; padding: 10px; border-left: 4px solid #ffc107; margin-bottom: 15px; font-size: 12px;}";
+        html += ".stat-title { font-weight: bold; color: #555; margin-bottom: 10px; border-bottom: 2px solid #b03060; display: inline-block; }";
+        html += "</style></head><body>";
+        html += "<h2>Résultats & Analyse Protocole</h2>";
+        html += content3.innerHTML;
+        html += "</body></html>";
+
+        let blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement('a');
+        link.href = url;
+        link.download = 'Analyse_Onglet3_Makala.doc';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+    // ----------------------------------------------------------
     
     function showToast(message) {
         var x = document.getElementById("toast");
