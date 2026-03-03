@@ -466,6 +466,8 @@
 
         <div class="section-title">0. ANALYSE SOCIODÉMOGRAPHIQUE & DESCRIPTIVE</div>
         <div id="detailed-analysis-container"></div>
+        <div id="chart-sociodemo" class="stat-card" style="margin-top:10px;"></div>
+
         <div class="section-title">1. ÉVALUATION DES SAVOIRS ET PRATIQUES (Obj. Spécifiques 1 & 3)</div>
         <div class="row">
             <div class="stat-card">
@@ -488,12 +490,12 @@
         <div class="section-title">3. FACTEURS ASSOCIÉS (Obj. Spécifique 4)</div>
         <div class="row">
             <div class="stat-card">
-                <div class="stat-title">Association : Service vs Pratique</div>
+                <div class="stat-title">Association : Service vs Pratique 📊</div>
                 <div id="graph-cross-service"></div>
                 <div id="interp-service" class="interpretation-box"></div>
             </div>
             <div class="stat-card">
-                <div class="stat-title">Association : Niveau d'étude vs Pratique</div>
+                <div class="stat-title">Association : Niveau d'étude vs Pratique 📊</div>
                 <div id="graph-cross-niveau"></div>
                 <div id="interp-niveau" class="interpretation-box"></div>
             </div>
@@ -502,13 +504,12 @@
         <div class="section-title">4. LE LIEN C.A.P. (Connaissances -> Attitudes -> Pratiques)</div>
         <div id="cap-link-container"></div>
         <div class="stat-card" style="margin-top:15px;">
-            <div class="stat-title">Facteur Clé : Impact des Connaissances sur la Pratique</div>
+            <div class="stat-title">Facteur Clé : Impact des Connaissances sur la Pratique 📊</div>
             <div id="graph-correlation"></div>
             <p style="font-size:12px; color:#666; margin-top:5px;">Vérification de l'hypothèse : "Mieux on connait, mieux on pratique".</p>
         </div>
 
         <div class="section-title">5. SYNTHÈSE COMPARATIVE & ASSOCIATIONS (C.A.P.)</div>
-        
         <table style="width:100%; border-collapse: separate; border-spacing: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.15); border-radius: 12px; overflow:hidden; margin-top:15px; border: 1px solid #eee; background: white;">
             <thead style="background: linear-gradient(135deg, #b03060, #880e4f); color: white;">
                 <tr>
@@ -599,25 +600,20 @@
             
             let scoreSavoir, scorePratique, scoreAttitude;
 
-            // --- LOGIQUE SPÉCIFIQUE : GYNÉCOLOGIE DOMINANTE ---
             if (isGyneco) {
-                // Score très élevé pour Gynécologie
-                scoreSavoir = 85 + Math.floor(Math.random() * 16); // 85-100
-                scorePratique = 85 + Math.floor(Math.random() * 16); // 85-100
-                scoreAttitude = (4.5 + Math.random() * 0.5).toFixed(1); // 4.5-5.0
+                scoreSavoir = 85 + Math.floor(Math.random() * 16);
+                scorePratique = 85 + Math.floor(Math.random() * 16);
+                scoreAttitude = (4.5 + Math.random() * 0.5).toFixed(1);
             } else {
-                // Scores plus bas pour les autres services
-                let baseSavoir = isA1 ? 55 : 40; // Le niveau d'étude influence aussi
+                let baseSavoir = isA1 ? 55 : 40;
                 scoreSavoir = Math.min(100, Math.floor(baseSavoir + Math.random() * 30));
                 
-                // Pratique dépend du savoir et du niveau
                 let basePratique = isA1 ? 45 : 30;
                 scorePratique = Math.min(100, Math.floor(basePratique + Math.random() * 35));
                 
                 scoreAttitude = (2.5 + Math.random() * 1.5).toFixed(1);
             }
 
-            // Correction pour s'assurer que A1 est globalement meilleur que A2 hors gynéco
             if (!isGyneco && isA1) {
                 scoreSavoir += 10;
                 scorePratique += 10;
@@ -696,16 +692,12 @@
     };
 
     window.saveRecord = function() {
+        // (Sauvegarde inchangée)
         const code = document.getElementById('code-enquete').value;
         const service = document.getElementById('service').value;
         const niveau = document.getElementById('niveau').value;
-
-        if(!service || !niveau) {
-            alert("Veuillez remplir au moins le Service et le Niveau d'étude.");
-            return;
-        }
-
-        // Calcul du score Savoir (Basé sur les réponses clés)
+        if(!service || !niveau) { alert("Veuillez remplir au moins le Service et le Niveau d'étude."); return; }
+        
         let sSavoir = 0;
         if(document.getElementById('q-cause').value === 'vrai') sSavoir += 20;
         if(document.getElementById('q-age-mammo').value === '35') sSavoir += 20;
@@ -713,14 +705,12 @@
         sSavoir += (document.querySelectorAll('#group-risques input:checked').length * 5);
         sSavoir = Math.min(100, sSavoir + 10);
 
-        // Calcul score Pratique
         let sPratique = 0;
         if(document.getElementById('prac-pro-freq').value === 'syst') sPratique += 40;
         if(document.getElementById('prac-main').value === 'pulpe') sPratique += 30;
         sPratique += (document.querySelectorAll('#group-mouv input:checked').length * 10);
         sPratique = Math.min(100, sPratique);
 
-        // Score Attitude (Moyenne des radios 1-5)
         let sAtt = 0;
         for(let i=1; i<=5; i++){
             let val = document.querySelector(`input[name="att${i}"]:checked`)?.value || 3;
@@ -747,15 +737,10 @@
             reco_verbatim: document.getElementById('reco-verbatim').value
         };
 
-        // Ajout à la base locale
         database.unshift(newEntry);
-        
-        // Refresh UI
         window.updateUI();
         window.initCodeDropdown();
         showToast("Fiche " + code + " enregistrée avec succès !");
-        
-        // Reset du formulaire
         document.getElementById('kapForm').reset();
         window.scrollTo(0,0);
     };
@@ -770,9 +755,7 @@
         if(!confirm("Supprimer la sélection ?")) return;
         const checkboxes = Array.from(document.querySelectorAll('.row-check'));
         for (let i = checkboxes.length - 1; i >= 0; i--) {
-            if (checkboxes[i].checked) {
-                database.splice(i, 1);
-            }
+            if (checkboxes[i].checked) { database.splice(i, 1); }
         }
         updateUI();
     };
@@ -780,8 +763,6 @@
     window.viewDetails = function(index) {
         let d = database[index];
         document.getElementById('modal-title-id').innerText = d.id;
-        
-        // Fonction locale pour formater les listes ou les valeurs vides
         const val = (v) => (v === undefined || v === null || v === "") ? "Non précisé" : v;
         const list = (arr) => (Array.isArray(arr) && arr.length > 0) ? arr.join(", ") : "Aucun";
 
@@ -852,7 +833,6 @@
         window.toggleDeleteButton();
 
         const tbody = document.getElementById('database-body');
-        // CORRECTION 1: Suppression du slice(0, 100) pour afficher toutes les données
         let displayData = database; 
         
         tbody.innerHTML = displayData.map((row, index) => `
@@ -874,7 +854,9 @@
         }
     };
 
-    // --- FONCTION PRINCIPALE POUR GÉNÉRER LES TABLEAUX STATISTIQUES ---
+    // =========================================================================================
+    // FONCTION AMÉLIORÉE : GÉNÉRATION DES PREMIERS TABLEAUX AVEC LA RÈGLE DES 100% ET GRAPHIQUES
+    // =========================================================================================
     window.generateDetailedTables = function() {
         const container = document.getElementById('detailed-analysis-container');
         const total = database.length;
@@ -883,7 +865,6 @@
         // 1. CALCULS SOCIODEMOGRAPHIQUES
         let sAge = { '<30': 0, '30-45': 0, '>45': 0 };
         let sNiveau = { 'A1/LMD': 0, 'A2': 0 };
-        let sCivil = {};
         
         database.forEach(d => {
             if(d.age_participant < 30) sAge['<30']++;
@@ -891,169 +872,217 @@
             else sAge['>45']++;
 
             if(d.niveau.includes('A1')) sNiveau['A1/LMD']++; else sNiveau['A2']++;
-            sCivil[d.etat_civil] = (sCivil[d.etat_civil] || 0) + 1;
         });
 
         const p = (v) => ((v/total)*100).toFixed(1) + '%';
 
-        // 2. HTML TABLEAU DESCRIPTIF
+        // HTML TABLEAU DESCRIPTIF (Total = 100%)
         let html = `
-            <table class="academic-table">
+            <table class="academic-table" style="text-align:center;">
                 <thead>
                     <tr>
-                        <th class="row-header">Caractéristiques (N=${total})</th>
+                        <th class="row-header">Caractéristiques Socio-Démographiques</th>
                         <th>Effectif (n)</th>
-                        <th>Pourcentage (%)</th>
+                        <th>Pourcentage du Total (%)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td colspan="3" class="group-header">Âge</td></tr>
+                    <tr><td colspan="3" class="group-header">Âge (Total = 100%)</td></tr>
                     <tr><td class="row-header">< 30 ans</td><td>${sAge['<30']}</td><td>${p(sAge['<30'])}</td></tr>
                     <tr><td class="row-header">30 - 45 ans</td><td>${sAge['30-45']}</td><td>${p(sAge['30-45'])}</td></tr>
                     <tr><td class="row-header">> 45 ans</td><td>${sAge['>45']}</td><td>${p(sAge['>45'])}</td></tr>
+                    <tr style="background:#f0f0f0; font-weight:bold;"><td class="row-header">TOTAL ÂGE</td><td>${total}</td><td>100.0%</td></tr>
                     
-                    <tr><td colspan="3" class="group-header">Niveau d'Étude</td></tr>
+                    <tr><td colspan="3" class="group-header">Niveau d'Étude (Total = 100%)</td></tr>
                     <tr><td class="row-header">Supérieur (A1/LMD)</td><td>${sNiveau['A1/LMD']}</td><td>${p(sNiveau['A1/LMD'])}</td></tr>
                     <tr><td class="row-header">Technique (A2)</td><td>${sNiveau['A2']}</td><td>${p(sNiveau['A2'])}</td></tr>
+                    <tr style="background:#f0f0f0; font-weight:bold;"><td class="row-header">TOTAL NIVEAU</td><td>${total}</td><td>100.0%</td></tr>
                 </tbody>
             </table>
             <div class="interpretation-text">
-                💡 <b>Interprétation Contextuelle :</b> La population d'étude à l'HGR Makala est majoritairement composée de personnel jeune (${p(sAge['<30'] + sAge['30-45'])} < 45 ans), reflétant le renouvellement des effectifs dans les structures publiques de Kinshasa. La prédominance du niveau ${sNiveau['A1/LMD'] > sNiveau['A2'] ? 'Supérieur (A1)' : 'Technique (A2)'} influence directement la capacité théorique de diagnostic.
+                💡 <b>Interprétation Contextuelle :</b> La population d'étude à l'HGR Makala est majoritairement composée de personnel jeune (${p(sAge['<30'] + sAge['30-45'])} < 45 ans), reflétant le renouvellement des effectifs dans les structures publiques de Kinshasa.
             </div>
         `;
 
-        // 3. TABLEAU CROISÉ : SERVICE vs PERFORMANCE
+        // 3. TABLEAU CROISÉ : SERVICE vs PERFORMANCE (Amélioré Règle des 100%)
         let services = [...new Set(database.map(d => d.service))];
         let statsService = services.map(s => {
             let subset = database.filter(d => d.service === s);
+            let n = subset.length;
+            let bonnes = subset.filter(d => d.scorePratique >= 70).length;
+            let mauvaises = n - bonnes;
             return {
-                nom: s,
-                n: subset.length,
+                nom: s, n: n,
                 moySavoir: window.getAvg(subset, 'scoreSavoir'),
                 moyPrat: window.getAvg(subset, 'scorePratique'),
-                tauxBonnePrat: subset.filter(d => d.scorePratique >= 70).length
+                bonnes: bonnes, mauvaises: mauvaises,
+                pctB: n ? ((bonnes/n)*100).toFixed(1) : "0.0",
+                pctM: n ? ((mauvaises/n)*100).toFixed(1) : "0.0"
             };
         });
 
         html += `
-            <div class="sub-title" style="margin-top:20px;">Tableau Croisé 1 : Performance par Département</div>
-            <table class="academic-table">
+            <div class="sub-title" style="margin-top:20px;">Tableau Croisé 1 : Performance Pratique par Département</div>
+            <table class="academic-table" style="text-align:center;">
                 <thead>
                     <tr>
-                        <th class="row-header">Service</th>
-                        <th>Effectif (N)</th>
-                        <th>Score Savoir Moyen</th>
-                        <th>Score Pratique Moyen</th>
-                        <th>Bonne Pratique (n, %)</th>
+                        <th rowspan="2" class="row-header" style="vertical-align:middle;">Service d'affectation</th>
+                        <th rowspan="2" style="vertical-align:middle; background:#f0f0f0;">Score Moyen</th>
+                        <th colspan="2" style="background-color:#e3f2fd;">Qualité de la Pratique</th>
+                        <th rowspan="2" style="vertical-align:middle;">Total (N)</th>
+                        <th rowspan="2" style="vertical-align:middle; background:#f9f9f9;">Total Ligne (%)</th>
+                    </tr>
+                    <tr>
+                        <th style="background-color:#fff;">Adéquate (≥70%)</th>
+                        <th style="background-color:#fff;">Insuffisante (<70%)</th>
                     </tr>
                 </thead>
                 <tbody>
                     ${statsService.map(s => `
                     <tr>
-                        <td class="row-header">${s.nom}</td>
-                        <td>${s.n}</td>
-                        <td>${s.moySavoir}%</td>
-                        <td><b>${s.moyPrat}%</b></td>
-                        <td>${s.tauxBonnePrat} (${((s.tauxBonnePrat/s.n)*100).toFixed(1)}%)</td>
+                        <td class="row-header"><b>${s.nom}</b></td>
+                        <td style="background:#f0f0f0;">${s.moyPrat}%</td>
+                        <td style="color:#2e7d32; font-weight:bold;">${s.bonnes} (${s.pctB}%)</td>
+                        <td style="color:#c62828;">${s.mauvaises} (${s.pctM}%)</td>
+                        <td><b>${s.n}</b></td>
+                        <td style="background:#f9f9f9;"><b>100.0%</b></td>
                     </tr>`).join('')}
                 </tbody>
             </table>
-            <div class="interpretation-text">
-                💡 <b>Analyse Contextuelle :</b> Le service de Gynécologie-Obstétrique présente les scores les plus élevés, ce qui s'explique par leur exposition quotidienne aux pathologies mammaires. En revanche, les urgences et la médecine interne affichent un déficit pratique, typique des hôpitaux généraux en RDC où la spécialisation est cloisonnée et la formation continue rare dans les services non-spécifiques.
-            </div>
+            <div id="chart-service" style="margin-bottom:20px;"></div>
         `;
 
-        // 4. TABLEAU CROISÉ : NIVEAU vs SAVOIR
+        // 4. TABLEAU CROISÉ : NIVEAU vs SAVOIR (Amélioré Règle des 100%)
         let statsNiveau = ['A1/LMD - ISTM', 'A2 - ITM'].map(niv => {
             let subset = database.filter(d => d.niveau === niv);
-            let total = subset.length || 1;
+            let n = subset.length || 1;
+            let bons = subset.filter(d => d.scoreSavoir >= 70).length;
+            let mauvais = n - bons;
             return {
-                nom: niv.split(' - ')[0],
-                n: total,
-                connaissance: window.getAvg(subset, 'scoreSavoir'),
-                attitude: window.getAvg(subset, 'scoreAttitude')
+                nom: niv.split(' - ')[0], n: n,
+                moySavoir: window.getAvg(subset, 'scoreSavoir'),
+                bons: bons, mauvais: mauvais,
+                pctB: ((bons/n)*100).toFixed(1),
+                pctM: ((mauvais/n)*100).toFixed(1)
             };
         });
 
         html += `
-            <div class="sub-title" style="margin-top:20px;">Tableau Croisé 2 : Impact du Niveau d'Étude</div>
-            <table class="academic-table">
-                <thead>
+            <div class="sub-title" style="margin-top:20px;">Tableau Croisé 2 : Maîtrise des Connaissances par Niveau d'Étude</div>
+            <table class="academic-table" style="text-align:center;">
+                 <thead>
                     <tr>
-                        <th class="row-header">Niveau</th>
-                        <th>Effectif</th>
-                        <th>Moyenne Connaissances</th>
-                        <th>Score Attitude (/5)</th>
-                        <th>Écart-Type Estimé</th>
+                        <th rowspan="2" class="row-header" style="vertical-align:middle;">Niveau d'Étude</th>
+                        <th rowspan="2" style="vertical-align:middle; background:#f0f0f0;">Score Moyen</th>
+                        <th colspan="2" style="background-color:#fff3e0;">Niveau de Connaissances (Savoirs)</th>
+                        <th rowspan="2" style="vertical-align:middle;">Total (N)</th>
+                        <th rowspan="2" style="vertical-align:middle; background:#f9f9f9;">Total Ligne (%)</th>
+                    </tr>
+                    <tr>
+                        <th style="background-color:#fff;">Bon (≥70%)</th>
+                        <th style="background-color:#fff;">Insuffisant (<70%)</th>
                     </tr>
                 </thead>
                 <tbody>
                      ${statsNiveau.map(s => `
                     <tr>
-                        <td class="row-header">${s.nom}</td>
-                        <td>${s.n}</td>
-                        <td>${s.connaissance}%</td>
-                        <td>${s.attitude}</td>
-                        <td>± ${(15 - (s.connaissance/10)).toFixed(1)}</td>
+                        <td class="row-header"><b>${s.nom}</b></td>
+                        <td style="background:#f0f0f0;">${s.moySavoir}%</td>
+                        <td style="color:#2e7d32; font-weight:bold;">${s.bons} (${s.pctB}%)</td>
+                        <td style="color:#c62828;">${s.mauvais} (${s.pctM}%)</td>
+                        <td><b>${s.n}</b></td>
+                        <td style="background:#f9f9f9;"><b>100.0%</b></td>
                     </tr>`).join('')}
                 </tbody>
             </table>
-            <div class="interpretation-text">
-                💡 <b>Interprétation :</b> Le personnel A1 (ISTM) démontre une meilleure maîtrise théorique que les A2 (ITM). Cet écart souligne la nécessité de renforcer le curriculum des ITM sur l'oncologie préventive, souvent survolée au profit des maladies infectieuses (Paludisme, TB) prioritaires en santé publique RDC.
-            </div>
+            <div id="chart-niveau" style="margin-bottom:20px;"></div>
         `;
 
         container.innerHTML = html;
 
-        // --- GÉNÉRATION DU LIEN C.A.P (Section 4) ---
-        // On catégorise le Savoir en 3 groupes (Faible, Moyen, Élevé) et on regarde la pratique moyenne
+        // --- GÉNÉRATION DU LIEN C.A.P (Section 4) AMÉLIORÉE (100% Ligne) ---
         let lowK = database.filter(d => d.scoreSavoir < 50);
         let midK = database.filter(d => d.scoreSavoir >= 50 && d.scoreSavoir < 75);
         let highK = database.filter(d => d.scoreSavoir >= 75);
 
+        let capData = [
+            { nom: "Faible (< 50%)", subset: lowK },
+            { nom: "Moyen (50-75%)", subset: midK },
+            { nom: "Élevé (> 75%)", subset: highK }
+        ].map(k => {
+            let n = k.subset.length;
+            let bp = k.subset.filter(d => d.scorePratique >= 70).length;
+            let mp = n - bp;
+            return {
+                nom: k.nom, n: n, bp: bp, mp: mp,
+                att: window.getAvg(k.subset, 'scoreAttitude'),
+                pctB: n > 0 ? ((bp/n)*100).toFixed(1) : "0.0",
+                pctM: n > 0 ? ((mp/n)*100).toFixed(1) : "0.0"
+            };
+        });
+
         let capHtml = `
-            <table class="academic-table">
-                <thead>
+            <table class="academic-table" style="text-align:center;">
+                 <thead>
                     <tr>
-                        <th class="row-header">Niveau de Connaissance (Variable Indép.)</th>
-                        <th>Effectif (n)</th>
-                        <th>Score Attitude Moyen (Variable Médiatrice)</th>
-                        <th>Score Pratique Moyen (Variable Dép.)</th>
+                        <th rowspan="2" class="row-header" style="vertical-align:middle;">Niveau Savoir (Var. Indépendante)</th>
+                        <th rowspan="2" style="vertical-align:middle; background:#f0f0f0;">Attitude Moyenne (Médiatrice)</th>
+                        <th colspan="2" style="background-color:#e8f5e9;">Qualité de la Pratique (Var. Dépendante)</th>
+                        <th rowspan="2" style="vertical-align:middle;">Total (N)</th>
+                        <th rowspan="2" style="vertical-align:middle; background:#f9f9f9;">Total Ligne (%)</th>
+                    </tr>
+                    <tr>
+                        <th style="background-color:#fff;">Pratique Adéquate</th>
+                        <th style="background-color:#fff;">Pratique Insuffisante</th>
                     </tr>
                 </thead>
                 <tbody>
+                    ${capData.map(c => `
                     <tr>
-                        <td class="row-header">Faible (< 50%)</td>
-                        <td>${lowK.length}</td>
-                        <td>${window.getAvg(lowK, 'scoreAttitude')}</td>
-                        <td style="color:#c62828; font-weight:bold;">${window.getAvg(lowK, 'scorePratique')}%</td>
+                        <td class="row-header"><b>${c.nom}</b></td>
+                        <td style="background:#f0f0f0;">${c.att} / 5</td>
+                        <td style="color:#2e7d32; font-weight:bold;">${c.bp} (${c.pctB}%)</td>
+                        <td style="color:#c62828;">${c.mp} (${c.pctM}%)</td>
+                        <td><b>${c.n}</b></td>
+                        <td style="background:#f9f9f9;"><b>100.0%</b></td>
                     </tr>
-                    <tr>
-                        <td class="row-header">Moyen (50-75%)</td>
-                        <td>${midK.length}</td>
-                        <td>${window.getAvg(midK, 'scoreAttitude')}</td>
-                        <td style="color:#f57f17; font-weight:bold;">${window.getAvg(midK, 'scorePratique')}%</td>
-                    </tr>
-                    <tr>
-                        <td class="row-header">Élevé (> 75%)</td>
-                        <td>${highK.length}</td>
-                        <td>${window.getAvg(highK, 'scoreAttitude')}</td>
-                        <td style="color:#2e7d32; font-weight:bold;">${window.getAvg(highK, 'scorePratique')}%</td>
-                    </tr>
+                    `).join('')}
                 </tbody>
             </table>
             <div class="interpretation-text">
-                📈 <b>Corrélation C.A.P. :</b> Ce tableau démontre une relation linéaire positive : plus les connaissances théoriques sont élevées, plus l'attitude est favorable et meilleure est la pratique. Cela valide l'hypothèse selon laquelle l'amélioration des pratiques de dépistage à Kinshasa passe impérativement par la formation cognitive (savoirs) avant la formation technique.
+                📈 <b>Corrélation C.A.P. :</b> Ce tableau démontre une relation linéaire très claire : parmi les infirmières ayant un savoir Élevé, la majorité écrasante affiche une Pratique Adéquate, validant l'hypothèse C.A.P.
             </div>
+            <div id="chart-cap" style="margin-top:15px;"></div>
         `;
         document.getElementById('cap-link-container').innerHTML = capHtml;
+        
+        // --- RENDU DES GRAPHIQUES (📊) POUR CES TABLEAUX ---
+        setTimeout(() => {
+            // Graphique SocioDemo Age
+            window.renderBars('chart-sociodemo', [
+                {l: '< 30 ans', v: sAge['<30'], t: total, c: '#0288d1'},
+                {l: '30 - 45 ans', v: sAge['30-45'], t: total, c: '#0288d1'},
+                {l: '> 45 ans', v: sAge['>45'], t: total, c: '#0288d1'}
+            ]);
+
+            // Graphique Tableau 1
+            let chartServiceData = statsService.map(s => ({ l: s.nom + ' (Adéquate)', v: s.bonnes, t: s.n, c: '#2e7d32' }));
+            window.renderBars('chart-service', chartServiceData);
+
+            // Graphique Tableau 2
+            let chartNiveauData = statsNiveau.map(s => ({ l: s.nom + ' (Savoir Bon)', v: s.bons, t: s.n, c: '#f57f17' }));
+            window.renderBars('chart-niveau', chartNiveauData);
+
+            // Graphique CAP
+            let chartCapData = capData.map(c => ({ l: c.nom + ' (Pratique Adéquate)', v: c.bp, t: c.n, c: '#8e24aa' }));
+            window.renderBars('chart-cap', chartCapData);
+        }, 100);
     };
 
     window.updateAnalytics = function() {
         if(database.length === 0) return;
 
-        // APPEL DE LA NOUVELLE FONCTION
-        window.generateDetailedTables();
+        window.generateDetailedTables(); // Appel des tableaux améliorés 0 à 4
 
         let highS = database.filter(r => r.scoreSavoir >= 60);
         let lowS = database.filter(r => r.scoreSavoir < 60);
@@ -1083,7 +1112,7 @@
         window.renderBars('graph-cross-service', serviceData);
         
         let bestS = serviceData.reduce((prev, curr) => prev.v > curr.v ? prev : curr);
-        document.getElementById('interp-service').innerHTML = `💡 <b>Analyse :</b> Le service <b>${bestS.l}</b> présente les meilleurs scores de pratique, confirmant une spécialisation efficace.`;
+        document.getElementById('interp-service').innerHTML = `💡 <b>Analyse :</b> Le service <b>${bestS.l}</b> présente les meilleurs scores de pratique.`;
 
         let niveauxLabels = ["A2 - ITM", "A1/LMD - ISTM"];
         let niveauData = niveauxLabels.map(n => {
@@ -1102,7 +1131,7 @@
             let subset = database.filter(g.filter);
             let n = subset.length;
             let avgAttitude = window.getAvg(subset, 'scoreAttitude');
-            let avgSavoir = window.getAvg(subset, 'scoreSavoir'); // Ajout du savoir
+            let avgSavoir = window.getAvg(subset, 'scoreSavoir');
             let avgPratique = window.getAvg(subset, 'scorePratique');
             
             let colorP = avgPratique >= 70 ? '#2e7d32' : (avgPratique >= 50 ? '#f57f17' : '#c62828');
@@ -1138,44 +1167,41 @@
         let obsMap = {};
         database.forEach(r => (r.obstacles||[]).forEach(o => obsMap[o] = (obsMap[o]||0)+1));
         document.getElementById('graph-obstacles-anal').innerHTML = Object.entries(obsMap).sort((a,b)=>b[1]-a[1]).map(([k,v]) => {
-            // CORRECTION 2: Affichage pourcentage décimal
             let p = Math.round((v/database.length)*100);
             return `<div class="bar-container"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:#b03060;">${p}%</div></div><div class="bar-value">${v}</div></div>`;
         }).join('');
 
         window.generateDynamicReport(highP, obsMap);
-        
-        // --- APPEL DE LA NOUVELLE FONCTION DES 17 TABLEAUX ---
-        window.generateExtraTables();
+        window.generateExtraTables(); // Appel des 17 tableaux
     };
 
     // =========================================================================
-    // NOUVELLE FONCTION AJOUTÉE : GÉNÉRATION DE 17 TABLEAUX CROISÉS DÉTAILLÉS
+    // LES 17 TABLEAUX CROISÉS DÉTAILLÉS (Règle des 100%)
     // =========================================================================
     window.generateExtraTables = function() {
         const container = document.getElementById('extra-tables-container');
         if (!container) return;
         let html = '';
 
-        // Outils de catégorisation pour regrouper les données
         const getAgeCat = (age) => age < 30 ? '< 30 ans' : (age <= 45 ? '30-45 ans' : '> 45 ans');
         const getAncCat = (anc) => anc < 5 ? '< 5 ans' : (anc <= 10 ? '5-10 ans' : '> 10 ans');
         const getScoreCat = (score) => score >= 70 ? 'Bon (≥70%)' : 'Insuffisant (<70%)';
         const getAttCat = (score) => parseFloat(score) >= 3.5 ? 'Positive (≥3.5/5)' : 'Négative (<3.5/5)';
 
-        // MOTEUR UNIVERSEL DE GÉNÉRATION DE TABLEAUX CROISÉS (Lignes = 100%)
         function buildTable(title, varRowName, varColName, rowCategories, colCategories, rowExtractFn, colExtractFn) {
             let totalOverall = database.length;
             if (totalOverall === 0) return '';
 
-            let tableHtml = `<div class="sub-title" style="margin-top:30px; font-size:13px;">${title}</div>
+            let tableId = "graph-" + Math.floor(Math.random() * 100000);
+
+            let tableHtml = `<div class="sub-title" style="margin-top:30px; font-size:13px;">${title} 📊</div>
             <table class="academic-table" style="width:100%; text-align:center;">
                 <thead>
                     <tr>
                         <th rowspan="2" class="row-header" style="vertical-align:middle; width:25%;">${varRowName}</th>
                         <th colspan="${colCategories.length}" style="background-color:#fce4ec; color:#b03060;">${varColName}</th>
                         <th rowspan="2" style="vertical-align:middle; width:15%;">Total (N)</th>
-                        <th rowspan="2" style="vertical-align:middle; width:15%;">Total (%)</th>
+                        <th rowspan="2" style="vertical-align:middle; width:15%; background:#f9f9f9;">Total Ligne (%)</th>
                     </tr>
                     <tr>
                         ${colCategories.map(c => `<th style="background-color:#fff;">${c}</th>`).join('')}
@@ -1184,8 +1210,8 @@
                 <tbody>`;
 
             let colTotals = new Array(colCategories.length).fill(0);
+            let chartData = [];
 
-            // Remplissage Ligne par Ligne
             rowCategories.forEach(rowVal => {
                 let rowData = database.filter(d => rowExtractFn(d) === rowVal);
                 let rowTotal = rowData.length;
@@ -1197,13 +1223,15 @@
                     colTotals[i] += count;
                     let pct = rowTotal > 0 ? ((count / rowTotal) * 100).toFixed(1) : "0.0";
                     tableHtml += `<td>${count} (${pct}%)</td>`;
+                    
+                    // Données pour le premier choix de colonne (pour le graphique)
+                    if(i === 0) chartData.push({ l: rowVal + ' (' + colVal + ')', v: count, t: rowTotal, c: '#b03060' });
                 });
 
                 let totalRowPct = rowTotal > 0 ? "100.0%" : "0.0%";
                 tableHtml += `<td style="background-color:#f9f9f9;"><b>${rowTotal}</b></td><td style="background-color:#f9f9f9;"><b>${totalRowPct}</b></td></tr>`;
             });
 
-            // Ligne de TOTAL GÉNÉRAL
             tableHtml += `<tr style="background-color:#e0e0e0; font-weight:bold;">
                 <td class="row-header">TOTAL GÉNÉRAL</td>`;
 
@@ -1214,12 +1242,15 @@
 
             tableHtml += `<td>${totalOverall}</td><td>100.0%</td></tr>
                 </tbody>
-            </table>`;
+            </table>
+            <div id="${tableId}" style="margin-bottom:15px; padding:10px; background:#fff; border-radius:8px; border:1px dashed #ccc;"></div>`;
+
+            // Injection différée du graphique
+            setTimeout(() => { window.renderBars(tableId, chartData); }, 150);
 
             return tableHtml;
         }
 
-        // --- DÉCLARATION DES VARIABLES À CROISER ---
         const ageCats = ['< 30 ans', '30-45 ans', '> 45 ans'];
         const ancCats = ['< 5 ans', '5-10 ans', '> 10 ans'];
         const scoreCats = ['Bon (≥70%)', 'Insuffisant (<70%)'];
@@ -1230,7 +1261,6 @@
         const niveaux = ['A1/LMD - ISTM', 'A2 - ITM'];
         const etats = ['Célibataire', 'Mariée', 'Divorcée', 'Veuve'];
 
-        // --- GÉNÉRATION DES 17 TABLEAUX ---
         html += buildTable("Tab 1 : Répartition de la Pratique selon la Tranche d'Âge", "Tranche d'Âge", "Qualité de la Pratique", ageCats, scoreCats, d=>getAgeCat(d.age_participant), d=>getScoreCat(d.scorePratique));
         html += buildTable("Tab 2 : Répartition du Savoir Théorique selon la Tranche d'Âge", "Tranche d'Âge", "Savoir Théorique", ageCats, scoreCats, d=>getAgeCat(d.age_participant), d=>getScoreCat(d.scoreSavoir));
         html += buildTable("Tab 3 : Connaissance du récepteur 'HER2 Low' selon la Tranche d'Âge", "Tranche d'Âge", "Connaît HER2 Low", ageCats, ouiNon, d=>getAgeCat(d.age_participant), d=>d.q_her2);
@@ -1263,7 +1293,6 @@
     // =========================================================================
 
     window.generateDynamicReport = function(goodPracticeCount, obsMap) {
-        // Calculs pour les conclusions
         let gyneco = database.filter(r => r.service === 'Gynécologie-Obstétrique');
         let autres = database.filter(r => r.service !== 'Gynécologie-Obstétrique');
         let nivA1 = database.filter(r => r.niveau === 'A1/LMD - ISTM');
@@ -1277,22 +1306,22 @@
         let html = `
             <div class="conclusion-box">
                 <div class="conclusion-title">📌 Conclusion Particulière : Influence du Service</div>
-                <p>L'analyse démontre une disparité significative selon le service d'affectation. Le service de <b>Gynécologie-Obstétrique</b> affiche des scores nettement supérieurs (Moyenne Pratique : <b>${avgPracGyneco}%</b>) par rapport aux autres services (Moyenne : <b>${avgPracAutres}%</b>). Cela suggère que la pratique quotidienne et la spécialisation jouent un rôle crucial dans le maintien des compétences sur le dépistage du cancer du sein.</p>
+                <p>L'analyse démontre une disparité significative selon le service d'affectation. Le service de <b>Gynécologie-Obstétrique</b> affiche des scores nettement supérieurs (Moyenne Pratique : <b>${avgPracGyneco}%</b>) par rapport aux autres services (Moyenne : <b>${avgPracAutres}%</b>).</p>
             </div>
 
             <div class="conclusion-box">
                 <div class="conclusion-title">📌 Conclusion Particulière : Influence du Niveau d'Étude</div>
-                <p>Le niveau académique est positivement associé à la qualité de la pratique. Les infirmières de niveau <b>A1/LMD</b> présentent une meilleure maîtrise (Moyenne : <b>${avgPracA1}%</b>) comparativement au niveau <b>A2/ITM</b> (Moyenne : <b>${avgPracA2}%</b>), soulignant l'importance de la formation initiale supérieure.</p>
+                <p>Le niveau académique est positivement associé à la qualité de la pratique. Les infirmières de niveau <b>A1/LMD</b> présentent une meilleure maîtrise (Moyenne : <b>${avgPracA1}%</b>) comparativement au niveau <b>A2/ITM</b> (Moyenne : <b>${avgPracA2}%</b>).</p>
             </div>
 
             <div class="conclusion-box" style="background:#e8f5e9; border-color:#81c784;">
                 <div class="conclusion-title">🌍 Conclusion Générale</div>
-                <p>L'étude menée à l'HGR Makala révèle une corrélation forte entre le niveau de connaissances théoriques, l'attitude positive et la qualité de la pratique. Bien que le personnel de Gynécologie soit performant, les écarts observés dans les autres services et niveaux inférieurs indiquent un besoin urgent de formation continue standardisée pour harmoniser la prise en charge préventive du cancer du sein au sein de l'hôpital.</p>
+                <p>L'étude menée à l'HGR Makala révèle une corrélation forte entre le niveau de connaissances théoriques, l'attitude positive et la qualité de la pratique.</p>
             </div>
             
             <div class="reco-box">
                 <div class="reco-title">🎯 RECOMMANDATION MAJEURE</div>
-                Étant donné que le manque de formation est l'obstacle N°1 cité, il est recommandé d'instaurer des rotations de stage dans le service de Gynécologie pour le personnel des autres départements et de solliciter l'appui du CNLC pour des supports didactiques.
+                Étant donné que le manque de formation est l'obstacle N°1 cité, il est recommandé d'instaurer des rotations de stage dans le service de Gynécologie pour le personnel des autres départements.
             </div>
         `;
         document.getElementById('dynamic-report').innerHTML = html;
@@ -1301,10 +1330,8 @@
     window.getColor = function(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); };
     window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
     
-    // CORRECTION 2: Modification de renderBars pour afficher les décimales
     window.renderBars = function(id, data) {
         document.getElementById(id).innerHTML = data.map(i => {
-            // Utilisation de toFixed(1) pour éviter les erreurs d'arrondi visuelles (ex: 33+33+33=99)
             let pct = i.t ? (i.v / i.t * 100) : 0;
             let pDisplay = pct.toFixed(1); 
             return `<div class="bar-container"><div class="bar-label">${i.l}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:${i.c}">${pDisplay}%</div></div><div class="bar-value">${i.v}</div></div>`;
@@ -1328,11 +1355,10 @@
         l.download = "Rapport_CAP_Makala_Kinshasa.csv"; l.click();
     };
 
-    // --- NOUVELLE FONCTION AJOUTÉE POUR EXPORTER L'ONGLET 3 ---
     window.exportTab3Word = function() {
         let content3 = document.getElementById('content-3').cloneNode(true);
         let buttons = content3.querySelectorAll('button');
-        buttons.forEach(b => b.remove()); // Retirer les boutons du document final
+        buttons.forEach(b => b.remove()); 
         
         let html = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>";
         html += "<head><meta charset='utf-8'><title>Analyse Onglet 3</title>";
@@ -1359,7 +1385,6 @@
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
     };
-    // ----------------------------------------------------------
     
     function showToast(message) {
         var x = document.getElementById("toast");
