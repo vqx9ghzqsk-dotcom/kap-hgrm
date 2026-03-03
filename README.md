@@ -498,6 +498,7 @@
             <div id="pie-1"></div>
             <div id="pie-2"></div>
             <div id="pie-3"></div>
+            <div id="pie-4"></div>
         </div>
 
         <div class="section-title">0. ANALYSE SOCIODÉMOGRAPHIQUE & DESCRIPTIVE</div>
@@ -1135,6 +1136,14 @@
             { label: 'Gynéco. (Bons)', value: gynecoBons, color: '#8e24aa' },
             { label: 'Autres Services (Bons)', value: autresBons, color: '#ffb300' }
         ], "3. Origine des Bonnes Pratiques");
+
+        // === AJOUT DU 4EME CAMEMBERT (Attitude face au dépistage) ===
+        let attPosPie = database.filter(d => parseFloat(d.scoreAttitude) > 3.5).length;
+        let attNegPie = database.length - attPosPie;
+        window.renderPieChart('pie-4', [
+            { label: 'Attitude Positive (>3.5/5)', value: attPosPie, color: '#43a047' },
+            { label: 'Attitude Mitigée/Négative', value: attNegPie, color: '#d81b60' }
+        ], "4. Attitude face au Dépistage");
 
         window.generateDetailedTables();
 
