@@ -460,9 +460,40 @@
         </div>
     </div>
 
-    <div id="content-3" class="form-content">
+  <div id="content-3" class="form-content">
+    
+    <div id="extracted-visuals-container" style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
         
-        <button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab3Word()">📥 TÉLÉCHARGER TOUTES LES DONNÉES DE L'ONGLET 3 (WORD)</button>
+        <div class="stat-card" style="flex: 1; min-width: 300px;">
+            <div class="stat-title">Niveau de Connaissances (Obj. 1)</div>
+            <div id="graph-savoir"></div>
+            <p style="font-size:11px; color:#666; margin-top:5px;">Répartition globale des scores théoriques.</p>
+        </div>
+
+        <div class="stat-card" style="flex: 1; min-width: 300px;">
+            <div class="stat-title">Qualité de la Pratique (Obj. 3)</div>
+            <div id="graph-pratique"></div>
+            <p style="font-size:11px; color:#666; margin-top:5px;">Évaluation des gestes techniques et de la fréquence.</p>
+        </div>
+
+        <div class="stat-card" style="flex: 1; min-width: 300px;">
+            <div class="stat-title">Répartition des Attitudes (Obj. 2)</div>
+            <div id="graph-attitudes"></div>
+            <p style="font-size:11px; color:#666; margin-top:5px;">Attitude Positive (Score > 3.5/5) vs Négative/Neutre.</p>
+        </div>
+
+        <div class="stat-card" style="flex: 1; min-width: 300px;">
+            <div class="stat-title">Obstacles Majeurs Identifiés</div>
+            <div id="graph-obstacles-anal"></div>
+        </div>
+
+    </div>
+    <button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab3Word()">📥 TÉLÉCHARGER TOUTES LES DONNÉES DE L'ONGLET 3 (WORD)</button>
+
+    <div class="section-title">0. ANALYSE SOCIODÉMOGRAPHIQUE & DESCRIPTIVE</div>
+    <div id="detailed-analysis-container"></div>
+    ```
+<button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab3Word()">📥 TÉLÉCHARGER TOUTES LES DONNÉES DE L'ONGLET 3 (WORD)</button>
 
         <div class="section-title">0. ANALYSE SOCIODÉMOGRAPHIQUE & DESCRIPTIVE</div>
         <div id="detailed-analysis-container"></div>
