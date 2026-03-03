@@ -493,17 +493,12 @@
                 </div>
             </div>
         </div>
-        <div class="section-title">00. VUE D'ENSEMBLE CROISÉE (9 DIAGRAMMES EN CAMEMBERT)</div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px;" id="pie-charts-container">
+        <div class="section-title">00. VUE D'ENSEMBLE CROISÉE (DIAGRAMMES EN CAMEMBERT)</div>
+        <div class="row" id="pie-charts-container">
             <div id="pie-1"></div>
             <div id="pie-2"></div>
             <div id="pie-3"></div>
             <div id="pie-4"></div>
-            <div id="pie-5"></div>
-            <div id="pie-6"></div>
-            <div id="pie-7"></div>
-            <div id="pie-8"></div>
-            <div id="pie-9"></div>
         </div>
 
         <div class="section-title">0. ANALYSE SOCIODÉMOGRAPHIQUE & DESCRIPTIVE</div>
@@ -1118,7 +1113,7 @@
     window.updateAnalytics = function() {
         if(database.length === 0) return;
 
-        // --- DIAGRAMMES 1 À 4 : CONNAISSANCES, ATTITUDES ET PRATIQUES ---
+        // INJECTION DES DONNÉES DANS LES CAMEMBERTS
         let bonnesP = database.filter(d => d.scorePratique >= 70).length;
         let mauvP = database.length - bonnesP;
         window.renderPieChart('pie-1', [
@@ -1142,77 +1137,13 @@
             { label: 'Autres Services (Bons)', value: autresBons, color: '#ffb300' }
         ], "3. Origine des Bonnes Pratiques");
 
+        // === AJOUT DU 4EME CAMEMBERT (Attitude face au dépistage) ===
         let attPosPie = database.filter(d => parseFloat(d.scoreAttitude) > 3.5).length;
         let attNegPie = database.length - attPosPie;
         window.renderPieChart('pie-4', [
             { label: 'Attitude Positive (>3.5/5)', value: attPosPie, color: '#43a047' },
             { label: 'Attitude Mitigée/Négative', value: attNegPie, color: '#d81b60' }
         ], "4. Attitude face au Dépistage");
-
-        // --- DIAGRAMMES 5 À 9 : SOCIODÉMOGRAPHIE ET PROFILS ---
-        
-        // 5. Tranche d'âge
-        let age1 = database.filter(d => d.age_participant < 30).length;
-        let age2 = database.filter(d => d.age_participant >= 30 && d.age_participant <= 45).length;
-        let age3 = database.filter(d => d.age_participant > 45).length;
-        window.renderPieChart('pie-5', [
-            { label: '< 30 ans', value: age1, color: '#42a5f5' },
-            { label: '30 - 45 ans', value: age2, color: '#1e88e5' },
-            { label: '> 45 ans', value: age3, color: '#0d47a1' }
-        ], "5. Répartition par Tranche d'Âge");
-
-        // 6. Ancienneté
-        let anc1 = database.filter(d => d.anciennete < 5).length;
-        let anc2 = database.filter(d => d.anciennete >= 5 && d.anciennete <= 10).length;
-        let anc3 = database.filter(d => d.anciennete > 10).length;
-        window.renderPieChart('pie-6', [
-            { label: '< 5 ans', value: anc1, color: '#ab47bc' },
-            { label: '5 - 10 ans', value: anc2, color: '#8e24aa' },
-            { label: '> 10 ans', value: anc3, color: '#4a148c' }
-        ], "6. Répartition par Ancienneté");
-
-        // 7. Niveau d'étude
-        let nivA1 = database.filter(d => d.niveau === 'A1/LMD - ISTM').length;
-        let nivA2 = database.filter(d => d.niveau === 'A2 - ITM').length;
-        window.renderPieChart('pie-7', [
-            { label: 'A1/LMD (Supérieur)', value: nivA1, color: '#26a69a' },
-            { label: 'A2 (Technique)', value: nivA2, color: '#00695c' }
-        ], "7. Niveau d'Étude");
-
-        // 8. État Civil
-        let ecCel = database.filter(d => d.etat_civil === 'Célibataire').length;
-        let ecMar = database.filter(d => d.etat_civil === 'Mariée').length;
-        let ecDiv = database.filter(d => d.etat_civil === 'Divorcée' || d.etat_civil === 'Veuve').length;
-        window.renderPieChart('pie-8', [
-            { label: 'Célibataire', value: ecCel, color: '#ffa726' },
-            { label: 'Mariée', value: ecMar, color: '#ef6c00' },
-            { label: 'Divorcée/Veuve', value: ecDiv, color: '#e65100' }
-        ], "8. État Civil");
-
-        // 9. Service d'affectation
-        let servG = database.filter(d => d.service === 'Gynécologie-Obstétrique').length;
-        let servM = database.filter(d => d.service === 'Médecine Interne').length;
-        let servC = database.filter(d => d.service === 'Chirurgie').length;
-        let servU = database.filter(d => d.service === 'Urgences / Autre').length;
-        window.renderPieChart('pie-9', [
-            { label: 'Gynéco-Obs', value: servG, color: '#ef5350' },
-            { label: 'Méd. Interne', value: servM, color: '#c62828' },
-            { label: 'Chirurgie', value: servC, color: '#d32f2f' },
-            { label: 'Urgences/Autre', value: servU, color: '#b71c1c' }
-        ], "9. Service d'Affectation");
-
-        // --- SUITE DU CODE EXISTANT ---
-        window.generateDetailedTables();
-        
-        let highS = database.filter(r => r.scoreSavoir >= 60);
-        let lowS = database.filter(r => r.scoreSavoir < 60);
-        window.renderBars('graph-savoir', [
-            {l: 'Connaissances Solides (>60%)', v: highS.length, t: database.length, c: '#2e7d32'},
-            {l: 'Lacunes Importantes (<60%)', v: lowS.length, t: database.length, c: '#c62828'}
-        ]);
-
-        // ... (Gardez le reste de la fonction updateAnalytics intact jusqu'à la fin) ...
-
 
         window.generateDetailedTables();
 
@@ -1522,3 +1453,4 @@
 </script>
 </body>
 </html>
+Reprend les 9 diagrammes identiques à l’image 
