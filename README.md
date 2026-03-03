@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</title>
     <style>
-        /* --- STYLE GLOBAL (Conservé) --- */
+        /* --- STYLE GLOBAL --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
         .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 900px;}
         
@@ -49,7 +49,6 @@
         td { border: 1px solid #eee; padding: 10px; text-align: center; vertical-align: middle; }
         .td-left { text-align: left; padding-left: 15px; width: 50%; }
 
-        /* NOUVEAUX STYLES POUR LES TABLEAUX ACADÉMIQUES */
         .academic-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-family: 'Times New Roman', serif; font-size: 14px; }
         .academic-table thead th { border-bottom: 2px solid #000; border-top: 2px solid #000; background: white; text-align: center; font-weight: bold; padding: 8px; }
         .academic-table tbody td { border-bottom: 1px solid #ddd; padding: 6px; text-align: center; }
@@ -67,7 +66,7 @@
         .btn-save:hover { background: #880e4f; transform: translateY(-2px); }
         .btn-save:disabled { background: #ccc; cursor: not-allowed; }
         
-        /* Stats */
+        /* Stats & Camemberts */
         .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .stat-title { font-weight: bold; color: #555; margin-bottom: 15px; font-size: 14px; border-bottom: 2px solid #b03060; display: inline-block; }
         
@@ -185,7 +184,7 @@
                         <option>Kongo Central</option>
                         <option>Haut-Katanga</option>
                         <option>Nord/Sud Kivu</option>
-                        <option>Autre Province (Voir PDF)</option>
+                        <option>Autre Province</option>
                     </select>
                 </div>
                 <div class="field">
@@ -353,7 +352,6 @@
             </table>
 
             <div class="section-title">IV. PRATIQUES (Savoir-Faire)</div>
-            
             <div class="row">
                 <div class="field">
                     <label>15. Pratique personnelle (AES sur vous) :</label>
@@ -460,40 +458,16 @@
         </div>
     </div>
 
-  <div id="content-3" class="form-content">
-    
-    <div id="extracted-visuals-container" style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px;">
+    <div id="content-3" class="form-content">
         
-        <div class="stat-card" style="flex: 1; min-width: 300px;">
-            <div class="stat-title">Niveau de Connaissances (Obj. 1)</div>
-            <div id="graph-savoir"></div>
-            <p style="font-size:11px; color:#666; margin-top:5px;">Répartition globale des scores théoriques.</p>
+        <button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab3Word()">📥 TÉLÉCHARGER TOUTES LES DONNÉES DE L'ONGLET 3 (WORD)</button>
+
+        <div class="section-title">00. VUE D'ENSEMBLE CROISÉE (DIAGRAMMES EN CAMEMBERT)</div>
+        <div class="row" id="pie-charts-container">
+            <div id="pie-1"></div>
+            <div id="pie-2"></div>
+            <div id="pie-3"></div>
         </div>
-
-        <div class="stat-card" style="flex: 1; min-width: 300px;">
-            <div class="stat-title">Qualité de la Pratique (Obj. 3)</div>
-            <div id="graph-pratique"></div>
-            <p style="font-size:11px; color:#666; margin-top:5px;">Évaluation des gestes techniques et de la fréquence.</p>
-        </div>
-
-        <div class="stat-card" style="flex: 1; min-width: 300px;">
-            <div class="stat-title">Répartition des Attitudes (Obj. 2)</div>
-            <div id="graph-attitudes"></div>
-            <p style="font-size:11px; color:#666; margin-top:5px;">Attitude Positive (Score > 3.5/5) vs Négative/Neutre.</p>
-        </div>
-
-        <div class="stat-card" style="flex: 1; min-width: 300px;">
-            <div class="stat-title">Obstacles Majeurs Identifiés</div>
-            <div id="graph-obstacles-anal"></div>
-        </div>
-
-    </div>
-    <button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab3Word()">📥 TÉLÉCHARGER TOUTES LES DONNÉES DE L'ONGLET 3 (WORD)</button>
-
-    <div class="section-title">0. ANALYSE SOCIODÉMOGRAPHIQUE & DESCRIPTIVE</div>
-    <div id="detailed-analysis-container"></div>
-    ```
-<button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab3Word()">📥 TÉLÉCHARGER TOUTES LES DONNÉES DE L'ONGLET 3 (WORD)</button>
 
         <div class="section-title">0. ANALYSE SOCIODÉMOGRAPHIQUE & DESCRIPTIVE</div>
         <div id="detailed-analysis-container"></div>
@@ -560,7 +534,7 @@
 
         <div class="section-title">7. ANALYSES CROISÉES DÉTAILLÉES (17 TABLEAUX SUPPLÉMENTAIRES)</div>
         <div id="extra-tables-container"></div>
-        </div>
+    </div>
 
     <div id="content-4" class="form-content">
         <div class="section-title">SYNTHÈSE AUTOMATISÉE ET CONCLUSIONS</div>
@@ -583,23 +557,7 @@
 <div id="toast">Donnée synchronisée !</div>
 
 <script type="module">
-    // 1. IMPORT FIREBASE (Conserve)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-        apiKey: "AlzaSyAdEKZFfinxpHcThi4vh8EMGJ9ZgqchxEl",
-        authDomain: "nero-15812.firebaseapp.com",
-        projectId: "nero-15812",
-        storageBucket: "nero-15812.firebasestorage.app",
-        messagingSenderId: "957894727402",
-        appId: "1:957894727402:web:5c319686c580c23700e993"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    
-    // --- MODE SIMULATION ---
+    // --- MODE SIMULATION (Sans Firebase pour cet exemple) ---
     let database = []; 
     let isAdmin = false;
 
@@ -716,14 +674,13 @@
             document.getElementById('btn-auth').style.display = 'none';
             alert("Mode Admin Activé : Analyse des données de l'HGR Makala.");
             updateUI(); 
-            window.switchTab(2);
+            window.switchTab(3);
         } else {
             alert("Code incorrect !");
         }
     };
 
     window.saveRecord = function() {
-        // (Sauvegarde inchangée)
         const code = document.getElementById('code-enquete').value;
         const service = document.getElementById('service').value;
         const niveau = document.getElementById('niveau').value;
@@ -864,9 +821,8 @@
         window.toggleDeleteButton();
 
         const tbody = document.getElementById('database-body');
-        let displayData = database; 
         
-        tbody.innerHTML = displayData.map((row, index) => `
+        tbody.innerHTML = database.map((row, index) => `
             <tr>
                 <td><input type="checkbox" class="row-check" onclick="window.toggleDeleteButton()"></td>
                 <td><b>${row.id}</b></td><td>${row.sexe}</td><td>${row.service}</td><td>${row.anciennete}</td>
@@ -885,15 +841,42 @@
         }
     };
 
+    // --- FONCTION POUR LES CAMEMBERTS PUR CSS ---
+    window.renderPieChart = function(id, data, title) {
+        let total = data.reduce((sum, d) => sum + d.value, 0);
+        let gradientStr = "";
+        let currentPct = 0;
+        let legendHtml = "";
+
+        data.forEach(d => {
+            if (total === 0) return;
+            let pct = (d.value / total) * 100;
+            let endPct = currentPct + pct;
+            gradientStr += `${d.color} ${currentPct}% ${endPct}%, `;
+            legendHtml += `<div style="display:flex; align-items:center; margin-bottom:5px; font-size:12px;"><span style="display:inline-block; width:12px; height:12px; background:${d.color}; margin-right:8px; border-radius:2px;"></span>${d.label}: <b>${d.value}</b> (${pct.toFixed(1)}%)</div>`;
+            currentPct = endPct;
+        });
+        
+        if(gradientStr.length > 0) gradientStr = gradientStr.slice(0, -2);
+
+        let html = `
+        <div style="display:flex; flex-direction:column; align-items:center; background:#fff; padding:15px; border-radius:8px; border:1px solid #eee; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+            <div style="font-weight:bold; color:#b03060; margin-bottom:15px; font-size:13px; text-align:center;">${title}</div>
+            <div style="width:140px; height:140px; border-radius:50%; background: conic-gradient(${gradientStr}); margin-bottom:15px; box-shadow: inset 0 0 10px rgba(0,0,0,0.1);"></div>
+            <div style="width:100%;">${legendHtml}</div>
+        </div>
+        `;
+        document.getElementById(id).innerHTML = html;
+    };
+
     // =========================================================================================
-    // FONCTION AMÉLIORÉE : GÉNÉRATION DES PREMIERS TABLEAUX AVEC LA RÈGLE DES 100% ET GRAPHIQUES
+    // GÉNÉRATION DES TABLEAUX (Inchangaés)
     // =========================================================================================
     window.generateDetailedTables = function() {
         const container = document.getElementById('detailed-analysis-container');
         const total = database.length;
         if(total === 0) return;
 
-        // 1. CALCULS SOCIODEMOGRAPHIQUES
         let sAge = { '<30': 0, '30-45': 0, '>45': 0 };
         let sNiveau = { 'A1/LMD': 0, 'A2': 0 };
         
@@ -907,7 +890,6 @@
 
         const p = (v) => ((v/total)*100).toFixed(1) + '%';
 
-        // HTML TABLEAU DESCRIPTIF (Total = 100%)
         let html = `
             <table class="academic-table" style="text-align:center;">
                 <thead>
@@ -931,11 +913,10 @@
                 </tbody>
             </table>
             <div class="interpretation-text">
-                💡 <b>Interprétation Contextuelle :</b> La population d'étude à l'HGR Makala est majoritairement composée de personnel jeune (${p(sAge['<30'] + sAge['30-45'])} < 45 ans), reflétant le renouvellement des effectifs dans les structures publiques de Kinshasa.
+                💡 <b>Interprétation Contextuelle :</b> La population d'étude à l'HGR Makala est majoritairement composée de personnel jeune (${p(sAge['<30'] + sAge['30-45'])} < 45 ans).
             </div>
         `;
 
-        // 3. TABLEAU CROISÉ : SERVICE vs PERFORMANCE (Amélioré Règle des 100%)
         let services = [...new Set(database.map(d => d.service))];
         let statsService = services.map(s => {
             let subset = database.filter(d => d.service === s);
@@ -983,7 +964,6 @@
             <div id="chart-service" style="margin-bottom:20px;"></div>
         `;
 
-        // 4. TABLEAU CROISÉ : NIVEAU vs SAVOIR (Amélioré Règle des 100%)
         let statsNiveau = ['A1/LMD - ISTM', 'A2 - ITM'].map(niv => {
             let subset = database.filter(d => d.niveau === niv);
             let n = subset.length || 1;
@@ -1031,7 +1011,6 @@
 
         container.innerHTML = html;
 
-        // --- GÉNÉRATION DU LIEN C.A.P (Section 4) AMÉLIORÉE (100% Ligne) ---
         let lowK = database.filter(d => d.scoreSavoir < 50);
         let midK = database.filter(d => d.scoreSavoir >= 50 && d.scoreSavoir < 75);
         let highK = database.filter(d => d.scoreSavoir >= 75);
@@ -1056,22 +1035,22 @@
             <table class="academic-table" style="text-align:center;">
                  <thead>
                     <tr>
-                        <th rowspan="2" class="row-header" style="vertical-align:middle;">Niveau Savoir (Var. Indépendante)</th>
-                        <th rowspan="2" style="vertical-align:middle; background:#f0f0f0;">Attitude Moyenne (Médiatrice)</th>
-                        <th colspan="2" style="background-color:#e8f5e9;">Qualité de la Pratique (Var. Dépendante)</th>
+                        <th rowspan="2" class="row-header" style="vertical-align:middle;">Niveau Savoir</th>
+                        <th rowspan="2" style="vertical-align:middle; background:#f0f0f0;">Attitude (/5)</th>
+                        <th colspan="2" style="background-color:#e8f5e9;">Qualité de la Pratique</th>
                         <th rowspan="2" style="vertical-align:middle;">Total (N)</th>
                         <th rowspan="2" style="vertical-align:middle; background:#f9f9f9;">Total Ligne (%)</th>
                     </tr>
                     <tr>
-                        <th style="background-color:#fff;">Pratique Adéquate</th>
-                        <th style="background-color:#fff;">Pratique Insuffisante</th>
+                        <th style="background-color:#fff;">Adéquate</th>
+                        <th style="background-color:#fff;">Insuffisante</th>
                     </tr>
                 </thead>
                 <tbody>
                     ${capData.map(c => `
                     <tr>
                         <td class="row-header"><b>${c.nom}</b></td>
-                        <td style="background:#f0f0f0;">${c.att} / 5</td>
+                        <td style="background:#f0f0f0;">${c.att}</td>
                         <td style="color:#2e7d32; font-weight:bold;">${c.bp} (${c.pctB}%)</td>
                         <td style="color:#c62828;">${c.mp} (${c.pctM}%)</td>
                         <td><b>${c.n}</b></td>
@@ -1080,31 +1059,20 @@
                     `).join('')}
                 </tbody>
             </table>
-            <div class="interpretation-text">
-                📈 <b>Corrélation C.A.P. :</b> Ce tableau démontre une relation linéaire très claire : parmi les infirmières ayant un savoir Élevé, la majorité écrasante affiche une Pratique Adéquate, validant l'hypothèse C.A.P.
-            </div>
             <div id="chart-cap" style="margin-top:15px;"></div>
         `;
         document.getElementById('cap-link-container').innerHTML = capHtml;
         
-        // --- RENDU DES GRAPHIQUES (📊) POUR CES TABLEAUX ---
         setTimeout(() => {
-            // Graphique SocioDemo Age
             window.renderBars('chart-sociodemo', [
                 {l: '< 30 ans', v: sAge['<30'], t: total, c: '#0288d1'},
                 {l: '30 - 45 ans', v: sAge['30-45'], t: total, c: '#0288d1'},
                 {l: '> 45 ans', v: sAge['>45'], t: total, c: '#0288d1'}
             ]);
-
-            // Graphique Tableau 1
             let chartServiceData = statsService.map(s => ({ l: s.nom + ' (Adéquate)', v: s.bonnes, t: s.n, c: '#2e7d32' }));
             window.renderBars('chart-service', chartServiceData);
-
-            // Graphique Tableau 2
             let chartNiveauData = statsNiveau.map(s => ({ l: s.nom + ' (Savoir Bon)', v: s.bons, t: s.n, c: '#f57f17' }));
             window.renderBars('chart-niveau', chartNiveauData);
-
-            // Graphique CAP
             let chartCapData = capData.map(c => ({ l: c.nom + ' (Pratique Adéquate)', v: c.bp, t: c.n, c: '#8e24aa' }));
             window.renderBars('chart-cap', chartCapData);
         }, 100);
@@ -1113,7 +1081,31 @@
     window.updateAnalytics = function() {
         if(database.length === 0) return;
 
-        window.generateDetailedTables(); // Appel des tableaux améliorés 0 à 4
+        // INJECTION DES DONNÉES DANS LES CAMEMBERTS
+        let bonnesP = database.filter(d => d.scorePratique >= 70).length;
+        let mauvP = database.length - bonnesP;
+        window.renderPieChart('pie-1', [
+            { label: 'Pratique Adéquate', value: bonnesP, color: '#2e7d32' },
+            { label: 'Pratique Insuffisante', value: mauvP, color: '#c62828' }
+        ], "1. Qualité Globale de la Pratique");
+
+        let expert = database.filter(d => d.scoreSavoir >= 70 && d.scorePratique >= 70).length;
+        let critique = database.filter(d => d.scorePratique < 50).length;
+        let moyen = database.length - expert - critique;
+        window.renderPieChart('pie-2', [
+            { label: 'Expert (>70% S+P)', value: expert, color: '#0288d1' },
+            { label: 'Intermédiaire', value: moyen, color: '#fbc02d' },
+            { label: 'Critique (P<50%)', value: critique, color: '#d81b60' }
+        ], "2. Profils C.A.P Globaux");
+
+        let gynecoBons = database.filter(d => d.service === 'Gynécologie-Obstétrique' && d.scorePratique >= 70).length;
+        let autresBons = bonnesP - gynecoBons;
+        window.renderPieChart('pie-3', [
+            { label: 'Gynéco. (Bons)', value: gynecoBons, color: '#8e24aa' },
+            { label: 'Autres Services (Bons)', value: autresBons, color: '#ffb300' }
+        ], "3. Origine des Bonnes Pratiques");
+
+        window.generateDetailedTables();
 
         let highS = database.filter(r => r.scoreSavoir >= 60);
         let lowS = database.filter(r => r.scoreSavoir < 60);
@@ -1203,12 +1195,9 @@
         }).join('');
 
         window.generateDynamicReport(highP, obsMap);
-        window.generateExtraTables(); // Appel des 17 tableaux
+        window.generateExtraTables(); 
     };
 
-    // =========================================================================
-    // LES 17 TABLEAUX CROISÉS DÉTAILLÉS (Règle des 100%)
-    // =========================================================================
     window.generateExtraTables = function() {
         const container = document.getElementById('extra-tables-container');
         if (!container) return;
@@ -1255,7 +1244,6 @@
                     let pct = rowTotal > 0 ? ((count / rowTotal) * 100).toFixed(1) : "0.0";
                     tableHtml += `<td>${count} (${pct}%)</td>`;
                     
-                    // Données pour le premier choix de colonne (pour le graphique)
                     if(i === 0) chartData.push({ l: rowVal + ' (' + colVal + ')', v: count, t: rowTotal, c: '#b03060' });
                 });
 
@@ -1276,9 +1264,7 @@
             </table>
             <div id="${tableId}" style="margin-bottom:15px; padding:10px; background:#fff; border-radius:8px; border:1px dashed #ccc;"></div>`;
 
-            // Injection différée du graphique
             setTimeout(() => { window.renderBars(tableId, chartData); }, 150);
-
             return tableHtml;
         }
 
@@ -1321,7 +1307,6 @@
 
         container.innerHTML = html;
     };
-    // =========================================================================
 
     window.generateDynamicReport = function(goodPracticeCount, obsMap) {
         let gyneco = database.filter(r => r.service === 'Gynécologie-Obstétrique');
@@ -1375,6 +1360,7 @@
         document.getElementById('content-'+i).classList.add('active');
         document.querySelectorAll('.tab')[i-1].classList.add('active');
     };
+    
     window.exportToCSV = function() {
         let h = "ID,Consentement,Sexe,Age,Etat_Civil,Province,Service,Niveau,Anciennete,Savoir(%),Attitude(/5),Pratique(%),Obstacles,Recommandations\n";
         let r = database.map(r => {
