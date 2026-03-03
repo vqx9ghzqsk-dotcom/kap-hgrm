@@ -525,7 +525,10 @@
 
         <div class="section-title">6. OBSTACLES IDENTIFIÉS (Hiérarchie)</div>
         <div id="graph-obstacles-anal"></div>
-    </div>
+
+        <div class="section-title">7. ANALYSES CROISÉES DÉTAILLÉES (17 TABLEAUX SUPPLÉMENTAIRES)</div>
+        <div id="extra-tables-container"></div>
+        </div>
 
     <div id="content-4" class="form-content">
         <div class="section-title">SYNTHÈSE AUTOMATISÉE ET CONCLUSIONS</div>
@@ -1141,7 +1144,123 @@
         }).join('');
 
         window.generateDynamicReport(highP, obsMap);
+        
+        // --- APPEL DE LA NOUVELLE FONCTION DES 17 TABLEAUX ---
+        window.generateExtraTables();
     };
+
+    // =========================================================================
+    // NOUVELLE FONCTION AJOUTÉE : GÉNÉRATION DE 17 TABLEAUX CROISÉS DÉTAILLÉS
+    // =========================================================================
+    window.generateExtraTables = function() {
+        const container = document.getElementById('extra-tables-container');
+        if (!container) return;
+        let html = '';
+
+        // Outils de catégorisation pour regrouper les données
+        const getAgeCat = (age) => age < 30 ? '< 30 ans' : (age <= 45 ? '30-45 ans' : '> 45 ans');
+        const getAncCat = (anc) => anc < 5 ? '< 5 ans' : (anc <= 10 ? '5-10 ans' : '> 10 ans');
+        const getScoreCat = (score) => score >= 70 ? 'Bon (≥70%)' : 'Insuffisant (<70%)';
+        const getAttCat = (score) => parseFloat(score) >= 3.5 ? 'Positive (≥3.5/5)' : 'Négative (<3.5/5)';
+
+        // MOTEUR UNIVERSEL DE GÉNÉRATION DE TABLEAUX CROISÉS (Lignes = 100%)
+        function buildTable(title, varRowName, varColName, rowCategories, colCategories, rowExtractFn, colExtractFn) {
+            let totalOverall = database.length;
+            if (totalOverall === 0) return '';
+
+            let tableHtml = `<div class="sub-title" style="margin-top:30px; font-size:13px;">${title}</div>
+            <table class="academic-table" style="width:100%; text-align:center;">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="row-header" style="vertical-align:middle; width:25%;">${varRowName}</th>
+                        <th colspan="${colCategories.length}" style="background-color:#fce4ec; color:#b03060;">${varColName}</th>
+                        <th rowspan="2" style="vertical-align:middle; width:15%;">Total (N)</th>
+                        <th rowspan="2" style="vertical-align:middle; width:15%;">Total (%)</th>
+                    </tr>
+                    <tr>
+                        ${colCategories.map(c => `<th style="background-color:#fff;">${c}</th>`).join('')}
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            let colTotals = new Array(colCategories.length).fill(0);
+
+            // Remplissage Ligne par Ligne
+            rowCategories.forEach(rowVal => {
+                let rowData = database.filter(d => rowExtractFn(d) === rowVal);
+                let rowTotal = rowData.length;
+
+                tableHtml += `<tr><td class="row-header"><b>${rowVal}</b></td>`;
+
+                colCategories.forEach((colVal, i) => {
+                    let count = rowData.filter(d => colExtractFn(d) === colVal).length;
+                    colTotals[i] += count;
+                    let pct = rowTotal > 0 ? ((count / rowTotal) * 100).toFixed(1) : "0.0";
+                    tableHtml += `<td>${count} (${pct}%)</td>`;
+                });
+
+                let totalRowPct = rowTotal > 0 ? "100.0%" : "0.0%";
+                tableHtml += `<td style="background-color:#f9f9f9;"><b>${rowTotal}</b></td><td style="background-color:#f9f9f9;"><b>${totalRowPct}</b></td></tr>`;
+            });
+
+            // Ligne de TOTAL GÉNÉRAL
+            tableHtml += `<tr style="background-color:#e0e0e0; font-weight:bold;">
+                <td class="row-header">TOTAL GÉNÉRAL</td>`;
+
+            colCategories.forEach((colVal, i) => {
+                let pctOverall = totalOverall > 0 ? ((colTotals[i] / totalOverall) * 100).toFixed(1) : "0.0";
+                tableHtml += `<td>${colTotals[i]} (${pctOverall}%)</td>`;
+            });
+
+            tableHtml += `<td>${totalOverall}</td><td>100.0%</td></tr>
+                </tbody>
+            </table>`;
+
+            return tableHtml;
+        }
+
+        // --- DÉCLARATION DES VARIABLES À CROISER ---
+        const ageCats = ['< 30 ans', '30-45 ans', '> 45 ans'];
+        const ancCats = ['< 5 ans', '5-10 ans', '> 10 ans'];
+        const scoreCats = ['Bon (≥70%)', 'Insuffisant (<70%)'];
+        const attCats = ['Positive (≥3.5/5)', 'Négative (<3.5/5)'];
+        const ouiNon = ['oui', 'non'];
+        const ouiNonCap = ['Oui', 'Non'];
+        const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences / Autre'];
+        const niveaux = ['A1/LMD - ISTM', 'A2 - ITM'];
+        const etats = ['Célibataire', 'Mariée', 'Divorcée', 'Veuve'];
+
+        // --- GÉNÉRATION DES 17 TABLEAUX ---
+        html += buildTable("Tab 1 : Répartition de la Pratique selon la Tranche d'Âge", "Tranche d'Âge", "Qualité de la Pratique", ageCats, scoreCats, d=>getAgeCat(d.age_participant), d=>getScoreCat(d.scorePratique));
+        html += buildTable("Tab 2 : Répartition du Savoir Théorique selon la Tranche d'Âge", "Tranche d'Âge", "Savoir Théorique", ageCats, scoreCats, d=>getAgeCat(d.age_participant), d=>getScoreCat(d.scoreSavoir));
+        html += buildTable("Tab 3 : Connaissance du récepteur 'HER2 Low' selon la Tranche d'Âge", "Tranche d'Âge", "Connaît HER2 Low", ageCats, ouiNon, d=>getAgeCat(d.age_participant), d=>d.q_her2);
+        
+        html += buildTable("Tab 4 : Répartition de la Pratique selon l'Ancienneté", "Ancienneté", "Qualité de la Pratique", ancCats, scoreCats, d=>getAncCat(d.anciennete), d=>getScoreCat(d.scorePratique));
+        html += buildTable("Tab 5 : Répartition du Savoir Théorique selon l'Ancienneté", "Ancienneté", "Savoir Théorique", ancCats, scoreCats, d=>getAncCat(d.anciennete), d=>getScoreCat(d.scoreSavoir));
+        html += buildTable("Tab 6 : Attitude face au dépistage selon l'Ancienneté", "Ancienneté", "Attitude au Dépistage", ancCats, attCats, d=>getAncCat(d.anciennete), d=>getAttCat(d.scoreAttitude));
+
+        html += buildTable("Tab 7 : Qualité de la Pratique selon l'État Civil", "État Civil", "Qualité de la Pratique", etats, scoreCats, d=>d.etat_civil||'Célibataire', d=>getScoreCat(d.scorePratique));
+        html += buildTable("Tab 8 : Attitude face au dépistage selon l'État Civil", "État Civil", "Attitude", etats, attCats, d=>d.etat_civil||'Célibataire', d=>getAttCat(d.scoreAttitude));
+
+        html += buildTable("Tab 9 : Connaissance de la Classification Moléculaire selon le Niveau d'étude", "Niveau d'étude", "Connaissance Moléculaire", niveaux, ouiNon, d=>d.niveau, d=>d.q_moleculaire);
+        html += buildTable("Tab 10 : Connaissance de la notion 'HER2 Low' selon le Niveau d'étude", "Niveau d'étude", "Connaissance HER2 Low", niveaux, ouiNon, d=>d.niveau, d=>d.q_her2);
+        html += buildTable("Tab 11 : Connaissance du programme CNLC selon le Niveau d'étude", "Niveau d'étude", "Connaît le CNLC", niveaux, ouiNonCap, d=>d.niveau, d=>d.connaissance_cnlc==="oui"?"Oui":"Non");
+
+        html += buildTable("Tab 12 : Connaissance du programme CNLC selon le Service", "Service d'affectation", "Connaît le CNLC", services, ouiNonCap, d=>d.service, d=>d.connaissance_cnlc==="oui"?"Oui":"Non");
+        html += buildTable("Tab 13 : Adhésion à un Registre National selon le Service", "Service d'affectation", "Intéressé(e) par Registre National", services, ouiNonCap, d=>d.service, d=>(d.interet_registre==="Oui"||d.interet_registre==="oui")?"Oui":"Non");
+        html += buildTable("Tab 14 : Connaissance de la Classification Moléculaire selon le Service", "Service d'affectation", "Connaissance Moléculaire", services, ouiNon, d=>d.service, d=>d.q_moleculaire);
+
+        const obsFormationFn = (d) => (d.obstacles && d.obstacles.includes('Formation')) ? 'Oui' : 'Non';
+        html += buildTable("Tab 15 : Impact de l'Obstacle 'Manque de Formation' sur la Pratique", "A cité l'obstacle 'Formation'", "Qualité de la Pratique", ouiNonCap, scoreCats, obsFormationFn, d=>getScoreCat(d.scorePratique));
+
+        const obsTempsFn = (d) => (d.obstacles && d.obstacles.includes('Temps')) ? 'Oui' : 'Non';
+        html += buildTable("Tab 16 : Fréquence de l'Obstacle 'Manque de Temps' selon le Service", "Service d'affectation", "A cité l'obstacle 'Temps'", services, ouiNonCap, d=>d.service, obsTempsFn);
+
+        html += buildTable("Tab 17 : Lien entre Connaissance du CNLC et Qualité de la Pratique", "Connaît le CNLC", "Qualité de la Pratique", ouiNonCap, scoreCats, d=>d.connaissance_cnlc==="oui"?"Oui":"Non", d=>getScoreCat(d.scorePratique));
+
+        container.innerHTML = html;
+    };
+    // =========================================================================
 
     window.generateDynamicReport = function(goodPracticeCount, obsMap) {
         // Calculs pour les conclusions
