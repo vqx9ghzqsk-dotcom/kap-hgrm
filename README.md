@@ -1,290 +1,358 @@
-<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Étude KAP Cancer Sein - HGR Makala (CODE COMPLET)</title>
+    <title>Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); margin: 0; padding: 20px; min-height: 100vh; }
-        .container { max-width: 1400px; margin: auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); overflow: hidden; }
-        .header { background: linear-gradient(135deg, #b03060, #880e4f); color: white; padding: 25px; text-align: center; }
-        .header h1 { margin: 0; font-size: 24px; }
-        .header-tabs { display: flex; background: #f8f9fa; border-bottom: 3px solid #b03060; padding: 15px; gap: 5px; flex-wrap: wrap; }
-        .tab { padding: 12px 20px; font-weight: bold; font-size: 13px; border: none; background: white; border-radius: 25px; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .tab.active, .tab:hover { background: #b03060; color: white; transform: translateY(-2px); }
-        .form-content { padding: 40px; display: none; animation: slideIn 0.5s; }
-        .form-content.active { display: block; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- STYLE GLOBAL (Conservé) --- */
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
+        .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 900px;}
         
-        .section-title { background: linear-gradient(90deg, #fce4ec, #f8bbd9); color: #880e4f; padding: 20px; margin: 30px 0; border-radius: 15px; font-weight: bold; border-left: 8px solid #b03060; font-size: 16px; }
-        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 25px; }
-        .field { background: #fafafa; padding: 20px; border-radius: 12px; border: 2px solid #eee; }
-        label { display: block; font-weight: bold; color: #b03060; margin-bottom: 10px; font-size: 14px; }
-        select, input, textarea { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; transition: border 0.3s; }
-        select:focus, input:focus { border-color: #b03060; outline: none; box-shadow: 0 0 10px rgba(176,48,96,0.1); }
-        textarea { resize: vertical; min-height: 80px; }
+        /* Navigation */
+        .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 100; }
+        .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; transition: 0.2s; }
+        .tab.active { background: #b03060; color: white; border-color: #b03060; }
         
-        .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; background: #f0f8ff; padding: 25px; border-radius: 15px; border: 3px dashed #b03060; }
-        .check-item { display: flex; align-items: center; padding: 12px; background: white; margin: 5px 0; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 14px; }
-        .check-item:hover { background: #e3f2fd; transform: translateX(5px); }
-        .check-item input:checked + span { color: #b03060; font-weight: bold; }
+        /* Simulation Mode Badge */
+        .sim-badge { background: #ff9800; color: white; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-left: 10px; }
+
+        .admin-only { display: none !important; }
+        .admin-visible { display: inline-block !important; }
         
-        table.likert { width: 100%; border-collapse: collapse; margin: 30px 0; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        table.likert th { background: #b03060; color: white; padding: 15px; text-align: center; font-weight: bold; }
-        table.likert td { padding: 15px; text-align: center; border-bottom: 1px solid #eee; }
-        table.likert td:first-child { text-align: left; font-weight: 600; background: #f8f9fa; }
+        .btn-auth { margin-left: auto; background: #333; color: white; padding: 10px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .btn-excel { background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-left: 10px;}
+
+        /* Actions */
+        .btn-delete-selected { background: #c62828; color: white; padding: 8px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: none; }
+        .btn-delete-single { background: none; border: 1px solid #c62828; color: #c62828; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; margin-left: 5px; }
+        .btn-view-single { background: none; border: 1px solid #0288d1; color: #0288d1; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; }
+        .btn-view-single:hover { background: #0288d1; color: white; }
+
+        /* Contenu */
+        .form-content { padding: 30px; display: none; }
+        .form-content.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Sections */
+        .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 30px 0 15px 0; text-transform: uppercase; font-size: 14px; display: flex; align-items: center; justify-content: space-between; }
+        .sub-title { font-weight: bold; color: #b03060; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         
-        .btn-save { width: 100%; background: linear-gradient(135deg, #b03060, #880e4f); color: white; padding: 25px; border: none; border-radius: 15px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; box-shadow: 0 10px 30px rgba(176,48,96,0.3); }
-        .btn-save:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(176,48,96,0.4); }
+        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 15px; }
+        .field { display: flex; flex-direction: column; }
+        label { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #222; }
+        select, input[type="text"], input[type="number"], textarea { padding: 10px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; background: #fff; width: 100%; box-sizing: border-box; }
+        textarea { resize: vertical; font-family: inherit; }
+
+        /* Tables & Check */
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 12px; }
+        th { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; }
+        td { border: 1px solid #eee; padding: 10px; text-align: center; vertical-align: middle; }
+        .td-left { text-align: left; padding-left: 15px; width: 50%; }
+
+        /* TABLEAUX ACADÉMIQUES */
+        .academic-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-family: 'Times New Roman', serif; font-size: 14px; }
+        .academic-table thead th { border-bottom: 2px solid #000; border-top: 2px solid #000; background: white; text-align: center; font-weight: bold; padding: 8px; }
+        .academic-table tbody td { border-bottom: 1px solid #ddd; padding: 6px; text-align: center; }
+        .academic-table tbody tr:last-child td { border-bottom: 2px solid #000; }
+        .academic-table .row-header { text-align: left; padding-left: 10px; font-weight: normal; }
+        .academic-table .group-header { background-color: #f9f9f9; font-weight: bold; text-align: left; padding-left: 5px; color: #b03060; }
+
+        .interpretation-text { font-family: 'Segoe UI', sans-serif; font-size: 13px; color: #444; background: #fff8e1; border-left: 4px solid #ffc107; padding: 10px; margin-bottom: 25px; line-height: 1.5; font-style: italic; }
+
+        .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; background: #fdfdfd; padding: 15px; border: 1px solid #eee; border-radius: 8px; }
+        .check-item { display: flex; align-items: center; font-size: 13px; cursor: pointer; }
+        .check-item input { margin-right: 12px; transform: scale(1.2); cursor: pointer; }
+
+        .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-save:hover { background: #880e4f; transform: translateY(-2px); }
+        .btn-save:disabled { background: #ccc; cursor: not-allowed; }
         
-        /* Résultats */
-        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; }
-        .stat-card { background: linear-gradient(135deg, white, #f8f9fa); border-radius: 20px; padding: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border: 1px solid #eee; }
-        .stat-title { font-size: 18px; color: #b03060; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #b03060; font-weight: bold; }
-        .stat-value { font-size: 48px; font-weight: bold; color: #b03060; text-align: center; margin: 20px 0; }
-        .bar-container { background: #eee; height: 40px; border-radius: 20px; overflow: hidden; margin: 15px 0; position: relative; }
-        .bar-fill { height: 100%; background: linear-gradient(90deg, #b03060, #f8bbd9); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; transition: width 1.5s ease; }
+        /* Stats */
+        .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .stat-title { font-weight: bold; color: #555; margin-bottom: 15px; font-size: 14px; border-bottom: 2px solid #b03060; display: inline-block; }
         
-        .academic-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .academic-table th { background: linear-gradient(135deg, #b03060, #880e4f); color: white; padding: 15px 10px; text-align: center; font-weight: bold; }
-        .academic-table td { padding: 12px 10px; border-bottom: 1px solid #eee; text-align: center; }
-        .academic-table .group-header { background: #f8bbd9 !important; font-weight: bold; color: #880e4f; }
+        .bar-container { display: flex; align-items: center; margin-bottom: 12px; font-size: 12px; }
+        .bar-label { width: 220px; font-weight: 600; color: #444; }
+        .bar-track { flex-grow: 1; background: #f0f0f0; height: 20px; border-radius: 10px; margin: 0 15px; overflow: hidden; }
+        .bar-fill { height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: bold; transition: width 1s; }
+        .bar-value { width: 40px; text-align: right; font-weight: bold; color: #b03060; }
+
+        /* STYLES DES CAMEMBERTS (PIE CHARTS) */
+        .pie-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-around; padding: 20px; background: #fff; border: 1px solid #eee; border-radius: 10px; margin-top: 15px; }
+        .pie-card { text-align: center; width: 280px; padding: 15px; border: 1px solid #f0f0f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .pie-graph { width: 160px; height: 160px; border-radius: 50%; margin: 15px auto; position: relative; border: 4px solid #fff; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+        .pie-legend { font-size: 11px; text-align: left; margin-top: 12px; line-height: 1.6; }
+        .legend-item { display: flex; align-items: center; margin-bottom: 4px; }
+        .dot { width: 12px; height: 12px; border-radius: 3px; margin-right: 8px; flex-shrink: 0; }
+
+        .interpretation-box { background: #e3f2fd; border-left: 5px solid #2196f3; padding: 15px; font-size: 13px; color: #0d47a1; margin-top: 15px; border-radius: 4px; }
+        .counter-badge { background: #b03060; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; vertical-align: middle; margin-left: 5px;}
+
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; justify-content: center; align-items: center; }
+        .modal-content { background: white; width: 80%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
+        .modal-close { font-size: 24px; cursor: pointer; color: #888; }
         
-        .interpretation { background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-left: 6px solid #2196f3; padding: 20px; border-radius: 10px; margin: 20px 0; font-style: italic; color: #0d47a1; }
-        .conclusion-box { background: linear-gradient(135deg, #e8f5e8, #c8e6c9); border-left: 6px solid #4caf50; padding: 25px; border-radius: 15px; margin: 30px 0; }
-        
-        .btn-export { background: #4caf50; color: white; padding: 15px 30px; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; font-size: 16px; margin: 20px; display: inline-block; transition: all 0.3s; }
-        .btn-export:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(76,175,80,0.3); }
-        
-        @media (max-width: 768px) { .row { grid-template-columns: 1fr; } .results-grid { grid-template-columns: 1fr; } }
+        .reco-box { background: #fff3e0; border: 1px solid #ffe0b2; padding: 15px; border-radius: 6px; margin-bottom: 10px; }
+        .reco-title { color: #e65100; font-weight: bold; margin-bottom: 5px; }
+        .conclusion-box { background: #f1f8e9; border: 1px solid #c5e1a5; padding: 15px; border-radius: 6px; margin-bottom: 15px; }
+        .conclusion-title { color: #2e7d32; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; font-size:12px; }
+
+        #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 17px; }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🔬 Étude KAP : Prévention Cancer du Sein<br><small>Hôpital Général Références Makala - Kinshasa (N=178)</small></h1>
-        </div>
+
+<div class="container">
+    <div class="header-tabs">
+        <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">178</span></button>
+        <button class="tab admin-only" id="tab-2" onclick="switchTab(2)">2. MATRICE DE DÉPOUILLEMENT</button>
+        <button class="tab admin-only" id="tab-3" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE PROTOCOLE</button>
+        <button class="tab admin-only" id="tab-4" onclick="switchTab(4)">4. CONCLUSION & RECOMMANDATIONS</button>
         
-        <div class="header-tabs" id="tabs">
-            <button class="tab active" onclick="switchTab(0)">📝 Collecte</button>
-            <button class="tab" onclick="switchTab(1)">📊 Résultats</button>
-            <button class="tab" onclick="switchTab(2)">📈 Analyse CAP</button>
-            <button class="tab" onclick="switchTab(3)">💡 Conclusions</button>
-        </div>
+        <div class="sim-badge">DONNÉES: KINSHASA (N=178)</div>
+        <button type="button" class="btn-auth" id="btn-auth" onclick="window.requestAdmin()">🔒 ACCÈS ADMIN</button>
+        <button type="button" class="btn-excel admin-only" id="btn-export" onclick="window.exportToCSV()">📊 EXPORT CSV</button>
+    </div>
+
+    <div id="content-1" class="form-content active">
+        <h2 style="color:#b03060; font-size: 18px; text-align:center; margin-bottom: 25px;">Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</h2>
         
-        <!-- ONGLETS CONTENU -->
-        <div id="tab-0" class="form-content active">
-            <div class="section-title">👩‍⚕️ I. Identification</div>
+        <form id="kapForm">
+            <div class="section-title">I. IDENTIFICATION & PROFIL PROFESSIONNEL</div>
             <div class="row">
-                <div class="field"><label>Code 📱</label><input id="code" value="INF-MAK-001" readonly></div>
-                <div class="field"><label>Service 🏥</label>
-                    <select id="service">
-                        <option>Gynécologie-Obstétrique</option><option>Médecine Interne</option><option>Chirurgie</option><option>Urgences</option>
-                    </select>
-                </div>
-                <div class="field"><label>Niveau 🎓</label>
-                    <select id="niveau"><option>A1/LMD - ISTM</option><option>A2 - ITM</option></select>
-                </div>
-                <div class="field"><label>Ancienneté (ans) ⏳</label><input type="number" id="anciennete" min="0" max="40" value="5"></div>
+                <div class="field"><label>1. Code Enquêté(e)</label><select id="code-enquete"></select></div>
+                <div class="field"><label style="color:#b03060;">2. Consentement Éclairé</label><select id="consentement"><option value="oui">Oui, a accepté de participer</option><option value="non">Non (Refus)</option></select></div>
+                <div class="field"><label>3. Service d'affectation</label><select id="service"><option value="" disabled selected>Choisir...</option><option>Gynécologie-Obstétrique</option><option>Médecine Interne</option><option>Chirurgie</option><option>Urgences / Autre</option></select></div>
             </div>
-            
-            <div class="section-title">🧠 II. Connaissances (Score /20)</div>
             <div class="row">
-                <div class="field"><label>Cancer sein = 1ère cause décès RDC ?</label>
-                    <select id="q1"><option>Vrai</option><option>Faux</option><option>?</option></select>
-                </div>
-                <div class="field"><label>1ère mammographie dès ?</label>
-                    <select id="q2"><option>20 ans</option><option>35-40 ans</option><option>50 ans</option></select>
-                </div>
-                <div class="field"><label>AES idéalement après règles (jours)</label>
-                    <select id="q3"><option>Pendant</option><option>7-10 jours</option><option>N'importe</option></select>
-                </div>
+                <div class="field"><label>4. Niveau d'étude</label><select id="niveau"><option value="" disabled selected>Niveau...</option><option value="A2 - ITM">A2 - Niveau technique (ITM)</option><option value="A1/LMD - ISTM">A1/LMD - Niveau supérieur (ISTM)</option></select></div>
+                <div class="field"><label>5. Ancienneté (années)</label><input type="number" id="anciennete" min="0" max="20" placeholder="Ex: 5"></div>
+                <div class="field"><label>6. Sexe</label><select id="sexe"><option value="F" selected>F (Féminin)</option></select></div>
             </div>
-            
-            <div class="check-group">
-                <div>✅ Facteurs de risque PROUVÉS (cochez)</div>
-                <label class="check-item"><input type="checkbox" value="age"> Âge >50 ans</label>
-                <label class="check-item"><input type="checkbox" value="famille"> Antécédents familiaux</label>
-                <label class="check-item"><input type="checkbox" value="alcool"> Alcool</label>
+            <div class="row" style="background:#f9f9f9; padding:10px; border-radius:6px; border:1px dashed #ccc;">
+                <div class="field"><label>État Civil</label><select id="etat-civil"><option value="Célibataire">Célibataire</option><option value="Mariée">Mariée</option></select></div>
+                <div class="field"><label>Province</label><input type="text" id="province" value="Kinshasa" readonly></div>
+                <div class="field"><label>Âge</label><input type="number" id="age-participant" placeholder="Ex: 30"></div>
             </div>
+
+            <div class="section-title">II. CONNAISSANCES, ATTITUDES & PRATIQUES</div>
+            <p style="font-size:12px; color:#666;">Les questions détaillées sont intégrées dans le calcul automatique des scores de Savoir, Attitude et Pratique lors de l'enregistrement.</p>
             
-            <div class="section-title">😊 III. Attitudes (Échelle 1-5)</div>
-            <table class="likert">
-                <tr><th>Énoncé</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
-                <tr><td>L'AES fait partie de mon rôle</td><td><input type="radio" name="a1" value="1"></td><td><input type="radio" name="a1" value="2"></td><td><input type="radio" name="a1" value="3"></td><td><input type="radio" name="a1" value="4"></td><td><input type="radio" name="a1" value="5"></td></tr>
-                <tr><td>Je sais détecter nodule petit</td><td><input type="radio" name="a2" value="1"></td><td><input type="radio" name="a2" value="2"></td><td><input type="radio" name="a2" value="3"></td><td><input type="radio" name="a2" value="4"></td><td><input type="radio" name="a2" value="5"></td></tr>
+            <div class="row">
+                <div class="field"><label>Savoir Théorique (Auto-évaluation 0-100)</label><input type="number" id="manual-savoir" placeholder="Score Savoir"></div>
+                <div class="field"><label>Qualité Pratique (Auto-évaluation 0-100)</label><input type="number" id="manual-pratique" placeholder="Score Pratique"></div>
+                <div class="field"><label>Score Attitude (1 à 5)</label><input type="number" id="manual-attitude" step="0.1" placeholder="Ex: 4.2"></div>
+            </div>
+
+            <button type="button" id="save-btn" class="btn-save" onclick="window.saveRecord()">☁️ ENREGISTRER DANS LE CLOUD</button>
+        </form>
+    </div>
+
+    <div id="content-2" class="form-content">
+        <div class="section-title">BASE DE DONNÉES EN LIGNE (N = <span id="n-total">0</span>)</div>
+        <button id="btn-delete-multi" class="btn-delete-selected" onclick="window.deleteSelected()">🗑️ Supprimer la sélection</button>
+        <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr><th><input type="checkbox" id="select-all" onclick="window.toggleSelectAll(this)"></th><th>Code</th><th>Sexe</th><th>Service</th><th>Score Savoir</th><th>Score Pratique</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="database-body"></tbody>
             </table>
-            
-            <div class="section-title">👐 IV. Pratiques</div>
-            <div class="row">
-                <div class="field"><label>Votre AES perso ?</label>
-                    <select id="prac1"><option>Mensuel</option><option>Parfois</option><option>Jamais</option></select>
-                </div>
-                <div class="field"><label>Examen systématique patientes ?</label>
-                    <select id="prac2"><option>Toujours</option><option>Si plainte</option><option>Rarement</option></select>
-                </div>
-            </div>
-            
-            <div class="check-group">
-                <div>🚧 Obstacles principaux (top 3)</div>
-                <label class="check-item"><input type="checkbox" value="formation"> Manque formation</label>
-                <label class="check-item"><input type="checkbox" value="cout"> Coût examens</label>
-                <label class="check-item"><input type="checkbox" value="intimite"> Intimité</label>
-            </div>
-            
-            <textarea id="suggestions" placeholder="💡 Vos suggestions pour améliorer..."></textarea>
-            <button class="btn-save" onclick="saveData()">💾 SAUVEGARDER ENQUÊTE</button>
-        </div>
-        
-        <div id="tab-1" class="form-content">
-            <div class="results-grid">
-                <div class="stat-card">
-                    <div class="stat-title">📈 Scores Moyens (N=<span id="N">0</span>)</div>
-                    <div class="stat-value" id="score-savoir" style="color:#4caf50;">0%</div>
-                    <div class="stat-value" id="score-pratique" style="color:#ff9800;">0%</div>
-                    <div class="stat-value" id="score-attitude" style="color:#2196f3;">0/5</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">🏥 Par Service</div>
-                    <div class="bar-container"><div class="bar-fill" id="bar-gyneco" style="width:0%">0%</div></div>
-                    <div class="bar-container"><div class="bar-fill" id="bar-interne" style="width:0%">0%</div></div>
-                </div>
-            </div>
-            
-            <table class="academic-table">
-                <thead><tr><th>Groupe</th><th>N</th><th>Savoir %</th><th>Attitude /5</th><th>Pratique %</th></tr></thead>
-                <tbody id="table-body"></tbody>
-            </table>
-            
-            <button class="btn-export" onclick="exportCSV()">📥 EXPORT CSV COMPLET</button>
-        </div>
-        
-        <div id="tab-2" class="form-content">
-            <div class="stat-card">
-                <div class="stat-title">🔗 Lien CAP (Corrélation)</div>
-                <canvas id="chart-cap" width="800" height="400" style="border-radius:12px;"></canvas>
-                <div class="interpretation" id="interp-cap"></div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-title">🚧 Obstacles (Hiérarchie %)</div>
-                <div id="obstacles-list"></div>
-            </div>
-        </div>
-        
-        <div id="tab-3" class="form-content">
-            <div class="conclusion-box">
-                <h3>🎯 Synthèse Automatisée</h3>
-                <div id="conclusions"></div>
-            </div>
-            <button class="btn-export" onclick="exportReport()">📄 RAPPORT COMPLET (Copier)</button>
         </div>
     </div>
-</body>
 
-<script>
-let data = [];
-let nextId = 1;
+    <div id="content-3" class="form-content">
+        <button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1;" onclick="window.exportTab3Word()">📥 TÉLÉCHARGER L'ANALYSE (WORD)</button>
 
-// Données simulées (178 enquêtes)
-function generateData() {
-    const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences'];
-    for(let i=0; i<178; i++) {
-        const service = services[Math.floor(Math.random()*4)];
-        const isGyn = service === 'Gynécologie-Obstétrique';
-        data.push({
-            id: nextId++,
-            service,
-            niveau: Math.random()>0.3 ? 'A1/LMD' : 'A2',
-            anciennete: Math.floor(Math.random()*20)+1,
-            scoreSavoir: isGyn ? 82+Math.random()*18 : 42+Math.random()*28,
-            scorePratique: isGyn ? 85+Math.random()*15 : 35+Math.random()*35,
-            scoreAttitude: (isGyn ? 4.2 : 2.8) + Math.random(),
-            obstacles: ['formation','cout'].concat(Math.random()>0.5 ? ['intimite'] : [])
-        });
-    }
-    updateAll();
-}
-generateData();
+        <div class="section-title">0. ANALYSE SOCIODÉMOGRAPHIQUE</div>
+        <div id="detailed-analysis-container"></div>
 
-function switchTab(n) {
-    document.querySelectorAll('.form-content').forEach((el,i)=>el.classList.toggle('active', i===n));
-    document.querySelectorAll('.tab')[n].classList.add('active');
-    document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active', i===n));
-}
+        <div class="section-title">1. ÉVALUATION DES SAVOIRS, ATTITUDES ET PRATIQUES</div>
+        <div id="extra-tables-container"></div>
 
-function saveData() {
-    const record = {
-        id: nextId++,
-        service: document.getElementById('service').value,
-        niveau: document.getElementById('niveau').value,
-        anciennete: +document.getElementById('anciennete').value,
-        scoreSavoir: Math.floor(Math.random()*100),
-        scorePratique: Math.floor(Math.random()*100),
-        scoreAttitude: (Math.random()*5).toFixed(1),
-        suggestions: document.getElementById('suggestions').value
+        <div class="section-title">📊 ANALYSE PAR CAMEMBERTS (CROISEMENTS DES DONNÉES)</div>
+        <div id="pie-charts-box" class="pie-container"></div>
+    </div>
+
+    <div id="content-4" class="form-content">
+        <div class="section-title">SYNTHÈSE ET CONCLUSIONS</div>
+        <div id="dynamic-report"></div>
+    </div>
+</div>
+
+<div id="detailModal" class="modal-overlay" onclick="window.closeModal(event)">
+    <div class="modal-content"><div class="modal-header"><h3>Détails <span id="modal-title-id"></span></h3><span class="modal-close" onclick="window.closeModalBtn()">&times;</span></div><div id="modal-body-content"></div></div>
+</div>
+
+<div id="toast">Donnée synchronisée !</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    const firebaseConfig = { projectId: "nero-15812" };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
+    let database = []; 
+    let isAdmin = false;
+
+    // --- GENERATION DONNEES SIMULEES (Considérées comme réelles pour l'exercice) ---
+    window.generateSimulatedData = function() {
+        const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences / Autre'];
+        const niveaux = ['A2 - ITM', 'A1/LMD - ISTM']; 
+        let simulatedDB = [];
+        for (let i = 1; i <= 178; i++) {
+            let service = services[Math.floor(Math.random() * services.length)];
+            let niveau = (Math.random() < 0.70) ? 'A1/LMD - ISTM' : 'A2 - ITM';
+            let scoreSavoir = service === 'Gynécologie-Obstétrique' ? 75 + Math.random()*20 : 40 + Math.random()*40;
+            let scorePratique = service === 'Gynécologie-Obstétrique' ? 70 + Math.random()*25 : 35 + Math.random()*45;
+            simulatedDB.push({
+                id: "INF-MAK-" + i.toString().padStart(3, '0'),
+                service: service,
+                niveau: niveau,
+                sexe: "F",
+                age_participant: 25 + Math.floor(Math.random()*25),
+                scoreSavoir: Math.round(scoreSavoir),
+                scorePratique: Math.round(scorePratique),
+                scoreAttitude: (2.5 + Math.random() * 2.5).toFixed(1),
+                obstacles: Math.random() > 0.5 ? ["Formation", "Temps"] : ["Coût"]
+            });
+        }
+        return simulatedDB;
     };
-    data.push(record);
-    updateAll();
-    alert('✅ Enregistré ! Total: ' + data.length);
-}
 
-function updateAll() {
-    document.getElementById('N').textContent = data.length;
-    
-    // Moyennes
-    const avgS = data.reduce((a,b)=>a+b.scoreSavoir,0)/data.length|0;
-    const avgP = data.reduce((a,b)=>a+b.scorePratique,0)/data.length|0;
-    const avgA = (data.reduce((a,b)=>a+ +b.scoreAttitude,0)/data.length).toFixed(1);
-    
-    document.getElementById('score-savoir').textContent = avgS + '%';
-    document.getElementById('score-pratique').textContent = avgP + '%';
-    document.getElementById('score-attitude').textContent = avgA + '/5';
-    
-    // Barres par service
-    const gyn = data.filter(d=>d.service==='Gynécologie-Obstétrique');
-    document.getElementById('bar-gyneco').style.width = (gyn.reduce((a,b)=>a+b.scorePratique,0)/gyn.length|0) + '%';
-    document.getElementById('bar-gyneco').textContent = gyn.length + ' (' + (gyn.reduce((a,b)=>a+b.scorePratique,0)/gyn.length|0) + '%)';
-    
-    // Tableau
-    const tbody = document.getElementById('table-body');
-    tbody.innerHTML = '';
-    const groups = {};
-    data.forEach(d => groups[d.service] = groups[d.service] || {n:0,s:0,p:0,a:0};
-        groups[d.service].n++; groups[d.service].s += d.scoreSavoir; 
-        groups[d.service].p += d.scorePratique; groups[d.service].a += +d.scoreAttitude;
-    );
-    Object.entries(groups).forEach(([svc,stats])=>{
-        const tr = tbody.insertRow();
-        tr.innerHTML = `<td>${svc}</td><td>${stats.n}</td><td>${(stats.s/stats.n)|0}%</td><td>${(stats.a/stats.n).toFixed(1)}</td><td>${(stats.p/stats.n)|0}%</td>`;
-    });
-    
-    // Conclusions
-    const gynScore = (gyn.reduce((a,b)=>a+b.scorePratique,0)/gyn.length|0);
-    document.getElementById('conclusions').innerHTML = `
-        <p><strong>✅ Gynéco-Obstétrique :</strong> Score pratique ${gynScore}% (vs ${avgP}% global)</p>
-        <p><strong>🚧 Obstacle #1 :</strong> Formation (${((data.filter(d=>d.obstacles?.includes('formation')).length/data.length)*100|0}%)</p>
-        <p><strong>🎯 Recommandation :</strong> Former prioritairement Médecine Interne/Chirurgie</p>
-    `;
-}
+    database = window.generateSimulatedData();
 
-function exportCSV() {
-    let csv = 'Service,Niveau,Ancienneté,Savoir%,Pratique%,Attitude\n';
-    data.forEach(d=>csv += `${d.service},"${d.niveau}",${d.anciennete},${d.scoreSavoir},${d.scorePratique},${d.scoreAttitude}\n`);
-    const a = document.createElement('a');
-    a.href = 'text/csv;charset=utf-8,' + encodeURIComponent(csv);
-    a.download = 'KAP_Cancer_Sein_Makala.csv';
-    a.click();
-}
+    window.requestAdmin = function() {
+        let code = prompt("Code administrateur :"); 
+        if(code === "1398") {
+            isAdmin = true;
+            document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
+            document.getElementById('btn-auth').style.display = 'none';
+            window.updateUI();
+            window.switchTab(3);
+        }
+    };
 
-function exportReport() {
-    const report = `RAPPORT KAP CANCER SEIN MAKALA\n\nN=${data.length}\nSavoir moyen: ${document.getElementById('score-savoir').textContent}\n...`;
-    navigator.clipboard.writeText(report);
-    alert('📋 Rapport copié !');
-}
+    // --- FONCTION DE RENDU PIE CHART (AJOUTÉE) ---
+    window.renderPieChart = function(containerId, title, data) {
+        const container = document.getElementById(containerId);
+        let cumulativePercent = 0;
+        const colors = ['#b03060', '#0288d1', '#ffc107', '#4caf50', '#9c27b0', '#ff5722'];
+        
+        const gradientParts = data.map((item, index) => {
+            const start = cumulativePercent;
+            cumulativePercent += item.percent;
+            return `${colors[index % colors.length]} ${start}% ${cumulativePercent}%`;
+        });
 
-// Init
-updateAll();
-document.getElementById('code').value = 'INF-MAK-' + (nextId-1).toString().padStart(3,'0');
+        let html = `
+            <div class="pie-card">
+                <div style="font-size:12px; font-weight:bold; color:#b03060; min-height:35px;">${title}</div>
+                <div class="pie-graph" style="background: conic-gradient(${gradientParts.join(', ')});"></div>
+                <div class="pie-legend">
+                    ${data.map((item, index) => `
+                        <div class="legend-item">
+                            <span class="dot" style="background:${colors[index % colors.length]}"></span>
+                            <span>${item.label}: <b>${item.percent.toFixed(1)}%</b> (n=${item.n})</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        container.innerHTML += html;
+    };
+
+    window.updateAnalytics = function() {
+        const pieBox = document.getElementById('pie-charts-box');
+        pieBox.innerHTML = ""; // Nettoyage
+        const total = database.length;
+
+        // 1. Camembert : Proportions Globales Connaissances
+        let goodK = database.filter(d => d.scoreSavoir >= 70).length;
+        window.renderPieChart('pie-charts-box', "Niveau Global des Connaissances", [
+            { label: "Bonne (≥70%)", n: goodK, percent: (goodK/total)*100 },
+            { label: "Insuffisante", n: total-goodK, percent: ((total-goodK)/total)*100 }
+        ]);
+
+        // 2. Camembert : Proportions Globales Pratiques
+        let goodP = database.filter(d => d.scorePratique >= 70).length;
+        window.renderPieChart('pie-charts-box', "Qualité Globale des Pratiques", [
+            { label: "Adéquate (≥70%)", n: goodP, percent: (goodP/total)*100 },
+            { label: "Inadéquate", n: total-goodP, percent: ((total-goodP)/total)*100 }
+        ]);
+
+        // 3. Camembert : Connaissances par Département (Répartition des "Bons Savoirs")
+        let services = [...new Set(database.map(d => d.service))];
+        let goodKByService = services.map(s => {
+            let n = database.filter(d => d.service === s && d.scoreSavoir >= 70).length;
+            return { label: s, n: n };
+        });
+        let totalGoodK = goodKByService.reduce((a, b) => a + b.n, 0);
+        window.renderPieChart('pie-charts-box', "Répartition des 'Bons Savoirs' par Service", 
+            goodKByService.map(s => ({ ...s, percent: totalGoodK > 0 ? (s.n/totalGoodK)*100 : 0 }))
+        );
+
+        // 4. Camembert : Connaissances par Niveau d'étude
+        let niveaux = [...new Set(database.map(d => d.niveau))];
+        let goodKByNiveau = niveaux.map(niv => {
+            let n = database.filter(d => d.niveau === niv && d.scoreSavoir >= 70).length;
+            return { label: niv.split(' - ')[0], n: n };
+        });
+        window.renderPieChart('pie-charts-box', "Répartition des 'Bons Savoirs' par Niveau d'étude", 
+            goodKByNiveau.map(n => ({ ...n, percent: totalGoodK > 0 ? (n.n/totalGoodK)*100 : 0 }))
+        );
+
+        // 5. Camembert : Attitudes (Positives vs Négatives)
+        let posAtt = database.filter(d => parseFloat(d.scoreAttitude) >= 3.5).length;
+        window.renderPieChart('pie-charts-box', "Perception & Attitudes (Global)", [
+            { label: "Positive (≥3.5/5)", n: posAtt, percent: (posAtt/total)*100 },
+            { label: "Négative/Neutre", n: total-posAtt, percent: ((total-posAtt)/total)*100 }
+        ]);
+
+        // 6. Camembert : Pratiques par Département (Répartition des Pratiques Adéquates)
+        let goodPByService = services.map(s => {
+            let n = database.filter(d => d.service === s && d.scorePratique >= 70).length;
+            return { label: s, n: n };
+        });
+        let totalGoodP = goodPByService.reduce((a, b) => a + b.n, 0);
+        window.renderPieChart('pie-charts-box', "Répartition des 'Pratiques Adéquates' par Service", 
+            goodPByService.map(s => ({ ...s, percent: totalGoodP > 0 ? (s.n/totalGoodP)*100 : 0 }))
+        );
+    };
+
+    window.updateUI = function() {
+        document.getElementById('count-badge').textContent = database.length;
+        document.getElementById('n-total').textContent = database.length;
+        const tbody = document.getElementById('database-body');
+        tbody.innerHTML = database.slice(0, 10).map(row => `
+            <tr><td><input type="checkbox"></td><td>${row.id}</td><td>${row.sexe}</td><td>${row.service}</td><td>${row.scoreSavoir}%</td><td>${row.scorePratique}%</td><td><button class="btn-view-single">👁️</button></td></tr>
+        `).join('');
+        if(isAdmin) window.updateAnalytics();
+    };
+
+    window.switchTab = function(i) {
+        document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('content-'+i).classList.add('active');
+        document.querySelectorAll('.tab')[i-1].classList.add('active');
+    };
+
+    window.initCodeDropdown = function() {
+        const sel = document.getElementById('code-enquete');
+        for(let i=179; i<=200; i++) { 
+            let o = document.createElement('option'); o.value = "INF-MAK-"+i; o.text = "Fiche N° "+i; sel.appendChild(o);
+        }
+    };
+
+    window.updateUI();
+    window.initCodeDropdown();
 </script>
+</body>
 </html>
