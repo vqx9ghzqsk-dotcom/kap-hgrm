@@ -493,12 +493,17 @@
                 </div>
             </div>
         </div>
-        <div class="section-title">00. VUE D'ENSEMBLE CROISÉE (DIAGRAMMES EN CAMEMBERT)</div>
-        <div class="row" id="pie-charts-container">
+        <div class="section-title">00. VUE D'ENSEMBLE CROISÉE (9 DIAGRAMMES EN CAMEMBERT)</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px;" id="pie-charts-container">
             <div id="pie-1"></div>
             <div id="pie-2"></div>
             <div id="pie-3"></div>
             <div id="pie-4"></div>
+            <div id="pie-5"></div>
+            <div id="pie-6"></div>
+            <div id="pie-7"></div>
+            <div id="pie-8"></div>
+            <div id="pie-9"></div>
         </div>
 
         <div class="section-title">0. ANALYSE SOCIODÉMOGRAPHIQUE & DESCRIPTIVE</div>
