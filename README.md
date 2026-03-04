@@ -1473,7 +1473,6 @@
     };
 
     window.exportTab3Word = function() {
-        window.exportTab3Word = function() {
     // 1. On clone l'onglet 3 pour ne pas toucher à l'affichage écran
     const container = document.getElementById('content-3').cloneNode(true);
     
@@ -1542,8 +1541,6 @@
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
     window.showToast("Export .odt (Modifiable) terminé !");
-};
-
     };
 
     window.initCodeDropdown();
