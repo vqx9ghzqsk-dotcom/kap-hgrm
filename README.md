@@ -1473,22 +1473,36 @@
     };
 
     window.exportTab3Word = function() {
-    // 1. On clone l'onglet 3 pour ne pas toucher à l'affichage écran
-    const container = document.getElementById('content-3').cloneNode(true);
+    // 1. On récupère le contenu de l'onglet 3
+    const content = document.getElementById('content-3').innerHTML;
     
-    // On retire les boutons pour qu'ils n'apparaissent pas dans le document
-    container.querySelectorAll('button').forEach(b => b.remove());
+    // 2. On ouvre une nouvelle fenêtre temporaire
+    const printWindow = window.open('', '_blank', 'height=600,width=800');
+    
+    // 3. On y injecte le contenu avec les styles pour que ce soit beau
+    printWindow.document.write('<html><head><title>Rapport Makala</title>');
+    printWindow.document.write('<style>');
+    printWindow.document.write('body { font-family: sans-serif; padding: 20px; }');
+    printWindow.document.write('h2, h3 { color: #b03060; border-bottom: 2pt solid #b03060; padding-bottom: 5px; }');
+    printWindow.document.write('table { width: 100%; border-collapse: collapse; margin: 15px 0; }');
+    printWindow.document.write('th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }');
+    printWindow.document.write('.bar-container { background: #eee; height: 20px; width: 100%; border-radius: 10px; margin: 5px 0; }');
+    printWindow.document.write('.bar-fill { background: #b03060; height: 100%; color: white; font-size: 10px; text-align: right; padding-right: 5px; line-height: 20px; }');
+    printWindow.document.write('button { display: none; }'); // Cache les boutons d'export
+    printWindow.document.write('</style></head><body>');
+    printWindow.document.write('<h1 style="text-align:center; color:#b03060;">RAPPORT D\'ANALYSE - MAKALA</h1>');
+    printWindow.document.write(content);
+    printWindow.document.write('</body></html>');
+    
+    printWindow.document.close();
+    
+    // 4. On lance l'impression vers PDF
+    setTimeout(function() {
+        printWindow.print();
+        printWindow.close();
+    }, 500);
 
-    // 2. Conversion des éléments graphiques pour le format ODT
-    // Les barres de progression
-    container.querySelectorAll('.bar-fill').forEach(bar => {
-        const pct = bar.style.width;
-        bar.parentElement.style.border = "1px solid #ccc";
-        bar.style.display = "block";
-        bar.style.background = "#b03060";
-        bar.style.color = "white";
-        bar.style.width = pct;
-        bar.innerHTML = " " + pct;
+    window.showToast("Préparation de l'impression terminée !");
     });
 
     // Les camemberts (on les transforme en légendes lisibles car le ODT ne lit pas le CSS Conic-gradient)
