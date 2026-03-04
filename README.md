@@ -1528,21 +1528,15 @@
         </body>
         </html>`;
 
-    // 5. Génération et téléchargement du fichier .odt
-    const blob = new Blob(['\ufeff', fullHtml], { type: 'application/vnd.oasis.opendocument.text' });
+    // 5. Génération et téléchargement du fichier .doc (plus compatible Word)
+    const blob = new Blob(['\ufeff', fullHtml], { type: 'application/msword' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     
     link.href = url;
-    link.download = 'Rapport_Final_Makala_Standard.odt';
+    link.download = 'Rapport_Final_Makala.doc'; // On change .odt par .doc
     document.body.appendChild(link);
     link.click();
-    
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-    window.showToast("Export .odt (Modifiable) terminé !");
-    };
-
     window.initCodeDropdown();
 </script>
 </body>
