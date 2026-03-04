@@ -1473,34 +1473,77 @@
     };
 
     window.exportTab3Word = function() {
-        let content3 = document.getElementById('content-3').cloneNode(true);
-        let buttons = content3.querySelectorAll('button');
-        buttons.forEach(b => b.remove()); 
-        
-        let html = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>";
-        html += "<head><meta charset='utf-8'><title>Analyse Onglet 3</title>";
-        html += "<style>";
-        html += "body { font-family: 'Segoe UI', Arial, sans-serif; }";
-        html += "table { border-collapse: collapse; width: 100%; margin-bottom: 20px; font-size: 12px; }";
-        html += "th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }";
-        html += "th { background-color: #f8f9fa; font-weight: bold; }";
-        html += ".section-title { background: #fce4ec; color: #b03060; padding: 10px; font-weight: bold; margin-top:20px; font-size: 14px; text-transform: uppercase; }";
-        html += ".interpretation-text { font-style: italic; background: #fff8e1; padding: 10px; border-left: 4px solid #ffc107; margin-bottom: 15px; font-size: 12px;}";
-        html += ".stat-title { font-weight: bold; color: #555; margin-bottom: 10px; border-bottom: 2px solid #b03060; display: inline-block; }";
-        html += "</style></head><body>";
-        html += "<h2>Résultats & Analyse Protocole</h2>";
-        html += content3.innerHTML;
-        html += "</body></html>";
+        window.exportTab3Word = function() {
+    // 1. On clone l'onglet 3 pour ne pas toucher à l'affichage écran
+    const container = document.getElementById('content-3').cloneNode(true);
+    
+    // On retire les boutons pour qu'ils n'apparaissent pas dans le document
+    container.querySelectorAll('button').forEach(b => b.remove());
 
-        let blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement('a');
-        link.href = url;
-        link.download = 'Analyse_Onglet3_Makala.doc';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+    // 2. Conversion des éléments graphiques pour le format ODT
+    // Les barres de progression
+    container.querySelectorAll('.bar-fill').forEach(bar => {
+        const pct = bar.style.width;
+        bar.parentElement.style.border = "1px solid #ccc";
+        bar.style.display = "block";
+        bar.style.background = "#b03060";
+        bar.style.color = "white";
+        bar.style.width = pct;
+        bar.innerHTML = " " + pct;
+    });
+
+    // Les camemberts (on les transforme en légendes lisibles car le ODT ne lit pas le CSS Conic-gradient)
+    container.querySelectorAll('[id^="pie-"]').forEach(pie => {
+        pie.style.border = "1px solid #eee";
+        pie.style.padding = "10px";
+        pie.style.margin = "10px 0";
+    });
+
+    // 3. Préparation du style pour l'export
+    const styles = `
+        <style>
+            body { font-family: 'Times New Roman', serif; font-size: 12pt; color: #333; }
+            h2 { color: #b03060; text-align: center; text-decoration: underline; }
+            .section-title { background-color: #fce4ec; color: #b03060; padding: 8pt; font-weight: bold; margin-top: 15pt; border-left: 5pt solid #b03060; }
+            table { width: 100%; border-collapse: collapse; margin: 10pt 0; }
+            th { background-color: #f2f2f2; border: 1pt solid #333; padding: 5pt; font-weight: bold; text-align: center; }
+            td { border: 1pt solid #333; padding: 5pt; text-align: center; }
+            .academic-table th { border-top: 2pt solid black; border-bottom: 2pt solid black; }
+            .interpretation-box, .interpretation-text { background-color: #fff8e1; border-left: 4pt solid #ffc107; padding: 10pt; margin: 10pt 0; font-style: italic; }
+            .stat-card { border: 1pt solid #ddd; padding: 10pt; margin-bottom: 10pt; }
+            .bar-container { margin-bottom: 5pt; }
+        </style>`;
+
+    // 4. Création du contenu HTML complet compatible ODT
+    const fullHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><meta charset='utf-8'>${styles}</head>
+        <body>
+            <div style="text-align:center;">
+                <h1 style="color:#b03060;">RAPPORT D'ANALYSE COMPLET</h1>
+                <h3>Hôpital Général de Référence de Makala</h3>
+                <p>Données Collectées - Kinshasa (N=178)</p>
+                <hr>
+            </div>
+            ${container.innerHTML}
+        </body>
+        </html>`;
+
+    // 5. Génération et téléchargement du fichier .odt
+    const blob = new Blob(['\ufeff', fullHtml], { type: 'application/vnd.oasis.opendocument.text' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    
+    link.href = url;
+    link.download = 'Rapport_Final_Makala_Standard.odt';
+    document.body.appendChild(link);
+    link.click();
+    
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    window.showToast("Export .odt (Modifiable) terminé !");
+};
+
     };
 
     window.initCodeDropdown();
