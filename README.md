@@ -1453,4 +1453,3 @@
 </script>
 </body>
 </html>
-Reprend les 9 diagrammes identiques à l’image 
