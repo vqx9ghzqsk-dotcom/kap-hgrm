@@ -1,4 +1,4 @@
-« <html lang="fr">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1534,10 +1534,16 @@
     const link = document.createElement('a');
     
     link.href = url;
-    link.download = 'Rapport_Final_Makala.doc'; // On change .odt par .doc
+    link.download = 'Rapport_Final_Makala.doc'; 
     document.body.appendChild(link);
     link.click();
+    
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    window.showToast("Export Word terminé !");
+};
+
     window.initCodeDropdown();
 </script>
 </body>
-</html> »
+</html>
