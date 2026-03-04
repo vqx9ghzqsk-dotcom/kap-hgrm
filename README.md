@@ -1542,8 +1542,7 @@
     URL.revokeObjectURL(url);
     window.showToast("Export .odt (Modifiable) terminé !");
 };
-
-    window.initCodeDropdown();
+  window.initCodeDropdown();
 </script>
 </body>
 </html>
