@@ -3,6 +3,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <style>
         /* --- STYLE GLOBAL --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
@@ -460,7 +463,7 @@
 
     <div id="content-3" class="form-content">
         
-        <button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab3Word()">📥 TÉLÉCHARGER TOUTES LES DONNÉES DE L'ONGLET 3 (WORD)</button>
+        <button type="button" id="btn-pdf-export" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab3PDF()">📥 TÉLÉCHARGER TOUTES LES DONNÉES DE L'ONGLET 3 (PDF STRICTEMENT IDENTIQUE)</button>
 
         <div class="section-title">📊 RÉSUMÉ GRAPHIQUE DES TENDANCES (DIAGRAMMES IMAGE)</div>
         <div class="row">
@@ -885,7 +888,6 @@
         }
     };
 
-    // --- FONCTION POUR LES CAMEMBERTS PUR CSS ---
     window.renderPieChart = function(id, data, title) {
         let total = data.reduce((sum, d) => sum + d.value, 0);
         let gradientStr = "";
@@ -1122,7 +1124,6 @@
     window.updateAnalytics = function() {
         if(database.length === 0) return;
 
-        // --- DIAGRAMMES 1 À 4 : CONNAISSANCES, ATTITUDES ET PRATIQUES ---
         let bonnesP = database.filter(d => d.scorePratique >= 70).length;
         let mauvP = database.length - bonnesP;
         window.renderPieChart('pie-1', [
@@ -1152,10 +1153,7 @@
             { label: 'Attitude Positive (>3.5/5)', value: attPosPie, color: '#43a047' },
             { label: 'Attitude Mitigée/Négative', value: attNegPie, color: '#d81b60' }
         ], "4. Attitude face au Dépistage");
-
-        // --- DIAGRAMMES 5 À 9 : SOCIODÉMOGRAPHIE ET PROFILS ---
         
-        // 5. Tranche d'âge
         let age1 = database.filter(d => d.age_participant < 30).length;
         let age2 = database.filter(d => d.age_participant >= 30 && d.age_participant <= 45).length;
         let age3 = database.filter(d => d.age_participant > 45).length;
@@ -1165,7 +1163,6 @@
             { label: '> 45 ans', value: age3, color: '#0d47a1' }
         ], "5. Répartition par Tranche d'Âge");
 
-        // 6. Ancienneté
         let anc1 = database.filter(d => d.anciennete < 5).length;
         let anc2 = database.filter(d => d.anciennete >= 5 && d.anciennete <= 10).length;
         let anc3 = database.filter(d => d.anciennete > 10).length;
@@ -1175,7 +1172,6 @@
             { label: '> 10 ans', value: anc3, color: '#4a148c' }
         ], "6. Répartition par Ancienneté");
 
-        // 7. Niveau d'étude
         let nivA1 = database.filter(d => d.niveau === 'A1/LMD - ISTM').length;
         let nivA2 = database.filter(d => d.niveau === 'A2 - ITM').length;
         window.renderPieChart('pie-7', [
@@ -1183,7 +1179,6 @@
             { label: 'A2 (Technique)', value: nivA2, color: '#00695c' }
         ], "7. Niveau d'Étude");
 
-        // 8. État Civil
         let ecCel = database.filter(d => d.etat_civil === 'Célibataire').length;
         let ecMar = database.filter(d => d.etat_civil === 'Mariée').length;
         let ecDiv = database.filter(d => d.etat_civil === 'Divorcée' || d.etat_civil === 'Veuve').length;
@@ -1193,7 +1188,6 @@
             { label: 'Divorcée/Veuve', value: ecDiv, color: '#e65100' }
         ], "8. État Civil");
 
-        // 9. Service d'affectation
         let servG = database.filter(d => d.service === 'Gynécologie-Obstétrique').length;
         let servM = database.filter(d => d.service === 'Médecine Interne').length;
         let servC = database.filter(d => d.service === 'Chirurgie').length;
@@ -1472,35 +1466,34 @@
         l.download = "Rapport_CAP_Makala_Kinshasa.csv"; l.click();
     };
 
-    window.exportTab3Word = function() {
-        let content3 = document.getElementById('content-3').cloneNode(true);
-        let buttons = content3.querySelectorAll('button');
-        buttons.forEach(b => b.remove()); 
+    // --- NOUVELLE FONCTION EXPORT PDF ---
+    window.exportTab3PDF = function() {
+        window.showToast("Création du PDF en cours, patiente quelques secondes...");
+        const element = document.getElementById('content-3');
+        const btn = document.getElementById('btn-pdf-export');
         
-        let html = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>";
-        html += "<head><meta charset='utf-8'><title>Analyse Onglet 3</title>";
-        html += "<style>";
-        html += "body { font-family: 'Segoe UI', Arial, sans-serif; }";
-        html += "table { border-collapse: collapse; width: 100%; margin-bottom: 20px; font-size: 12px; }";
-        html += "th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }";
-        html += "th { background-color: #f8f9fa; font-weight: bold; }";
-        html += ".section-title { background: #fce4ec; color: #b03060; padding: 10px; font-weight: bold; margin-top:20px; font-size: 14px; text-transform: uppercase; }";
-        html += ".interpretation-text { font-style: italic; background: #fff8e1; padding: 10px; border-left: 4px solid #ffc107; margin-bottom: 15px; font-size: 12px;}";
-        html += ".stat-title { font-weight: bold; color: #555; margin-bottom: 10px; border-bottom: 2px solid #b03060; display: inline-block; }";
-        html += "</style></head><body>";
-        html += "<h2>Résultats & Analyse Protocole</h2>";
-        html += content3.innerHTML;
-        html += "</body></html>";
+        // On masque le bouton de téléchargement pour ne pas l'avoir sur le PDF
+        if (btn) btn.style.display = 'none';
 
-        let blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-        let url = URL.createObjectURL(blob);
-        let link = document.createElement('a');
-        link.href = url;
-        link.download = 'Analyse_Onglet3_Makala.doc';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        // Configuration pour html2pdf
+        const opt = {
+            margin:       10,
+            filename:     'Rapport_Onglet3_Makala.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Génération du PDF
+        html2pdf().set(opt).from(element).save().then(() => {
+            // On réaffiche le bouton une fois fini
+            if (btn) btn.style.display = 'block';
+            window.showToast("PDF téléchargé avec succès !");
+        }).catch(err => {
+            if (btn) btn.style.display = 'block';
+            console.error("Erreur PDF :", err);
+            window.showToast("Erreur lors de la création du PDF.");
+        });
     };
 
     window.initCodeDropdown();
