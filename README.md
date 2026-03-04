@@ -1210,9 +1210,6 @@
             {l: 'Connaissances Solides (>60%)', v: highS.length, t: database.length, c: '#2e7d32'},
             {l: 'Lacunes Importantes (<60%)', v: lowS.length, t: database.length, c: '#c62828'}
         ]);
-
-        // ... (Gardez le reste de la fonction updateAnalytics intact jusqu'à la fin) ...
-
         window.generateDetailedTables();
 
         let highS = database.filter(r => r.scoreSavoir >= 60);
