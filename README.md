@@ -847,7 +847,8 @@
         window.toggleDeleteButton();
 
         const tbody = document.getElementById('database-body');
-        let displayData = database.slice(0, 100); 
+        // CORRECTION 1: Suppression du slice(0, 100) pour afficher toutes les données
+        let displayData = database; 
         
         tbody.innerHTML = displayData.map((row, index) => `
             <tr>
@@ -1132,6 +1133,7 @@
         let obsMap = {};
         database.forEach(r => (r.obstacles||[]).forEach(o => obsMap[o] = (obsMap[o]||0)+1));
         document.getElementById('graph-obstacles-anal').innerHTML = Object.entries(obsMap).sort((a,b)=>b[1]-a[1]).map(([k,v]) => {
+            // CORRECTION 2: Affichage pourcentage décimal
             let p = Math.round((v/database.length)*100);
             return `<div class="bar-container"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:#b03060;">${p}%</div></div><div class="bar-value">${v}</div></div>`;
         }).join('');
@@ -1177,12 +1179,17 @@
 
     window.getColor = function(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); };
     window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
+    
+    // CORRECTION 2: Modification de renderBars pour afficher les décimales
     window.renderBars = function(id, data) {
         document.getElementById(id).innerHTML = data.map(i => {
-            let p = i.t ? Math.round((i.v/i.t)*100) : 0;
-            return `<div class="bar-container"><div class="bar-label">${i.l}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:${i.c}">${p}%</div></div><div class="bar-value">${i.v}</div></div>`;
+            // Utilisation de toFixed(1) pour éviter les erreurs d'arrondi visuelles (ex: 33+33+33=99)
+            let pct = i.t ? (i.v / i.t * 100) : 0;
+            let pDisplay = pct.toFixed(1); 
+            return `<div class="bar-container"><div class="bar-label">${i.l}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:${i.c}">${pDisplay}%</div></div><div class="bar-value">${i.v}</div></div>`;
         }).join('');
     };
+    
     window.switchTab = function(i) {
         document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
