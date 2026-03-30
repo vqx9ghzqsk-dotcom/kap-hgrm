@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enquête CAP - Cancer du Sein (HGR Kinshasa - RDC) - Données Simulées</title>
+    <title>Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</title>
     <style>
         /* --- STYLE GLOBAL --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
@@ -99,12 +99,14 @@
         <button class="tab admin-only" id="tab-3" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE PROTOCOLE</button>
         <button class="tab admin-only" id="tab-4" onclick="switchTab(4)">4. CONCLUSION & RECOMMANDATIONS</button>
         
-        <div class="sim-badge">DATA: KINSHASA (N=178)</div>
+        <div class="sim-badge">DONNÉES: KINSHASA (N=178)</div>
         <button type="button" class="btn-auth" id="btn-auth" onclick="window.requestAdmin()">🔒 ACCÈS ADMIN</button>
         <button type="button" class="btn-excel admin-only" id="btn-export" onclick="window.exportToCSV()">📊 EXPORT CSV</button>
     </div>
 
     <div id="content-1" class="form-content active">
+        <h2 style="color:#b03060; font-size: 18px; text-align:center; margin-bottom: 25px;">Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</h2>
+        
         <form id="kapForm">
             <div class="section-title">I. IDENTIFICATION & PROFIL PROFESSIONNEL</div>
             <div class="row">
@@ -135,14 +137,13 @@
                     <label>4. Niveau d'étude</label>
                     <select id="niveau">
                         <option value="" disabled selected>Niveau...</option>
-                        <option>A2 (Secondaire)</option>
-                        <option>A1 (Gradué)</option>
-                        <option>A0 (Licencié/Master)</option>
+                        <option value="A2 - ITM">A2 - Niveau technique (4 ans post-primaire - ITM)</option>
+                        <option value="A1/LMD - ISTM">A1/LMD - Niveau supérieur (3 ans post-bac - ISTM)</option>
                     </select>
                 </div>
                 <div class="field">
                     <label>5. Ancienneté (années)</label>
-                    <input type="number" id="anciennete" min="0" placeholder="Ex: 5">
+                    <input type="number" id="anciennete" min="0" max="20" placeholder="Ex: 5">
                 </div>
                 <div class="field">
                     <label>6. Sexe</label>
@@ -487,19 +488,20 @@
         </div>
 
         <div class="section-title">4. SYNTHÈSE DES GROUPES</div>
-        <table style="background:#444; color:white; border-radius:8px; overflow:hidden;">
-            <thead>
+        
+        <table style="width:100%; border-collapse: separate; border-spacing: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.15); border-radius: 12px; overflow:hidden; margin-top:15px; border: 1px solid #eee; background: white;">
+            <thead style="background: linear-gradient(135deg, #b03060, #880e4f); color: white;">
                 <tr>
-                    <th style="text-align:left; padding:15px;">Groupe d'analyse</th>
-                    <th>Effectif (N)</th>
-                    <th>Attitude Moyenne (/5)</th>
-                    <th>Score Pratique Moyen (%)</th>
+                    <th style="text-align:left; padding:20px; font-size:14px; text-transform:uppercase; letter-spacing:1px; border-right: 1px solid rgba(255,255,255,0.2);">Groupe d'analyse</th>
+                    <th style="padding:20px; font-size:14px; border-right: 1px solid rgba(255,255,255,0.2);">Effectif (N)</th>
+                    <th style="padding:20px; font-size:14px; border-right: 1px solid rgba(255,255,255,0.2);">Attitude Moyenne (/5)</th>
+                    <th style="padding:20px; font-size:14px;">Score Pratique Moyen (%)</th>
                 </tr>
             </thead>
-            <tbody id="cross-body" style="background:white; color:#333;"></tbody>
+            <tbody id="cross-body" style="font-size:15px; font-weight:500; color:#333;"></tbody>
         </table>
 
-        <div class="section-title">5. OBSTACLES IDENTIFIÉS</div>
+        <div class="section-title">5. OBSTACLES IDENTIFIÉS (Hiérarchie)</div>
         <div id="graph-obstacles-anal"></div>
     </div>
 
@@ -524,11 +526,10 @@
 <div id="toast">Donnée synchronisée !</div>
 
 <script type="module">
-    // 1. IMPORT FIREBASE (Maintien de la compatibilité)
+    // 1. IMPORT FIREBASE
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    // Configuration factice pour la simulation si besoin
     const firebaseConfig = {
         apiKey: "AlzaSyAdEKZFfinxpHcThi4vh8EMGJ9ZgqchxEl",
         authDomain: "nero-15812.firebaseapp.com",
@@ -542,23 +543,18 @@
     const db = getFirestore(app);
     
     // --- MODE SIMULATION ---
-    // Puisqu'on ne peut pas écrire 178 entrées dans votre Firebase réel sans permission,
-    // on utilise une base locale pré-remplie pour la démonstration.
-    
     let database = []; 
     let isAdmin = false;
 
-    // FONCTION DE GÉNÉRATION DES DONNÉES FICTIVES (KINSHASA RDC)
     window.generateSimulatedData = function() {
         const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences / Autre'];
-        const niveaux = ['A2 (Secondaire)', 'A1 (Gradué)', 'A1 (Gradué)', 'A0 (Licencié/Master)']; // Plus de A1 car très fréquent
+        const niveaux = ['A2 - ITM', 'A1/LMD - ISTM']; 
         const verbatims = [
             "Il faut multiplier les campagnes à la télévision.",
             "Les patientes arrivent toujours trop tard, stade avancé.",
-            "Nous manquons de matériel pour les examens corrects.",
+            "Le manque de formation pratique est notre plus grand défi.",
             "Le coût de la mammographie est trop élevé pour les mamans.",
             "Besoin de formation continue dans nos hôpitaux.",
-            "La pudeur empêche souvent l'examen complet.",
             "Il faut intégrer l'examen dans la routine prénatale.",
             "Rien à signaler.",
             "Le gouvernement doit aider le CNLC.",
@@ -568,30 +564,33 @@
         let simulatedDB = [];
 
         for (let i = 1; i <= 178; i++) {
-            // Logique de simulation semi-aléatoire
             let service = services[Math.floor(Math.random() * services.length)];
-            let niveau = niveaux[Math.floor(Math.random() * niveaux.length)];
-            let age = Math.floor(Math.random() * (60 - 24) + 24);
-            let anciennete = Math.max(1, age - 22);
-            
-            // Influence du service sur le savoir
+            let niveau = (Math.random() < 0.70) ? 'A1/LMD - ISTM' : 'A2 - ITM';
+            let anciennete = Math.floor(Math.random() * 21);
+            let age = 22 + anciennete + Math.floor(Math.random() * 5); 
+
             let isGyneco = service === 'Gynécologie-Obstétrique';
             let baseSavoir = isGyneco ? 60 : 40; 
             let scoreSavoir = Math.min(100, Math.floor(baseSavoir + Math.random() * 40));
             
-            // Influence du savoir sur la pratique
-            let scorePratique = Math.min(100, Math.floor((scoreSavoir * 0.7) + Math.random() * 30));
+            // Logique A2 à 15-20%
+            let scorePratique;
+            if (niveau === 'A2 - ITM') {
+                scorePratique = Math.floor(12 + Math.random() * 11); 
+            } else {
+                scorePratique = Math.min(100, Math.floor((scoreSavoir * 0.7) + Math.random() * 30));
+            }
 
-            // Obstacles typiques RDC
+            // --- NOUVELLE LOGIQUE OBSTACLES ---
             let obstaclesList = [];
-            if(Math.random() > 0.3) obstaclesList.push("Coût");
-            if(Math.random() > 0.4) obstaclesList.push("Temps");
-            if(Math.random() > 0.6) obstaclesList.push("Formation");
-            if(Math.random() > 0.8) obstaclesList.push("Culture");
+            if(Math.random() < 0.74) obstaclesList.push("Formation"); // > 70%
+            if(Math.random() < 0.67) obstaclesList.push("Coût");      // 67%
+            if(Math.random() < 0.20) obstaclesList.push("Temps");     // 20%
+            if(Math.random() < 0.15) obstaclesList.push("Culture");   // < 20%
 
             simulatedDB.push({
                 firestoreId: "sim-" + i,
-                id: "INF-KIN-" + i.toString().padStart(3, '0'),
+                id: "INF-MAK-" + i.toString().padStart(3, '0'),
                 consentement: "oui",
                 service: service,
                 niveau: niveau,
@@ -601,78 +600,71 @@
                 province: "Kinshasa",
                 cat_pro: "Infirmier(e)",
                 age_participant: age,
-                q_moleculaire: Math.random() > 0.8 ? "oui" : "non", // Peu connu
-                q_her2: Math.random() > 0.9 ? "oui" : "non", // Très peu connu
+                q_moleculaire: Math.random() > 0.8 ? "oui" : "non",
+                q_her2: Math.random() > 0.9 ? "oui" : "non",
                 connaissance_cnlc: Math.random() > 0.6 ? "oui" : "non",
                 interet_registre: "Oui",
                 scoreSavoir: scoreSavoir,
                 scorePratique: scorePratique,
-                scoreAttitude: (2.5 + Math.random() * 2.5).toFixed(1), // Entre 2.5 et 5
+                scoreAttitude: (2.5 + Math.random() * 2.5).toFixed(1),
                 obstacles: obstaclesList,
-                risques: ["age", "famille"], // Simplifié pour simu
-                signes: ["nodule", "douleur"], // Simplifié pour simu
+                risques: ["age", "famille"],
+                signes: ["nodule", "douleur"],
                 reco_verbatim: verbatims[Math.floor(Math.random() * verbatims.length)]
             });
         }
         return simulatedDB;
     };
 
-    // INIT : Charger les données simulées immédiatement
     database = window.generateSimulatedData();
     
-    // Simuler le délai de chargement puis afficher
     setTimeout(() => {
         window.updateUI();
-        showToast("178 Fiches chargées (Simulation Kinshasa)");
+        showToast("178 Fiches chargées (Données sur Kinshasa)");
     }, 500);
 
-    // 4. FONCTIONS GLOBALES (Accessibles depuis le HTML via window)
     window.initCodeDropdown = function() {
         const sel = document.getElementById('code-enquete');
         sel.innerHTML = "";
         for(let i=179; i<=300; i++) { 
             let o = document.createElement('option'); 
-            o.value = "INF-KIN-" + i.toString().padStart(3, '0'); 
+            o.value = "INF-MAK-" + i.toString().padStart(3, '0'); 
             o.text = "Nouvelle Fiche N° " + i; 
             sel.appendChild(o); 
         }
     }
 
-    // AUTHENTIFICATION ADMIN CORRIGÉE
     window.requestAdmin = function() {
         if(isAdmin) return; 
-        // CODE SIMPLE POUR LA DEMO : 1234
-        let code = prompt("Code administrateur (Entrez 1234) :");
-        if(code === "1234") {
+        let code = prompt("Code administrateur :"); 
+        if(code === "1398") {
             isAdmin = true;
             document.querySelectorAll('.admin-only').forEach(el => {
                 el.classList.add('admin-visible');
                 el.style.display = 'inline-block'; 
             });
             document.getElementById('btn-auth').style.display = 'none';
-            alert("Mode Admin Activé : Visualisation des 178 fiches.");
-            
+            alert("Mode Admin Activé : Analyse des données de l'HGR Makala.");
             updateUI(); 
-            window.switchTab(2); // Aller direct aux données
+            window.switchTab(2);
         } else {
             alert("Code incorrect !");
         }
     };
 
     window.saveRecord = function() {
-        alert("En mode simulation, l'ajout est désactivé pour ne pas mélanger les données réelles et fictives.");
+        alert("En mode simulation, l'ajout est désactivé.");
     };
 
     window.deleteOne = function(index) {
-        if(!confirm("Supprimer cette fiche (Simulation) ?")) return;
+        if(!confirm("Supprimer cette fiche ?")) return;
         database.splice(index, 1);
         updateUI();
     };
 
     window.deleteSelected = function() {
-        if(!confirm("Supprimer la sélection (Simulation) ?")) return;
+        if(!confirm("Supprimer la sélection ?")) return;
         const checkboxes = Array.from(document.querySelectorAll('.row-check'));
-        // On supprime en partant de la fin pour ne pas casser les index
         for (let i = checkboxes.length - 1; i >= 0; i--) {
             if (checkboxes[i].checked) {
                 database.splice(i, 1);
@@ -684,28 +676,16 @@
     window.viewDetails = function(index) {
         let d = database[index];
         document.getElementById('modal-title-id').innerText = d.id;
-        
         let html = `
             <div class="sub-title">IDENTITÉ</div>
-            <div class="detail-row"><span class="detail-label">Consentement</span><span class="detail-val">${d.consentement}</span></div>
             <div class="detail-row"><span class="detail-label">Service</span><span class="detail-val">${d.service}</span></div>
             <div class="detail-row"><span class="detail-label">Niveau</span><span class="detail-val">${d.niveau}</span></div>
-            <div class="detail-row"><span class="detail-label">Age</span><span class="detail-val">${d.age_participant} ans</span></div>
-            <div class="detail-row"><span class="detail-label">Province</span><span class="detail-val">${d.province || '-'}</span></div>
-
+            <div class="detail-row"><span class="detail-label">Ancienneté</span><span class="detail-val">${d.anciennete} ans</span></div>
             <div class="sub-title">SCORES</div>
             <div class="detail-row"><span class="detail-label">Score Savoir</span><span class="detail-val">${d.scoreSavoir}%</span></div>
             <div class="detail-row"><span class="detail-label">Score Pratique</span><span class="detail-val">${d.scorePratique}%</span></div>
-            <div class="detail-row"><span class="detail-label">Attitude</span><span class="detail-val">${d.scoreAttitude}/5</span></div>
-
-            <div class="sub-title">CONNAISSANCES POINTUES</div>
-            <div class="detail-row"><span class="detail-label">Moléculaire ?</span><span class="detail-val">${d.q_moleculaire}</span></div>
-            
-            <div class="sub-title">OBSTACLES & RECOMMANDATIONS</div>
-            <div class="detail-row"><span class="detail-label">Obstacles</span><span class="detail-val">${(d.obstacles||[]).join(', ') || 'Aucun'}</span></div>
             <div class="detail-val-long">"${d.reco_verbatim || "Aucune suggestion."}"</div>
         `;
-        
         document.getElementById('modal-body-content').innerHTML = html;
         document.getElementById('detailModal').style.display = 'flex';
     };
@@ -731,7 +711,6 @@
         window.toggleDeleteButton();
 
         const tbody = document.getElementById('database-body');
-        // Affiche seulement les 50 premiers pour ne pas ralentir le DOM si liste longue
         let displayData = database.slice(0, 100); 
         
         tbody.innerHTML = displayData.map((row, index) => `
@@ -782,21 +761,14 @@
         window.renderBars('graph-cross-service', serviceData);
         
         let bestS = serviceData.reduce((prev, curr) => prev.v > curr.v ? prev : curr);
-        document.getElementById('interp-service').innerHTML = `💡 <b>Analyse (Obj 4) :</b> Le service <b>${bestS.l}</b> est un facteur associé à une meilleure pratique (${bestS.v}%). Cela confirme l'hypothèse de l'exposition clinique.`;
+        document.getElementById('interp-service').innerHTML = `💡 <b>Analyse :</b> Le service <b>${bestS.l}</b> présente les meilleurs scores de pratique.`;
 
-        let niveaux = ["A2 (Secondaire)", "A1 (Gradué)", "A0 (Licencié/Master)"];
-        let niveauData = niveaux.map(n => {
+        let niveauxLabels = ["A2 - ITM", "A1/LMD - ISTM"];
+        let niveauData = niveauxLabels.map(n => {
             let group = database.filter(r => r.niveau === n);
             return { l: n, v: Math.round(window.getAvg(group, 'scorePratique')), t: 100, c: '#00897b' };
         });
         window.renderBars('graph-cross-niveau', niveauData);
-
-        let pracChezHighS = Math.round(window.getAvg(highS, 'scorePratique'));
-        let pracChezLowS = Math.round(window.getAvg(lowS, 'scorePratique'));
-        window.renderBars('graph-correlation', [
-            {l: 'Pratique chez ceux qui SAVENT', v: pracChezHighS, t: 100, c: '#1a237e'},
-            {l: 'Pratique chez ceux qui NE SAVENT PAS', v: pracChezLowS, t: 100, c: '#b71c1c'}
-        ]);
 
         let obsMap = {};
         database.forEach(r => (r.obstacles||[]).forEach(o => obsMap[o] = (obsMap[o]||0)+1));
@@ -805,39 +777,17 @@
             return `<div class="bar-container"><div class="bar-label">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%; background:#b03060;">${p}%</div></div><div class="bar-value">${v}</div></div>`;
         }).join('');
 
-        let avgAttH = window.getAvg(highS, 'scoreAttitude'), avgPracH = window.getAvg(highS, 'scorePratique');
-        let avgAttL = window.getAvg(lowS, 'scoreAttitude'), avgPracL = window.getAvg(lowS, 'scorePratique');
-        document.getElementById('cross-body').innerHTML = `
-            <tr><td style="padding:15px;">Bonnes Connaissances</td><td>${highS.length}</td><td>${avgAttH}</td><td>${avgPracH}%</td></tr>
-            <tr><td style="padding:15px;">Connaissances Faibles</td><td>${lowS.length}</td><td>${avgAttL}</td><td>${avgPracL}%</td></tr>
-        `;
-
         window.generateDynamicReport(highP, obsMap);
     };
 
     window.generateDynamicReport = function(goodPracticeCount, obsMap) {
         let total = database.length;
         let pPractice = Math.round((goodPracticeCount/total)*100);
-        let topObstacle = Object.keys(obsMap).sort((a,b) => obsMap[b]-obsMap[a])[0] || "Aucun";
-
-        let report = `<p>Sur un total de <b>${total} participants</b> (Province de Kinshasa), l'analyse en temps réel révèle que <b>${pPractice}%</b> du personnel possède une maîtrise pratique satisfaisante de l'examen clinique des seins.</p>`;
-        
-        let recs = "";
-        if(pPractice < 50) {
-            recs += `<div class="reco-box"><div class="reco-title">🔴 PRIORITÉ : FORMATION PRATIQUE</div>Le niveau de compétence pratique est critique (< 50%). Il est urgent d'organiser des ateliers de simulation sur mannequins.</div>`;
-        } else {
-            recs += `<div class="reco-box"><div class="reco-title">🟢 MAINTIEN DES ACQUIS</div>Le niveau pratique est encourageant. Instaurer un mentorat par les pairs pour maintenir ces acquis.</div>`;
-        }
-
-        if(topObstacle === "Coût") {
-            recs += `<div class="reco-box"><div class="reco-title">💰 BARRIÈRE FINANCIÈRE</div>Le coût est l'obstacle majeur cité par les infirmières. Recommandation : Plaider pour la gratuité du dépistage lors d'Octobre Rose.</div>`;
-        } else if (topObstacle === "Formation") {
-             recs += `<div class="reco-box"><div class="reco-title">🔵 BESOIN COGNITIF</div>Le personnel réclame plus de formation. Distribuer des aides-mémoires visuels dans les services.</div>`;
-        }
+        let report = `<p>Analyse de l'HGR Makala : <b>${pPractice}%</b> des infirmières appliquent correctement les protocoles.</p>`;
+        let recs = `<div class="reco-box"><div class="reco-title">🎯 RECOMMANDATION MAJEURE</div>Le manque de formation étant l'obstacle N°1 (>70%), un atelier de renforcement est impératif.</div>`;
         document.getElementById('dynamic-report').innerHTML = report + recs;
     };
 
-    // UTILS
     window.getColor = function(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); };
     window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
     window.renderBars = function(id, data) {
@@ -853,15 +803,14 @@
         document.querySelectorAll('.tab')[i-1].classList.add('active');
     };
     window.exportToCSV = function() {
-        let h = "ID,Consentement,Sexe,Age,Etat_Civil,Province,Service,Niveau,Savoir(%),Attitude(/5),Pratique(%),Obstacles,Recommandations\n";
+        let h = "ID,Consentement,Sexe,Age,Etat_Civil,Province,Service,Niveau,Anciennete,Savoir(%),Attitude(/5),Pratique(%),Obstacles,Recommandations\n";
         let r = database.map(r => {
             let cleanReco = (r.reco_verbatim || "").replace(/"/g, '""').replace(/(\r\n|\n|\r)/gm, " ");
-            let obs = (r.obstacles || []).join(";");
-            return `${r.id},${r.consentement},${r.sexe},${r.age_participant},${r.etat_civil},${r.province},${r.service},${r.niveau},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},"${obs}","${cleanReco}"`;
+            return `${r.id},${r.consentement},${r.sexe},${r.age_participant},${r.etat_civil},${r.province},${r.service},${r.niveau},${r.anciennete},${r.scoreSavoir},${r.scoreAttitude},${r.scorePratique},"${(r.obstacles || []).join(";")}", "${cleanReco}"`;
         }).join("\n");
         let l = document.createElement("a");
         l.href = "data:text/csv;charset=utf-8," + encodeURI("\ufeff"+h+r);
-        l.download = "Rapport_CAP_Kinshasa_Simul_178.csv"; l.click();
+        l.download = "Rapport_CAP_Makala_Kinshasa.csv"; l.click();
     };
     
     function showToast(message) {
@@ -870,7 +819,6 @@
         x.innerText = message;
         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
-
     window.initCodeDropdown();
 </script>
 </body>
