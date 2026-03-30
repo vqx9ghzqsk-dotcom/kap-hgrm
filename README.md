@@ -4,15 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Médical - HGR Makala</title>
-    <!-- Google Fonts pour un look premium -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Chart.js pour des visualisations haut de gamme -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         /* --- DESIGN SYSTEM (SKELETON & AESTHETICS) --- */
         :root {
             --primary: #00796b; 
-            --primary-dark: #004d40;
             --primary-light: #e0f2f1;
             --secondary: #37474f;
             --accent: #26a69a;
@@ -33,9 +29,9 @@
         /* --- HEADER & NAVIGATION --- */
         .app-header { background: #fff; padding: 0 25px; border-bottom: 3px solid var(--primary); display: flex; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
         .nav-tabs { display: flex; gap: 10px; padding: 15px 0; flex-grow: 1; }
-        .tab { padding: 12px 22px; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; border: 1px solid var(--border); border-radius: 8px; background: #fafafa; color: var(--text-body); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 10px; border: none; }
-        .tab:hover { background: var(--primary-light); color: var(--primary); border: 1px solid var(--primary); }
-        .tab.active { background: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(0, 121, 107, 0.25); }
+        .tab { padding: 12px 22px; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; border: 1px solid var(--border); border-radius: 8px; background: #fafafa; color: var(--text-body); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 10px; }
+        .tab:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
+        .tab.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 4px 15px rgba(0, 121, 107, 0.25); }
         
         /* Badges */
         .badge-count { background: rgba(0,0,0,0.1); padding: 2px 8px; border-radius: 20px; font-size: 10px; }
@@ -46,7 +42,7 @@
         .tab-content.active { display: block; animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- UI COMPONENTS --- */
+        /* --- UI COMPONENTS (SKELETON ELEMENTS) --- */
         .section-header { margin: 30px 0 20px; padding: 15px 25px; background: var(--primary-light); color: var(--primary-dark); font-weight: 800; border-left: 8px solid var(--primary); border-radius: 4px 12px 12px 4px; text-transform: uppercase; font-size: 14px; }
         
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 25px; }
@@ -55,37 +51,26 @@
         input, select, textarea { padding: 14px; border: 2px solid #edf2f7; border-radius: 10px; font-size: 15px; width: 100%; transition: var(--transition); }
         input:focus, select:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 4px rgba(38, 166, 154, 0.1); }
 
-        /* Buttons */
-        .btn-primary { background: var(--primary); color: #fff; padding: 18px 30px; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; font-size: 16px; text-transform: uppercase; margin-top: 30px; transition: var(--transition); box-shadow: 0 8px 15px rgba(0, 121, 107, 0.2); }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(0, 121, 107, 0.3); }
-
-        /* Tables & Matrix */
-        .matrix-container { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: #fff; }
-        table { width: 100%; border-collapse: collapse; min-width: 800px; }
-        th { background: #f8fafc; padding: 18px; text-align: left; font-size: 11px; font-weight: 800; color: var(--secondary); border-bottom: 2px solid var(--border); text-transform: uppercase; }
-        td { padding: 18px; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text-body); }
-        tr:last-child td { border-bottom: none; }
-
-        /* Stats Cards */
-        .stat-card { background: #fff; border: 1px solid var(--border); padding: 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); transition: var(--transition); display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
-        .stat-value { font-size: 32px; font-weight: 800; color: var(--primary); }
-        .stat-label { font-size: 12px; color: #78909c; font-weight: 700; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        /* Chart Containers */
-        .chart-box { background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 25px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
-        .chart-box h3 { margin: 0 0 20px; font-size: 16px; color: var(--text-title); font-weight: 800; display: flex; align-items: center; gap: 10px; }
-        .chart-box h3::before { content: ''; width: 4px; height: 18px; background: var(--primary); border-radius: 2px; }
-
-        /* Custom Checkbox Grid */
+        /* Checkbox Box Grid */
         .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 20px; background: #fcfcfc; border: 2px dashed var(--border); border-radius: 12px; }
         .check-pill { display: flex; align-items: center; gap: 12px; padding: 12px; background: #fff; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 14px; font-weight: 600; }
         .check-pill:hover { border-color: var(--primary); background: var(--primary-light); }
         .check-pill input { width: 18px; height: 18px; margin: 0; accent-color: var(--primary); }
 
-        /* Results Specific Layout */
-        .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        @media (max-width: 900px) { .results-grid { grid-template-columns: 1fr; } }
+        /* Buttons */
+        .btn-primary { background: var(--primary); color: #fff; padding: 18px 30px; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; font-size: 16px; text-transform: uppercase; margin-top: 30px; transition: var(--transition); box-shadow: 0 8px 15px rgba(0, 121, 107, 0.2); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(0, 121, 107, 0.3); }
+
+        /* Tables & Matrix */
+        .matrix-container { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        th { background: #f8fafc; padding: 18px; text-align: left; font-size: 12px; font-weight: 800; color: var(--secondary); border-bottom: 2px solid var(--border); }
+        td { padding: 18px; border-bottom: 1px solid var(--border); font-size: 14px; }
+
+        /* Stats Cards */
+        .stat-card { background: #fff; border: 1px solid var(--border); padding: 25px; border-radius: 15px; }
+        .stat-value { font-size: 32px; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 12px; color: var(--text-body); font-weight: 700; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -93,19 +78,18 @@
 <div class="app-container">
     <header class="app-header">
         <nav class="nav-tabs">
-            <button class="tab" onclick="switchTab(1)">1. Collecte 📋 <span class="badge-count" id="badge-1">150</span></button>
+            <button class="tab active" onclick="switchTab(1)">1. Collecte 📋 <span class="badge-count" id="badge-1">150</span></button>
             <button class="tab" onclick="switchTab(2)">2. Matrice de Dépouillement 📊</button>
-            <button class="tab active" onclick="switchTab(3)">3. Résultats & Analyse 📈</button>
+            <button class="tab" onclick="switchTab(3)">3. Résultats & Analyse 📈</button>
             <button class="tab" onclick="switchTab(4)">4. Synthèse finale 📄</button>
         </nav>
-        <div style="font-size: 10px; font-weight: 800; color: #999; text-transform: uppercase; letter-spacing: 1px;">MAKALA-BC-2024</div>
+        <div style="font-size: 10px; font-weight: 800; color: #999; text-transform: uppercase;">MAKALA-TB-2024</div>
     </header>
 
-    <!-- TAB 1: COLLECTE (FICHE MÉDICALE) -->
-    <div id="content-1" class="tab-content">
+    <div id="content-1" class="tab-content active">
         <div style="text-align:center; margin-bottom: 40px;">
             <h2 style="margin:0; font-weight:800; color:var(--text-title);">FICHE D'ENQUÊTE CLINIQUE</h2>
-            <p style="margin:5px 0 0; color:var(--text-body); font-weight:600; font-size:14px;">Profil de dépistage du cancer du sein - HGR Makala</p>
+            <p style="margin:5px 0 0; color:var(--text-body); font-weight:600; font-size:14px;">Profil de la tuberculose pulmonaire - HGR Makala</p>
         </div>
 
         <form id="collecteForm">
@@ -128,210 +112,230 @@
                 </div>
             </div>
 
-            <div class="section-header">II. DONNÉES SOCIO-DÉMOGRAPHIQUES</div>
+            <div class="section-header">III. ANTÉCÉDENTS MÉDICAUX</div>
             <div class="grid-3">
                 <div class="input-group">
-                    <label>Tranche d'âge</label>
-                    <select>
-                        <option>20-29 ans</option>
-                        <option>30-39 ans</option>
-                        <option>40-49 ans</option>
-                        <option>50 ans et plus</option>
+                    <label>Antécédent de tuberculose</label>
+                    <select id="ant-tb">
+                        <option value="non">Non</option>
+                        <option value="oui">Oui</option>
                     </select>
                 </div>
                 <div class="input-group">
-                    <label>Sexe</label>
-                    <select>
-                        <option>Féminin</option>
-                        <option>Masculin</option>
+                    <label>Statut VIH</label>
+                    <select id="stat-vih">
+                        <option value="neg">Négatif</option>
+                        <option value="pos">Positif</option>
+                        <option value="inc">Inconnu</option>
                     </select>
                 </div>
                 <div class="input-group">
-                    <label>Niveau d'études</label>
-                    <select>
-                        <option>Primaire</option>
-                        <option>Secondaire</option>
-                        <option>Supérieur/Universitaire</option>
+                    <label>Diabète</label>
+                    <select id="diabetes">
+                        <option value="non">Non</option>
+                        <option value="oui">Oui</option>
                     </select>
                 </div>
             </div>
 
-            <div class="section-header">III. CONNAISSANCES & PRATIQUES</div>
-            <label style="margin-bottom: 12px; display: block;">Points de connaissance identifiés :</label>
+            <div class="section-header">IV. DONNÉES CLINIQUES & SYMPTÔMES</div>
+            <div class="input-group" style="margin-bottom: 25px;">
+                <label>Motif d'admission</label>
+                <textarea rows="2" placeholder="Saisir ici le motif principal..."></textarea>
+            </div>
+
+            <label style="margin-bottom: 12px; display: block;">Symptômes présents :</label>
             <div class="checkbox-grid">
-                <label class="check-pill"><input type="checkbox"> Facteurs de risque</label>
-                <label class="check-pill"><input type="checkbox"> Signes d'alerte</label>
-                <label class="check-pill"><input type="checkbox"> Autopalpation</label>
-                <label class="check-pill"><input type="checkbox"> Mammographie</label>
-                <label class="check-pill"><input type="checkbox"> Fréquence de dépistage</label>
+                <label class="check-pill"><input type="checkbox"> Toux</label>
+                <label class="check-pill"><input type="checkbox"> Toux ≥ 2 semaines</label>
+                <label class="check-pill"><input type="checkbox"> Hémoptysie</label>
+                <label class="check-pill"><input type="checkbox"> Fièvre</label>
+                <label class="check-pill"><input type="checkbox"> Sueurs nocturnes</label>
+                <label class="check-pill"><input type="checkbox"> Amaigrissement</label>
+                <label class="check-pill"><input type="checkbox"> Douleur thoracique</label>
+                <label class="check-pill"><input type="checkbox"> Dyspnée</label>
+            </div>
+
+            <div class="grid-3" style="margin-top: 30px;">
+                <div class="input-group">
+                    <label>Durée symptômes (semaines)</label>
+                    <input type="number" placeholder="Ex: 4">
+                </div>
+                <div class="input-group">
+                    <label>État général</label>
+                    <select>
+                        <option value="bon">Bon</option>
+                        <option value="altere">Altéré</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section-header">VIII. ÉVOLUTION CLINIQUE</div>
+            <div class="input-group" style="max-width: 400px;">
+                <label>Issue (Résultat final)</label>
+                <select>
+                    <option value="" disabled selected>Choisir l'issue...</option>
+                    <option>Guérison</option>
+                    <option>Amélioration</option>
+                    <option>Transfert</option>
+                    <option>Décès</option>
+                    <option>Perdu de vue</option>
+                </select>
             </div>
 
             <button type="button" class="btn-primary">📤 Enregistrer dans la matrice</button>
         </form>
     </div>
 
-    <!-- TAB 2: MATRICE -->
     <div id="content-2" class="tab-content">
         <h2 style="font-weight: 800;">BASE DE DONNÉES EN LIGNE (N=150)</h2>
         <div class="matrix-container">
             <table>
                 <thead>
                     <tr>
-                        <th>N° FICHE</th><th>SERVICE</th><th>ÂGE</th><th>CONNAISSANCE</th><th>ATTITUDE</th><th>PRATIQUE</th><th>ACTION</th>
+                        <th>N° FICHE</th><th>DOSSIER</th><th>ANT_TB</th><th>VIH</th><th>DIABÈTE</th><th>ISSUE</th><th>ACTION</th>
                     </tr>
                 </thead>
                 <tbody id="matrixBody">
-                    <tr><td>F-MAK-001</td><td>Gynécologie</td><td>34 ans</td><td>Bonne</td><td>Favorable</td><td>Oui</td><td><button style="font-size:10px; padding:5px 10px; border-radius:5px; border:1px solid #ccc; cursor:pointer;">Éditer</button></td></tr>
-                    <tr><td>F-MAK-002</td><td>Pédiatrie</td><td>42 ans</td><td>Médiocre</td><td>Favorable</td><td>Non</td><td><button style="font-size:10px; padding:5px 10px; border-radius:5px; border:1px solid #ccc; cursor:pointer;">Éditer</button></td></tr>
-                    <tr><td>F-MAK-003</td><td>Urgences</td><td>29 ans</td><td>Passable</td><td>Défavorable</td><td>Non</td><td><button style="font-size:10px; padding:5px 10px; border-radius:5px; border:1px solid #ccc; cursor:pointer;">Éditer</button></td></tr>
+                    <tr><td>F-MAK-001</td><td>DOS-104</td><td>Non</td><td>Négatif</td><td>Non</td><td>Guérison</td><td><button style="font-size:10px; padding:5px 10px; border-radius:5px; border:1px solid #ccc; cursor:pointer;">Éditer</button></td></tr>
+                    <tr><td>F-MAK-002</td><td>DOS-208</td><td>Oui</td><td>Positif</td><td>Non</td><td>Décès</td><td><button style="font-size:10px; padding:5px 10px; border-radius:5px; border:1px solid #ccc; cursor:pointer;">Éditer</button></td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- TAB 3: RÉSULTATS (UPDATED) -->
-    <div id="content-3" class="tab-content active">
-        <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-            <h2 style="font-weight: 800; margin:0;">RÉSULTATS DE L'ANALYSE PROTOCOLE</h2>
-            <div style="background: var(--primary-light); color: var(--primary); padding: 8px 15px; border-radius: 30px; font-weight: 700; font-size: 13px;">
-                Dernière mise à jour: Aujourd'hui
-            </div>
-        </div>
+    <div id="content-3" class="tab-content">
+        <h2 style="font-weight: 800; color: var(--text-title); margin-bottom: 30px;">ÉTUDE CAP : DÉPISTAGE DU CANCER DU SEIN</h2>
 
-        <!-- 1. TAUX DE PARTICIPATION -->
         <div class="grid-3">
-            <div class="stat-card" style="border-bottom: 5px solid var(--primary);">
-                <div class="stat-value">93.7%</div>
-                <div class="stat-label">1. Taux de participation</div>
-                <div style="font-size: 11px; margin-top: 10px; color: #999;">(150 répondants sur 160 sollicités)</div>
+            <div class="stat-card">
+                <div class="stat-label" style="font-size: 14px; text-transform: uppercase;">Personnel Ciblé</div>
+                <div class="stat-value" style="color: var(--secondary);">160</div>
             </div>
-            <div class="stat-card" style="border-bottom: 5px solid var(--accent);">
-                <div class="stat-value">58%</div>
-                <div class="stat-label">Connaissance Satisfaisante</div>
-                <div style="font-size: 11px; margin-top: 10px; color: #999;">Moyenne globale du personnel</div>
+            <div class="stat-card">
+                <div class="stat-label" style="font-size: 14px; text-transform: uppercase;">Personnel Répondant</div>
+                <div class="stat-value" style="color: var(--secondary);">148</div>
             </div>
-            <div class="stat-card" style="border-bottom: 5px solid #ff7043;">
-                <div class="stat-value">24.5%</div>
-                <div class="stat-label">Taux de pratique effective</div>
-                <div style="font-size: 11px; margin-top: 10px; color: #999;">Chez le personnel féminin</div>
+            <div class="stat-card" style="border-color: var(--primary); background: var(--primary-light);">
+                <div class="stat-label" style="font-size: 14px; text-transform: uppercase; color: var(--primary);">Taux de participation</div>
+                <div class="stat-value">92.5%</div>
             </div>
         </div>
 
-        <!-- 2. CARACTÉRISTIQUES SOCIO-DÉMOGRAPHIQUES -->
-        <div class="section-header">2. CARACTÉRISTIQUES SOCIO-DÉMOGRAPHIQUES DES ENQUÊTÉS</div>
-        <div class="matrix-container" style="margin-bottom: 40px;">
+        <div class="section-header">1. Caractéristiques socio-démographiques</div>
+        <div class="matrix-container">
             <table>
                 <thead>
                     <tr>
-                        <th>Variables Socio-démographiques</th>
-                        <th>Fréquence (n=150)</th>
+                        <th>Variables</th>
+                        <th>Effectif (n = 148)</th>
                         <th>Pourcentage (%)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style="background:#fcfcfc;"><td colspan="3"><strong>Tranches d'âge</strong></td></tr>
-                    <tr><td>20 - 29 ans</td><td>42</td><td>28.0%</td></tr>
-                    <tr><td>30 - 39 ans</td><td>58</td><td>38.7%</td></tr>
-                    <tr><td>40 - 49 ans</td><td>35</td><td>23.3%</td></tr>
-                    <tr><td>50 ans et plus</td><td>15</td><td>10.0%</td></tr>
-                    <tr style="background:#fcfcfc;"><td colspan="3"><strong>Ancienneté professionnelle</strong></td></tr>
-                    <tr><td>< 5 ans</td><td>38</td><td>25.3%</td></tr>
-                    <tr><td>5 - 10 ans</td><td>72</td><td>48.0%</td></tr>
-                    <tr><td>> 10 ans</td><td>40</td><td>26.7%</td></tr>
+                    <tr style="background: #f8fafc;"><td colspan="3"><strong>Sexe</strong></td></tr>
+                    <tr><td>Féminin</td><td>110</td><td>74.3%</td></tr>
+                    <tr><td>Masculin</td><td>38</td><td>25.7%</td></tr>
+                    <tr style="background: #f8fafc;"><td colspan="3"><strong>Tranche d'âge</strong></td></tr>
+                    <tr><td>20 à 30 ans</td><td>42</td><td>28.4%</td></tr>
+                    <tr><td>31 à 40 ans</td><td>65</td><td>43.9%</td></tr>
+                    <tr><td>Plus de 40 ans</td><td>41</td><td>27.7%</td></tr>
+                    <tr style="background: #f8fafc;"><td colspan="3"><strong>Niveau d'études</strong></td></tr>
+                    <tr><td>A2 / A1 (Graduat)</td><td>115</td><td>77.7%</td></tr>
+                    <tr><td>Licence (L0/L1)</td><td>33</td><td>22.3%</td></tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="results-grid">
-            <!-- 3. RÉPARTITION SELON LE SERVICE -->
-            <div class="chart-box">
-                <h3>3. Répartition du personnel par service</h3>
-                <canvas id="serviceChart" height="250"></canvas>
+        <div class="section-header">2. Répartition du personnel selon le service</div>
+        <div style="background: #fff; padding: 30px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 25px;">
+            <div style="display: flex; align-items: flex-end; justify-content: space-around; height: 220px; padding-bottom: 10px; border-bottom: 2px solid var(--secondary); position: relative; gap: 10px;">
+                <div style="display: flex; flex-direction: column; align-items: center; width: 65px;">
+                    <span style="font-weight: 800; margin-bottom: 8px;">32%</span>
+                    <div style="background: var(--primary); width: 100%; height: 128px; border-radius: 4px 4px 0 0;"></div>
+                    <span style="margin-top: 15px; font-size: 12px; font-weight: 700; text-align: center;">Chirurgie</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; width: 65px;">
+                    <span style="font-weight: 800; margin-bottom: 8px;">26%</span>
+                    <div style="background: #4db6ac; width: 100%; height: 104px; border-radius: 4px 4px 0 0;"></div>
+                    <span style="margin-top: 15px; font-size: 12px; font-weight: 700; text-align: center;">Méd. Interne</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; width: 65px;">
+                    <span style="font-weight: 800; margin-bottom: 8px;">28%</span>
+                    <div style="background: var(--primary); width: 100%; height: 112px; border-radius: 4px 4px 0 0;"></div>
+                    <span style="margin-top: 15px; font-size: 12px; font-weight: 700; text-align: center;">Gynéco-Obs</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; width: 65px;">
+                    <span style="font-weight: 800; margin-bottom: 8px;">14%</span>
+                    <div style="background: #4db6ac; width: 100%; height: 56px; border-radius: 4px 4px 0 0;"></div>
+                    <span style="margin-top: 15px; font-size: 12px; font-weight: 700; text-align: center;">Pédiatrie</span>
+                </div>
             </div>
-
-            <!-- 5. ATTITUDE PAR RAPPORT AU DÉPISTAGE -->
-            <div class="chart-box">
-                <h3>5. Attitude envers le dépistage</h3>
-                <canvas id="attitudeChart" height="250"></canvas>
-            </div>
+            <p style="text-align: center; font-size: 13px; color: var(--text-body); font-style: italic; margin-top: 30px;">Figure 1 : Répartition proportionnelle du personnel infirmier par département.</p>
         </div>
 
-        <!-- 4. CONNAISSANCE SUR LES ASPECTS DU DÉPISTAGE -->
-        <div class="section-header">4. CONNAISSANCE SELON LES ASPECTS DU DÉPISTAGE (INFIRMIERS)</div>
-        <div class="matrix-container" style="margin-bottom: 40px;">
+        <div class="section-header">3. Connaissance sur les aspects du dépistage</div>
+        <div class="matrix-container">
             <table>
                 <thead>
                     <tr>
-                        <th>Aspects du dépistage</th>
-                        <th>Bonne / Suffisante</th>
-                        <th>Passable / Insuffisante</th>
-                        <th>Médiocre / Nulle</th>
+                        <th>Aspects du dépistage évalués</th>
+                        <th>Bonne / Exacte (%)</th>
+                        <th>Faible / Inexacte (%)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Facteurs de risque</td>
-                        <td style="color:#2e7d32; font-weight:700;">62%</td>
-                        <td>28%</td>
-                        <td style="color:#c62828;">10%</td>
-                    </tr>
-                    <tr>
-                        <td>Signes d'alerte cliniques</td>
-                        <td style="color:#2e7d32; font-weight:700;">54%</td>
-                        <td>31%</td>
-                        <td style="color:#c62828;">15%</td>
-                    </tr>
-                    <tr>
-                        <td>Moyens de dépistage (Mammographie, etc)</td>
-                        <td style="color:#2e7d32; font-weight:700;">48%</td>
-                        <td>32%</td>
-                        <td style="color:#c62828;">20%</td>
-                    </tr>
-                    <tr>
-                        <td>Technique de l'autopalpation</td>
-                        <td style="color:#2e7d32; font-weight:700;">68%</td>
-                        <td>22%</td>
-                        <td style="color:#c62828;">10%</td>
-                    </tr>
+                    <tr><td>Identification des facteurs de risque (âge, génétique)</td><td>68.2%</td><td>31.8%</td></tr>
+                    <tr><td>Âge recommandé pour la première mammographie</td><td>45.5%</td><td>54.5%</td></tr>
+                    <tr><td>Fréquence recommandée de l'autopalpation mammaire</td><td>81.0%</td><td>19.0%</td></tr>
+                    <tr><td>Connaissance des signes cliniques d'alerte</td><td>92.4%</td><td>7.6%</td></tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- 6. PRATIQUE DES INFIRMIÈRES (FEMMES) -->
-        <div class="chart-box">
-            <h3>6. Distribution des infirmières (Féminin) selon leur pratique</h3>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
-                <canvas id="practiceChart" height="200"></canvas>
-                <div style="font-size: 14px;">
-                    <p><strong>Note :</strong> Seules les répondantes de sexe féminin (n=112) ont été incluses dans cette analyse de pratique personnelle.</p>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="margin-bottom:10px; display:flex; gap:10px;">
-                            <span style="width:15px; height:15px; background:#26a69a; display:inline-block; border-radius: 3px;"></span>
-                            Pratique régulière de l'autopalpation : <strong>32%</strong>
-                        </li>
-                        <li style="margin-bottom:10px; display:flex; gap:10px;">
-                            <span style="width:15px; height:15px; background:#00796b; display:inline-block; border-radius: 3px;"></span>
-                            Consultation clinique annuelle : <strong>12%</strong>
-                        </li>
-                        <li style="margin-bottom:10px; display:flex; gap:10px;">
-                            <span style="width:15px; height:15px; background:#37474f; display:inline-block; border-radius: 3px;"></span>
-                            Mammographie de dépistage : <strong>4%</strong>
-                        </li>
-                        <li style="margin-bottom:10px; display:flex; gap:10px;">
-                            <span style="width:15px; height:15px; background:#e0e0e0; display:inline-block; border-radius: 3px;"></span>
-                            Aucune pratique : <strong>52%</strong>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <div class="section-header">4. Attitude par rapport au dépistage</div>
+        <div class="matrix-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Attitudes et perceptions</th>
+                        <th>Favorable (n)</th>
+                        <th>Pourcentage (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Considère le dépistage précoce comme très utile</td><td>135</td><td>91.2%</td></tr>
+                    <tr><td>Volonté de sensibiliser systématiquement les patientes</td><td>128</td><td>86.5%</td></tr>
+                    <tr><td>Sentiment de compétence pour conseiller l'auto-examen</td><td>72</td><td>48.6%</td></tr>
+                    <tr><td>Perçoit le coût comme un frein majeur au dépistage</td><td>115</td><td>77.7%</td></tr>
+                </tbody>
+            </table>
         </div>
+
+        <div class="section-header">5. Pratique du dépistage (Infirmières, n = 110)</div>
+        <div class="matrix-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pratiques personnelles (Sexe féminin uniquement)</th>
+                        <th>Oui (%)</th>
+                        <th>Non (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Pratique régulièrement l'auto-examen des seins (AES)</td><td>65.4%</td><td>34.6%</td></tr>
+                    <tr><td>A déjà bénéficié d'un examen clinique des seins par un tiers</td><td>42.7%</td><td>57.3%</td></tr>
+                    <tr><td>A déjà réalisé une échographie ou une mammographie de contrôle</td><td>21.8%</td><td>78.2%</td></tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
-    <!-- TAB 4: SYNTHÈSE -->
     <div id="content-4" class="tab-content">
         <h2 style="font-weight: 800;">RAPPORT FINAL DE SYNTHÈSE</h2>
         <div style="background: #fff; border: 1px solid var(--border); padding: 30px; border-radius: 15px; border-left: 10px solid var(--primary);">
-            <p><strong>Conclusion Intérimaire :</strong> Bien que la majorité du personnel infirmier possède une attitude favorable (84%) vis-à-vis du dépistage, la pratique effective reste très faible (24.5% au global), particulièrement chez le personnel féminin exposé au risque. Un renforcement des capacités sur la mammographie et l'examen clinique est préconisé au sein de l'HGR Makala.</p>
+            <p><strong>Conclusion :</strong> L'analyse des 150 dossiers d'admission suggère une corrélation forte entre le statut sérologique VIH et l'issue fatale (Décès). La triade Toux - Fièvre - Amaigrissement reste le profil symptomatique dominant...</p>
         </div>
         <button class="btn-primary" style="background: var(--secondary); max-width: 300px;">📥 Télécharger le rapport (.CSV)</button>
     </div>
@@ -345,73 +349,7 @@
         document.getElementById('content-' + idx).classList.add('active');
         document.querySelectorAll('.tab')[idx-1].classList.add('active');
         window.scrollTo(0,0);
-        
-        // Re-init charts if switching to tab 3
-        if(idx === 3) initCharts();
     }
-
-    function initCharts() {
-        // Chart 3: Répartition par service
-        const ctxService = document.getElementById('serviceChart').getContext('2d');
-        new Chart(ctxService, {
-            type: 'bar',
-            data: {
-                labels: ['Urgences', 'Chirurgie', 'Médecine', 'Gynéco', 'Pédiatrie'],
-                datasets: [{
-                    label: 'Nombre de personnel',
-                    data: [25, 35, 40, 30, 20],
-                    backgroundColor: '#26a69a',
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } }
-            }
-        });
-
-        // Chart 5: Attitude
-        const ctxAttitude = document.getElementById('attitudeChart').getContext('2d');
-        new Chart(ctxAttitude, {
-            type: 'doughnut',
-            data: {
-                labels: ['Favorable', 'Défavorable', 'Indifférent'],
-                datasets: [{
-                    data: [84, 11, 5],
-                    backgroundColor: ['#00796b', '#ff7043', '#cfd8dc'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                cutout: '70%',
-                plugins: { legend: { position: 'bottom' } }
-            }
-        });
-
-        // Chart 6: Pratique (Féminin)
-        const ctxPractice = document.getElementById('practiceChart').getContext('2d');
-        new Chart(ctxPractice, {
-            type: 'pie',
-            data: {
-                labels: ['Pratiquantes', 'Non-pratiquantes'],
-                datasets: [{
-                    data: [36, 76], // Sur 112 femmes
-                    backgroundColor: ['#00796b', '#e0e0e0'],
-                    borderWidth: 2,
-                    borderColor: '#fff'
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { position: 'bottom' } }
-            }
-        });
-    }
-
-    // Initialize charts on load since tab 3 is active by default in the mockup
-    window.onload = initCharts;
 </script>
 
 </body>
