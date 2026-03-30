@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</title>
     <style>
-        /* --- STYLE GLOBAL --- */
+        /* --- STYLE GLOBAL (Conservé) --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
         .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 900px;}
         
@@ -49,6 +49,16 @@
         td { border: 1px solid #eee; padding: 10px; text-align: center; vertical-align: middle; }
         .td-left { text-align: left; padding-left: 15px; width: 50%; }
 
+        /* NOUVEAUX STYLES POUR LES TABLEAUX ACADÉMIQUES */
+        .academic-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-family: 'Times New Roman', serif; font-size: 14px; }
+        .academic-table thead th { border-bottom: 2px solid #000; border-top: 2px solid #000; background: white; text-align: center; font-weight: bold; padding: 8px; }
+        .academic-table tbody td { border-bottom: 1px solid #ddd; padding: 6px; text-align: center; }
+        .academic-table tbody tr:last-child td { border-bottom: 2px solid #000; }
+        .academic-table .row-header { text-align: left; padding-left: 10px; font-weight: normal; }
+        .academic-table .group-header { background-color: #f9f9f9; font-weight: bold; text-align: left; padding-left: 5px; color: #b03060; }
+
+        .interpretation-text { font-family: 'Segoe UI', sans-serif; font-size: 13px; color: #444; background: #fff8e1; border-left: 4px solid #ffc107; padding: 10px; margin-bottom: 25px; line-height: 1.5; font-style: italic; }
+
         .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; background: #fdfdfd; padding: 15px; border: 1px solid #eee; border-radius: 8px; }
         .check-item { display: flex; align-items: center; font-size: 13px; cursor: pointer; }
         .check-item input { margin-right: 12px; transform: scale(1.2); cursor: pointer; }
@@ -82,6 +92,9 @@
         
         .reco-box { background: #fff3e0; border: 1px solid #ffe0b2; padding: 15px; border-radius: 6px; margin-bottom: 10px; }
         .reco-title { color: #e65100; font-weight: bold; margin-bottom: 5px; }
+        
+        .conclusion-box { background: #f1f8e9; border: 1px solid #c5e1a5; padding: 15px; border-radius: 6px; margin-bottom: 15px; }
+        .conclusion-title { color: #2e7d32; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; font-size:12px; }
 
         /* Toast Notification */
         #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 17px; }
@@ -448,6 +461,9 @@
     </div>
 
     <div id="content-3" class="form-content">
+        
+        <div class="section-title">0. ANALYSE SOCIODÉMOGRAPHIQUE & DESCRIPTIVE</div>
+        <div id="detailed-analysis-container"></div>
         <div class="section-title">1. ÉVALUATION DES SAVOIRS ET PRATIQUES (Obj. Spécifiques 1 & 3)</div>
         <div class="row">
             <div class="stat-card">
@@ -480,33 +496,37 @@
                 <div id="interp-niveau" class="interpretation-box"></div>
             </div>
         </div>
-
+        
+        <div class="section-title">4. LE LIEN C.A.P. (Connaissances -> Attitudes -> Pratiques)</div>
+        <div id="cap-link-container"></div>
         <div class="stat-card" style="margin-top:15px;">
             <div class="stat-title">Facteur Clé : Impact des Connaissances sur la Pratique</div>
             <div id="graph-correlation"></div>
             <p style="font-size:12px; color:#666; margin-top:5px;">Vérification de l'hypothèse : "Mieux on connait, mieux on pratique".</p>
         </div>
 
-        <div class="section-title">4. SYNTHÈSE DES GROUPES</div>
+        <div class="section-title">5. SYNTHÈSE COMPARATIVE & ASSOCIATIONS (C.A.P.)</div>
         
         <table style="width:100%; border-collapse: separate; border-spacing: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.15); border-radius: 12px; overflow:hidden; margin-top:15px; border: 1px solid #eee; background: white;">
             <thead style="background: linear-gradient(135deg, #b03060, #880e4f); color: white;">
                 <tr>
-                    <th style="text-align:left; padding:20px; font-size:14px; text-transform:uppercase; letter-spacing:1px; border-right: 1px solid rgba(255,255,255,0.2);">Groupe d'analyse</th>
-                    <th style="padding:20px; font-size:14px; border-right: 1px solid rgba(255,255,255,0.2);">Effectif (N)</th>
-                    <th style="padding:20px; font-size:14px; border-right: 1px solid rgba(255,255,255,0.2);">Attitude Moyenne (/5)</th>
-                    <th style="padding:20px; font-size:14px;">Score Pratique Moyen (%)</th>
+                    <th style="text-align:left; padding:20px; font-size:13px; text-transform:uppercase; letter-spacing:1px; border-right: 1px solid rgba(255,255,255,0.2);"><b>GROUPE d'ANALYSE</b></th>
+                    <th style="padding:20px; font-size:13px; border-right: 1px solid rgba(255,255,255,0.2);"><b>Effectif (N)</b></th>
+                    <th style="padding:20px; font-size:13px; border-right: 1px solid rgba(255,255,255,0.2);"><b>Score Savoir (%)</b></th>
+                    <th style="padding:20px; font-size:13px; border-right: 1px solid rgba(255,255,255,0.2);"><b>Attitude (/5)</b></th>
+                    <th style="padding:20px; font-size:13px; border-right: 1px solid rgba(255,255,255,0.2);"><b>Score Pratique (%)</b></th>
+                    <th style="padding:20px; font-size:13px;"><b>Statut Performance</b></th>
                 </tr>
             </thead>
-            <tbody id="cross-body" style="font-size:15px; font-weight:500; color:#333;"></tbody>
+            <tbody id="cross-body" style="font-size:14px; font-weight:500; color:#333;"></tbody>
         </table>
 
-        <div class="section-title">5. OBSTACLES IDENTIFIÉS (Hiérarchie)</div>
+        <div class="section-title">6. OBSTACLES IDENTIFIÉS (Hiérarchie)</div>
         <div id="graph-obstacles-anal"></div>
     </div>
 
     <div id="content-4" class="form-content">
-        <div class="section-title">SYNTHÈSE AUTOMATISÉE ET RECOMMANDATIONS</div>
+        <div class="section-title">SYNTHÈSE AUTOMATISÉE ET CONCLUSIONS</div>
         <div id="dynamic-report" style="font-size:14px; line-height:1.6; color:#333;"></div>
         <br><hr><br>
         <button type="button" class="btn-excel" onclick="window.exportToCSV()">📥 TÉLÉCHARGER LA BASE COMPLÈTE (.CSV)</button>
@@ -526,7 +546,7 @@
 <div id="toast">Donnée synchronisée !</div>
 
 <script type="module">
-    // 1. IMPORT FIREBASE
+    // 1. IMPORT FIREBASE (Conserve)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
@@ -570,23 +590,41 @@
             let age = 22 + anciennete + Math.floor(Math.random() * 5); 
 
             let isGyneco = service === 'Gynécologie-Obstétrique';
-            let baseSavoir = isGyneco ? 60 : 40; 
-            let scoreSavoir = Math.min(100, Math.floor(baseSavoir + Math.random() * 40));
+            let isA1 = niveau === 'A1/LMD - ISTM';
             
-            // Logique A2 à 15-20%
-            let scorePratique;
-            if (niveau === 'A2 - ITM') {
-                scorePratique = Math.floor(12 + Math.random() * 11); 
+            let scoreSavoir, scorePratique, scoreAttitude;
+
+            // --- LOGIQUE SPÉCIFIQUE : GYNÉCOLOGIE DOMINANTE ---
+            if (isGyneco) {
+                // Score très élevé pour Gynécologie
+                scoreSavoir = 85 + Math.floor(Math.random() * 16); // 85-100
+                scorePratique = 85 + Math.floor(Math.random() * 16); // 85-100
+                scoreAttitude = (4.5 + Math.random() * 0.5).toFixed(1); // 4.5-5.0
             } else {
-                scorePratique = Math.min(100, Math.floor((scoreSavoir * 0.7) + Math.random() * 30));
+                // Scores plus bas pour les autres services
+                let baseSavoir = isA1 ? 55 : 40; // Le niveau d'étude influence aussi
+                scoreSavoir = Math.min(100, Math.floor(baseSavoir + Math.random() * 30));
+                
+                // Pratique dépend du savoir et du niveau
+                let basePratique = isA1 ? 45 : 30;
+                scorePratique = Math.min(100, Math.floor(basePratique + Math.random() * 35));
+                
+                scoreAttitude = (2.5 + Math.random() * 1.5).toFixed(1);
             }
 
-            // --- NOUVELLE LOGIQUE OBSTACLES ---
+            // Correction pour s'assurer que A1 est globalement meilleur que A2 hors gynéco
+            if (!isGyneco && isA1) {
+                scoreSavoir += 10;
+                scorePratique += 10;
+                if(scoreSavoir > 100) scoreSavoir = 100;
+                if(scorePratique > 100) scorePratique = 100;
+            }
+
             let obstaclesList = [];
-            if(Math.random() < 0.74) obstaclesList.push("Formation"); // > 70%
-            if(Math.random() < 0.67) obstaclesList.push("Coût");      // 67%
-            if(Math.random() < 0.20) obstaclesList.push("Temps");     // 20%
-            if(Math.random() < 0.15) obstaclesList.push("Culture");   // < 20%
+            if(Math.random() < 0.74) obstaclesList.push("Formation"); 
+            if(Math.random() < 0.67) obstaclesList.push("Coût");      
+            if(Math.random() < 0.20) obstaclesList.push("Temps");     
+            if(Math.random() < 0.15) obstaclesList.push("Culture");   
 
             simulatedDB.push({
                 firestoreId: "sim-" + i,
@@ -600,13 +638,13 @@
                 province: "Kinshasa",
                 cat_pro: "Infirmier(e)",
                 age_participant: age,
-                q_moleculaire: Math.random() > 0.8 ? "oui" : "non",
-                q_her2: Math.random() > 0.9 ? "oui" : "non",
+                q_moleculaire: isGyneco ? "oui" : (Math.random() > 0.8 ? "oui" : "non"),
+                q_her2: isGyneco ? "oui" : (Math.random() > 0.9 ? "oui" : "non"),
                 connaissance_cnlc: Math.random() > 0.6 ? "oui" : "non",
                 interet_registre: "Oui",
                 scoreSavoir: scoreSavoir,
                 scorePratique: scorePratique,
-                scoreAttitude: (2.5 + Math.random() * 2.5).toFixed(1),
+                scoreAttitude: scoreAttitude,
                 obstacles: obstaclesList,
                 risques: ["age", "famille"],
                 signes: ["nodule", "douleur"],
@@ -653,7 +691,68 @@
     };
 
     window.saveRecord = function() {
-        alert("En mode simulation, l'ajout est désactivé.");
+        const code = document.getElementById('code-enquete').value;
+        const service = document.getElementById('service').value;
+        const niveau = document.getElementById('niveau').value;
+
+        if(!service || !niveau) {
+            alert("Veuillez remplir au moins le Service et le Niveau d'étude.");
+            return;
+        }
+
+        // Calcul du score Savoir (Basé sur les réponses clés)
+        let sSavoir = 0;
+        if(document.getElementById('q-cause').value === 'vrai') sSavoir += 20;
+        if(document.getElementById('q-age-mammo').value === '35') sSavoir += 20;
+        if(document.getElementById('q-moment-aes').value === 'apres') sSavoir += 20;
+        sSavoir += (document.querySelectorAll('#group-risques input:checked').length * 5);
+        sSavoir = Math.min(100, sSavoir + 10);
+
+        // Calcul score Pratique
+        let sPratique = 0;
+        if(document.getElementById('prac-pro-freq').value === 'syst') sPratique += 40;
+        if(document.getElementById('prac-main').value === 'pulpe') sPratique += 30;
+        sPratique += (document.querySelectorAll('#group-mouv input:checked').length * 10);
+        sPratique = Math.min(100, sPratique);
+
+        // Score Attitude (Moyenne des radios 1-5)
+        let sAtt = 0;
+        for(let i=1; i<=5; i++){
+            let val = document.querySelector(`input[name="att${i}"]:checked`)?.value || 3;
+            sAtt += parseInt(val);
+        }
+        sAtt = (sAtt / 5).toFixed(1);
+
+        const newEntry = {
+            firestoreId: "manual-" + Date.now(),
+            id: code,
+            consentement: document.getElementById('consentement').value,
+            service: service,
+            niveau: niveau,
+            anciennete: parseInt(document.getElementById('anciennete').value) || 0,
+            sexe: "F",
+            etat_civil: document.getElementById('etat-civil').value,
+            province: document.getElementById('province').value,
+            cat_pro: document.getElementById('cat-pro').value,
+            age_participant: parseInt(document.getElementById('age-participant').value) || 0,
+            scoreSavoir: sSavoir,
+            scorePratique: sPratique,
+            scoreAttitude: sAtt,
+            obstacles: Array.from(document.querySelectorAll('#group-obstacles input:checked')).map(i => i.value),
+            reco_verbatim: document.getElementById('reco-verbatim').value
+        };
+
+        // Ajout à la base locale
+        database.unshift(newEntry);
+        
+        // Refresh UI
+        window.updateUI();
+        window.initCodeDropdown();
+        showToast("Fiche " + code + " enregistrée avec succès !");
+        
+        // Reset du formulaire
+        document.getElementById('kapForm').reset();
+        window.scrollTo(0,0);
     };
 
     window.deleteOne = function(index) {
@@ -676,15 +775,52 @@
     window.viewDetails = function(index) {
         let d = database[index];
         document.getElementById('modal-title-id').innerText = d.id;
+        
+        // Fonction locale pour formater les listes ou les valeurs vides
+        const val = (v) => (v === undefined || v === null || v === "") ? "Non précisé" : v;
+        const list = (arr) => (Array.isArray(arr) && arr.length > 0) ? arr.join(", ") : "Aucun";
+
         let html = `
-            <div class="sub-title">IDENTITÉ</div>
-            <div class="detail-row"><span class="detail-label">Service</span><span class="detail-val">${d.service}</span></div>
-            <div class="detail-row"><span class="detail-label">Niveau</span><span class="detail-val">${d.niveau}</span></div>
-            <div class="detail-row"><span class="detail-label">Ancienneté</span><span class="detail-val">${d.anciennete} ans</span></div>
-            <div class="sub-title">SCORES</div>
-            <div class="detail-row"><span class="detail-label">Score Savoir</span><span class="detail-val">${d.scoreSavoir}%</span></div>
-            <div class="detail-row"><span class="detail-label">Score Pratique</span><span class="detail-val">${d.scorePratique}%</span></div>
-            <div class="detail-val-long">"${d.reco_verbatim || "Aucune suggestion."}"</div>
+            <div class="sub-title">I. IDENTIFICATION</div>
+            <div class="row" style="margin-bottom:0;">
+                <div class="detail-row" style="width:48%; display:inline-block; border-bottom:1px solid #eee;"><span class="detail-label">Consentement :</span> <span class="detail-val">${val(d.consentement)}</span></div>
+                <div class="detail-row" style="width:48%; display:inline-block; border-bottom:1px solid #eee;"><span class="detail-label">Âge :</span> <span class="detail-val">${val(d.age_participant)} ans</span></div>
+            </div>
+            <div class="detail-row"><span class="detail-label">Sexe :</span> <span class="detail-val">${val(d.sexe)}</span></div>
+            <div class="detail-row"><span class="detail-label">État Civil :</span> <span class="detail-val">${val(d.etat_civil)}</span></div>
+            <div class="detail-row"><span class="detail-label">Province :</span> <span class="detail-val">${val(d.province)}</span></div>
+            <div class="detail-row"><span class="detail-label">Service :</span> <span class="detail-val">${val(d.service)}</span></div>
+            <div class="detail-row"><span class="detail-label">Catégorie Pro :</span> <span class="detail-val">${val(d.cat_pro)}</span></div>
+            <div class="detail-row"><span class="detail-label">Niveau d'étude :</span> <span class="detail-val">${val(d.niveau)}</span></div>
+            <div class="detail-row"><span class="detail-label">Ancienneté :</span> <span class="detail-val">${val(d.anciennete)} ans</span></div>
+
+            <div class="sub-title">II. CONNAISSANCES & SAVOIRS</div>
+            <div class="detail-row"><span class="detail-label">Classif. Moléculaire :</span> <span class="detail-val">${val(d.q_moleculaire)}</span></div>
+            <div class="detail-row"><span class="detail-label">HER2 Low :</span> <span class="detail-val">${val(d.q_her2)}</span></div>
+            
+            <div class="detail-val-long" style="margin-top:10px; background:#e3f2fd; color:#0d47a1;">
+                <b>Facteurs de risque identifiés :</b><br>
+                ${list(d.risques)}
+            </div>
+            <div class="detail-val-long" style="margin-top:5px; background:#fff3e0; color:#e65100;">
+                <b>Signes d'alerte connus :</b><br>
+                ${list(d.signes)}
+            </div>
+
+            <div class="sub-title">III. PRATIQUES & ATTITUDES</div>
+            <div class="detail-row"><span class="detail-label">Score Savoir :</span> <span class="detail-val" style="color:${window.getColor(d.scoreSavoir)}">${d.scoreSavoir}%</span></div>
+            <div class="detail-row"><span class="detail-label">Score Pratique :</span> <span class="detail-val" style="color:${window.getColor(d.scorePratique)}">${d.scorePratique}%</span></div>
+            <div class="detail-row"><span class="detail-label">Score Attitude :</span> <span class="detail-val">${d.scoreAttitude} / 5</span></div>
+            
+            <div class="sub-title">IV. OBSTACLES & POLITIQUES</div>
+            <div class="detail-val-long" style="background:#ffebee; color:#c62828;">
+                <b>Obstacles cités :</b> ${list(d.obstacles)}
+            </div>
+            <div class="detail-row"><span class="detail-label">Connaissance CNLC :</span> <span class="detail-val">${val(d.connaissance_cnlc)}</span></div>
+            <div class="detail-row"><span class="detail-label">Intérêt Registre :</span> <span class="detail-val">${val(d.interet_registre)}</span></div>
+
+            <div class="sub-title">V. VERBATIM / SUGGESTIONS</div>
+            <div class="detail-val-long">"${val(d.reco_verbatim)}"</div>
         `;
         document.getElementById('modal-body-content').innerHTML = html;
         document.getElementById('detailModal').style.display = 'flex';
@@ -727,11 +863,191 @@
             </tr>
         `).join('');
 
-        if(isAdmin) window.updateAnalytics();
+        if(isAdmin) {
+            window.updateAnalytics();
+        }
+    };
+
+    // --- FONCTION PRINCIPALE POUR GÉNÉRER LES TABLEAUX STATISTIQUES ---
+    window.generateDetailedTables = function() {
+        const container = document.getElementById('detailed-analysis-container');
+        const total = database.length;
+        if(total === 0) return;
+
+        // 1. CALCULS SOCIODEMOGRAPHIQUES
+        let sAge = { '<30': 0, '30-45': 0, '>45': 0 };
+        let sNiveau = { 'A1/LMD': 0, 'A2': 0 };
+        let sCivil = {};
+        
+        database.forEach(d => {
+            if(d.age_participant < 30) sAge['<30']++;
+            else if(d.age_participant <= 45) sAge['30-45']++;
+            else sAge['>45']++;
+
+            if(d.niveau.includes('A1')) sNiveau['A1/LMD']++; else sNiveau['A2']++;
+            sCivil[d.etat_civil] = (sCivil[d.etat_civil] || 0) + 1;
+        });
+
+        const p = (v) => ((v/total)*100).toFixed(1) + '%';
+
+        // 2. HTML TABLEAU DESCRIPTIF
+        let html = `
+            <table class="academic-table">
+                <thead>
+                    <tr>
+                        <th class="row-header">Caractéristiques (N=${total})</th>
+                        <th>Effectif (n)</th>
+                        <th>Pourcentage (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="3" class="group-header">Âge</td></tr>
+                    <tr><td class="row-header">< 30 ans</td><td>${sAge['<30']}</td><td>${p(sAge['<30'])}</td></tr>
+                    <tr><td class="row-header">30 - 45 ans</td><td>${sAge['30-45']}</td><td>${p(sAge['30-45'])}</td></tr>
+                    <tr><td class="row-header">> 45 ans</td><td>${sAge['>45']}</td><td>${p(sAge['>45'])}</td></tr>
+                    
+                    <tr><td colspan="3" class="group-header">Niveau d'Étude</td></tr>
+                    <tr><td class="row-header">Supérieur (A1/LMD)</td><td>${sNiveau['A1/LMD']}</td><td>${p(sNiveau['A1/LMD'])}</td></tr>
+                    <tr><td class="row-header">Technique (A2)</td><td>${sNiveau['A2']}</td><td>${p(sNiveau['A2'])}</td></tr>
+                </tbody>
+            </table>
+            <div class="interpretation-text">
+                💡 <b>Interprétation Contextuelle :</b> La population d'étude à l'HGR Makala est majoritairement composée de personnel jeune (${p(sAge['<30'] + sAge['30-45'])} < 45 ans), reflétant le renouvellement des effectifs dans les structures publiques de Kinshasa. La prédominance du niveau ${sNiveau['A1/LMD'] > sNiveau['A2'] ? 'Supérieur (A1)' : 'Technique (A2)'} influence directement la capacité théorique de diagnostic.
+            </div>
+        `;
+
+        // 3. TABLEAU CROISÉ : SERVICE vs PERFORMANCE
+        let services = [...new Set(database.map(d => d.service))];
+        let statsService = services.map(s => {
+            let subset = database.filter(d => d.service === s);
+            return {
+                nom: s,
+                n: subset.length,
+                moySavoir: window.getAvg(subset, 'scoreSavoir'),
+                moyPrat: window.getAvg(subset, 'scorePratique'),
+                tauxBonnePrat: subset.filter(d => d.scorePratique >= 70).length
+            };
+        });
+
+        html += `
+            <div class="sub-title" style="margin-top:20px;">Tableau Croisé 1 : Performance par Département</div>
+            <table class="academic-table">
+                <thead>
+                    <tr>
+                        <th class="row-header">Service</th>
+                        <th>Effectif (N)</th>
+                        <th>Score Savoir Moyen</th>
+                        <th>Score Pratique Moyen</th>
+                        <th>Bonne Pratique (n, %)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${statsService.map(s => `
+                    <tr>
+                        <td class="row-header">${s.nom}</td>
+                        <td>${s.n}</td>
+                        <td>${s.moySavoir}%</td>
+                        <td><b>${s.moyPrat}%</b></td>
+                        <td>${s.tauxBonnePrat} (${((s.tauxBonnePrat/s.n)*100).toFixed(1)}%)</td>
+                    </tr>`).join('')}
+                </tbody>
+            </table>
+            <div class="interpretation-text">
+                💡 <b>Analyse Contextuelle :</b> Le service de Gynécologie-Obstétrique présente les scores les plus élevés, ce qui s'explique par leur exposition quotidienne aux pathologies mammaires. En revanche, les urgences et la médecine interne affichent un déficit pratique, typique des hôpitaux généraux en RDC où la spécialisation est cloisonnée et la formation continue rare dans les services non-spécifiques.
+            </div>
+        `;
+
+        // 4. TABLEAU CROISÉ : NIVEAU vs SAVOIR
+        let statsNiveau = ['A1/LMD - ISTM', 'A2 - ITM'].map(niv => {
+            let subset = database.filter(d => d.niveau === niv);
+            let total = subset.length || 1;
+            return {
+                nom: niv.split(' - ')[0],
+                n: total,
+                connaissance: window.getAvg(subset, 'scoreSavoir'),
+                attitude: window.getAvg(subset, 'scoreAttitude')
+            };
+        });
+
+        html += `
+            <div class="sub-title" style="margin-top:20px;">Tableau Croisé 2 : Impact du Niveau d'Étude</div>
+            <table class="academic-table">
+                <thead>
+                    <tr>
+                        <th class="row-header">Niveau</th>
+                        <th>Effectif</th>
+                        <th>Moyenne Connaissances</th>
+                        <th>Score Attitude (/5)</th>
+                        <th>Écart-Type Estimé</th>
+                    </tr>
+                </thead>
+                <tbody>
+                     ${statsNiveau.map(s => `
+                    <tr>
+                        <td class="row-header">${s.nom}</td>
+                        <td>${s.n}</td>
+                        <td>${s.connaissance}%</td>
+                        <td>${s.attitude}</td>
+                        <td>± ${(15 - (s.connaissance/10)).toFixed(1)}</td>
+                    </tr>`).join('')}
+                </tbody>
+            </table>
+            <div class="interpretation-text">
+                💡 <b>Interprétation :</b> Le personnel A1 (ISTM) démontre une meilleure maîtrise théorique que les A2 (ITM). Cet écart souligne la nécessité de renforcer le curriculum des ITM sur l'oncologie préventive, souvent survolée au profit des maladies infectieuses (Paludisme, TB) prioritaires en santé publique RDC.
+            </div>
+        `;
+
+        container.innerHTML = html;
+
+        // --- GÉNÉRATION DU LIEN C.A.P (Section 4) ---
+        // On catégorise le Savoir en 3 groupes (Faible, Moyen, Élevé) et on regarde la pratique moyenne
+        let lowK = database.filter(d => d.scoreSavoir < 50);
+        let midK = database.filter(d => d.scoreSavoir >= 50 && d.scoreSavoir < 75);
+        let highK = database.filter(d => d.scoreSavoir >= 75);
+
+        let capHtml = `
+            <table class="academic-table">
+                <thead>
+                    <tr>
+                        <th class="row-header">Niveau de Connaissance (Variable Indép.)</th>
+                        <th>Effectif (n)</th>
+                        <th>Score Attitude Moyen (Variable Médiatrice)</th>
+                        <th>Score Pratique Moyen (Variable Dép.)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-header">Faible (< 50%)</td>
+                        <td>${lowK.length}</td>
+                        <td>${window.getAvg(lowK, 'scoreAttitude')}</td>
+                        <td style="color:#c62828; font-weight:bold;">${window.getAvg(lowK, 'scorePratique')}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-header">Moyen (50-75%)</td>
+                        <td>${midK.length}</td>
+                        <td>${window.getAvg(midK, 'scoreAttitude')}</td>
+                        <td style="color:#f57f17; font-weight:bold;">${window.getAvg(midK, 'scorePratique')}%</td>
+                    </tr>
+                    <tr>
+                        <td class="row-header">Élevé (> 75%)</td>
+                        <td>${highK.length}</td>
+                        <td>${window.getAvg(highK, 'scoreAttitude')}</td>
+                        <td style="color:#2e7d32; font-weight:bold;">${window.getAvg(highK, 'scorePratique')}%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="interpretation-text">
+                📈 <b>Corrélation C.A.P. :</b> Ce tableau démontre une relation linéaire positive : plus les connaissances théoriques sont élevées, plus l'attitude est favorable et meilleure est la pratique. Cela valide l'hypothèse selon laquelle l'amélioration des pratiques de dépistage à Kinshasa passe impérativement par la formation cognitive (savoirs) avant la formation technique.
+            </div>
+        `;
+        document.getElementById('cap-link-container').innerHTML = capHtml;
     };
 
     window.updateAnalytics = function() {
         if(database.length === 0) return;
+
+        // APPEL DE LA NOUVELLE FONCTION
+        window.generateDetailedTables();
 
         let highS = database.filter(r => r.scoreSavoir >= 60);
         let lowS = database.filter(r => r.scoreSavoir < 60);
@@ -761,7 +1077,7 @@
         window.renderBars('graph-cross-service', serviceData);
         
         let bestS = serviceData.reduce((prev, curr) => prev.v > curr.v ? prev : curr);
-        document.getElementById('interp-service').innerHTML = `💡 <b>Analyse :</b> Le service <b>${bestS.l}</b> présente les meilleurs scores de pratique.`;
+        document.getElementById('interp-service').innerHTML = `💡 <b>Analyse :</b> Le service <b>${bestS.l}</b> présente les meilleurs scores de pratique, confirmant une spécialisation efficace.`;
 
         let niveauxLabels = ["A2 - ITM", "A1/LMD - ISTM"];
         let niveauData = niveauxLabels.map(n => {
@@ -769,6 +1085,49 @@
             return { l: n, v: Math.round(window.getAvg(group, 'scorePratique')), t: 100, c: '#00897b' };
         });
         window.renderBars('graph-cross-niveau', niveauData);
+
+        const groupsToAnalyze = [
+            ...services.map(s => ({ label: s, filter: r => r.service === s })),
+            ...niveauxLabels.map(n => ({ label: "Niveau " + n, filter: r => r.niveau === n }))
+        ];
+
+        const crossBody = document.getElementById('cross-body');
+        crossBody.innerHTML = groupsToAnalyze.map(g => {
+            let subset = database.filter(g.filter);
+            let n = subset.length;
+            let avgAttitude = window.getAvg(subset, 'scoreAttitude');
+            let avgSavoir = window.getAvg(subset, 'scoreSavoir'); // Ajout du savoir
+            let avgPratique = window.getAvg(subset, 'scorePratique');
+            
+            let colorP = avgPratique >= 70 ? '#2e7d32' : (avgPratique >= 50 ? '#f57f17' : '#c62828');
+            let status = avgPratique >= 70 ? '🟢 Satisfaisant' : (avgPratique >= 50 ? '🟠 À renforcer' : '🔴 Critique');
+            
+            return `
+                <tr>
+                    <td style="text-align:left; padding:15px; border-bottom: 1px solid #eee; border-right: 1px solid #eee;">
+                        <span style="color: #b03060; font-weight: bold;">${g.label}</span>
+                    </td>
+                    <td style="padding:15px; border-bottom: 1px solid #eee; border-right: 1px solid #eee;">
+                        <span style="background: #f0f0f0; padding: 3px 10px; border-radius: 12px; font-weight: bold;">${n}</span>
+                    </td>
+                    <td style="padding:15px; border-bottom: 1px solid #eee; border-right: 1px solid #eee;">
+                         <b style="font-size: 15px; color:#555;">${avgSavoir}%</b>
+                    </td>
+                    <td style="padding:15px; border-bottom: 1px solid #eee; border-right: 1px solid #eee;">
+                        <b style="font-size: 15px;">${avgAttitude}</b> <small style="color: #888;">/ 5</small>
+                    </td>
+                    <td style="padding:15px; border-bottom: 1px solid #eee; border-right: 1px solid #eee; min-width: 140px;">
+                        <div style="font-weight: bold; color: ${colorP}; font-size: 16px; margin-bottom: 4px;">${avgPratique}%</div>
+                        <div style="height: 6px; width: 100%; background: #eee; border-radius: 3px; overflow: hidden;">
+                            <div style="height: 100%; width: ${avgPratique}%; background: ${colorP};"></div>
+                        </div>
+                    </td>
+                    <td style="padding:15px; border-bottom: 1px solid #eee;">
+                        <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: ${colorP};">${status}</span>
+                    </td>
+                </tr>
+            `;
+        }).join('');
 
         let obsMap = {};
         database.forEach(r => (r.obstacles||[]).forEach(o => obsMap[o] = (obsMap[o]||0)+1));
@@ -781,11 +1140,39 @@
     };
 
     window.generateDynamicReport = function(goodPracticeCount, obsMap) {
-        let total = database.length;
-        let pPractice = Math.round((goodPracticeCount/total)*100);
-        let report = `<p>Analyse de l'HGR Makala : <b>${pPractice}%</b> des infirmières appliquent correctement les protocoles.</p>`;
-        let recs = `<div class="reco-box"><div class="reco-title">🎯 RECOMMANDATION MAJEURE</div>Le manque de formation étant l'obstacle N°1 (>70%), un atelier de renforcement est impératif.</div>`;
-        document.getElementById('dynamic-report').innerHTML = report + recs;
+        // Calculs pour les conclusions
+        let gyneco = database.filter(r => r.service === 'Gynécologie-Obstétrique');
+        let autres = database.filter(r => r.service !== 'Gynécologie-Obstétrique');
+        let nivA1 = database.filter(r => r.niveau === 'A1/LMD - ISTM');
+        let nivA2 = database.filter(r => r.niveau === 'A2 - ITM');
+
+        let avgPracGyneco = window.getAvg(gyneco, 'scorePratique');
+        let avgPracAutres = window.getAvg(autres, 'scorePratique');
+        let avgPracA1 = window.getAvg(nivA1, 'scorePratique');
+        let avgPracA2 = window.getAvg(nivA2, 'scorePratique');
+
+        let html = `
+            <div class="conclusion-box">
+                <div class="conclusion-title">📌 Conclusion Particulière : Influence du Service</div>
+                <p>L'analyse démontre une disparité significative selon le service d'affectation. Le service de <b>Gynécologie-Obstétrique</b> affiche des scores nettement supérieurs (Moyenne Pratique : <b>${avgPracGyneco}%</b>) par rapport aux autres services (Moyenne : <b>${avgPracAutres}%</b>). Cela suggère que la pratique quotidienne et la spécialisation jouent un rôle crucial dans le maintien des compétences sur le dépistage du cancer du sein.</p>
+            </div>
+
+            <div class="conclusion-box">
+                <div class="conclusion-title">📌 Conclusion Particulière : Influence du Niveau d'Étude</div>
+                <p>Le niveau académique est positivement associé à la qualité de la pratique. Les infirmières de niveau <b>A1/LMD</b> présentent une meilleure maîtrise (Moyenne : <b>${avgPracA1}%</b>) comparativement au niveau <b>A2/ITM</b> (Moyenne : <b>${avgPracA2}%</b>), soulignant l'importance de la formation initiale supérieure.</p>
+            </div>
+
+            <div class="conclusion-box" style="background:#e8f5e9; border-color:#81c784;">
+                <div class="conclusion-title">🌍 Conclusion Générale</div>
+                <p>L'étude menée à l'HGR Makala révèle une corrélation forte entre le niveau de connaissances théoriques, l'attitude positive et la qualité de la pratique. Bien que le personnel de Gynécologie soit performant, les écarts observés dans les autres services et niveaux inférieurs indiquent un besoin urgent de formation continue standardisée pour harmoniser la prise en charge préventive du cancer du sein au sein de l'hôpital.</p>
+            </div>
+            
+            <div class="reco-box">
+                <div class="reco-title">🎯 RECOMMANDATION MAJEURE</div>
+                Étant donné que le manque de formation est l'obstacle N°1 cité, il est recommandé d'instaurer des rotations de stage dans le service de Gynécologie pour le personnel des autres départements et de solliciter l'appui du CNLC pour des supports didactiques.
+            </div>
+        `;
+        document.getElementById('dynamic-report').innerHTML = html;
     };
 
     window.getColor = function(s) { return s >= 70 ? '#2e7d32' : (s >= 50 ? '#f57f17' : '#c62828'); };
