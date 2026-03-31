@@ -209,11 +209,11 @@
 
         <div class="grid-3">
             <div class="stat-card">
-                <div class="stat-label" style="font-size: 14px; text-transform: uppercase;">Personnel Ciblé</div>
+                <div class="stat-label" style="font-size: 14px; text-transform: uppercase;">Échantillon Prévu</div>
                 <div class="stat-value" style="color: var(--secondary);">160</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label" style="font-size: 14px; text-transform: uppercase;">Personnel Répondant</div>
+                <div class="stat-label" style="font-size: 14px; text-transform: uppercase;">Répondants</div>
                 <div class="stat-value" style="color: var(--secondary);">148</div>
             </div>
             <div class="stat-card" style="border-color: var(--primary); background: var(--primary-light);">
