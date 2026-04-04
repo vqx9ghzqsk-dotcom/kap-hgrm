@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</title>
     <style>
-        /* --- STYLE GLOBAL (Conservé) --- */
+        /* --- STYLE GLOBAL --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
         .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 900px;}
         
@@ -67,15 +67,12 @@
         .btn-save:hover { background: #880e4f; transform: translateY(-2px); }
         .btn-save:disabled { background: #ccc; cursor: not-allowed; }
         
-        /* Stats & Pie Charts (Ancien style préservé) */
+        /* Stats & Pie Charts */
         .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; }
         .stat-title { font-weight: bold; color: #555; margin-bottom: 15px; font-size: 14px; border-bottom: 2px solid #b03060; display: inline-block; width: 100%; text-align: center; }
         .pie-box { display: flex; flex-wrap: wrap; justify-content: space-around; align-items: center; width: 100%; gap: 20px; }
-        .pie-legend { font-size: 12px; display: flex; flex-direction: column; gap: 5px; }
-        .legend-item { display: flex; align-items: center; gap: 8px; }
-        .legend-color { width: 12px; height: 12px; border-radius: 2px; }
-
-        /* NOUVEAUX STYLES POUR LE TABLEAU DE BORD IMAGE */
+        
+        /* TABLEAU DE BORD IMAGE */
         .dash-section { background: #fae8ee; color: #b03060; padding: 12px; font-weight: bold; margin: 25px 0 15px 0; font-size: 13px; text-transform: uppercase; border-left: 6px solid #b03060; }
         .dash-row { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
         .dash-card { background: white; border: 1px solid #e6e6e6; border-radius: 6px; padding: 15px; flex: 1; min-width: 250px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
@@ -511,7 +508,24 @@
                     <div id="dash-perf-att" class="dash-pie-box"></div>
                 </div>
             </div>
+            
+            <div class="dash-section">4. INDICES SPÉCIFIQUES : FACTEURS DE RISQUE ET SIGNES (CAMEMBERTS)</div>
+            <div class="dash-row">
+                <div class="dash-card">
+                    <div class="dash-title">Indice K-FR (Facteurs de Risque)</div>
+                    <div id="dash-kfr" class="dash-pie-box"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-title">Indice K-SC (Signes Cliniques Classiques)</div>
+                    <div id="dash-ksc" class="dash-pie-box"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-title">Indice K-SA (Signes d'Alerte/Tardifs)</div>
+                    <div id="dash-ksa" class="dash-pie-box"></div>
+                </div>
+            </div>
         </div>
+
         <div class="section-title">TAUX DE PARTICIPATION</div>
         <div class="row" style="align-items: center;">
             <div class="stat-card" style="flex:1;">
@@ -524,6 +538,7 @@
         <div class="section-title">TABLEAUX DÉTAILLÉS (RAPPORTS ACADÉMIQUES)</div>
         <div id="socio-demo-container"></div>
         <div id="connaissances-container"></div>
+        <div id="indices-specifiques-container"></div>
         <div id="attitudes-container"></div>
         <div id="pratiques-container"></div>
     </div>
@@ -549,7 +564,6 @@
 <div id="toast">Donnée synchronisée !</div>
 
 <script type="module">
-    // 1. IMPORT FIREBASE (Conserve)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, Timestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
@@ -606,6 +620,12 @@
                 scoreAttitude = (2.5 + Math.random() * 1.5).toFixed(1);
             }
 
+            // Génération réaliste des nouveaux indices K-FR, K-SC, K-SA
+            // Liés au score global de savoir pour de la cohérence statistique
+            let k_fr_score = Math.min(100, Math.max(0, scoreSavoir + (Math.floor(Math.random() * 30) - 15)));
+            let k_sc_score = Math.min(100, Math.max(0, scoreSavoir + (Math.floor(Math.random() * 20) - 5))); // SC souvent mieux connu
+            let k_sa_score = Math.min(100, Math.max(0, scoreSavoir - 15 + (Math.floor(Math.random() * 30) - 15))); // SA souvent moins bien connu
+
             let genObs = allObstacles.filter(() => Math.random() > 0.6);
             if(genObs.length === 0) genObs.push("Formation"); 
             
@@ -628,6 +648,7 @@
                 connaissance_cnlc: Math.random() > 0.6 ? "oui" : "non",
                 interet_registre: "Oui",
                 scoreSavoir: scoreSavoir, scorePratique: scorePratique, scoreAttitude: scoreAttitude,
+                k_fr: k_fr_score, k_sc: k_sc_score, k_sa: k_sa_score, // Nouveaux indices injectés
                 obstacles: genObs, 
                 risks: genRisks, 
                 signs: genSigns,
@@ -658,6 +679,7 @@
     window.requestAdmin = function() {
         if(isAdmin) return; 
         let code = prompt("Code administrateur :"); 
+        // Conservation du mot de passe demandé
         if(code === "1398") {
             isAdmin = true;
             document.querySelectorAll('.admin-only').forEach(el => el.classList.add('admin-visible'));
@@ -669,7 +691,6 @@
     };
 
     // --- FONCTION DE RENDU CAMEMBERT (SVG) ---
-    // Adapté pour le nouveau style tableau de bord (légende à droite)
     window.renderDashPie = function(containerId, data) {
         const container = document.getElementById(containerId);
         if(!container) return;
@@ -681,7 +702,6 @@
         data.forEach(item => {
             if(total === 0 || item.v === 0) return;
             const percent = (item.v / total);
-            // Empêche le bug SVG si percent est 1 (100%)
             if (percent === 1) {
                 svgContent += `<circle cx="0" cy="0" r="1" fill="${item.c}"></circle>`;
                 return;
@@ -717,7 +737,7 @@
         const total = database.length;
         if(total === 0) return;
 
-        // --- TAUX DE PARTICIPATION (Tableau + Camembert) ---
+        // --- TAUX DE PARTICIPATION ---
         const consentis = database.filter(d => d.consentement === 'oui').length;
         const refus = total - consentis; 
         const totalApproches = total; 
@@ -744,7 +764,6 @@
             </div>
         `;
 
-        // --- DASHBOARD : REPRODUCTION DE L'IMAGE ---
         // 0. SOCIODEMO
         let age_30 = database.filter(d => d.age_participant < 30).length;
         let age_30_45 = database.filter(d => d.age_participant >= 30 && d.age_participant <= 45).length;
@@ -786,7 +805,7 @@
             {l: 'Neutre/Nég.', v: att_neutre, c: '#bdbdbd'}
         ]);
 
-        // 2. ANALYSES CROISEES (Filtré sur "Bon Savoir" basé sur l'image)
+        // 2. ANALYSES CROISEES
         let dbBonSavoir = database.filter(d => d.scoreSavoir >= 70);
         let s_gyn = dbBonSavoir.filter(d => d.service.includes('Gynéco')).length;
         let s_med = dbBonSavoir.filter(d => d.service.includes('Interne')).length;
@@ -807,7 +826,6 @@
         ]);
 
         // 3. CROISEMENT PERFORMANCES (Lien CAP)
-        // Pratique vs Savoir (Focus sur Pratique Adéquate)
         let dbPratAdeq = database.filter(d => d.scorePratique >= 70);
         let ps_haut = dbPratAdeq.filter(d => d.scoreSavoir >= 70).length;
         let ps_bas = dbPratAdeq.filter(d => d.scoreSavoir < 70).length;
@@ -816,7 +834,6 @@
             {l: 'Savoir Bas -> Prat. Bon', v: ps_bas, c: '#fb8c00'}
         ]);
 
-        // Attitude vs Savoir (Focus sur Att Positive)
         let dbAttPos = database.filter(d => parseFloat(d.scoreAttitude) > 3.5);
         let as_haut = dbAttPos.filter(d => d.scoreSavoir >= 70).length;
         let as_bas = dbAttPos.filter(d => d.scoreSavoir < 70).length;
@@ -825,11 +842,38 @@
             {l: 'Savoir Bas -> Att. Pos', v: as_bas, c: '#e53935'}
         ]);
 
-        // --- Mise à jour des anciens tableaux en dessous ---
-        window.updateExtraTables(age_30, age_30_45, age_45, a1_count, a2_count, total, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq);
+        // 4. INDICES SPECIFIQUES (K-FR, K-SC, K-SA)
+        let kfr_bon = database.filter(d => d.k_fr >= 70).length;
+        let kfr_moyen = database.filter(d => d.k_fr >= 50 && d.k_fr < 70).length;
+        let kfr_faible = database.filter(d => d.k_fr < 50).length;
+        window.renderDashPie('dash-kfr', [
+            {l: 'Bon (≥70%)', v: kfr_bon, c: '#4db6ac'},
+            {l: 'Moyen (50-69%)', v: kfr_moyen, c: '#ffb74d'},
+            {l: 'Faible (<50%)', v: kfr_faible, c: '#e57373'}
+        ]);
+
+        let ksc_bon = database.filter(d => d.k_sc >= 70).length;
+        let ksc_moyen = database.filter(d => d.k_sc >= 50 && d.k_sc < 70).length;
+        let ksc_faible = database.filter(d => d.k_sc < 50).length;
+        window.renderDashPie('dash-ksc', [
+            {l: 'Bon (≥70%)', v: ksc_bon, c: '#4fc3f7'},
+            {l: 'Moyen (50-69%)', v: ksc_moyen, c: '#ffb74d'},
+            {l: 'Faible (<50%)', v: ksc_faible, c: '#f06292'}
+        ]);
+
+        let ksa_bon = database.filter(d => d.k_sa >= 70).length;
+        let ksa_moyen = database.filter(d => d.k_sa >= 50 && d.k_sa < 70).length;
+        let ksa_faible = database.filter(d => d.k_sa < 50).length;
+        window.renderDashPie('dash-ksa', [
+            {l: 'Bon (≥70%)', v: ksa_bon, c: '#7986cb'},
+            {l: 'Moyen (50-69%)', v: ksa_moyen, c: '#aed581'},
+            {l: 'Faible (<50%)', v: ksa_faible, c: '#ba68c8'}
+        ]);
+
+        window.updateExtraTables(age_30, age_30_45, age_45, a1_count, a2_count, total, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq, kfr_bon, kfr_moyen, kfr_faible, ksc_bon, ksc_moyen, ksc_faible, ksa_bon, ksa_moyen, ksa_faible);
     };
 
-    window.updateExtraTables = function(age_30, age_30_45, age_45, a1_count, a2_count, total, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq) {
+    window.updateExtraTables = function(age_30, age_30_45, age_45, a1_count, a2_count, total, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq, kfr_bon, kfr_moyen, kfr_faible, ksc_bon, ksc_moyen, ksc_faible, ksa_bon, ksa_moyen, ksa_faible) {
         if(total === 0) return;
 
         let mariee_count = database.filter(d => d.etat_civil === 'Mariée').length;
@@ -866,6 +910,28 @@
                     <tr><td class="row-header">Bonnes connaissances (Score ≥ 70%)</td><td>${k_bon}</td><td>${((k_bon/total)*100).toFixed(1)}</td></tr>
                     <tr><td class="row-header">Connaissances moyennes (Score 50-69%)</td><td>${k_moyen}</td><td>${((k_moyen/total)*100).toFixed(1)}</td></tr>
                     <tr><td class="row-header">Connaissances faibles (Score < 50%)</td><td>${k_faible}</td><td>${((k_faible/total)*100).toFixed(1)}</td></tr>
+                </tbody>
+            </table>
+        `;
+
+        // AJOUT DU TABLEAU DES INDICES SPÉCIFIQUES
+        document.getElementById('indices-specifiques-container').innerHTML = `
+            <table class="academic-table">
+                <thead>
+                    <tr><th style="width:50%;">Indices Spécifiques (Connaissances Détaillées)</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="3" class="group-header">Indice K-FR (Facteurs de Risque)</td></tr>
+                    <tr><td class="row-header">Bonne maîtrise (≥ 70%)</td><td>${kfr_bon}</td><td>${((kfr_bon/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Maîtrise faible à moyenne (< 70%)</td><td>${kfr_moyen + kfr_faible}</td><td>${(((kfr_moyen + kfr_faible)/total)*100).toFixed(1)}</td></tr>
+                    
+                    <tr><td colspan="3" class="group-header">Indice K-SC (Signes Cliniques Classiques)</td></tr>
+                    <tr><td class="row-header">Bonne maîtrise (≥ 70%)</td><td>${ksc_bon}</td><td>${((ksc_bon/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Maîtrise faible à moyenne (< 70%)</td><td>${ksc_moyen + ksc_faible}</td><td>${(((ksc_moyen + ksc_faible)/total)*100).toFixed(1)}</td></tr>
+
+                    <tr><td colspan="3" class="group-header">Indice K-SA (Signes d'Alerte / Tardifs)</td></tr>
+                    <tr><td class="row-header">Bonne maîtrise (≥ 70%)</td><td>${ksa_bon}</td><td>${((ksa_bon/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Maîtrise faible à moyenne (< 70%)</td><td>${ksa_moyen + ksa_faible}</td><td>${(((ksa_moyen + ksa_faible)/total)*100).toFixed(1)}</td></tr>
                 </tbody>
             </table>
         `;
