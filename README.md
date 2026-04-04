@@ -49,12 +49,15 @@
         td { border: 1px solid #eee; padding: 10px; text-align: center; vertical-align: middle; }
         .td-left { text-align: left; padding-left: 15px; width: 50%; }
 
-        .academic-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-family: 'Times New Roman', serif; font-size: 14px; background: white;}
-        .academic-table thead th { border-bottom: 2px solid #000; border-top: 2px solid #000; background: #fdfdfd; text-align: center; font-weight: bold; padding: 10px; }
-        .academic-table tbody td { border-bottom: 1px solid #ddd; padding: 8px; text-align: center; }
+        /* --- TABLEAU ACADÉMIQUE MATRICIEL --- */
+        .academic-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-family: 'Times New Roman', serif; font-size: 13px; background: white;}
+        .academic-table thead th { border: 1px solid #ddd; background: #fdfdfd; text-align: center; font-weight: bold; padding: 8px; vertical-align: middle; }
+        .academic-table thead tr:first-child th { border-top: 2px solid #000; }
+        .academic-table thead tr:last-child th { border-bottom: 2px solid #000; }
+        .academic-table tbody td { border: 1px solid #ddd; border-left: none; border-right: none; padding: 8px; text-align: center; }
         .academic-table tbody tr:last-child td { border-bottom: 2px solid #000; }
-        .academic-table .row-header { text-align: left; padding-left: 15px; font-weight: normal; }
-        .academic-table .group-header { background-color: #f0f8ff; font-weight: bold; text-align: left; padding-left: 10px; color: #0d47a1; }
+        .academic-table .row-header { text-align: left; padding-left: 20px; font-weight: normal; }
+        .academic-table .group-header { background-color: #f4f6f8; font-weight: bold; text-align: left; padding-left: 10px; color: #333; }
 
         .interpretation-text { font-family: 'Segoe UI', sans-serif; font-size: 13px; color: #444; background: #fff8e1; border-left: 4px solid #ffc107; padding: 10px; margin-bottom: 25px; line-height: 1.5; font-style: italic; }
 
@@ -730,114 +733,114 @@
         ];
         window.renderDashBar('dash-bar-savoir-service', servData, '#0288d1');
 
-        window.updateExtraTables(age_30, age_30_45, age_45, a1_count, a2_count, total, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq, kfr_bon, kfr_moyen, kfr_faible, ksc_bon, ksc_moyen, ksc_faible, ksa_bon, ksa_moyen, ksa_faible);
+        // Appel de la NOUVELLE fonction unifiée pour la table matricielle
+        window.updateExtraTables();
     };
 
-    window.updateExtraTables = function(age_30, age_30_45, age_45, a1_count, a2_count, total, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq, kfr_bon, kfr_moyen, kfr_faible, ksc_bon, ksc_moyen, ksc_faible, ksa_bon, ksa_moyen, ksa_faible) {
-        if(total === 0) return;
+    window.updateExtraTables = function() {
+        if(database.length === 0) return;
 
-        let mariee_count = database.filter(d => d.etat_civil === 'Mariée').length;
-        let celib_count = database.filter(d => d.etat_civil === 'Célibataire').length;
+        // Fonction utilitaire pour calculer les effectifs et pourcentages n (%)
+        const getStats = (subset) => {
+            const total = subset.length;
+            if (total === 0) return { cf: '0 (0.0%)', ce: '0 (0.0%)', pf: '0 (0.0%)', pe: '0 (0.0%)', an: '0 (0.0%)', ap: '0 (0.0%)' };
+            
+            // Seuils d'évaluation (Connaissances/Pratiques >= 70% | Attitudes > 3.5)
+            const ce = subset.filter(d => d.scoreSavoir >= 70).length;
+            const pe = subset.filter(d => d.scorePratique >= 70).length;
+            const ap = subset.filter(d => parseFloat(d.scoreAttitude) > 3.5).length;
+            
+            const cf = total - ce;
+            const pf = total - pe;
+            const an = total - ap;
+
+            const pct = (val) => `${val} (${((val/total)*100).toFixed(1)}%)`;
+
+            return {
+                cf: pct(cf), ce: pct(ce),
+                pf: pct(pf), pe: pct(pe),
+                an: pct(an), ap: pct(ap)
+            };
+        };
+
+        // Définition des groupes et sous-variables
+        const variablesList = {
+            "Tranches d'âge": [
+                { label: "Moins de 30 ans", data: database.filter(d => d.age_participant < 30) },
+                { label: "De 30 à 45 ans", data: database.filter(d => d.age_participant >= 30 && d.age_participant <= 45) },
+                { label: "Plus de 45 ans", data: database.filter(d => d.age_participant > 45) }
+            ],
+            "Niveau d'étude": [
+                { label: "Niveau Supérieur (A1/LMD)", data: database.filter(d => d.niveau && d.niveau.includes('A1')) },
+                { label: "Niveau Technique (A2)", data: database.filter(d => d.niveau && !d.niveau.includes('A1')) }
+            ],
+            "Ancienneté Professionnelle": [
+                { label: "Moins de 5 ans", data: database.filter(d => d.anciennete < 5) },
+                { label: "De 5 à 10 ans", data: database.filter(d => d.anciennete >= 5 && d.anciennete <= 10) },
+                { label: "Plus de 10 ans", data: database.filter(d => d.anciennete > 10) }
+            ],
+            "Service d'affectation": [
+                { label: "Gynécologie-Obstétrique", data: database.filter(d => d.service && d.service.includes('Gynéco')) },
+                { label: "Médecine Interne", data: database.filter(d => d.service && d.service.includes('Interne')) },
+                { label: "Chirurgie", data: database.filter(d => d.service && d.service.includes('Chirurgie')) },
+                { label: "Urgences / Autres", data: database.filter(d => d.service && d.service.includes('Urgences')) }
+            ],
+            "État Civil": [
+                { label: "Mariée", data: database.filter(d => d.etat_civil === 'Mariée') },
+                { label: "Célibataire / Autre", data: database.filter(d => d.etat_civil !== 'Mariée') }
+            ]
+        };
+
+        // Construction du tableau matriciel
+        let tableHTML = `
+            <div style="font-weight:bold; text-align:center; margin-bottom:10px; font-family:'Times New Roman', serif;">
+                Tableau : Connaissance, Attitude et Pratique en fonction des variables socio-démographiques (N=${database.length})
+            </div>
+            <table class="academic-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2" style="text-align: left; padding-left: 10px; width: 28%;">Variables sociodémographiques</th>
+                        <th colspan="2">C (Connaissances)</th>
+                        <th colspan="2">P (Pratiques)</th>
+                        <th colspan="2">A (Attitudes)</th>
+                    </tr>
+                    <tr>
+                        <th style="font-weight:normal;">Faible n(%)</th>
+                        <th style="font-weight:normal;">Élevé n(%)</th>
+                        <th style="font-weight:normal;">Faible n(%)</th>
+                        <th style="font-weight:normal;">Élevé n(%)</th>
+                        <th style="font-weight:normal;">Négative n(%)</th>
+                        <th style="font-weight:normal;">Positive n(%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        for (const [groupName, rows] of Object.entries(variablesList)) {
+            tableHTML += `<tr><td colspan="7" class="group-header">${groupName}</td></tr>`;
+            rows.forEach(row => {
+                const stats = getStats(row.data);
+                tableHTML += `
+                    <tr>
+                        <td class="row-header">${row.label}</td>
+                        <td>${stats.cf}</td><td>${stats.ce}</td>
+                        <td>${stats.pf}</td><td>${stats.pe}</td>
+                        <td>${stats.an}</td><td>${stats.ap}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        tableHTML += `</tbody></table>`;
+
+        // Injection du grand tableau et nettoyage des anciens conteneurs devenus inutiles
+        document.getElementById('socio-demo-container').innerHTML = tableHTML;
+        document.getElementById('connaissances-container').innerHTML = ""; 
+        document.getElementById('attitudes-container').innerHTML = "";
+        document.getElementById('pratiques-container').innerHTML = "";
         
-        let anc_5 = database.filter(d => d.anciennete < 5).length;
-        let anc_5_10 = database.filter(d => d.anciennete >= 5 && d.anciennete <= 10).length;
-        let anc_10 = database.filter(d => d.anciennete > 10).length;
-
-        let t_gyn = database.filter(d => d.service.includes('Gynéco')).length;
-        let t_med = database.filter(d => d.service.includes('Interne')).length;
-        let t_chir = database.filter(d => d.service.includes('Chirurgie')).length;
-        let t_urg = database.filter(d => d.service.includes('Urgences')).length;
-
-        document.getElementById('socio-demo-container').innerHTML = `
-            <table class="academic-table">
-                <thead>
-                    <tr><th style="width:50%;">Variables socio-démographiques et professionnelles</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td colspan="3" class="group-header">Tranches d'âge</td></tr>
-                    <tr><td class="row-header">Moins de 30 ans</td><td>${age_30}</td><td>${((age_30/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">De 30 à 45 ans</td><td>${age_30_45}</td><td>${((age_30_45/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Plus de 45 ans</td><td>${age_45}</td><td>${((age_45/total)*100).toFixed(1)}</td></tr>
-                    
-                    <tr><td colspan="3" class="group-header">Niveau d'étude</td></tr>
-                    <tr><td class="row-header">Niveau Supérieur (A1/LMD)</td><td>${a1_count}</td><td>${((a1_count/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Niveau Technique (A2)</td><td>${a2_count}</td><td>${((a2_count/total)*100).toFixed(1)}</td></tr>
-                    
-                    <tr><td colspan="3" class="group-header">Ancienneté Professionnelle</td></tr>
-                    <tr><td class="row-header">Moins de 5 ans</td><td>${anc_5}</td><td>${((anc_5/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">De 5 à 10 ans</td><td>${anc_5_10}</td><td>${((anc_5_10/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Plus de 10 ans</td><td>${anc_10}</td><td>${((anc_10/total)*100).toFixed(1)}</td></tr>
-
-                    <tr><td colspan="3" class="group-header">Service d'affectation</td></tr>
-                    <tr><td class="row-header">Gynécologie-Obstétrique</td><td>${t_gyn}</td><td>${((t_gyn/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Médecine Interne</td><td>${t_med}</td><td>${((t_med/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Chirurgie</td><td>${t_chir}</td><td>${((t_chir/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Urgences / Autres</td><td>${t_urg}</td><td>${((t_urg/total)*100).toFixed(1)}</td></tr>
-
-                    <tr><td colspan="3" class="group-header">État Civil</td></tr>
-                    <tr><td class="row-header">Mariée</td><td>${mariee_count}</td><td>${((mariee_count/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Célibataire / Autre</td><td>${celib_count}</td><td>${((celib_count/total)*100).toFixed(1)}</td></tr>
-                </tbody>
-            </table>
-        `;
-
-        document.getElementById('connaissances-container').innerHTML = `
-            <table class="academic-table">
-                <thead>
-                    <tr><th style="width:50%;">Niveau de connaissances globales</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td class="row-header">Bonnes connaissances (Score ≥ 70%)</td><td>${k_bon}</td><td>${((k_bon/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Connaissances moyennes (Score 50-69%)</td><td>${k_moyen}</td><td>${((k_moyen/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Connaissances faibles (Score < 50%)</td><td>${k_faible}</td><td>${((k_faible/total)*100).toFixed(1)}</td></tr>
-                </tbody>
-            </table>
-        `;
-
-        document.getElementById('indices-specifiques-container').innerHTML = `
-            <table class="academic-table">
-                <thead>
-                    <tr><th style="width:50%;">Indices Spécifiques (Connaissances Détaillées)</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td colspan="3" class="group-header">Indice K-FR (Facteurs de Risque)</td></tr>
-                    <tr><td class="row-header">Bonne maîtrise (≥ 70%)</td><td>${kfr_bon}</td><td>${((kfr_bon/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Maîtrise faible à moyenne (< 70%)</td><td>${kfr_moyen + kfr_faible}</td><td>${(((kfr_moyen + kfr_faible)/total)*100).toFixed(1)}</td></tr>
-                    
-                    <tr><td colspan="3" class="group-header">Indice K-SC (Signes Cliniques Classiques)</td></tr>
-                    <tr><td class="row-header">Bonne maîtrise (≥ 70%)</td><td>${ksc_bon}</td><td>${((ksc_bon/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Maîtrise faible à moyenne (< 70%)</td><td>${ksc_moyen + ksc_faible}</td><td>${(((ksc_moyen + ksc_faible)/total)*100).toFixed(1)}</td></tr>
-
-                    <tr><td colspan="3" class="group-header">Indice K-SA (Signes d'Alerte / Tardifs)</td></tr>
-                    <tr><td class="row-header">Bonne maîtrise (≥ 70%)</td><td>${ksa_bon}</td><td>${((ksa_bon/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Maîtrise faible à moyenne (< 70%)</td><td>${ksa_moyen + ksa_faible}</td><td>${(((ksa_moyen + ksa_faible)/total)*100).toFixed(1)}</td></tr>
-                </tbody>
-            </table>
-        `;
-
-        document.getElementById('attitudes-container').innerHTML = `
-            <table class="academic-table">
-                <thead>
-                    <tr><th style="width:50%;">Attitudes envers le dépistage</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td class="row-header">Attitude positive / favorable</td><td>${att_pos}</td><td>${((att_pos/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Attitude neutre ou négative</td><td>${att_neutre}</td><td>${((att_neutre/total)*100).toFixed(1)}</td></tr>
-                </tbody>
-            </table>
-        `;
-
-        document.getElementById('pratiques-container').innerHTML = `
-            <table class="academic-table">
-                <thead>
-                    <tr><th style="width:50%;">Pratique du dépistage (Infirmières, N=${total})</th><th>Effectifs (n)</th><th>Pourcentage (%)</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td class="row-header">Pratique adéquate (Score ≥ 70%)</td><td>${p_adeq}</td><td>${((p_adeq/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Pratique inadéquate (Score < 70%)</td><td>${p_inadeq}</td><td>${((p_inadeq/total)*100).toFixed(1)}</td></tr>
-                </tbody>
-            </table>
-        `;
+        // (Optionnel) Conserver uniquement les indices spécifiques si nécessaire
+        document.getElementById('indices-specifiques-container').innerHTML = ""; 
     };
 
     window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
