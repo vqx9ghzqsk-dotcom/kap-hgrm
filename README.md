@@ -49,7 +49,6 @@
         td { border: 1px solid #eee; padding: 10px; text-align: center; vertical-align: middle; }
         .td-left { text-align: left; padding-left: 15px; width: 50%; }
 
-        /* NOUVEAUX STYLES POUR LES TABLEAUX ACADÉMIQUES */
         .academic-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-family: 'Times New Roman', serif; font-size: 14px; background: white;}
         .academic-table thead th { border-bottom: 2px solid #000; border-top: 2px solid #000; background: #fdfdfd; text-align: center; font-weight: bold; padding: 10px; }
         .academic-table tbody td { border-bottom: 1px solid #ddd; padding: 8px; text-align: center; }
@@ -68,22 +67,25 @@
         .btn-save:hover { background: #880e4f; transform: translateY(-2px); }
         .btn-save:disabled { background: #ccc; cursor: not-allowed; }
         
-        /* Stats & Pie Charts */
+        /* Stats & Pie Charts (Ancien style préservé) */
         .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; }
         .stat-title { font-weight: bold; color: #555; margin-bottom: 15px; font-size: 14px; border-bottom: 2px solid #b03060; display: inline-block; width: 100%; text-align: center; }
-        
         .pie-box { display: flex; flex-wrap: wrap; justify-content: space-around; align-items: center; width: 100%; gap: 20px; }
         .pie-legend { font-size: 12px; display: flex; flex-direction: column; gap: 5px; }
         .legend-item { display: flex; align-items: center; gap: 8px; }
         .legend-color { width: 12px; height: 12px; border-radius: 2px; }
 
-        .bar-container { display: flex; align-items: center; margin-bottom: 12px; font-size: 12px; width: 100%; }
-        .bar-label { width: 220px; font-weight: 600; color: #444; }
-        .bar-track { flex-grow: 1; background: #f0f0f0; height: 20px; border-radius: 10px; margin: 0 15px; overflow: hidden; }
-        .bar-fill { height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: bold; transition: width 1s; }
-        .bar-value { width: 40px; text-align: right; font-weight: bold; color: #b03060; }
+        /* NOUVEAUX STYLES POUR LE TABLEAU DE BORD IMAGE */
+        .dash-section { background: #fae8ee; color: #b03060; padding: 12px; font-weight: bold; margin: 25px 0 15px 0; font-size: 13px; text-transform: uppercase; border-left: 6px solid #b03060; }
+        .dash-row { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        .dash-card { background: white; border: 1px solid #e6e6e6; border-radius: 6px; padding: 15px; flex: 1; min-width: 250px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .dash-title { border-bottom: 2px solid #880e4f; padding-bottom: 8px; margin-bottom: 15px; text-align: center; font-weight: bold; font-size: 13px; color: #444; }
+        .dash-pie-box { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .dash-pie-box svg { flex-shrink: 0; }
+        .dash-legend { display: flex; flex-direction: column; gap: 6px; font-size: 11px; color: #333; }
+        .dash-legend-item { display: flex; align-items: center; gap: 8px; }
+        .dash-legend-color { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
 
-        .interpretation-box { background: #e3f2fd; border-left: 5px solid #2196f3; padding: 15px; font-size: 13px; color: #0d47a1; margin-top: 15px; border-radius: 4px; width: 100%; }
         .counter-badge { background: #b03060; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; vertical-align: middle; margin-left: 5px;}
 
         /* Modal */
@@ -91,17 +93,7 @@
         .modal-content { background: white; width: 80%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
         .modal-close { font-size: 24px; cursor: pointer; color: #888; }
-        .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; font-size: 13px; }
-        .detail-label { font-weight: bold; color: #555; }
-        .detail-val { color: #b03060; font-weight: 600; text-align: right; width: 50%; }
-        .detail-val-long { color: #333; font-style: italic; text-align: left; width: 100%; background: #f9f9f9; padding: 8px; margin-top: 5px; border-radius: 4px; }
         
-        .reco-box { background: #fff3e0; border: 1px solid #ffe0b2; padding: 15px; border-radius: 6px; margin-bottom: 10px; }
-        .reco-title { color: #e65100; font-weight: bold; margin-bottom: 5px; }
-        
-        .conclusion-box { background: #f1f8e9; border: 1px solid #c5e1a5; padding: 15px; border-radius: 6px; margin-bottom: 15px; }
-        .conclusion-title { color: #2e7d32; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; font-size:12px; }
-
         /* Toast Notification */
         #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 17px; }
         #toast.show { visibility: visible; -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
@@ -210,7 +202,6 @@
             </div>
 
             <div class="section-title">II. CONNAISSANCES (SAVOIRS THÉORIQUES)</div>
-
             <div class="sub-title">Connaissances Biologiques & Types</div>
             <div class="row" style="background:#f0f8ff; padding:10px; border-radius:6px;">
                 <div class="field">
@@ -468,25 +459,72 @@
     <div id="content-3" class="form-content">
         <button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab3Word()">📥 TÉLÉCHARGER TOUTES LES DONNÉES DE L'ONGLET 3 (WORD)</button>
 
-        <div class="section-title">1. TAUX DE PARTICIPATION</div>
-        <div id="taux-participation-container"></div>
+        <div id="dashboard-camemberts">
+            <div class="dash-section">0. ANALYSE SOCIODÉMOGRAPHIQUE (CAMEMBERTS)</div>
+            <div class="dash-row">
+                <div class="dash-card">
+                    <div class="dash-title">Répartition par Âge</div>
+                    <div id="dash-age" class="dash-pie-box"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-title">Répartition par Niveau d'Étude</div>
+                    <div id="dash-etude" class="dash-pie-box"></div>
+                </div>
+            </div>
 
-        <div class="section-title">2. CARACTÉRISTIQUES SOCIO-DÉMOGRAPHIQUES</div>
-        <div id="socio-demo-container"></div>
+            <div class="dash-section">1. ÉVALUATION GÉNÉRALE DES C.A.P. (CAMEMBERTS)</div>
+            <div class="dash-row">
+                <div class="dash-card">
+                    <div class="dash-title">Niveau de Savoir (Théorique)</div>
+                    <div id="dash-savoir" class="dash-pie-box"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-title">Qualité de la Pratique</div>
+                    <div id="dash-pratique" class="dash-pie-box"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-title">Type d'Attitude</div>
+                    <div id="dash-attitude" class="dash-pie-box"></div>
+                </div>
+            </div>
 
-        <div class="section-title">3. RÉPARTITION DU PERSONNEL SELON LEUR SERVICE</div>
-        <div class="stat-card" style="width: 100%; max-width: 500px; margin: auto;">
-            <div class="stat-title">Répartition par Service</div>
-            <div id="pie-service" class="pie-box"></div>
+            <div class="dash-section">2. ANALYSES CROISÉES : CONNAISSANCES PAR CATÉGORIE</div>
+            <div class="dash-row">
+                <div class="dash-card">
+                    <div class="dash-title">Savoir vs Département (Service)</div>
+                    <div id="dash-cross-dept" class="dash-pie-box"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-title">Savoir vs Niveau d'Étude</div>
+                    <div id="dash-cross-niveau" class="dash-pie-box"></div>
+                </div>
+            </div>
+
+            <div class="dash-section">3. CROISEMENT DES PERFORMANCES (LE LIEN C.A.P.)</div>
+            <div class="dash-row">
+                <div class="dash-card">
+                    <div class="dash-title">Pratique vs Niveau de Savoir</div>
+                    <div id="dash-perf-prat" class="dash-pie-box"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-title">Attitude vs Niveau de Savoir</div>
+                    <div id="dash-perf-att" class="dash-pie-box"></div>
+                </div>
+            </div>
+        </div>
+        <div class="section-title">TAUX DE PARTICIPATION</div>
+        <div class="row" style="align-items: center;">
+            <div class="stat-card" style="flex:1;">
+                <div class="stat-title">Participation à l'étude</div>
+                <div id="pie-participation" class="pie-box"></div>
+            </div>
+            <div id="taux-participation-container" style="flex:2;"></div>
         </div>
 
-        <div class="section-title">4. CONNAISSANCES SUR LE DÉPISTAGE DU CANCER DU SEIN</div>
+        <div class="section-title">TABLEAUX DÉTAILLÉS (RAPPORTS ACADÉMIQUES)</div>
+        <div id="socio-demo-container"></div>
         <div id="connaissances-container"></div>
-
-        <div class="section-title">5. ATTITUDES PAR RAPPORT AU DÉPISTAGE</div>
         <div id="attitudes-container"></div>
-
-        <div class="section-title">6. PRATIQUES DE DÉPISTAGE (INFIRMIÈRES)</div>
         <div id="pratiques-container"></div>
     </div>
 
@@ -631,17 +669,23 @@
     };
 
     // --- FONCTION DE RENDU CAMEMBERT (SVG) ---
-    window.renderPie = function(containerId, data) {
+    // Adapté pour le nouveau style tableau de bord (légende à droite)
+    window.renderDashPie = function(containerId, data) {
         const container = document.getElementById(containerId);
         if(!container) return;
         
         const total = data.reduce((sum, item) => sum + item.v, 0);
         let currentAngle = 0;
-        let svgContent = `<svg width="150" height="150" viewBox="-1 -1 2 2" style="transform: rotate(-90deg); border-radius: 50%;">`;
+        let svgContent = `<svg width="100" height="100" viewBox="-1 -1 2 2" style="transform: rotate(-90deg); border-radius: 50%;">`;
         
         data.forEach(item => {
-            if(total === 0) return;
+            if(total === 0 || item.v === 0) return;
             const percent = (item.v / total);
+            // Empêche le bug SVG si percent est 1 (100%)
+            if (percent === 1) {
+                svgContent += `<circle cx="0" cy="0" r="1" fill="${item.c}"></circle>`;
+                return;
+            }
             const largeArcFlag = percent > 0.5 ? 1 : 0;
             const startX = Math.cos(2 * Math.PI * currentAngle);
             const startY = Math.sin(2 * Math.PI * currentAngle);
@@ -654,13 +698,13 @@
         
         svgContent += `</svg>`;
         
-        let legendHtml = `<div class="pie-legend">`;
+        let legendHtml = `<div class="dash-legend">`;
         data.forEach(item => {
             let pVal = total > 0 ? ((item.v/total)*100).toFixed(1) : 0;
             legendHtml += `
-                <div class="legend-item">
-                    <div class="legend-color" style="background:${item.c}"></div>
-                    <span>${item.l}: <b>${item.v} (${pVal}%)</b></span>
+                <div class="dash-legend-item">
+                    <div class="dash-legend-color" style="background:${item.c}"></div>
+                    <span><span style="color:#777;">■</span> ${item.l}: <b>${item.v} (${pVal}%)</b></span>
                 </div>`;
         });
         legendHtml += `</div>`;
@@ -673,43 +717,123 @@
         const total = database.length;
         if(total === 0) return;
 
-        // 1. Taux de participation
+        // --- TAUX DE PARTICIPATION (Tableau + Camembert) ---
         const consentis = database.filter(d => d.consentement === 'oui').length;
-        const totalApproches = total; // 178 infirmières
+        const refus = total - consentis; 
+        const totalApproches = total; 
         const tauxPart = ((consentis / totalApproches) * 100).toFixed(1);
         
+        window.renderDashPie('pie-participation', [
+            {l: 'Accepté (Inclus)', v: consentis, c: '#4caf50'},
+            {l: 'Refusé', v: refus, c: '#f44336'}
+        ]);
+
         document.getElementById('taux-participation-container').innerHTML = `
-            <div class="interpretation-text">
-                Sur un total de ${totalApproches} infirmières sollicitées au sein de l'Hôpital Général de Référence de Makala, ${consentis} ont accepté de participer et ont été incluses dans l'étude, soit un taux de participation de <b>${tauxPart}%</b>.
+            <table class="academic-table" style="margin-bottom:0;">
+                <thead>
+                    <tr><th>Statut</th><th>Effectifs (n)</th><th>Pourcentage (%)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="row-header">Ont accepté de participer</td><td>${consentis}</td><td>${tauxPart}</td></tr>
+                    <tr><td class="row-header">Ont refusé / Exclus</td><td>${refus}</td><td>${(100 - tauxPart).toFixed(1)}</td></tr>
+                    <tr><td class="row-header" style="font-weight:bold;">Total sollicité</td><td style="font-weight:bold;">${totalApproches}</td><td style="font-weight:bold;">100.0</td></tr>
+                </tbody>
+            </table>
+            <div class="interpretation-text" style="margin-top:10px; margin-bottom:0;">
+                Sur un total de ${totalApproches} infirmières sollicitées au sein de l'Hôpital, ${consentis} ont accepté de participer, soit un taux de participation de <b>${tauxPart}%</b>.
             </div>
         `;
 
-        // 3. Répartition par service (Figure)
-        const servicesList = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences / Autre'];
-        const colors = ['#e91e63', '#9c27b0', '#673ab7', '#3f51b5'];
-        let crossService = servicesList.map((s, idx) => ({
-            l: s,
-            v: database.filter(d => d.service === s).length,
-            c: colors[idx]
-        }));
-        window.renderPie('pie-service', crossService);
-
-        window.updateExtraTables();
-    };
-
-    window.updateExtraTables = function() {
-        const total = database.length;
-        if(total === 0) return;
-
-        // 2. Caractéristiques socio-démographiques
-        let a1_count = database.filter(d => d.niveau.includes('A1')).length;
-        let a2_count = total - a1_count;
-        let mariee_count = database.filter(d => d.etat_civil === 'Mariée').length;
-        let celib_count = database.filter(d => d.etat_civil === 'Célibataire').length;
-        
+        // --- DASHBOARD : REPRODUCTION DE L'IMAGE ---
+        // 0. SOCIODEMO
         let age_30 = database.filter(d => d.age_participant < 30).length;
         let age_30_45 = database.filter(d => d.age_participant >= 30 && d.age_participant <= 45).length;
         let age_45 = database.filter(d => d.age_participant > 45).length;
+        window.renderDashPie('dash-age', [
+            {l: '<30', v: age_30, c: '#e8749f'},
+            {l: '30-45', v: age_30_45, c: '#9c59b6'},
+            {l: '>45', v: age_45, c: '#7b68ee'}
+        ]);
+
+        let a1_count = database.filter(d => d.niveau.includes('A1')).length;
+        let a2_count = total - a1_count;
+        window.renderDashPie('dash-etude', [
+            {l: 'A1/LMD', v: a1_count, c: '#5fbfa4'},
+            {l: 'A2', v: a2_count, c: '#8bc34a'}
+        ]);
+
+        // 1. EVALUATION CAP
+        let k_bon = database.filter(d => d.scoreSavoir >= 70).length;
+        let k_moyen = database.filter(d => d.scoreSavoir >= 50 && d.scoreSavoir < 70).length;
+        let k_faible = database.filter(d => d.scoreSavoir < 50).length;
+        window.renderDashPie('dash-savoir', [
+            {l: 'Bon (≥70%)', v: k_bon, c: '#2e7d32'},
+            {l: 'Moyen (50-69%)', v: k_moyen, c: '#e67e22'},
+            {l: 'Faible (<50%)', v: k_faible, c: '#d32f2f'}
+        ]);
+
+        let p_adeq = database.filter(d => d.scorePratique >= 70).length;
+        let p_inadeq = database.filter(d => d.scorePratique < 70).length;
+        window.renderDashPie('dash-pratique', [
+            {l: 'Adéquate (≥70%)', v: p_adeq, c: '#1976d2'},
+            {l: 'Insuffisante', v: p_inadeq, c: '#e53935'}
+        ]);
+
+        let att_pos = database.filter(d => parseFloat(d.scoreAttitude) > 3.5).length;
+        let att_neutre = total - att_pos;
+        window.renderDashPie('dash-attitude', [
+            {l: 'Positive (>3.5)', v: att_pos, c: '#66bb6a'},
+            {l: 'Neutre/Nég.', v: att_neutre, c: '#bdbdbd'}
+        ]);
+
+        // 2. ANALYSES CROISEES (Filtré sur "Bon Savoir" basé sur l'image)
+        let dbBonSavoir = database.filter(d => d.scoreSavoir >= 70);
+        let s_gyn = dbBonSavoir.filter(d => d.service.includes('Gynéco')).length;
+        let s_med = dbBonSavoir.filter(d => d.service.includes('Interne')).length;
+        let s_chir = dbBonSavoir.filter(d => d.service.includes('Chirurgie')).length;
+        let s_urg = dbBonSavoir.filter(d => d.service.includes('Urgences')).length;
+        window.renderDashPie('dash-cross-dept', [
+            {l: 'Gynécologie-Obstétrique', v: s_gyn, c: '#e91e63'},
+            {l: 'Médecine Interne', v: s_med, c: '#9c27b0'},
+            {l: 'Chirurgie', v: s_chir, c: '#3f51b5'},
+            {l: 'Urgences / Autre', v: s_urg, c: '#5c6bc0'}
+        ]);
+
+        let s_a1 = dbBonSavoir.filter(d => d.niveau.includes('A1')).length;
+        let s_a2 = dbBonSavoir.filter(d => !d.niveau.includes('A1')).length;
+        window.renderDashPie('dash-cross-niveau', [
+            {l: 'A1 - Bon Savoir', v: s_a1, c: '#26a69a'},
+            {l: 'A2 - Bon Savoir', v: s_a2, c: '#ffa726'}
+        ]);
+
+        // 3. CROISEMENT PERFORMANCES (Lien CAP)
+        // Pratique vs Savoir (Focus sur Pratique Adéquate)
+        let dbPratAdeq = database.filter(d => d.scorePratique >= 70);
+        let ps_haut = dbPratAdeq.filter(d => d.scoreSavoir >= 70).length;
+        let ps_bas = dbPratAdeq.filter(d => d.scoreSavoir < 70).length;
+        window.renderDashPie('dash-perf-prat', [
+            {l: 'Savoir Haut -> Prat. Bon', v: ps_haut, c: '#43a047'},
+            {l: 'Savoir Bas -> Prat. Bon', v: ps_bas, c: '#fb8c00'}
+        ]);
+
+        // Attitude vs Savoir (Focus sur Att Positive)
+        let dbAttPos = database.filter(d => parseFloat(d.scoreAttitude) > 3.5);
+        let as_haut = dbAttPos.filter(d => d.scoreSavoir >= 70).length;
+        let as_bas = dbAttPos.filter(d => d.scoreSavoir < 70).length;
+        window.renderDashPie('dash-perf-att', [
+            {l: 'Savoir Haut -> Att. Pos', v: as_haut, c: '#1e88e5'},
+            {l: 'Savoir Bas -> Att. Pos', v: as_bas, c: '#e53935'}
+        ]);
+
+        // --- Mise à jour des anciens tableaux en dessous ---
+        window.updateExtraTables(age_30, age_30_45, age_45, a1_count, a2_count, total, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq);
+    };
+
+    window.updateExtraTables = function(age_30, age_30_45, age_45, a1_count, a2_count, total, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq) {
+        if(total === 0) return;
+
+        let mariee_count = database.filter(d => d.etat_civil === 'Mariée').length;
+        let celib_count = database.filter(d => d.etat_civil === 'Célibataire').length;
 
         document.getElementById('socio-demo-container').innerHTML = `
             <table class="academic-table">
@@ -733,11 +857,6 @@
             </table>
         `;
 
-        // 4. Répartition connaissances
-        let k_bon = database.filter(d => d.scoreSavoir >= 70).length;
-        let k_moyen = database.filter(d => d.scoreSavoir >= 50 && d.scoreSavoir < 70).length;
-        let k_faible = database.filter(d => d.scoreSavoir < 50).length;
-
         document.getElementById('connaissances-container').innerHTML = `
             <table class="academic-table">
                 <thead>
@@ -751,10 +870,6 @@
             </table>
         `;
 
-        // 5. Répartition attitudes
-        let att_pos = database.filter(d => parseFloat(d.scoreAttitude) > 3.5).length;
-        let att_neutre = total - att_pos;
-
         document.getElementById('attitudes-container').innerHTML = `
             <table class="academic-table">
                 <thead>
@@ -767,13 +882,9 @@
             </table>
         `;
 
-        // 6. Distribution des pratiques (uniquement sexe féminin)
         let femmes = database.filter(d => d.sexe === 'F');
         let totalF = femmes.length;
-        if(totalF === 0) totalF = 1; // Évite la division par 0 au cas où
-        
-        let p_adeq = femmes.filter(d => d.scorePratique >= 70).length;
-        let p_inadeq = femmes.filter(d => d.scorePratique < 70).length;
+        if(totalF === 0) totalF = 1;
 
         document.getElementById('pratiques-container').innerHTML = `
             <table class="academic-table">
