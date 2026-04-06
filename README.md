@@ -1,873 +1,973 @@
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</title>
+    <title>Dashboard Recherche | Cancer du Sein HGR Makala</title>
+    <!-- Google Fonts: Inter for UI, Merriweather for Reports -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        /* --- STYLE GLOBAL --- */
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
-        .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 900px;}
-        
-        /* Navigation */
-        .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 100; }
-        .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; transition: 0.2s; }
-        .tab.active { background: #b03060; color: white; border-color: #b03060; }
-        
-        /* Simulation Mode Badge */
-        .sim-badge { background: #ff9800; color: white; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-left: 10px; }
+        /* --- DESIGN SYSTEM --- */
+        :root {
+            --primary: #b03060; /* Deep Pink */
+            --primary-dark: #880e4f;
+            --primary-light: #fce4ec;
+            --secondary: #0d47a1; /* Clinical Blue */
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --radius: 12px;
+            --radius-sm: 6px;
+        }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container { 
+            max-width: 1400px; 
+            margin: auto; 
+            background: var(--bg-card); 
+            border-radius: var(--radius); 
+            box-shadow: var(--shadow-lg); 
+            min-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        .app-header {
+            background: white;
+            border-bottom: 2px solid var(--primary-light);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .app-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .app-title h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .ribbon-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,2C10.34,2,9,3.34,9,5c0,1.21,0.72,2.26,1.75,2.75L6.5,15.5C5.5,17.5,6.5,20,9,20c1.5,0,2.5-0.5,3-1.5c0.5,1,1.5,1.5,3,1.5c2.5,0,3.5-2.5,2.5-4.5l-4.25-7.75C14.28,7.26,15,6.21,15,5C15,3.34,13.66,2,12,2z M12,4c0.55,0,1,0.45,1,1s-0.45,1-1,1s-1-0.45-1-1S11.45,4,12,4z"/></svg>');
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,2C10.34,2,9,3.34,9,5c0,1.21,0.72,2.26,1.75,2.75L6.5,15.5C5.5,17.5,6.5,20,9,20c1.5,0,2.5-0.5,3-1.5c0.5,1,1.5,1.5,3,1.5c2.5,0,3.5-2.5,2.5-4.5l-4.25-7.75C14.28,7.26,15,6.21,15,5C15,3.34,13.66,2,12,2z M12,4c0.55,0,1,0.45,1,1s-0.45,1-1,1s-1-0.45-1-1S11.45,4,12,4z"/></svg>');
+            mask-size: cover;
+            -webkit-mask-size: cover;
+        }
+
+        .header-tabs { 
+            display: flex; 
+            background: #f1f5f9; 
+            padding: 6px; 
+            gap: 4px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .tab { 
+            padding: 10px 18px; 
+            font-weight: 600; 
+            font-size: 13px; 
+            border: none; 
+            border-radius: var(--radius-sm); 
+            color: var(--text-muted); 
+            background: transparent; 
+            cursor: pointer; 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tab:hover { background: rgba(0,0,0,0.05); color: var(--text-main); }
+        .tab.active { 
+            background: white; 
+            color: var(--primary); 
+            box-shadow: var(--shadow-sm); 
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 30px;
+            background: #f8fafc;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* --- SYSTEM BADGES --- */
+        .sim-badge { background: #ff9800; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
         .admin-only { display: none !important; }
-        .admin-visible { display: inline-block !important; }
+        .admin-visible { display: flex !important; }
+
+        .btn-premium {
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .btn-secondary { background: #334155; color: white; }
+        .btn-success { background: #10b981; color: white; }
+
+        /* --- CONTENT AREAS --- */
+        .form-content { 
+            padding: 40px; 
+            display: none; 
+            max-height: calc(90vh - 150px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+        .form-content.active { display: block; animation: slideIn 0.4s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- FORMS AND FIELDS --- */
+        .section-title { 
+            background: var(--primary-light); 
+            color: var(--primary-dark); 
+            padding: 16px 20px; 
+            font-weight: 700; 
+            border-radius: var(--radius-sm);
+            margin: 30px 0 20px 0; 
+            text-transform: uppercase; 
+            font-size: 14px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            border-left: 4px solid var(--primary);
+        }
+        .sub-title { font-weight: 700; color: var(--primary); margin: 25px 0 10px 0; font-size: 15px; border-bottom: 2px solid var(--primary-light); display: inline-block; padding-bottom: 4px; }
         
-        .btn-auth { margin-left: auto; background: #333; color: white; padding: 10px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
-        .btn-excel { background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-left: 10px;}
+        .grid-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 20px; }
+        .field { display: flex; flex-direction: column; gap: 8px; }
+        label { font-size: 13px; font-weight: 600; color: var(--text-main); }
+        select, input, textarea { 
+            padding: 12px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            font-size: 14px; 
+            background: #fff; 
+            width: 100%; 
+            transition: 0.2s;
+        }
+        select:focus, input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px var(--primary-light); }
 
-        /* Actions */
-        .btn-delete-selected { background: #c62828; color: white; padding: 8px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: none; }
-        .btn-delete-single { background: none; border: 1px solid #c62828; color: #c62828; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; margin-left: 5px; }
-        .btn-view-single { background: none; border: 1px solid #0288d1; color: #0288d1; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; }
-        .btn-view-single:hover { background: #0288d1; color: white; }
+        .check-group { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+            gap: 12px; 
+            background: #fbfcfe; 
+            padding: 20px; 
+            border: 1px solid var(--border-color); 
+            border-radius: var(--radius); 
+        }
+        .check-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+            font-size: 13px; 
+            cursor: pointer; 
+            padding: 8px;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+        .check-item:hover { background: white; box-shadow: var(--shadow-sm); }
+        .check-item input { width: auto; transform: scale(1.1); }
 
-        /* Contenu */
-        .form-content { padding: 30px; display: none; }
-        .form-content.active { display: block; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* --- DASHBOARD ELEMENTS --- */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .card { 
+            background: white; 
+            border: 1px solid var(--border-color); 
+            border-radius: var(--radius); 
+            padding: 24px; 
+            box-shadow: var(--shadow-sm);
+        }
+        .card-header { 
+            font-weight: 700; 
+            font-size: 14px; 
+            color: var(--text-muted); 
+            margin-bottom: 20px; 
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-        /* Sections */
-        .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 30px 0 15px 0; text-transform: uppercase; font-size: 14px; display: flex; align-items: center; justify-content: space-between; }
-        .sub-title { font-weight: bold; color: #b03060; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        
-        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 15px; }
-        .field { display: flex; flex-direction: column; }
-        label { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #222; }
-        select, input[type="text"], input[type="number"], textarea { padding: 10px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; background: #fff; width: 100%; box-sizing: border-box; }
-        textarea { resize: vertical; font-family: inherit; }
+        /* --- GRAPHS --- */
+        .chart-box { display: flex; align-items: center; gap: 20px; }
+        .chart-svg { min-width: 120px; flex-shrink: 0; }
+        .legend { font-size: 12px; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
+        .legend-item { display: flex; align-items: center; gap: 10px; }
+        .color-dot { width: 10px; height: 10px; border-radius: 2px; }
 
-        /* Tables & Check */
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 12px; }
-        th { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; }
-        td { border: 1px solid #eee; padding: 10px; text-align: center; vertical-align: middle; }
-        .td-left { text-align: left; padding-left: 15px; width: 50%; }
+        .bar-container { 
+            display: flex; 
+            align-items: flex-end; 
+            justify-content: space-between; 
+            height: 200px; 
+            padding: 20px 10px;
+            border-bottom: 2px solid #e2e8f0;
+            margin-top: 10px;
+        }
+        .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; position: relative; }
+        .bar-fill { width: 60%; background: var(--primary); border-radius: 4px 4px 0 0; min-height: 2px; transition: height 0.6s ease; position: relative; }
+        .bar-fill:hover { opacity: 0.8; }
+        .bar-abs { font-size: 11px; font-weight: 700; margin-bottom: 5px; }
+        .bar-label { position: absolute; bottom: -30px; font-size: 10px; font-weight: 600; text-align: center; white-space: nowrap; max-width: 80px; overflow: hidden; text-overflow: ellipsis; color: var(--text-muted); }
 
-        .academic-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-family: 'Times New Roman', serif; font-size: 14px; background: white;}
-        .academic-table thead th { border-bottom: 2px solid #000; border-top: 2px solid #000; background: #fdfdfd; text-align: center; font-weight: bold; padding: 10px; }
-        .academic-table tbody td { border-bottom: 1px solid #ddd; padding: 8px; text-align: center; }
-        .academic-table tbody tr:last-child td { border-bottom: 2px solid #000; }
-        .academic-table .row-header { text-align: left; padding-left: 15px; font-weight: normal; }
-        .academic-table .group-header { background-color: #f0f8ff; font-weight: bold; text-align: left; padding-left: 10px; color: #0d47a1; }
+        /* --- TABLES --- */
+        .table-container { width: 100%; overflow-x: auto; margin: 20px 0; border: 1px solid var(--border-color); border-radius: var(--radius-sm); }
+        table { width: 100%; border-collapse: collapse; background: white; font-size: 13px; }
+        th { background: #f8fafc; padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 600; }
+        td { padding: 12px 16px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+        .score-pill { padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 11px; }
+        .score-high { background: #dcfce7; color: #166534; }
+        .score-mid { background: #fef9c3; color: #854d0e; }
+        .score-low { background: #fee2e2; color: #991b1b; }
 
-        .interpretation-text { font-family: 'Segoe UI', sans-serif; font-size: 13px; color: #444; background: #fff8e1; border-left: 4px solid #ffc107; padding: 10px; margin-bottom: 25px; line-height: 1.5; font-style: italic; }
+        /* --- ACADEMIC TABLE STYLE (TAB 3) --- */
+        .academic-table { 
+            font-family: 'Merriweather', serif; 
+            width: 100%; 
+            border-top: 2px solid #000; 
+            border-bottom: 2px solid #000; 
+            margin: 30px 0;
+            background: white;
+        }
+        .academic-table th { border-bottom: 1px solid #000; background: #fff; color: #000; font-weight: 700; text-align: center; padding: 12px; }
+        .academic-table td { border-bottom: 1px solid #eee; padding: 10px; text-align: center; color: #333; }
+        .row-head { text-align: left !important; font-weight: 600; padding-left: 20px !important; background: #fafafa; }
+        .group-head { background: #f0f7ff; text-align: left !important; font-weight: 800; text-transform: uppercase; font-size: 12px; color: var(--secondary); }
 
-        .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; background: #fdfdfd; padding: 15px; border: 1px solid #eee; border-radius: 8px; }
-        .check-item { display: flex; align-items: center; font-size: 13px; cursor: pointer; }
-        .check-item input { margin-right: 12px; transform: scale(1.2); cursor: pointer; }
+        /* --- MODAL --- */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px); z-index: 1000; display: none; place-items: center; padding: 20px; }
+        .modal-content { background: white; width: 100%; max-width: 850px; max-height: 90vh; border-radius: var(--radius); box-shadow: var(--shadow-lg); overflow: hidden; display: flex; flex-direction: column; }
+        .modal-header { padding: 20px 30px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--bg-body); }
+        .modal-body { padding: 30px; overflow-y: auto; flex-grow: 1; }
+        .close-modal { font-size: 24px; cursor: pointer; color: var(--text-muted); }
 
-        .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .btn-save:hover { background: #880e4f; transform: translateY(-2px); }
-        .btn-save:disabled { background: #ccc; cursor: not-allowed; }
-        
-        /* Stats & Pie Charts */
-        .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; }
-        .stat-title { font-weight: bold; color: #555; margin-bottom: 15px; font-size: 14px; border-bottom: 2px solid #b03060; display: inline-block; width: 100%; text-align: center; }
-        .pie-box { display: flex; flex-wrap: wrap; justify-content: space-around; align-items: center; width: 100%; gap: 20px; }
-        
-        /* TABLEAU DE BORD IMAGE */
-        .dash-section { background: #fae8ee; color: #b03060; padding: 12px; font-weight: bold; margin: 25px 0 15px 0; font-size: 13px; text-transform: uppercase; border-left: 6px solid #b03060; }
-        .dash-row { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
-        .dash-card { background: white; border: 1px solid #e6e6e6; border-radius: 6px; padding: 15px; flex: 1; min-width: 250px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .dash-title { border-bottom: 2px solid #880e4f; padding-bottom: 8px; margin-bottom: 15px; text-align: center; font-weight: bold; font-size: 13px; color: #444; }
-        .dash-pie-box { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .dash-pie-box svg { flex-shrink: 0; }
-        .dash-legend { display: flex; flex-direction: column; gap: 6px; font-size: 11px; color: #333; }
-        .dash-legend-item { display: flex; align-items: center; gap: 8px; }
-        .dash-legend-color { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+        /* --- NOTIFICATION --- */
+        #toast { visibility: hidden; min-width: 250px; background-color: #1e293b; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 2000; left: 50%; transform: translateX(-50%); bottom: 40px; font-size: 14px; font-weight: 600; box-shadow: var(--shadow-lg); transition: 0.3s; }
+        #toast.show { visibility: visible; bottom: 60px; }
 
-        .counter-badge { background: #b03060; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; vertical-align: middle; margin-left: 5px;}
-
-        /* HISTOGRAMMES (BAR CHARTS) */
-        .bar-chart-container { display: flex; align-items: flex-end; justify-content: space-around; height: 180px; padding: 10px 0; border-bottom: 2px solid #ccc; border-left: 2px solid #ccc; margin-top: 10px; padding-bottom: 25px; position: relative;}
-        .bar-wrap { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; flex: 1; margin: 0 5px; position: relative; }
-        .bar { width: 100%; max-width: 40px; background-color: #b03060; transition: height 0.5s; border-radius: 3px 3px 0 0; }
-        .bar-label { font-size: 10px; font-weight: bold; text-align: center; position: absolute; bottom: -25px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #444;}
-        .bar-val { font-size: 11px; font-weight: bold; margin-bottom: 5px; color: #222;}
-
-        /* Modal */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; justify-content: center; align-items: center; }
-        .modal-content { background: white; width: 80%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
-        .modal-close { font-size: 24px; cursor: pointer; color: #888; }
-        
-        /* Toast Notification */
-        #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 17px; }
-        #toast.show { visibility: visible; -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+        @media (max-width: 1024px) {
+            .stats-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header-tabs">
-        <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">178</span></button>
-        <button class="tab admin-only" id="tab-2" onclick="switchTab(2)">2. MATRICE DE DÉPOUILLEMENT</button>
-        <button class="tab admin-only" id="tab-3" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE PROTOCOLE</button>
-        <button class="tab admin-only" id="tab-4" onclick="switchTab(4)">4. CONCLUSION & RECOMMANDATIONS</button>
-        
-        <div class="sim-badge">DONNÉES: KINSHASA (N=178)</div>
-        <button type="button" class="btn-auth" id="btn-auth" onclick="window.requestAdmin()">🔒 ACCÈS ADMIN</button>
-        <button type="button" class="btn-excel admin-only" id="btn-export" onclick="window.exportToCSV()">📊 EXPORT CSV</button>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="app-title">
+            <div class="ribbon-icon"></div>
+            <div>
+                <h1>Étude Hospitalière : Cancer du Sein</h1>
+                <p style="font-size: 11px; color: var(--text-muted); font-weight: 600;">HGR MAKALA - KINSHASA (2024)</p>
+            </div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <div class="sim-badge" id="data-status">SIMULATED MODE (N=178)</div>
+            <button class="btn-premium btn-secondary" id="btn-lock" onclick="window.requestAdmin()">
+                <span>🔒 ACCÈS ADMIN</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="header-tabs">
+        <button class="tab active" onclick="switchTab(1)">📂 COLLECTE <span id="badge-n" style="background:var(--primary); color:white; padding:1px 6px; border-radius:10px; font-size:10px;">178</span></button>
+        <button class="tab admin-only" onclick="switchTab(2)">📝 MATRICE </button>
+        <button class="tab admin-only" onclick="switchTab(3)">📊 ANALYSE SCIENTIFIQUE</button>
+        <button class="tab admin-only" onclick="switchTab(4)">📜 DISCOURS & PERSPECTIVES</button>
+    </nav>
+
+    <!-- Context Actions -->
+    <div class="header-actions admin-only">
+        <button class="btn-premium btn-success" onclick="window.exportToCSV()">📄 EXPORTER CSV (FULL)</button>
+        <button class="btn-premium btn-primary" onclick="window.printReport()">🖨️ IMPRIMER RAPPORT TOTAL</button>
+        <div style="margin-left: auto; color: var(--text-muted); font-size: 12px; font-weight: 600;">
+            Dernière mise à jour : <span id="last-update">--:--</span>
+        </div>
     </div>
 
+    <!-- TAB 1: COLLECTION -->
     <div id="content-1" class="form-content active">
-        <h2 style="color:#b03060; font-size: 18px; text-align:center; margin-bottom: 25px;">Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</h2>
-        <form id="kapForm">
-            <div class="section-title">I. IDENTIFICATION & PROFIL PROFESSIONNEL</div>
-            <div class="row">
-                <div class="field">
-                    <label>1. Code Enquêté(e)</label>
-                    <select id="code-enquete"></select>
-                </div>
-                <div class="field">
-                    <label style="color:#b03060;">2. Consentement Éclairé</label>
-                    <select id="consentement">
-                        <option value="oui">Oui, a accepté de participer</option>
-                        <option value="non">Non (Refus)</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>3. Service d'affectation</label>
-                    <select id="service">
-                        <option value="" disabled selected>Choisir un service...</option>
-                        <option>Gynécologie-Obstétrique</option>
-                        <option>Médecine Interne</option>
-                        <option>Chirurgie</option>
-                        <option>Urgences / Autre</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="field">
-                    <label>4. Niveau d'étude</label>
-                    <select id="niveau">
-                        <option value="" disabled selected>Niveau...</option>
-                        <option value="A2 - ITM">A2 - Niveau technique (4 ans post-primaire - ITM)</option>
-                        <option value="A1/LMD - ISTM">A1/LMD - Niveau supérieur (3 ans post-bac - ISTM)</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>5. Ancienneté (années)</label>
-                    <input type="number" id="anciennete" min="0" max="20" placeholder="Ex: 5">
-                </div>
-                <div class="field">
-                    <label>6. Sexe</label>
-                    <select id="sexe">
-                        <option value="F" selected>F (Féminin)</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row" style="background:#f9f9f9; padding:10px; border-radius:6px; border:1px dashed #ccc;">
-                <div class="field">
-                    <label>État Civil</label>
-                    <select id="etat-civil">
-                        <option value="" disabled selected>Choisir...</option>
-                        <option>Célibataire</option>
-                        <option>Mariée</option>
-                        <option>Divorcée</option>
-                        <option>Veuve</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Province d'exercice</label>
-                    <select id="province">
-                        <option value="" disabled selected>Choisir...</option>
-                        <option>Kinshasa</option>
-                        <option>Kongo Central</option>
-                        <option>Haut-Katanga</option>
-                        <option>Nord/Sud Kivu</option>
-                        <option>Autre Province (Voir PDF)</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Catégorie Pro. Précise</label>
-                    <select id="cat-pro">
-                        <option value="" disabled selected>Choisir...</option>
-                        <option>Médecin Généraliste</option>
-                        <option>Spécialiste / Résident</option>
-                        <option>Infirmier(e)</option>
-                        <option>Autre professionnel santé</option>
-                    </select>
-                </div>
-                 <div class="field">
-                    <label>Âge du participant</label>
-                    <input type="number" id="age-participant" placeholder="Ex: 30">
-                </div>
-            </div>
-
-            <div class="section-title">II. CONNAISSANCES (SAVOIRS THÉORIQUES)</div>
-            <div class="sub-title">Connaissances Biologiques & Types</div>
-            <div class="row" style="background:#f0f8ff; padding:10px; border-radius:6px;">
-                <div class="field">
-                    <label>Avez-vous entendu parler de la classification moléculaire ?</label>
-                    <select id="q-moleculaire"><option value="non">Non</option><option value="oui">Oui</option></select>
-                </div>
-                <div class="field">
-                    <label>Connaissez-vous le terme "HER2 Low" ou "Faible" ?</label>
-                    <select id="q-her2"><option value="non">Non</option><option value="oui">Oui</option></select>
-                </div>
-                <div class="field">
-                    <label>Connaissez-vous les thérapies ciblées ?</label>
-                    <select id="q-therapie"><option value="non">Non</option><option value="oui">Oui</option></select>
-                </div>
-            </div>
+        <div style="max-width: 900px; margin: auto;">
+            <h2 style="text-align: center; margin-bottom: 40px; color: var(--primary);">Formulaire de Recherche (KAP)</h2>
             
-            <div class="sub-title">7. Épidémiologie & Dépistage</div>
-            <div class="row">
-                <div class="field">
-                    <label>Le cancer du sein est la 1ère cause de décès par cancer (RDC) :</label>
-                    <select id="q-cause"><option value="vrai">Vrai</option><option value="faux">Faux</option><option value="jsp">Je ne sais pas</option></select>
+            <form id="kapForm">
+                <!-- Section I -->
+                <div class="section-title">I. IDENTIFICATION & PROFIL <span style="font-size: 11px;">(Socio-démographique)</span></div>
+                <div class="grid-row">
+                    <div class="field">
+                        <label>Code Enquêté(e)</label>
+                        <select id="f-code" required></select>
+                    </div>
+                    <div class="field">
+                        <label>Service d'affectation</label>
+                        <select id="f-service" required>
+                            <option value="">Choisir...</option>
+                            <option>Gynécologie-Obstétrique</option>
+                            <option>Médecine Interne</option>
+                            <option>Chirurgie</option>
+                            <option>Urgences / Autre</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="field">
-                    <label>Âge recommandé 1ère mammographie :</label>
-                    <select id="q-age-mammo"><option value="20">Dès 20 ans</option><option value="35">Vers 35-40 ans</option><option value="50">Vers 50 ans</option></select>
+                <div class="grid-row">
+                    <div class="field">
+                        <label>Niveau d'étude</label>
+                        <select id="f-niveau">
+                            <option value="A1/LMD - ISTM">A1/LMD - Niveau Supérieur</option>
+                            <option value="A2 - ITM">A2 - Niveau Technique</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Ancienneté (Années)</label>
+                        <input type="number" id="f-exp" min="0" max="40" placeholder="Ex: 5">
+                    </div>
+                    <div class="field">
+                        <label>Âge du participant</label>
+                        <input type="number" id="f-age" min="18" max="70" placeholder="Ex: 32">
+                    </div>
                 </div>
-                <div class="field">
-                    <label>Moment idéal pour Auto-Examen (AES) :</label>
-                    <select id="q-moment-aes"><option value="regles">Pendant les règles</option><option value="apres">7 à 10 jours après début règles</option><option value="nimporte">N’importe quand</option></select>
+
+                <!-- Section II -->
+                <div class="section-title">II. CONNAISSANCES THÉORIQUES <span style="font-size: 11px;">(Savoir)</span></div>
+                <div class="sub-title">Classification & Épidémiologie</div>
+                <div class="grid-row">
+                    <div class="field">
+                        <label>Connaissance "HER2 Low" / Classification Moléculaire</label>
+                        <select id="f-k1"><option value="0">Non</option><option value="1">Oui</option></select>
+                    </div>
+                    <div class="field">
+                        <label>1ère cause de décès par cancer (Femme RDC) ?</label>
+                        <select id="f-k2"><option value="1">Vrai (Cancer du Sein)</option><option value="0">Faux</option></select>
+                    </div>
                 </div>
-            </div>
-
-            <div class="sub-title">8. Facteurs de risque (Cochez ceux prouvés)</div>
-            <div class="check-group" id="group-risques">
-                <label class="check-item"><input type="checkbox" value="age"> Âge avancé (>50 ans)</label>
-                <label class="check-item"><input type="checkbox" value="multi"> Multiparité</label>
-                <label class="check-item"><input type="checkbox" value="famille"> Antécédents familiaux</label>
-                <label class="check-item"><input type="checkbox" value="alcool"> Alcool / Tabac</label>
-                <label class="check-item"><input type="checkbox" value="obesite"> Obésité et sédentarité</label>
-                <label class="check-item"><input type="checkbox" value="allaitement"> Allaitement prolongé</label>
-                <label class="check-item"><input type="checkbox" value="menopause"> Ménopause tardive (>55 ans)</label>
-                <label class="check-item"><input type="checkbox" value="graisse"> Régime riche en graisses</label>
-                <label class="check-item"><input type="checkbox" value="contraceptif"> Prise de contraceptifs oraux</label>
-                <label class="check-item"><input type="checkbox" value="gros_seins"> Avoir des gros seins</label>
-                <label class="check-item"><input type="checkbox" value="radiation"> Exposition rayons radioactifs</label>
-            </div>
-
-            <div class="sub-title">9. Signes d’alerte</div>
-            <div class="check-group" id="group-signes">
-                <label class="check-item"><input type="checkbox" value="nodule"> Nodule dur et indolore</label>
-                <label class="check-item"><input type="checkbox" value="retraction"> Rétraction du mamelon</label>
-                <label class="check-item"><input type="checkbox" value="peau"> Aspect peau d’orange</label>
-                <label class="check-item"><input type="checkbox" value="ecoulement"> Écoulement mamelonnaire</label>
-                <label class="check-item"><input type="checkbox" value="douleur"> Douleur cyclique</label>
-                <label class="check-item"><input type="checkbox" value="ulceration"> Ulcération au niveau du sein</label>
-                <label class="check-item"><input type="checkbox" value="poids"> Diminution du poids inexpliquée</label>
-                <label class="check-item"><input type="checkbox" value="asymetrie"> Modification forme / Asymétrie</label>
-            </div>
-
-            <div class="sub-title">10-14. Connaissance Mammographie</div>
-            <div class="row">
-                <div class="field">
-                    <label>La mammographie est importante pour détection précoce :</label>
-                    <select id="q-mammo-imp"><option>Oui</option><option>Non</option><option>Je ne sais pas</option></select>
+                
+                <div class="sub-title">Dépistage & Signes</div>
+                <div class="grid-row">
+                    <div class="field">
+                        <label>Âge recommandé 1ère Mammographie (Standard)</label>
+                        <select id="f-k3"><option value="0">20 ans</option><option value="1">35-40 ans</option><option value="0">50 ans</option></select>
+                    </div>
+                    <div class="field">
+                        <label>Moment idéal pour l'Auto-Examen (AES)</label>
+                        <select id="f-k4"><option value="0">Pendant les règles</option><option value="1">7-10 jours après</option><option value="0">N'importe quand</option></select>
+                    </div>
                 </div>
-                <div class="field">
-                    <label>Rôle principal :</label>
-                    <select id="q-mammo-role"><option value="detecter">Détecter lésions avant symptômes</option><option value="traiter">Traiter le cancer</option></select>
+
+                <label style="display: block; margin-top: 20px; font-weight: 700; font-size: 13px;">Facteurs de Risque (Sélectionnez les items identifiés)</label>
+                <div class="check-group" id="f-risques">
+                    <label class="check-item"><input type="checkbox" value="age"> Âge (>50 ans)</label>
+                    <label class="check-item"><input type="checkbox" value="famille"> Hérédité (Gènes BRCA)</label>
+                    <label class="check-item"><input type="checkbox" value="sedent"> Obésité / Sédentarité</label>
+                    <label class="check-item"><input type="checkbox" value="tabac"> Tabac / Alcool</label>
+                    <label class="check-item"><input type="checkbox" value="menop"> Ménopause tardive (>55 ans)</label>
+                    <label class="check-item"><input type="checkbox" value="nulle"> Nulliparité</label>
+                    <label class="check-item"><input type="checkbox" value="gros"> Gros Seins (Faux facteur)</label>
                 </div>
-                <div class="field">
-                    <label>Fréquence (Femme sans risque) :</label>
-                    <select id="q-mammo-freq"><option value="1">Tous les ans</option><option value="2">Tous les 2 ans</option><option value="5">Tous les 5 ans</option></select>
+
+                <!-- Section III -->
+                <div class="section-title">III. ATTITUDES & PRATIQUES <span style="font-size: 11px;">(Savoir-Être & Savoir-Faire)</span></div>
+                <div class="grid-row">
+                    <div class="field">
+                        <label>Réalisation AES personnelle (Fréquence)</label>
+                        <select id="f-p1"><option value="1">Chaque mois</option><option value="0.5">Irrégulier</option><option value="0">Jamais</option></select>
+                    </div>
+                    <div class="field">
+                        <label>Examen clinique systématique des patientes ?</label>
+                        <select id="f-p2"><option value="1">Oui (Systématique)</option><option value="0.5">Si plainte uniquement</option><option value="0">Rarement</option></select>
+                    </div>
                 </div>
-            </div>
 
-            <div class="section-title">III. ATTITUDES & PERCEPTIONS (Échelle 1-5)</div>
-            <table>
-                <thead>
-                    <tr><th class="td-left">Énoncé</th><th>1<br><small>Pas du tout</small></th><th>2</th><th>3</th><th>4</th><th>5<br><small>Tout à fait</small></th></tr>
-                </thead>
-                <tbody>
-                    <tr><td class="td-left">L’éducation à l’AES fait partie de mon rôle.</td><td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5"></td></tr>
-                    <tr><td class="td-left">Je me sens capable de détecter un nodule de petite taille.</td><td><input type="radio" name="att2" value="1"></td><td><input type="radio" name="att2" value="2"></td><td><input type="radio" name="att2" value="3"></td><td><input type="radio" name="att2" value="4"></td><td><input type="radio" name="att2" value="5"></td></tr>
-                    <tr><td class="td-left">La peur du diagnostic empêche les patientes de consulter.</td><td><input type="radio" name="att3" value="1"></td><td><input type="radio" name="att3" value="2"></td><td><input type="radio" name="att3" value="3"></td><td><input type="radio" name="att3" value="4"></td><td><input type="radio" name="att3" value="5"></td></tr>
-                    <tr><td class="td-left">Je suis mal à l’aise d’aborder l’intimité avec les âgées.</td><td><input type="radio" name="att4" value="1"></td><td><input type="radio" name="att4" value="2"></td><td><input type="radio" name="att4" value="3"></td><td><input type="radio" name="att4" value="4"></td><td><input type="radio" name="att4" value="5"></td></tr>
-                    <tr><td class="td-left">Le dépistage ne sert à rien (coût des traitements).</td><td><input type="radio" name="att5" value="1"></td><td><input type="radio" name="att5" value="2"></td><td><input type="radio" name="att5" value="3"></td><td><input type="radio" name="att5" value="4"></td><td><input type="radio" name="att5" value="5"></td></tr>
-                </tbody>
-            </table>
+                <div class="sub-title">Technique Clinique</div>
+                <div class="grid-row">
+                    <div class="field">
+                        <label>Zone indispensable à ne pas oublier ?</label>
+                        <select id="f-p3"><option value="1">Creux Axillaire</option><option value="0.5">Mamelon uniquement</option></select>
+                    </div>
+                    <div class="field">
+                        <label>Mouvement de palpation recommandé</label>
+                        <select id="f-p4"><option value="1">Circulaire / Vertical</option><option value="0">Aléatoire</option></select>
+                    </div>
+                </div>
 
-            <div class="section-title">IV. PRATIQUES (Savoir-Faire)</div>
-            <div class="row">
-                <div class="field"><label>15. Pratique personnelle (AES sur vous) :</label><select id="prac-perso"><option value="mois">Tous les mois</option><option value="temps">De temps en temps</option><option value="jamais">Jamais</option></select></div>
-                <div class="field"><label>16. Examen des patientes (Fréquence) :</label><select id="prac-pro-freq"><option value="syst">Systématiquement</option><option value="plainte">Uniquement si plainte</option><option value="rare">Rarement / Jamais</option></select></div>
-            </div>
-            <div class="sub-title">Technique de Palpation</div>
-            <div class="row">
-                <div class="field"><label>Partie de la main utilisée ?</label><select id="prac-main"><option value="pulpe">La pulpe des 3 doigts du milieu</option><option value="paume">La paume entière</option></select></div>
-                <div class="field"><label>Zone "oubliée" à inclure absolument ?</label><select id="prac-zone"><option value="axillaire">Le creux axillaire (aisselle)</option><option value="mamelon">Le mamelon</option></select></div>
-            </div>
+                <div class="section-title">IV. VERBATIM & SUGGESTIONS</div>
+                <div class="field">
+                    <textarea id="f-reco" rows="4" placeholder="Suggestions de l'infirmière pour améliorer le dépistage localement..."></textarea>
+                </div>
 
-            <label style="margin:10px 0; display:block; font-weight:bold; color:#b03060;">Mouvements effectués (Cochez les réponses) :</label>
-            <div class="check-group" id="group-mouv">
-                <label class="check-item"><input type="checkbox" value="circulaire"> Circulaire (Spirale)</label>
-                <label class="check-item"><input type="checkbox" value="vertical"> Vertical (Bandelettes)</label>
-                <label class="check-item"><input type="checkbox" value="radial"> Radial (Étoile)</label>
-                <label class="check-item"><input type="checkbox" value="aleatoire"> Aléatoire (Sans ordre)</label>
-            </div>
-
-            <div class="section-title">V. OBSTACLES IDENTIFIÉS (3 principaux)</div>
-            <div class="check-group" id="group-obstacles">
-                <label class="check-item"><input type="checkbox" value="Temps"> Manque de temps</label>
-                <label class="check-item"><input type="checkbox" value="Intimité"> Manque d’intimité</label>
-                <label class="check-item"><input type="checkbox" value="Culture"> Croyances culturelles / Pudeur</label>
-                <label class="check-item"><input type="checkbox" value="Coût"> Coût des examens</label>
-                <label class="check-item"><input type="checkbox" value="Formation"> Manque de formation</label>
-                <label class="check-item"><input type="checkbox" value="Protocole"> Absence de protocole</label>
-            </div>
-
-            <div class="section-title">VI. SUGGESTIONS / RECOMMANDATIONS (Verbatim)</div>
-            <div class="field">
-                <label>Suggestions de l'infirmière pour améliorer le dépistage :</label>
-                <textarea id="reco-verbatim" rows="3" placeholder="Écrire ici les propositions de l'enquêtée..."></textarea>
-            </div>
-
-            <div class="section-title">VII. POLITIQUE DE SANTÉ & PERSPECTIVES</div>
-            <div class="row">
-                <div class="field"><label>Besoin de formation supplémentaire ressenti ?</label><select id="besoin-formation"><option>Oui</option><option>Non</option></select></div>
-                <div class="field"><label>Connaissance du CNLC et ses activités ?</label><select id="connaissance-cnlc"><option>Non</option><option>Oui</option></select></div>
-                <div class="field"><label>Intéressé par l'élaboration d'un registre national ?</label><select id="interet-registre"><option>Oui</option><option>Non</option></select></div>
-            </div>
-
-            <button type="button" id="save-btn" class="btn-save" onclick="window.saveRecord()">☁️ ENREGISTRER DANS LE CLOUD</button>
-        </form>
+                <button type="button" class="btn-premium btn-primary" style="width: 100%; margin-top: 30px; padding: 20px;" onclick="window.saveCurrentForm()">
+                    🚀 ENREGISTRER LA FICHE DE DONNÉES
+                </button>
+            </form>
+        </div>
     </div>
 
+    <!-- TAB 2: DATABASE MATRIX -->
     <div id="content-2" class="form-content">
-        <div class="section-title">BASE DE DONNÉES EN LIGNE (N = <span id="n-total">0</span>)</div>
-        <button id="btn-delete-multi" class="btn-delete-selected" onclick="window.deleteSelected()">🗑️ Supprimer la sélection</button>
-        <div style="overflow-x:auto;">
+        <div class="section-title">MATRICE DE DÉPOUILLEMENT <span id="n-display-2" style="font-size: 11px;">N = 178</span></div>
+        
+        <div style="margin-bottom: 20px; display: flex; gap: 10px;">
+            <input type="text" id="db-search" placeholder="Rechercher par Code ou Service..." style="max-width: 300px;" onkeyup="window.filterMatrix()">
+            <button class="btn-premium btn-secondary" onclick="window.deleteSelected()" id="btn-del" style="display: none;">🗑️ SUPPRIMER LA SÉLECTION</button>
+        </div>
+
+        <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th><input type="checkbox" id="select-all" onclick="window.toggleSelectAll(this)"></th>
-                        <th>Code</th><th>Sexe</th><th>Service</th><th>Exp (ans)</th>
-                        <th>Score Savoir (%)</th><th>Score Pratique (%)</th>
-                        <th>Diagnostic</th><th>Actions</th>
+                        <th style="width: 40px;"><input type="checkbox" id="chk-all" onclick="window.toggleAllChecks(this)"></th>
+                        <th>CODE</th>
+                        <th>SERVICE</th>
+                        <th>NIVEAU</th>
+                        <th>SAVOIR (K)</th>
+                        <th>PRATIQUE (P)</th>
+                        <th>STATUT</th>
+                        <th style="text-align: center;">ACTIONS</th>
                     </tr>
                 </thead>
-                <tbody id="database-body"></tbody>
+                <tbody id="matrix-body">
+                    <!-- JS Generated -->
+                </tbody>
             </table>
         </div>
     </div>
 
+    <!-- TAB 3: STATISTICAL ANALYSIS -->
     <div id="content-3" class="form-content">
-        <button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab3Word()">📥 TÉLÉCHARGER TOUTES LES DONNÉES DE L'ONGLET 3 (WORD)</button>
-
-        <div class="section-title">TAUX DE PARTICIPATION</div>
-        <div class="row" style="align-items: center;">
-            <div class="stat-card" style="flex:1;">
-                <div class="stat-title">Participation à l'étude</div>
-                <div id="pie-participation" class="pie-box"></div>
-            </div>
-            <div id="taux-participation-container" style="flex:2;"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 3px solid var(--secondary); padding-bottom: 10px;">
+            <h2 style="color: var(--secondary); font-family: 'Merriweather', serif;">PRÉSENTATION DES RÉSULTATS SCIENTIFIQUES</h2>
+            <button class="btn-premium btn-secondary" onclick="window.exportToWord()">📥 EXPORTER RAPPORT (.doc)</button>
         </div>
 
-        <div class="section-title">TABLEAUX DÉTAILLÉS (RAPPORTS ACADÉMIQUES)</div>
-        <div id="socio-demo-container"></div>
-        <div id="connaissances-container"></div>
-        <div id="indices-specifiques-container"></div>
-        <div id="attitudes-container"></div>
-        <div id="pratiques-container"></div>
+        <!-- 1. Taux de participation -->
+        <div class="section-title">1. Taux de participation</div>
+        <div class="card" style="max-width: 500px; margin: auto; margin-bottom: 30px;">
+            <div class="card-header">Participation globale Inclusion/Exclusion</div>
+            <div class="chart-box">
+                <div id="svg-participation" class="chart-svg"></div>
+                <div class="legend" id="legend-participation"></div>
+            </div>
+        </div>
 
-        <div id="dashboard-camemberts">
-            <div class="dash-section">0. ANALYSE SOCIODÉMOGRAPHIQUE (CAMEMBERTS)</div>
-            <div class="dash-row">
-                <div class="dash-card">
-                    <div class="dash-title">Répartition par Âge</div>
-                    <div id="dash-age" class="dash-pie-box"></div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-title">Répartition par Niveau d'Étude</div>
-                    <div id="dash-etude" class="dash-pie-box"></div>
+        <!-- 2. Caractéristiques socio-démographiques -->
+        <div class="section-title" id="point-2">2. Caractéristiques socio-démographiques (Tableau)</div>
+        <div id="academic-table-1">
+            <!-- Tableau I: Socio-démo -->
+        </div>
+
+        <!-- 3. Répartition du personnel selon leur grade ou service -->
+        <div class="section-title">3. Répartition du personnel selon leur grade ou service (Figure)</div>
+        <div class="stats-grid" style="margin-bottom: 30px;">
+            <div class="card">
+                <div class="card-header">Répartition par Niveau d'Étude (Grade)</div>
+                <div class="chart-box">
+                    <div id="svg-grade-dist" class="chart-svg"></div>
+                    <div class="legend" id="legend-grade"></div>
                 </div>
             </div>
-
-            <div class="dash-section">1. ÉVALUATION GÉNÉRALE DES C.A.P.</div>
-            <div class="dash-row">
-                <div class="dash-card">
-                    <div class="dash-title">Niveau de Savoir (Théorique)</div>
-                    <div id="dash-savoir" class="dash-pie-box"></div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-title">Qualité de la Pratique</div>
-                    <div id="dash-pratique" class="dash-pie-box"></div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-title">Type d'Attitude</div>
-                    <div id="dash-attitude" class="dash-pie-box"></div>
+            <div class="card">
+                <div class="card-header">Répartition par Service d'Affectation</div>
+                <div class="chart-box">
+                    <div id="svg-service-dist" class="chart-svg"></div>
+                    <div class="legend" id="legend-service"></div>
                 </div>
             </div>
+        </div>
 
-            <div class="dash-section">2. ANALYSES CROISÉES : CONNAISSANCES PAR CATÉGORIE</div>
-            <div class="dash-row">
-                <div class="dash-card">
-                    <div class="dash-title">Savoir vs Département (Service)</div>
-                    <div id="dash-cross-dept" class="dash-pie-box"></div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-title">Savoir vs Niveau d'Étude</div>
-                    <div id="dash-cross-niveau" class="dash-pie-box"></div>
-                </div>
-            </div>
+        <!-- 4. Connaissance sur les différents aspects -->
+        <div class="section-title">4. Connaissance sur les différents aspects du dépistage (Tableau)</div>
+        <div id="academic-table-2">
+            <!-- Tableau II: Connaissances détaillées -->
+        </div>
 
-            <div class="dash-section">3. HISTOGRAMMES : FREINS ET PERFORMANCES SPÉCIFIQUES</div>
-            <div class="dash-row">
-                <div class="dash-card" style="flex: 2;">
-                    <div class="dash-title">Fréquence des Obstacles / Barrières au dépistage</div>
-                    <div id="dash-bar-obstacles" style="width: 100%;"></div>
-                </div>
-                <div class="dash-card" style="flex: 1.5;">
-                    <div class="dash-title">Score Moyen de Savoir par Service (%)</div>
-                    <div id="dash-bar-savoir-service" style="width: 100%;"></div>
-                </div>
+        <!-- 5. Attitude par rapport au dépistage -->
+        <div class="section-title">5. Attitude par rapport au dépistage (Figure/Distribution)</div>
+        <div class="card" style="max-width: 500px; margin: auto; margin-bottom: 30px;">
+            <div class="card-header">Orientation de l'Attitude Interrogée</div>
+            <div class="chart-box">
+                <div id="svg-attitude-dist" class="chart-svg"></div>
+                <div class="legend" id="legend-attitude"></div>
             </div>
+        </div>
 
-            <div class="dash-section">4. CROISEMENT DES PERFORMANCES (LE LIEN C.A.P.)</div>
-            <div class="dash-row">
-                <div class="dash-card">
-                    <div class="dash-title">Pratique vs Niveau de Savoir</div>
-                    <div id="dash-perf-prat" class="dash-pie-box"></div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-title">Attitude vs Niveau de Savoir</div>
-                    <div id="dash-perf-att" class="dash-pie-box"></div>
-                </div>
-            </div>
-            
-            <div class="dash-section">5. INDICES SPÉCIFIQUES : FACTEURS DE RISQUE ET SIGNES</div>
-            <div class="dash-row">
-                <div class="dash-card">
-                    <div class="dash-title">Indice K-FR (Facteurs de Risque)</div>
-                    <div id="dash-kfr" class="dash-pie-box"></div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-title">Indice K-SC (Signes Cliniques Classiques)</div>
-                    <div id="dash-ksc" class="dash-pie-box"></div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-title">Indice K-SA (Signes d'Alerte/Tardifs)</div>
-                    <div id="dash-ksa" class="dash-pie-box"></div>
-                </div>
+        <!-- 6. Pratique par rapport au dépistage (Infirmières) -->
+        <div class="section-title">6. Pratique par rapport au dépistage (Distribution)</div>
+        <div class="card" style="max-width: 500px; margin: auto;">
+            <div class="card-header">Adéquation de la Pratique Clinique (N=Femmes)</div>
+            <div class="chart-box">
+                <div id="svg-practice-dist" class="chart-svg"></div>
+                <div class="legend" id="legend-practice"></div>
             </div>
         </div>
     </div>
 
+    <!-- TAB 4: DISCUSSION & CONCLUSIONS -->
     <div id="content-4" class="form-content">
-        <div class="section-title">SYNTHÈSE AUTOMATISÉE ET CONCLUSIONS</div>
-        <div id="dynamic-report" style="font-size:14px; line-height:1.6; color:#333;"></div>
-        <br><hr><br>
-        <button type="button" class="btn-excel" onclick="window.exportToCSV()">📥 TÉLÉCHARGER LA BASE COMPLÈTE (.CSV)</button>
-    </div>
-</div>
+        <div style="max-width: 1000px; margin: auto; font-family: 'Merriweather', serif;">
+            <h1 style="color: var(--primary); text-align: center; border-bottom: 3px solid var(--primary-light); padding-bottom: 20px;">DISCUSSION DES RÉSULTATS</h1>
+            
+            <div id="dynamic-discussion" style="margin-top: 30px; text-align: justify; color: #334155; line-height: 1.8;">
+                <!-- JS Injecter le rapport ici -->
+            </div>
 
-<div id="detailModal" class="modal-overlay" onclick="window.closeModal(event)">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 style="margin:0; color:#b03060;">Détails de la fiche <span id="modal-title-id"></span></h3>
-            <span class="modal-close" onclick="window.closeModalBtn()">&times;</span>
+            <div style="background: #f8fafc; border-left: 5px solid var(--primary); padding: 30px; margin-top: 50px; border-radius: 8px;">
+                <h3 style="color: var(--primary-dark); margin-bottom: 15px;">CONCLUSIONS GLOBALES</h3>
+                <p id="dynamic-conclusion"></p>
+            </div>
+
+            <div style="margin-top: 40px; padding: 20px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                <div style="text-align: center;">
+                    <br><br>
+                    <p style="font-weight: bold; border-top: 1px solid #000; padding-top: 5px; min-width: 200px;">Direction des Soins</p>
+                </div>
+                <div style="text-align: center;">
+                    <br><br>
+                    <p style="font-weight: bold; border-top: 1px solid #000; padding-top: 5px; min-width: 200px;">Chercheur Principal</p>
+                </div>
+            </div>
         </div>
-        <div id="modal-body-content"></div>
     </div>
 </div>
 
-<div id="toast">Donnée synchronisée !</div>
+<!-- MODALS -->
+<div class="modal-overlay" id="overlay-details" onclick="window.closeAnyModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3 id="m-code">Détails de l'Enquête</h3>
+            <span class="close-modal" onclick="window.hideModal('overlay-details')">&times;</span>
+        </div>
+        <div class="modal-body" id="m-body">
+            <!-- JS Dynamic -->
+        </div>
+        <div style="padding: 20px; background: #f8fafc; text-align: right; border-top: 1px solid #eee;">
+            <button class="btn-premium btn-secondary" onclick="window.hideModal('overlay-details')">Fermer</button>
+        </div>
+    </div>
+</div>
 
+<div id="toast">Message synchronisé !</div>
+
+<!-- --- INJECTION JAVASCRIPT --- -->
 <script type="module">
-    // Simulation Mode Setup
-    let database = []; 
+    // --- STATE MANAGEMENT ---
+    let db = [];
     let isAdmin = false;
+    const SERVICES = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences / Autre'];
+    
+    // Initialisation
+    window.addEventListener('DOMContentLoaded', () => {
+        db = generateMockDatabase(178);
+        updateUI();
+        initCodeDropdown();
+        document.getElementById('last-update').innerText = new Date().toLocaleTimeString();
+    });
 
-    window.generateSimulatedData = function() {
-        const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences / Autre'];
-        const verbatims = [
-            "Il faut multiplier les campagnes à la télévision.", "Les patientes arrivent toujours trop tard.",
-            "Le manque de formation pratique est notre plus grand défi.", "Le coût de la mammographie est trop élevé.",
-            "Besoin de formation continue."
-        ];
+    // --- LOGIQUE CORE ---
 
-        const allObstacles = ["Formation", "Coût", "Temps", "Intimité", "Culture", "Protocole"];
-        const allRisks = ["age", "multi", "famille", "alcool", "obesite", "allaitement", "menopause"];
-        const allSigns = ["nodule", "retraction", "peau", "ecoulement", "douleur"];
-
-        let simulatedDB = [];
-
-        for (let i = 1; i <= 178; i++) {
-            let service = services[Math.floor(Math.random() * services.length)];
-            let niveau = (Math.random() < 0.70) ? 'A1/LMD - ISTM' : 'A2 - ITM';
-            let anciennete = Math.floor(Math.random() * 21);
-            let age = 22 + anciennete + Math.floor(Math.random() * 5); 
-
-            let isGyneco = service === 'Gynécologie-Obstétrique';
-            let isA1 = niveau === 'A1/LMD - ISTM';
+    function generateMockDatabase(count) {
+        let items = [];
+        for (let i = 1; i <= count; i++) {
+            const service = SERVICES[Math.floor(Math.random() * SERVICES.length)];
+            const isA1 = Math.random() > 0.3;
+            const isGyneco = service === 'Gynécologie-Obstétrique';
             
-            let scoreSavoir, scorePratique, scoreAttitude;
-
-            if (isGyneco) {
-                scoreSavoir = 85 + Math.floor(Math.random() * 16);
-                scorePratique = 85 + Math.floor(Math.random() * 16);
-                scoreAttitude = (4.5 + Math.random() * 0.5).toFixed(1);
-            } else {
-                let baseSavoir = isA1 ? 55 : 40;
-                scoreSavoir = Math.min(100, Math.floor(baseSavoir + Math.random() * 30));
-                let basePratique = isA1 ? 45 : 30;
-                scorePratique = Math.min(100, Math.floor(basePratique + Math.random() * 35));
-                scoreAttitude = (2.5 + Math.random() * 1.5).toFixed(1);
-            }
-
-            let k_fr_score = Math.min(100, Math.max(0, scoreSavoir + (Math.floor(Math.random() * 30) - 15)));
-            let k_sc_score = Math.min(100, Math.max(0, scoreSavoir + (Math.floor(Math.random() * 20) - 5))); 
-            let k_sa_score = Math.min(100, Math.max(0, scoreSavoir - 15 + (Math.floor(Math.random() * 30) - 15)));
-
-            // Génération d'obstacles multiples pour les histogrammes
-            let genObs = allObstacles.filter(() => Math.random() > 0.4); // Plus de chance d'avoir des obstacles
-            if(genObs.length === 0) genObs.push("Formation"); 
+            // Simuler des corrélations logiques
+            let baseK = isGyneco ? 75 : (isA1 ? 55 : 40);
+            let scoreSavoir = Math.min(100, Math.max(20, baseK + (Math.random() * 30 - 15)));
             
-            let genRisks = allRisks.filter(() => Math.random() > 0.5);
-            let genSigns = allSigns.filter(() => Math.random() > 0.4);
+            let baseP = isGyneco ? 80 : (isA1 ? 50 : 35);
+            let scorePratique = Math.min(100, Math.max(10, baseP + (Math.random() * 40 - 20)));
 
-            simulatedDB.push({
-                firestoreId: "sim-" + i,
-                id: "INF-MAK-" + i.toString().padStart(3, '0'),
-                consentement: "oui", service: service, niveau: niveau,
-                anciennete: anciennete, sexe: "F",
-                etat_civil: Math.random() > 0.4 ? "Mariée" : "Célibataire",
-                province: "Kinshasa", cat_pro: "Infirmier(e)",
-                age_participant: age,
-                scoreSavoir: scoreSavoir, scorePratique: scorePratique, scoreAttitude: scoreAttitude,
-                k_fr: k_fr_score, k_sc: k_sc_score, k_sa: k_sa_score, 
-                obstacles: genObs, 
-                risks: genRisks, 
-                signs: genSigns,
-                reco_verbatim: verbatims[Math.floor(Math.random() * verbatims.length)]
+            items.push({
+                idx: i,
+                id: `INF-MAK-${i.toString().padStart(3, '0')}`,
+                service: service,
+                niveau: isA1 ? 'A1/LMD - ISTM' : 'A2 - ITM',
+                exp: Math.floor(Math.random() * 25),
+                age: 22 + Math.floor(Math.random() * 35),
+                k_score: Math.round(scoreSavoir),
+                p_score: Math.round(scorePratique),
+                a_score: (3 + Math.random() * 2).toFixed(1),
+                verbatim: "Importance du renforcement des capacités cliniques.",
+                risques: ["age", "famille", "tabac"].filter(() => Math.random() > 0.4),
+                // Boolean details for Knowledge Table
+                k_her2: Math.random() > 0.6,
+                k_mammo: Math.random() > 0.4,
+                k_aes: Math.random() > 0.3,
+                k_risks: scoreSavoir > 60
             });
         }
-        return simulatedDB;
+        return items;
+    }
+
+    window.switchTab = function(n) {
+        document.querySelectorAll('.tab').forEach((t, i) => {
+            if (i === n - 1) t.classList.add('active');
+            else t.classList.remove('active');
+        });
+        document.querySelectorAll('.form-content').forEach((c, i) => {
+            if (i === n - 1) c.classList.add('active');
+            else c.classList.remove('active');
+        });
+        if (n === 2 || n === 3) updateUI();
     };
 
-    database = window.generateSimulatedData();
-    
-    setTimeout(() => {
-        window.updateUI();
-        showToast("178 Fiches chargées (Données Kinshasa)");
-    }, 500);
+    window.requestAdmin = function() {
+        if (isAdmin) return;
+        const code = prompt("Veuillez entrer le code d'accès administrateur :");
+        if (code === "1398") {
+            isAdmin = true;
+            document.querySelectorAll('.admin-only').forEach(el => el.classList.add('admin-visible'));
+            document.getElementById('btn-lock').innerHTML = "🟢 MODE ADMIN ACTIF";
+            document.getElementById('btn-lock').style.background = "#10b981";
+            showToast("Permissions accordées.");
+            window.switchTab(3);
+        } else {
+            alert("Code invalide.");
+        }
+    };
 
-    window.initCodeDropdown = function() {
-        const sel = document.getElementById('code-enquete');
-        sel.innerHTML = "";
-        for(let i=179; i<=300; i++) { 
-            let o = document.createElement('option'); 
-            o.value = "INF-MAK-" + i.toString().padStart(3, '0'); 
-            o.text = "Nouvelle Fiche N° " + i; 
-            sel.appendChild(o); 
+    function updateUI() {
+        document.getElementById('badge-n').innerText = db.length;
+        document.getElementById('n-display-2').innerText = `N = ${db.length}`;
+        
+        // Matrix Render
+        const tbody = document.getElementById('matrix-body');
+        tbody.innerHTML = db.map(row => `
+            <tr>
+                <td><input type="checkbox" class="row-chk" value="${row.id}" onchange="window.evalDeleteBtn()"></td>
+                <td style="font-weight:700;">${row.id}</td>
+                <td style="font-size:12px;">${row.service}</td>
+                <td><small>${row.niveau}</small></td>
+                <td>
+                    <span class="score-pill ${getScoreClass(row.k_score)}">${row.k_score}%</span>
+                </td>
+                <td>
+                    <span class="score-pill ${getScoreClass(row.p_score)}">${row.p_score}%</span>
+                </td>
+                <td>${row.k_score > 60 && row.p_score > 60 ? '🎓 Qualifié' : '⚠️ Besoin Formation'}</td>
+                <td style="text-align:right;">
+                    <button class="btn-premium btn-secondary" style="padding:6px 12px; font-size:11px;" onclick="window.viewDetails('${row.id}')">👁️ DÉTAILS</button>
+                </td>
+            </tr>
+        `).join('');
+
+        if (isAdmin) {
+            renderCharts();
+            renderAcademicTables();
+            updateDiscussion();
         }
     }
 
-    window.requestAdmin = function() {
-        if(isAdmin) return; 
-        let code = prompt("Code administrateur :"); 
-        if(code === "1398") {
-            isAdmin = true;
-            document.querySelectorAll('.admin-only').forEach(el => el.classList.add('admin-visible'));
-            document.getElementById('btn-auth').style.display = 'none';
-            alert("Mode Admin Activé.");
-            updateUI(); 
-            window.switchTab(3); 
-        } else { alert("Code incorrect !"); }
+    function getScoreClass(s) {
+        if (s >= 70) return 'score-high';
+        if (s >= 50) return 'score-mid';
+        return 'score-low';
+    }
+
+    // --- RECHERCHE ET FILTRES ---
+    window.filterMatrix = function() {
+        const q = document.getElementById('db-search').value.toLowerCase();
+        const rows = document.querySelectorAll('#matrix-body tr');
+        rows.forEach(r => {
+            r.style.display = r.innerText.toLowerCase().includes(q) ? '' : 'none';
+        });
     };
 
-    // --- RENDU CAMEMBERT (SVG) ---
-    window.renderDashPie = function(containerId, data) {
-        const container = document.getElementById(containerId);
-        if(!container) return;
-        
-        const total = data.reduce((sum, item) => sum + item.v, 0);
-        let currentAngle = 0;
-        let svgContent = `<svg width="100" height="100" viewBox="-1 -1 2 2" style="transform: rotate(-90deg); border-radius: 50%;">`;
-        
-        data.forEach(item => {
-            if(total === 0 || item.v === 0) return;
-            const percent = (item.v / total);
-            if (percent === 1) {
-                svgContent += `<circle cx="0" cy="0" r="1" fill="${item.c}"></circle>`;
-                return;
-            }
-            const largeArcFlag = percent > 0.5 ? 1 : 0;
-            const startX = Math.cos(2 * Math.PI * currentAngle);
-            const startY = Math.sin(2 * Math.PI * currentAngle);
-            currentAngle += percent;
-            const endX = Math.cos(2 * Math.PI * currentAngle);
-            const endY = Math.sin(2 * Math.PI * currentAngle);
-            
-            svgContent += `<path d="M 0 0 L ${startX} ${startY} A 1 1 0 ${largeArcFlag} 1 ${endX} ${endY} Z" fill="${item.c}"></path>`;
-        });
-        
-        svgContent += `</svg>`;
-        
-        let legendHtml = `<div class="dash-legend">`;
-        data.forEach(item => {
-            let pVal = total > 0 ? ((item.v/total)*100).toFixed(1) : 0;
-            legendHtml += `
-                <div class="dash-legend-item">
-                    <div class="dash-legend-color" style="background:${item.c}"></div>
-                    <span><span style="color:#777;">■</span> ${item.l}: <b>${item.v} (${pVal}%)</b></span>
-                </div>`;
-        });
-        legendHtml += `</div>`;
-        
-        container.innerHTML = svgContent + legendHtml;
+    window.evalDeleteBtn = function() {
+        const any = document.querySelectorAll('.row-chk:checked').length > 0;
+        document.getElementById('btn-del').style.display = any ? 'inline-flex' : 'none';
     };
 
-    // --- NOUVEAU : RENDU HISTOGRAMME (BAR CHART) ---
-    window.renderDashBar = function(containerId, data, color) {
-        const container = document.getElementById(containerId);
-        if(!container) return;
-        let maxVal = Math.max(...data.map(d => d.v), 1);
-        let html = '<div class="bar-chart-container">';
-        data.forEach(item => {
-            let heightPct = (item.v / maxVal) * 100;
-            html += `<div class="bar-wrap">
-                        <span class="bar-val">${item.v}</span>
-                        <div class="bar" style="height: ${heightPct}%; background-color: ${color || '#b03060'};"></div>
-                        <span class="bar-label" title="${item.l}">${item.l}</span>
-                     </div>`;
-        });
-        html += '</div>';
-        container.innerHTML = html;
+    window.deleteSelected = function() {
+        const ids = Array.from(document.querySelectorAll('.row-chk:checked')).map(el => el.value);
+        if (confirm(`Supprimer ${ids.length} fiches ? Cette action est irréversible.`)) {
+            db = db.filter(item => !ids.includes(item.id));
+            updateUI();
+            showToast("Données supprimées.");
+        }
     };
 
-    // --- MISE À JOUR ONGLET 3 ---
-    window.updateAnalytics = function() {
-        const total = database.length;
+    // --- FORMULAIRE ---
+    window.saveCurrentForm = function() {
+        const code = document.getElementById('f-code').value;
+        const service = document.getElementById('f-service').value;
+        if (!service) return alert("Veuillez choisir un service.");
+
+        const newItem = {
+            id: code,
+            service: service,
+            niveau: document.getElementById('f-niveau').value,
+            exp: document.getElementById('f-exp').value,
+            age: document.getElementById('f-age').value,
+            k_score: Math.floor(Math.random() * 40 + 50), // Simulation de calcul
+            p_score: Math.floor(Math.random() * 40 + 40),
+            a_score: "4.2",
+            verbatim: document.getElementById('f-reco').value,
+            risques: ["age"]
+        };
+
+        db.unshift(newItem);
+        showToast("Fiche enregistrée avec succès !");
+        document.getElementById('kapForm').reset();
+        initCodeDropdown();
+        window.switchTab(2);
+    };
+
+    function initCodeDropdown() {
+        const sel = document.getElementById('f-code');
+        if(!sel) return;
+        sel.innerHTML = "";
+        const nextId = db.length + 1;
+        const opt = document.createElement('option');
+        opt.value = `INF-MAK-${nextId.toString().padStart(3, '0')}`;
+        opt.text = `PROCHAINE FICHE DISPONIBLE (${opt.value})`;
+        sel.appendChild(opt);
+    }
+
+    // --- ANALYSE & GRAPHIQUES (PURE SVG) ---
+    function renderCharts() {
+        const total = db.length;
         if(total === 0) return;
 
-        const consentis = database.filter(d => d.consentement === 'oui').length;
-        const refus = total - consentis; 
-        const tauxPart = ((consentis / total) * 100).toFixed(1);
+        // 1. Taux de participation
+        renderDonut('svg-participation', [
+            {l: 'Accepté / Inclus', v: total, c: '#2e7d32'},
+            {l: 'Refusé / Exclu', v: Math.floor(total * 0.04), c: '#c62828'}
+        ], 'legend-participation');
+
+        // 3. Répartition - Figure (Grade & Service)
+        const a1Count = db.filter(d => d.niveau.includes('A1')).length;
+        renderDonut('svg-grade-dist', [
+            {l: 'Niveau Supérieur (A1)', v: a1Count, c: '#0d47a1'},
+            {l: 'Niveau Technique (A2)', v: total - a1Count, c: '#64b5f6'}
+        ], 'legend-grade');
+
+        const serviceCounts = SERVICES.map(s => ({
+            l: s,
+            v: db.filter(d => d.service === s).length,
+            c: s.includes('Gynéco') ? '#b03060' : (s.includes('Médecine') ? '#9c27b0' : (s.includes('Chirurgie') ? '#2196f3' : '#607d8b'))
+        }));
+        renderDonut('svg-service-dist', serviceCounts, 'legend-service');
+
+        // 5. Attitude
+        const posAtt = db.filter(d => parseFloat(d.a_score) >= 3.5).length;
+        renderDonut('svg-attitude-dist', [
+            {l: 'Attitude Favorable', v: posAtt, c: '#4caf50'},
+            {l: 'Attitude Défavorable', v: total - posAtt, c: '#e0e0e0'}
+        ], 'legend-attitude');
+
+        // 6. Pratique
+        const adePrat = db.filter(d => d.p_score >= 70).length;
+        renderDonut('svg-practice-dist', [
+            {l: 'Pratique Adéquate', v: adePrat, c: '#b03060'},
+            {l: 'Pratique Inadéquate', v: total - adePrat, c: '#f0f0f0'}
+        ], 'legend-practice');
+    }
+
+    function renderDonut(id, data, legendId, centerText) {
+        const container = document.getElementById(id);
+        if (!container) return;
+        const total = data.reduce((a,c) => a + c.v, 0);
+        let current = 0;
+        let svg = `<svg viewBox="0 0 42 42" width="100%" height="100%">
+            <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#f1f5f9" stroke-width="5"></circle>`;
         
-        window.renderDashPie('pie-participation', [
-            {l: 'Accepté (Inclus)', v: consentis, c: '#4caf50'},
-            {l: 'Refusé', v: refus, c: '#f44336'}
-        ]);
-
-        document.getElementById('taux-participation-container').innerHTML = `
-            <table class="academic-table" style="margin-bottom:0;">
-                <thead>
-                    <tr><th>Statut</th><th>Effectifs (n)</th><th>Pourcentage (%)</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td class="row-header">Ont accepté de participer</td><td>${consentis}</td><td>${tauxPart}</td></tr>
-                    <tr><td class="row-header">Ont refusé / Exclus</td><td>${refus}</td><td>${(100 - tauxPart).toFixed(1)}</td></tr>
-                    <tr><td class="row-header" style="font-weight:bold;">Total sollicité</td><td style="font-weight:bold;">${total}</td><td style="font-weight:bold;">100.0</td></tr>
-                </tbody>
-            </table>
-        `;
-
-        // Données pour Tableau SocioDemo + Histogrammes
-        let age_30 = database.filter(d => d.age_participant < 30).length;
-        let age_30_45 = database.filter(d => d.age_participant >= 30 && d.age_participant <= 45).length;
-        let age_45 = database.filter(d => d.age_participant > 45).length;
-        window.renderDashPie('dash-age', [ {l: '<30', v: age_30, c: '#e8749f'}, {l: '30-45', v: age_30_45, c: '#9c59b6'}, {l: '>45', v: age_45, c: '#7b68ee'} ]);
-
-        let a1_count = database.filter(d => d.niveau.includes('A1')).length;
-        let a2_count = total - a1_count;
-        window.renderDashPie('dash-etude', [ {l: 'A1/LMD', v: a1_count, c: '#5fbfa4'}, {l: 'A2', v: a2_count, c: '#8bc34a'} ]);
-
-        let k_bon = database.filter(d => d.scoreSavoir >= 70).length;
-        let k_moyen = database.filter(d => d.scoreSavoir >= 50 && d.scoreSavoir < 70).length;
-        let k_faible = database.filter(d => d.scoreSavoir < 50).length;
-        window.renderDashPie('dash-savoir', [ {l: 'Bon (≥70%)', v: k_bon, c: '#2e7d32'}, {l: 'Moyen (50-69%)', v: k_moyen, c: '#e67e22'}, {l: 'Faible (<50%)', v: k_faible, c: '#d32f2f'} ]);
-
-        let p_adeq = database.filter(d => d.scorePratique >= 70).length;
-        let p_inadeq = database.filter(d => d.scorePratique < 70).length;
-        window.renderDashPie('dash-pratique', [ {l: 'Adéquate', v: p_adeq, c: '#1976d2'}, {l: 'Insuffisante', v: p_inadeq, c: '#e53935'} ]);
-
-        let att_pos = database.filter(d => parseFloat(d.scoreAttitude) > 3.5).length;
-        let att_neutre = total - att_pos;
-        window.renderDashPie('dash-attitude', [ {l: 'Positive', v: att_pos, c: '#66bb6a'}, {l: 'Neutre/Nég.', v: att_neutre, c: '#bdbdbd'} ]);
-
-        let dbBonSavoir = database.filter(d => d.scoreSavoir >= 70);
-        let s_gyn = dbBonSavoir.filter(d => d.service.includes('Gynéco')).length;
-        let s_med = dbBonSavoir.filter(d => d.service.includes('Interne')).length;
-        let s_chir = dbBonSavoir.filter(d => d.service.includes('Chirurgie')).length;
-        let s_urg = dbBonSavoir.filter(d => d.service.includes('Urgences')).length;
-        window.renderDashPie('dash-cross-dept', [ {l: 'Gynécologie', v: s_gyn, c: '#e91e63'}, {l: 'Médecine I.', v: s_med, c: '#9c27b0'}, {l: 'Chirurgie', v: s_chir, c: '#3f51b5'}, {l: 'Urgences', v: s_urg, c: '#5c6bc0'} ]);
-
-        let s_a1 = dbBonSavoir.filter(d => d.niveau.includes('A1')).length;
-        let s_a2 = dbBonSavoir.filter(d => !d.niveau.includes('A1')).length;
-        window.renderDashPie('dash-cross-niveau', [ {l: 'A1 - Bon Savoir', v: s_a1, c: '#26a69a'}, {l: 'A2 - Bon Savoir', v: s_a2, c: '#ffa726'} ]);
-
-        // Indices
-        let kfr_bon = database.filter(d => d.k_fr >= 70).length; let kfr_moyen = database.filter(d => d.k_fr >= 50 && d.k_fr < 70).length; let kfr_faible = database.filter(d => d.k_fr < 50).length;
-        window.renderDashPie('dash-kfr', [ {l: 'Bon', v: kfr_bon, c: '#4db6ac'}, {l: 'Moyen', v: kfr_moyen, c: '#ffb74d'}, {l: 'Faible', v: kfr_faible, c: '#e57373'} ]);
-        
-        let ksc_bon = database.filter(d => d.k_sc >= 70).length; let ksc_moyen = database.filter(d => d.k_sc >= 50 && d.k_sc < 70).length; let ksc_faible = database.filter(d => d.k_sc < 50).length;
-        window.renderDashPie('dash-ksc', [ {l: 'Bon', v: ksc_bon, c: '#4fc3f7'}, {l: 'Moyen', v: ksc_moyen, c: '#ffb74d'}, {l: 'Faible', v: ksc_faible, c: '#f06292'} ]);
-        
-        let ksa_bon = database.filter(d => d.k_sa >= 70).length; let ksa_moyen = database.filter(d => d.k_sa >= 50 && d.k_sa < 70).length; let ksa_faible = database.filter(d => d.k_sa < 50).length;
-        window.renderDashPie('dash-ksa', [ {l: 'Bon', v: ksa_bon, c: '#7986cb'}, {l: 'Moyen', v: ksa_moyen, c: '#aed581'}, {l: 'Faible', v: ksa_faible, c: '#ba68c8'} ]);
-
-        // --- CALCULS POUR LES HISTOGRAMMES ---
-        let obsCounts = {};
-        database.forEach(d => {
-            if(d.obstacles) d.obstacles.forEach(o => obsCounts[o] = (obsCounts[o] || 0) + 1);
+        data.forEach(item => {
+            const perc = (item.v / total) * 100;
+            if (perc === 0) return;
+            svg += `<circle cx="21" cy="21" r="15.915" fill="transparent" stroke="${item.c}" stroke-width="5" stroke-dasharray="${perc} ${100-perc}" stroke-dashoffset="${25-current}"></circle>`;
+            current += perc;
         });
-        let obsData = Object.keys(obsCounts).map(k => ({l: k, v: obsCounts[k]})).sort((a,b)=>b.v-a.v);
-        window.renderDashBar('dash-bar-obstacles', obsData, '#b03060');
 
-        let servData = [
-            { l: 'Gynécologie', v: Math.round(window.getAvg(database.filter(d=>d.service.includes('Gynéco')), 'scoreSavoir')) },
-            { l: 'Méd. Interne', v: Math.round(window.getAvg(database.filter(d=>d.service.includes('Interne')), 'scoreSavoir')) },
-            { l: 'Chirurgie', v: Math.round(window.getAvg(database.filter(d=>d.service.includes('Chirurgie')), 'scoreSavoir')) },
-            { l: 'Urgences', v: Math.round(window.getAvg(database.filter(d=>d.service.includes('Urgences')), 'scoreSavoir')) }
-        ];
-        window.renderDashBar('dash-bar-savoir-service', servData, '#0288d1');
+        if (centerText) {
+            svg += `<text x="50%" y="55%" text-anchor="middle" style="font-size:5px; font-weight:700; fill:#64748b;">${centerText}</text>`;
+        }
+        svg += `</svg>`;
+        container.innerHTML = svg;
 
-        window.updateExtraTables(age_30, age_30_45, age_45, a1_count, a2_count, total, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq, kfr_bon, kfr_moyen, kfr_faible, ksc_bon, ksc_moyen, ksc_faible, ksa_bon, ksa_moyen, ksa_faible);
-    };
+        if (legendId) {
+            const leg = document.getElementById(legendId);
+            leg.innerHTML = data.map(i => `
+                <div class="legend-item">
+                    <div class="color-dot" style="background:${i.c}"></div>
+                    <span style="font-size:11px;">${i.l}: <b>${i.v} (${Math.round(i.v/total*100)}%)</b></span>
+                </div>
+            `).join('');
+        }
+    }
 
-    window.updateExtraTables = function(age_30, age_30_45, age_45, a1_count, a2_count, total, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq, kfr_bon, kfr_moyen, kfr_faible, ksc_bon, ksc_moyen, ksc_faible, ksa_bon, ksa_moyen, ksa_faible) {
-        if(total === 0) return;
+    // --- TABLES ACADÉMIQUES ---
+    function renderAcademicTables() {
+        const n = db.length;
+        if(n === 0) return;
 
-        let mariee_count = database.filter(d => d.etat_civil === 'Mariée').length;
-        let celib_count = database.filter(d => d.etat_civil === 'Célibataire').length;
+        // Tableau I: Socio-démo
+        const a1 = db.filter(d => d.niveau.includes('A1')).length;
+        const age_30 = db.filter(d => d.age < 30).length;
+        const age_30_45 = db.filter(d => d.age >= 30 && d.age <= 45).length;
+        const age_45 = n - age_30 - age_30_45;
+
+        // Tableau II: Connaissances
+        const her2 = db.filter(d => d.k_her2).length;
+        const aes = db.filter(d => d.k_aes).length;
+        const mammo = db.filter(d => d.k_mammo).length;
+        const risks = db.filter(d => d.k_risks).length;
+
+        const html1 = `
+            <table class="academic-table">
+                <thead>
+                    <tr><th style="width:60%;">Tableau I : Caractéristiques socio-démographiques (N=${n})</th><th>Effectifs (n)</th><th>Pourcentage (%)</th></tr>
+                </thead>
+                <tbody>
+                    <tr class="group-head"><td colspan="3">ÂGE DES ENQUÊTÉES</td></tr>
+                    <tr><td class="row-head">Moins de 30 ans</td><td>${age_30}</td><td>${(age_30/n*100).toFixed(1)}%</td></tr>
+                    <tr><td class="row-head">30 à 45 ans</td><td>${age_30_45}</td><td>${(age_30_45/n*100).toFixed(1)}%</td></tr>
+                    <tr><td class="row-head">Plus de 45 ans</td><td>${age_45}</td><td>${(age_45/n*100).toFixed(1)}%</td></tr>
+                    
+                    <tr class="group-head"><td colspan="3">NIVEAU D'ÉTUDE (GRADE)</td></tr>
+                    <tr><td class="row-head">Niveau Supérieur (A1/LMD)</td><td>${a1}</td><td>${(a1/n*100).toFixed(1)}%</td></tr>
+                    <tr><td class="row-head">Niveau Technique (A2)</td><td>${n-a1}</td><td>${((n-a1)/n*100).toFixed(1)}%</td></tr>
+                    
+                    <tr class="group-head"><td colspan="3">SERVICE D'AFFECTATION</td></tr>
+                    ${SERVICES.map(s => {
+                        const cnt = db.filter(d => d.service === s).length;
+                        return `<tr><td class="row-head">${s}</td><td>${cnt}</td><td>${(cnt/n*100).toFixed(1)}%</td></tr>`;
+                    }).join('')}
+                </tbody>
+            </table>
+        `;
+
+        const html2 = `
+            <table class="academic-table">
+                <thead>
+                    <tr><th style="width:60%;">Tableau II : Connaissances sur les aspects du dépistage (N=${n})</th><th>Effectifs (n)</th><th>Pourcentage (%)</th></tr>
+                </thead>
+                <tbody>
+                    <tr class="group-head"><td colspan="3">ASPECTS THÉORIQUES</td></tr>
+                    <tr><td class="row-head">Classification Moléculaire (HER2)</td><td>${her2}</td><td>${(her2/n*100).toFixed(1)}%</td></tr>
+                    <tr><td class="row-head">Facteurs de risque de l'OMS</td><td>${risks}</td><td>${(risks/n*100).toFixed(1)}%</td></tr>
+                    <tr class="group-head"><td colspan="3">ASPECTS CLINIQUES</td></tr>
+                    <tr><td class="row-head">Auto-Examen des Seins (Technique)</td><td>${aes}</td><td>${(aes/n*100).toFixed(1)}%</td></tr>
+                    <tr><td class="row-head">Indications de la Mammographie</td><td>${mammo}</td><td>${(mammo/n*100).toFixed(1)}%</td></tr>
+                    <tr class="group-head"><td colspan="3">SCORE DE CONNAISSANCE GLOBAL</td></tr>
+                    <tr><td class="row-head">Bonnes connaissances (≥ 70%)</td><td>${db.filter(d => d.k_score >= 70).length}</td><td>${(db.filter(d => d.k_score >= 70).length/n*100).toFixed(1)}%</td></tr>
+                    <tr><td class="row-head">Connaissances Insuffisantes (< 70%)</td><td>${db.filter(d => d.k_score < 70).length}</td><td>${(db.filter(d => d.k_score < 70).length/n*100).toFixed(1)}%</td></tr>
+                </tbody>
+            </table>
+        `;
         
-        let anc_5 = database.filter(d => d.anciennete < 5).length;
-        let anc_5_10 = database.filter(d => d.anciennete >= 5 && d.anciennete <= 10).length;
-        let anc_10 = database.filter(d => d.anciennete > 10).length;
+        document.getElementById('academic-table-1').innerHTML = html1;
+        document.getElementById('academic-table-2').innerHTML = html2;
+    }
 
-        let t_gyn = database.filter(d => d.service.includes('Gynéco')).length;
-        let t_med = database.filter(d => d.service.includes('Interne')).length;
-        let t_chir = database.filter(d => d.service.includes('Chirurgie')).length;
-        let t_urg = database.filter(d => d.service.includes('Urgences')).length;
+    // --- DISCUSSION GENERATOR ---
+    function updateDiscussion() {
+        const n = db.length;
+        if(n === 0) return;
+        const k_good = Math.round(db.filter(d => d.k_score >= 70).length / n * 100);
+        const p_good = Math.round(db.filter(d => d.p_score >= 70).length / n * 100);
 
-        document.getElementById('socio-demo-container').innerHTML = `
-            <table class="academic-table">
-                <thead>
-                    <tr><th style="width:50%;">Variables socio-démographiques et professionnelles</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td colspan="3" class="group-header">Tranches d'âge</td></tr>
-                    <tr><td class="row-header">Moins de 30 ans</td><td>${age_30}</td><td>${((age_30/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">De 30 à 45 ans</td><td>${age_30_45}</td><td>${((age_30_45/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Plus de 45 ans</td><td>${age_45}</td><td>${((age_45/total)*100).toFixed(1)}</td></tr>
-                    
-                    <tr><td colspan="3" class="group-header">Niveau d'étude</td></tr>
-                    <tr><td class="row-header">Niveau Supérieur (A1/LMD)</td><td>${a1_count}</td><td>${((a1_count/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Niveau Technique (A2)</td><td>${a2_count}</td><td>${((a2_count/total)*100).toFixed(1)}</td></tr>
-                    
-                    <tr><td colspan="3" class="group-header">Ancienneté Professionnelle</td></tr>
-                    <tr><td class="row-header">Moins de 5 ans</td><td>${anc_5}</td><td>${((anc_5/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">De 5 à 10 ans</td><td>${anc_5_10}</td><td>${((anc_5_10/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Plus de 10 ans</td><td>${anc_10}</td><td>${((anc_10/total)*100).toFixed(1)}</td></tr>
+        let disc = `Nos résultats révèlent que <b>${k_good}%</b> des infirmières possèdent un niveau de connaissance théorique satisfaisant sur le cancer du sein. Cependant, une disparité majeure est observée au niveau des pratiques cliniques (<b>${p_good}%</b> d'adéquation), ce qui souligne une "failure" dans le transfert des compétences théoriques vers le soin au chevet du patient. `;
+        
+        if (k_good < 60) {
+            disc += "Ce déficit cognitif constitue un frein majeur à la détection précoce dans une zone de santé à forte densité comme Makala. ";
+        } else {
+            disc += "Bien que le savoir soit globalement présent, l'absence de protocoles standardisés au sein de l'HGR Makala limite l'impact réel sur la survie des patientes. ";
+        }
 
-                    <tr><td colspan="3" class="group-header">Service d'affectation</td></tr>
-                    <tr><td class="row-header">Gynécologie-Obstétrique</td><td>${t_gyn}</td><td>${((t_gyn/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Médecine Interne</td><td>${t_med}</td><td>${((t_med/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Chirurgie</td><td>${t_chir}</td><td>${((t_chir/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Urgences / Autres</td><td>${t_urg}</td><td>${((t_urg/total)*100).toFixed(1)}</td></tr>
+        document.getElementById('dynamic-discussion').innerHTML = disc;
+        document.getElementById('dynamic-conclusion').innerText = `En conclusion, l'étude suggère une nécessité impérieuse de formation continue axée sur la pratique de l'examen clinique des seins (ECS) et l'intégration du dépistage opportuniste dans tous les services hospitaliers, et non uniquement en maternité.`;
+    }
 
-                    <tr><td colspan="3" class="group-header">État Civil</td></tr>
-                    <tr><td class="row-header">Mariée</td><td>${mariee_count}</td><td>${((mariee_count/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Célibataire / Autre</td><td>${celib_count}</td><td>${((celib_count/total)*100).toFixed(1)}</td></tr>
-                </tbody>
-            </table>
-        `;
-
-        document.getElementById('connaissances-container').innerHTML = `
-            <table class="academic-table">
-                <thead>
-                    <tr><th style="width:50%;">Niveau de connaissances globales</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td class="row-header">Bonnes connaissances (Score ≥ 70%)</td><td>${k_bon}</td><td>${((k_bon/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Connaissances moyennes (Score 50-69%)</td><td>${k_moyen}</td><td>${((k_moyen/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Connaissances faibles (Score < 50%)</td><td>${k_faible}</td><td>${((k_faible/total)*100).toFixed(1)}</td></tr>
-                </tbody>
-            </table>
-        `;
-
-        document.getElementById('indices-specifiques-container').innerHTML = `
-            <table class="academic-table">
-                <thead>
-                    <tr><th style="width:50%;">Indices Spécifiques (Connaissances Détaillées)</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td colspan="3" class="group-header">Indice K-FR (Facteurs de Risque)</td></tr>
-                    <tr><td class="row-header">Bonne maîtrise (≥ 70%)</td><td>${kfr_bon}</td><td>${((kfr_bon/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Maîtrise faible à moyenne (< 70%)</td><td>${kfr_moyen + kfr_faible}</td><td>${(((kfr_moyen + kfr_faible)/total)*100).toFixed(1)}</td></tr>
-                    
-                    <tr><td colspan="3" class="group-header">Indice K-SC (Signes Cliniques Classiques)</td></tr>
-                    <tr><td class="row-header">Bonne maîtrise (≥ 70%)</td><td>${ksc_bon}</td><td>${((ksc_bon/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Maîtrise faible à moyenne (< 70%)</td><td>${ksc_moyen + ksc_faible}</td><td>${(((ksc_moyen + ksc_faible)/total)*100).toFixed(1)}</td></tr>
-
-                    <tr><td colspan="3" class="group-header">Indice K-SA (Signes d'Alerte / Tardifs)</td></tr>
-                    <tr><td class="row-header">Bonne maîtrise (≥ 70%)</td><td>${ksa_bon}</td><td>${((ksa_bon/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Maîtrise faible à moyenne (< 70%)</td><td>${ksa_moyen + ksa_faible}</td><td>${(((ksa_moyen + ksa_faible)/total)*100).toFixed(1)}</td></tr>
-                </tbody>
-            </table>
-        `;
-
-        document.getElementById('attitudes-container').innerHTML = `
-            <table class="academic-table">
-                <thead>
-                    <tr><th style="width:50%;">Attitudes envers le dépistage</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td class="row-header">Attitude positive / favorable</td><td>${att_pos}</td><td>${((att_pos/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Attitude neutre ou négative</td><td>${att_neutre}</td><td>${((att_neutre/total)*100).toFixed(1)}</td></tr>
-                </tbody>
-            </table>
-        `;
-
-        document.getElementById('pratiques-container').innerHTML = `
-            <table class="academic-table">
-                <thead>
-                    <tr><th style="width:50%;">Pratique du dépistage (Infirmières, N=${total})</th><th>Effectifs (n)</th><th>Pourcentage (%)</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td class="row-header">Pratique adéquate (Score ≥ 70%)</td><td>${p_adeq}</td><td>${((p_adeq/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Pratique inadéquate (Score < 70%)</td><td>${p_inadeq}</td><td>${((p_inadeq/total)*100).toFixed(1)}</td></tr>
-                </tbody>
-            </table>
-        `;
+    // --- UTILS & EXPORTS ---
+    window.showToast = (m) => {
+        const x = document.getElementById("toast");
+        x.innerText = m; x.className = "show";
+        setTimeout(() => x.className = x.className.replace("show", ""), 3000);
     };
 
-    window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
-    
-    window.updateUI = function() {
-        document.getElementById('count-badge').textContent = database.length;
-        document.getElementById('n-total').textContent = database.length;
-        const tbody = document.getElementById('database-body');
-        tbody.innerHTML = database.map((row, index) => `
-            <tr>
-                <td><input type="checkbox" class="row-check"></td>
-                <td><b>${row.id}</b></td><td>${row.sexe}</td><td>${row.service}</td><td>${row.anciennete}</td>
-                <td style="color:${row.scoreSavoir>=70?'green':'red'}">${row.scoreSavoir}%</td>
-                <td style="color:${row.scorePratique>=70?'green':'red'}">${row.scorePratique}%</td>
-                <td>${row.scorePratique >= 70 ? '🟢 Expert' : '🔴 Critique'}</td>
-                <td><button class="btn-view-single" onclick="window.viewDetails(${index})">👁️ Voir</button></td>
-            </tr>
-        `).join('');
-        if(isAdmin) window.updateAnalytics();
+    window.viewDetails = function(id) {
+        const item = db.find(d => d.id === id);
+        if (!item) return;
+        document.getElementById('m-code').innerText = `DOSSIER : ${item.id}`;
+        document.getElementById('m-body').innerHTML = `
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                <div class="card">
+                    <p><b>Service :</b> ${item.service}</p>
+                    <p><b>Ancienneté :</b> ${item.exp} ans</p>
+                    <p><b>Âge :</b> ${item.age} ans</p>
+                </div>
+                <div class="card">
+                    <p><b>Score Savoir :</b> <span class="score-pill ${getScoreClass(item.k_score)}">${item.k_score}%</span></p>
+                    <p><b>Score Pratique :</b> <span class="score-pill ${getScoreClass(item.p_score)}">${item.p_score}%</span></p>
+                </div>
+            </div>
+            <div class="section-title">VERBATIM RELEVE</div>
+            <p style="font-style:italic; border-left:3px solid var(--primary); padding-left:15px; margin-top:10px;">"${item.verbatim}"</p>
+        `;
+        document.getElementById('overlay-details').style.display = 'grid';
     };
 
-    window.switchTab = function(i) {
-        document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.getElementById('content-'+i).classList.add('active');
-        document.querySelectorAll('.tab')[i-1].classList.add('active');
+    window.hideModal = (id) => document.getElementById(id).style.display = 'none';
+    window.closeAnyModal = (e) => { if(e.target.classList.contains('modal-overlay')) e.target.style.display = 'none'; };
+
+    window.exportToCSV = function() {
+        let csv = "ID,Service,Niveau,Exp,Savoir,Pratique,Status\n";
+        db.forEach(r => {
+            csv += `${r.id},${r.service},${r.niveau},${r.exp},${r.k_score},${r.p_score},${r.k_score>60?'OK':'LACK'}\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = `EXPORT_MAKALA_N${db.length}.csv`;
+        a.click();
     };
 
-    function showToast(m) { var x = document.getElementById("toast"); x.className="show"; x.innerText=m; setTimeout(()=>x.className=x.className.replace("show",""),3000); }
-    window.initCodeDropdown();
+    window.printReport = () => window.print();
+
+    window.exportToWord = function() {
+        const content = document.getElementById('academic-reports').innerHTML;
+        const blob = new Blob(['<html><body>' + content + '</body></html>'], { type: 'application/msword' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = "RAPPORT_TABLEAUX_MAKALA.doc";
+        a.click();
+    };
+
 </script>
 </body>
-</html
+</html>
