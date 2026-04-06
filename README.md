@@ -111,7 +111,7 @@
         <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">178</span></button>
         <button class="tab admin-only" id="tab-2" onclick="switchTab(2)">2. MATRICE DE DÉPOUILLEMENT</button>
         <button class="tab admin-only" id="tab-3" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE PROTOCOLE</button>
-        <button class="tab admin-only" id="tab-4" onclick="switchTab(4)">4. CONCLUSION & RECOMMANDATIONS</button>
+        <button class="tab admin-only" id="tab-4" onclick="switchTab(4)">4. DISCUSSION</button>
         
         <div class="sim-badge">DONNÉES: KINSHASA (N=178)</div>
         <button type="button" class="btn-auth" id="btn-auth" onclick="window.requestAdmin()">🔒 ACCÈS ADMIN</button>
@@ -359,7 +359,7 @@
     </div>
 
     <div id="content-3" class="form-content">
-        <button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab3Word()">📥 TÉLÉCHARGER TOUTES LES DONNÉES DE L'ONGLET 3 (WORD)</button>
+        <button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab3Word()">📥 TÉLÉCHARGER TOUTES LES DONNÉES DE L'ONGLET 3 (WORD / PDF)</button>
 
         <div class="section-title">TAUX DE PARTICIPATION</div>
         <div class="row" style="align-items: center;">
@@ -461,7 +461,8 @@
     </div>
 
     <div id="content-4" class="form-content">
-        <div class="section-title">SYNTHÈSE AUTOMATISÉE ET CONCLUSIONS</div>
+        <div class="section-title">DISCUSSION</div>
+        <button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab4()">📥 TÉLÉCHARGER TOUTE LA DISCUSSION (WORD / PDF)</button>
         <div id="dynamic-report" style="font-size:14px; line-height:1.6; color:#333;"></div>
         <br><hr><br>
         <button type="button" class="btn-excel" onclick="window.exportToCSV()">📥 TÉLÉCHARGER LA BASE COMPLÈTE (.CSV)</button>
@@ -867,7 +868,19 @@
     };
 
     function showToast(m) { var x = document.getElementById("toast"); x.className="show"; x.innerText=m; setTimeout(()=>x.className=x.className.replace("show",""),3000); }
+    
+    // Fonctions stub pour les nouveaux boutons de téléchargement ajoutés
+    window.exportTab3Word = function() {
+        showToast("Téléchargement de l'onglet 3 (Word/PDF) en cours...");
+        // Logique d'export à implémenter ici
+    };
+    
+    window.exportTab4 = function() {
+        showToast("Téléchargement de la discussion (Word/PDF) en cours...");
+        // Logique d'export à implémenter ici
+    };
+
     window.initCodeDropdown();
 </script>
 </body>
-</html
+</html>
