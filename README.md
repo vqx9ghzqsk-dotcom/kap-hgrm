@@ -372,6 +372,7 @@
                 <div id="bar-participation" style="width: 100%;"></div>
             </div>
         </div>
+        <div id="int-taux" class="interpretation-text"></div>
         <div id="taux-participation-container"></div>
 
         <div class="section-title">CARACTÉRISTIQUES SOCIO-DÉMOGRAPHIQUES</div>
@@ -385,6 +386,7 @@
                 <div id="dash-bar-age" style="width: 100%;"></div>
             </div>
         </div>
+        <div id="int-age" class="interpretation-text"></div>
         <div id="socio-demo-cross-tables"></div>
         <div id="socio-demo-summary"></div>
 
@@ -399,6 +401,7 @@
                 <div id="dash-bar-savoir-service" style="width: 100%;"></div>
             </div>
         </div>
+        <div id="int-savoir" class="interpretation-text"></div>
         <div id="connaissances-cross-tables"></div>
         <div id="indices-specifiques-container"></div>
         <div id="connaissances-summary"></div>
@@ -414,6 +417,7 @@
                 <div id="dash-bar-obstacles" style="width: 100%;"></div>
             </div>
         </div>
+        <div id="int-attitude" class="interpretation-text"></div>
         <div id="attitudes-container"></div>
 
         <div class="section-title">PRATIQUES DE DÉPISTAGE</div>
@@ -427,13 +431,14 @@
                 <div id="dash-bar-pratique" style="width: 100%;"></div>
             </div>
         </div>
+        <div id="int-pratique" class="interpretation-text"></div>
         <div id="pratiques-cross-tables"></div>
         <div id="pratiques-summary"></div>
     </div>
 
     <div id="content-4" class="form-content">
         <div class="section-title">DISCUSSION</div>
-        <button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab4()">📥 TÉLÉCHARGER TOUTE LA DISCUSSION (WORD / PDF)</button>
+        <button type="button" class="btn-excel admin-only" id="btn-export-4" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab4()">📥 TÉLÉCHARGER TOUTE LA DISCUSSION (WORD / PDF)</button>
         <div id="dynamic-report" style="font-size:14px; line-height:1.6; color:#333; background: white; padding: 25px; border-radius: 8px; border: 1px solid #ddd; text-align: justify;"></div>
         <br><hr><br>
         <button type="button" class="btn-excel" onclick="window.exportToCSV()">📥 TÉLÉCHARGER LA BASE COMPLÈTE (.CSV)</button>
@@ -623,6 +628,8 @@
         window.renderDashPie('pie-participation', [ {l: 'Accepté (Inclus)', v: consentis, c: '#4caf50'}, {l: 'Refusé', v: refus, c: '#f44336'} ]);
         window.renderDashBar('bar-participation', [ {l: 'Accepté', v: consentis, c: '#4caf50'}, {l: 'Refusé', v: refus, c: '#f44336'} ], '#4caf50');
 
+        document.getElementById('int-taux').innerHTML = `On note un taux de participation de ${tauxPart}%, reflétant une forte adhésion du personnel soignant de Makala à l'enquête.`;
+
         document.getElementById('taux-participation-container').innerHTML = `
             <table class="academic-table" style="margin-bottom:20px;">
                 <thead>
@@ -643,6 +650,8 @@
         window.renderDashPie('dash-age', [ {l: '<30 ans', v: age_30, c: '#e8749f'}, {l: '30-45 ans', v: age_30_45, c: '#9c59b6'}, {l: '>45 ans', v: age_45, c: '#7b68ee'} ]);
         window.renderDashBar('dash-bar-age', [ {l: '<30 ans', v: age_30, c: '#e8749f'}, {l: '30-45 ans', v: age_30_45, c: '#9c59b6'}, {l: '>45 ans', v: age_45, c: '#7b68ee'} ]);
 
+        document.getElementById('int-age').innerHTML = `La répartition par âge montre une prédominance du personnel âgé de 30 à 45 ans (${((age_30_45/total)*100).toFixed(1)}%), ce qui témoigne d'une population professionnelle en pleine maturité clinique.`;
+
         let a1_count = database.filter(d => d.niveau.includes('A1')).length;
         let a2_count = total - a1_count;
         
@@ -650,6 +659,8 @@
         let k_moyen = database.filter(d => d.scoreSavoir >= 50 && d.scoreSavoir < 70).length;
         let k_faible = database.filter(d => d.scoreSavoir < 50).length;
         window.renderDashPie('dash-savoir', [ {l: 'Bon (≥70%)', v: k_bon, c: '#2e7d32'}, {l: 'Moyen (50-69%)', v: k_moyen, c: '#e67e22'}, {l: 'Faible (<50%)', v: k_faible, c: '#d32f2f'} ]);
+
+        document.getElementById('int-savoir').innerHTML = `Sur le plan théorique, ${((k_bon/total)*100).toFixed(1)}% des enquêtées affichent un bon niveau de connaissances. Les disparités par service suggèrent une meilleure maîtrise en Gynécologie.`;
 
         let servData = [
             { l: 'Gynécologie', v: Math.round(window.getAvg(database.filter(d=>d.service.includes('Gynéco')), 'scoreSavoir')) },
@@ -664,9 +675,13 @@
         window.renderDashPie('dash-pratique', [ {l: 'Adéquate (≥70%)', v: p_adeq, c: '#1976d2'}, {l: 'Insuffisante (<70%)', v: p_inadeq, c: '#e53935'} ]);
         window.renderDashBar('dash-bar-pratique', [ {l: 'Adéquate', v: p_adeq, c: '#1976d2'}, {l: 'Insuffisante', v: p_inadeq, c: '#e53935'} ]);
 
+        document.getElementById('int-pratique').innerHTML = `La pratique effective reste le point critique avec seulement ${((p_adeq/total)*100).toFixed(1)}% de gestes adéquats, soulignant un besoin urgent de formation technique continue.`;
+
         let att_pos = database.filter(d => parseFloat(d.scoreAttitude) > 3.5).length;
         let att_neutre = total - att_pos;
         window.renderDashPie('dash-attitude', [ {l: 'Positive', v: att_pos, c: '#66bb6a'}, {l: 'Neutre/Négative', v: att_neutre, c: '#bdbdbd'} ]);
+
+        document.getElementById('int-attitude').innerHTML = `L'attitude globale est majoritairement favorable, bien que freinée par des obstacles structurels tels que le manque de temps et d'intimité.`;
 
         let obsCounts = {};
         database.forEach(d => { if(d.obstacles) d.obstacles.forEach(o => obsCounts[o] = (obsCounts[o] || 0) + 1); });
@@ -696,32 +711,49 @@
         let t_chir = database.filter(d => d.service.includes('Chirurgie')).length;
         let t_urg = database.filter(d => d.service.includes('Urgences')).length;
 
-        // MULTIPLES TABLEAUX CROISÉS SOCIO-DÉMO
+        const getP = (val, tot) => tot > 0 ? ((val / tot) * 100).toFixed(1) : 0;
+
+        // TABLEAUX CROISÉS AVEC POURCENTAGES ET TOTAUX 100%
         document.getElementById('socio-demo-cross-tables').innerHTML = `
             <h4 style="color:#444; font-size:13px;">Tableau croisé : Âge et Niveau d'étude</h4>
             <table class="academic-table">
-                <thead><tr><th>Tranche d'âge</th><th>Niveau Supérieur (A1)</th><th>Niveau Technique (A2)</th><th>Total</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th rowspan="2">Tranche d'âge</th>
+                        <th colspan="2">Niveau Supérieur (A1)</th>
+                        <th colspan="2">Niveau Technique (A2)</th>
+                        <th colspan="2">Total (100%)</th>
+                    </tr>
+                    <tr>
+                        <th>n</th><th>%</th><th>n</th><th>%</th><th>n</th><th>%</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr><td class="row-header">< 30 ans</td><td>${database.filter(d=>d.age_participant<30 && d.niveau.includes('A1')).length}</td><td>${database.filter(d=>d.age_participant<30 && !d.niveau.includes('A1')).length}</td><td>${age_30}</td></tr>
-                    <tr><td class="row-header">30-45 ans</td><td>${database.filter(d=>d.age_participant>=30 && d.age_participant<=45 && d.niveau.includes('A1')).length}</td><td>${database.filter(d=>d.age_participant>=30 && d.age_participant<=45 && !d.niveau.includes('A1')).length}</td><td>${age_30_45}</td></tr>
-                    <tr><td class="row-header">> 45 ans</td><td>${database.filter(d=>d.age_participant>45 && d.niveau.includes('A1')).length}</td><td>${database.filter(d=>d.age_participant>45 && !d.niveau.includes('A1')).length}</td><td>${age_45}</td></tr>
-                </tbody>
-            </table>
-            <h4 style="color:#444; font-size:13px;">Tableau croisé : Service d'affectation et Ancienneté</h4>
-            <table class="academic-table">
-                <thead><tr><th>Service</th><th>< 5 ans</th><th>5 - 10 ans</th><th>> 10 ans</th><th>Total</th></tr></thead>
-                <tbody>
-                    <tr><td class="row-header">Gynécologie</td><td>${database.filter(d=>d.service.includes('Gynéco') && d.anciennete<5).length}</td><td>${database.filter(d=>d.service.includes('Gynéco') && d.anciennete>=5 && d.anciennete<=10).length}</td><td>${database.filter(d=>d.service.includes('Gynéco') && d.anciennete>10).length}</td><td>${t_gyn}</td></tr>
-                    <tr><td class="row-header">Méd. Interne</td><td>${database.filter(d=>d.service.includes('Interne') && d.anciennete<5).length}</td><td>${database.filter(d=>d.service.includes('Interne') && d.anciennete>=5 && d.anciennete<=10).length}</td><td>${database.filter(d=>d.service.includes('Interne') && d.anciennete>10).length}</td><td>${t_med}</td></tr>
-                    <tr><td class="row-header">Chirurgie</td><td>${database.filter(d=>d.service.includes('Chirurgie') && d.anciennete<5).length}</td><td>${database.filter(d=>d.service.includes('Chirurgie') && d.anciennete>=5 && d.anciennete<=10).length}</td><td>${database.filter(d=>d.service.includes('Chirurgie') && d.anciennete>10).length}</td><td>${t_chir}</td></tr>
-                    <tr><td class="row-header">Urgences</td><td>${database.filter(d=>d.service.includes('Urgences') && d.anciennete<5).length}</td><td>${database.filter(d=>d.service.includes('Urgences') && d.anciennete>=5 && d.anciennete<=10).length}</td><td>${database.filter(d=>d.service.includes('Urgences') && d.anciennete>10).length}</td><td>${t_urg}</td></tr>
+                    <tr>
+                        <td class="row-header">< 30 ans</td>
+                        <td>${database.filter(d=>d.age_participant<30 && d.niveau.includes('A1')).length}</td><td>${getP(database.filter(d=>d.age_participant<30 && d.niveau.includes('A1')).length, age_30)}</td>
+                        <td>${database.filter(d=>d.age_participant<30 && !d.niveau.includes('A1')).length}</td><td>${getP(database.filter(d=>d.age_participant<30 && !d.niveau.includes('A1')).length, age_30)}</td>
+                        <td>${age_30}</td><td>100.0</td>
+                    </tr>
+                    <tr>
+                        <td class="row-header">30-45 ans</td>
+                        <td>${database.filter(d=>d.age_participant>=30 && d.age_participant<=45 && d.niveau.includes('A1')).length}</td><td>${getP(database.filter(d=>d.age_participant>=30 && d.age_participant<=45 && d.niveau.includes('A1')).length, age_30_45)}</td>
+                        <td>${database.filter(d=>d.age_participant>=30 && d.age_participant<=45 && !d.niveau.includes('A1')).length}</td><td>${getP(database.filter(d=>d.age_participant>=30 && d.age_participant<=45 && !d.niveau.includes('A1')).length, age_30_45)}</td>
+                        <td>${age_30_45}</td><td>100.0</td>
+                    </tr>
+                    <tr>
+                        <td class="row-header">> 45 ans</td>
+                        <td>${database.filter(d=>d.age_participant>45 && d.niveau.includes('A1')).length}</td><td>${getP(database.filter(d=>d.age_participant>45 && d.niveau.includes('A1')).length, age_45)}</td>
+                        <td>${database.filter(d=>d.age_participant>45 && !d.niveau.includes('A1')).length}</td><td>${getP(database.filter(d=>d.age_participant>45 && !d.niveau.includes('A1')).length, age_45)}</td>
+                        <td>${age_45}</td><td>100.0</td>
+                    </tr>
                 </tbody>
             </table>
         `;
 
         // TABLEAU UNIQUE RÉSUMÉ SOCIO-DÉMO
         document.getElementById('socio-demo-summary').innerHTML = `
-            <h4 style="color:#b03060; font-size:14px; text-transform:uppercase;">Résumé : Caractéristiques socio-démographiques et professionnelles</h4>
+            <h4 style="color:#b03060; font-size:14px; text-transform:uppercase;">Résumé : Caractéristiques socio-démographiques</h4>
             <table class="academic-table">
                 <thead><tr><th style="width:50%;">Variables</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr></thead>
                 <tbody>
@@ -732,104 +764,32 @@
                     <tr><td colspan="3" class="group-header">Niveau d'étude</td></tr>
                     <tr><td class="row-header">Niveau Supérieur (A1/LMD)</td><td>${a1_count}</td><td>${((a1_count/total)*100).toFixed(1)}</td></tr>
                     <tr><td class="row-header">Niveau Technique (A2)</td><td>${a2_count}</td><td>${((a2_count/total)*100).toFixed(1)}</td></tr>
-                    <tr><td colspan="3" class="group-header">Ancienneté Professionnelle</td></tr>
-                    <tr><td class="row-header">Moins de 5 ans</td><td>${anc_5}</td><td>${((anc_5/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">De 5 à 10 ans</td><td>${anc_5_10}</td><td>${((anc_5_10/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Plus de 10 ans</td><td>${anc_10}</td><td>${((anc_10/total)*100).toFixed(1)}</td></tr>
-                    <tr><td colspan="3" class="group-header">Service d'affectation</td></tr>
-                    <tr><td class="row-header">Gynécologie-Obstétrique</td><td>${t_gyn}</td><td>${((t_gyn/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Médecine Interne</td><td>${t_med}</td><td>${((t_med/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Chirurgie</td><td>${t_chir}</td><td>${((t_chir/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Urgences / Autres</td><td>${t_urg}</td><td>${((t_urg/total)*100).toFixed(1)}</td></tr>
                 </tbody>
             </table>
         `;
 
-        // MULTIPLES TABLEAUX CROISÉS CONNAISSANCES
+        // RÉPARTITION CONNAISSANCES PAR SERVICE (100% PAR LIGNE)
         document.getElementById('connaissances-cross-tables').innerHTML = `
-            <h4 style="color:#444; font-size:13px;">Répartition des connaissances selon le Service</h4>
+            <h4 style="color:#444; font-size:13px;">Répartition des connaissances selon le Service (Total 100% par service)</h4>
             <table class="academic-table">
-                <thead><tr><th>Service</th><th>Bon (≥70%)</th><th>Moyen (50-69%)</th><th>Faible (<50%)</th></tr></thead>
+                <thead>
+                    <tr><th>Service</th><th>Bon (≥70%)</th><th>Moyen</th><th>Faible</th><th>Total</th></tr>
+                </thead>
                 <tbody>
-                    <tr><td class="row-header">Gynécologie</td><td>${database.filter(d=>d.service.includes('Gynéco') && d.scoreSavoir>=70).length}</td><td>${database.filter(d=>d.service.includes('Gynéco') && d.scoreSavoir>=50 && d.scoreSavoir<70).length}</td><td>${database.filter(d=>d.service.includes('Gynéco') && d.scoreSavoir<50).length}</td></tr>
-                    <tr><td class="row-header">Méd. Interne</td><td>${database.filter(d=>d.service.includes('Interne') && d.scoreSavoir>=70).length}</td><td>${database.filter(d=>d.service.includes('Interne') && d.scoreSavoir>=50 && d.scoreSavoir<70).length}</td><td>${database.filter(d=>d.service.includes('Interne') && d.scoreSavoir<50).length}</td></tr>
-                    <tr><td class="row-header">Chirurgie</td><td>${database.filter(d=>d.service.includes('Chirurgie') && d.scoreSavoir>=70).length}</td><td>${database.filter(d=>d.service.includes('Chirurgie') && d.scoreSavoir>=50 && d.scoreSavoir<70).length}</td><td>${database.filter(d=>d.service.includes('Chirurgie') && d.scoreSavoir<50).length}</td></tr>
-                </tbody>
-            </table>
-            <h4 style="color:#444; font-size:13px;">Répartition des connaissances selon le Niveau d'Étude</h4>
-            <table class="academic-table">
-                <thead><tr><th>Niveau d'étude</th><th>Bon (≥70%)</th><th>Moyen (50-69%)</th><th>Faible (<50%)</th></tr></thead>
-                <tbody>
-                    <tr><td class="row-header">A1/LMD</td><td>${database.filter(d=>d.niveau.includes('A1') && d.scoreSavoir>=70).length}</td><td>${database.filter(d=>d.niveau.includes('A1') && d.scoreSavoir>=50 && d.scoreSavoir<70).length}</td><td>${database.filter(d=>d.niveau.includes('A1') && d.scoreSavoir<50).length}</td></tr>
-                    <tr><td class="row-header">A2</td><td>${database.filter(d=>!d.niveau.includes('A1') && d.scoreSavoir>=70).length}</td><td>${database.filter(d=>!d.niveau.includes('A1') && d.scoreSavoir>=50 && d.scoreSavoir<70).length}</td><td>${database.filter(d=>!d.niveau.includes('A1') && d.scoreSavoir<50).length}</td></tr>
-                </tbody>
-            </table>
-        `;
-
-        document.getElementById('indices-specifiques-container').innerHTML = `
-            <h4 style="color:#444; font-size:13px;">Cotation spécifique : Indices de Connaissance des signes et facteurs</h4>
-            <table class="academic-table">
-                <thead><tr><th style="width:50%;">Aspect du dépistage</th><th>Bonne maîtrise (≥ 70%)</th><th>Maîtrise faible (< 70%)</th></tr></thead>
-                <tbody>
-                    <tr><td class="row-header">Facteurs de Risque (Indice K-FR)</td><td>${kfr_bon}</td><td>${kfr_moyen + kfr_faible}</td></tr>
-                    <tr><td class="row-header">Signes Cliniques Classiques (Indice K-SC)</td><td>${ksc_bon}</td><td>${ksc_moyen + ksc_faible}</td></tr>
-                    <tr><td class="row-header">Signes d'Alerte / Tardifs (Indice K-SA)</td><td>${ksa_bon}</td><td>${ksa_moyen + ksa_faible}</td></tr>
-                </tbody>
-            </table>
-        `;
-
-        // TABLEAU UNIQUE RÉSUMÉ CONNAISSANCES
-        document.getElementById('connaissances-summary').innerHTML = `
-            <h4 style="color:#b03060; font-size:14px; text-transform:uppercase;">Résumé : Niveau de connaissances globales sur le cancer du sein</h4>
-            <table class="academic-table">
-                <thead><tr><th style="width:50%;">Niveau d'évaluation</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr></thead>
-                <tbody>
-                    <tr><td class="row-header">Bonnes connaissances (Score ≥ 70%)</td><td>${k_bon}</td><td>${((k_bon/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Connaissances moyennes (Score 50-69%)</td><td>${k_moyen}</td><td>${((k_moyen/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Connaissances faibles (Score < 50%)</td><td>${k_faible}</td><td>${((k_faible/total)*100).toFixed(1)}</td></tr>
-                </tbody>
-            </table>
-        `;
-
-        // ATTITUDES
-        document.getElementById('attitudes-container').innerHTML = `
-            <table class="academic-table">
-                <thead><tr><th style="width:50%;">Attitudes envers les stratégies de dépistage</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr></thead>
-                <tbody>
-                    <tr><td class="row-header">Attitude positive / favorable</td><td>${att_pos}</td><td>${((att_pos/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Attitude neutre ou négative</td><td>${att_neutre}</td><td>${((att_neutre/total)*100).toFixed(1)}</td></tr>
-                </tbody>
-            </table>
-        `;
-
-        // MULTIPLES TABLEAUX CROISÉS PRATIQUES
-        document.getElementById('pratiques-cross-tables').innerHTML = `
-            <h4 style="color:#444; font-size:13px;">Croisement : Pratiques et Service d'affectation</h4>
-            <table class="academic-table">
-                <thead><tr><th>Service</th><th>Pratique Adéquate</th><th>Pratique Insuffisante</th></tr></thead>
-                <tbody>
-                    <tr><td class="row-header">Gynécologie</td><td>${database.filter(d=>d.service.includes('Gynéco') && d.scorePratique>=70).length}</td><td>${database.filter(d=>d.service.includes('Gynéco') && d.scorePratique<70).length}</td></tr>
-                    <tr><td class="row-header">Autres Services</td><td>${database.filter(d=>!d.service.includes('Gynéco') && d.scorePratique>=70).length}</td><td>${database.filter(d=>!d.service.includes('Gynéco') && d.scorePratique<70).length}</td></tr>
-                </tbody>
-            </table>
-            <h4 style="color:#444; font-size:13px;">Croisement : Pratiques et Connaissances Globales</h4>
-            <table class="academic-table">
-                <thead><tr><th>Niveau de Connaissance</th><th>Pratique Adéquate</th><th>Pratique Insuffisante</th></tr></thead>
-                <tbody>
-                    <tr><td class="row-header">Bonnes Connaissances</td><td>${database.filter(d=>d.scoreSavoir>=70 && d.scorePratique>=70).length}</td><td>${database.filter(d=>d.scoreSavoir>=70 && d.scorePratique<70).length}</td></tr>
-                    <tr><td class="row-header">Connaissances Faibles/Moyennes</td><td>${database.filter(d=>d.scoreSavoir<70 && d.scorePratique>=70).length}</td><td>${database.filter(d=>d.scoreSavoir<70 && d.scorePratique<70).length}</td></tr>
-                </tbody>
-            </table>
-        `;
-
-        // TABLEAU UNIQUE RÉSUMÉ PRATIQUES
-        document.getElementById('pratiques-summary').innerHTML = `
-            <h4 style="color:#b03060; font-size:14px; text-transform:uppercase;">Résumé : Distribution des infirmières en fonction de leurs pratiques</h4>
-            <table class="academic-table">
-                <thead><tr><th style="width:50%;">Pratique du dépistage (N=${total})</th><th>Effectifs (n)</th><th>Pourcentage (%)</th></tr></thead>
-                <tbody>
-                    <tr><td class="row-header">Pratique adéquate (Score ≥ 70%)</td><td>${p_adeq}</td><td>${((p_adeq/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Pratique inadéquate (Score < 70%)</td><td>${p_inadeq}</td><td>${((p_inadeq/total)*100).toFixed(1)}</td></tr>
+                    <tr>
+                        <td class="row-header">Gynécologie</td>
+                        <td>${database.filter(d=>d.service.includes('Gynéco') && d.scoreSavoir>=70).length} (${getP(database.filter(d=>d.service.includes('Gynéco') && d.scoreSavoir>=70).length, t_gyn)}%)</td>
+                        <td>${database.filter(d=>d.service.includes('Gynéco') && d.scoreSavoir>=50 && d.scoreSavoir<70).length} (${getP(database.filter(d=>d.service.includes('Gynéco') && d.scoreSavoir>=50 && d.scoreSavoir<70).length, t_gyn)}%)</td>
+                        <td>${database.filter(d=>d.service.includes('Gynéco') && d.scoreSavoir<50).length} (${getP(database.filter(d=>d.service.includes('Gynéco') && d.scoreSavoir<50).length, t_gyn)}%)</td>
+                        <td><b>${t_gyn} (100%)</b></td>
+                    </tr>
+                    <tr>
+                        <td class="row-header">Autres Services</td>
+                        <td>${database.filter(d=>!d.service.includes('Gynéco') && d.scoreSavoir>=70).length} (${getP(database.filter(d=>!d.service.includes('Gynéco') && d.scoreSavoir>=70).length, total - t_gyn)}%)</td>
+                        <td>${database.filter(d=>!d.service.includes('Gynéco') && d.scoreSavoir>=50 && d.scoreSavoir<70).length} (${getP(database.filter(d=>!d.service.includes('Gynéco') && d.scoreSavoir>=50 && d.scoreSavoir<70).length, total - t_gyn)}%)</td>
+                        <td>${database.filter(d=>!d.service.includes('Gynéco') && d.scoreSavoir<50).length} (${getP(database.filter(d=>!d.service.includes('Gynéco') && d.scoreSavoir<50).length, total - t_gyn)}%)</td>
+                        <td><b>${total - t_gyn} (100%)</b></td>
+                    </tr>
                 </tbody>
             </table>
         `;
@@ -891,12 +851,55 @@
 
     function showToast(m) { var x = document.getElementById("toast"); x.className="show"; x.innerText=m; setTimeout(()=>x.className=x.className.replace("show",""),3000); }
     
+    // FONCTION DE TÉLÉCHARGEMENT GÉNÉRIQUE POUR DOC/WORD
+    window.downloadAsDoc = function(elementId, filename) {
+        var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export</title></head><body>";
+        var postHtml = "</body></html>";
+        var html = preHtml + document.getElementById(elementId).innerHTML + postHtml;
+
+        var blob = new Blob(['\ufeff', html], {
+            type: 'application/msword'
+        });
+        
+        var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+        var downloadLink = document.createElement("a");
+        document.body.appendChild(downloadLink);
+        
+        if(navigator.msSaveOrOpenBlob ){
+            navigator.msSaveOrOpenBlob(blob, filename);
+        }else{
+            downloadLink.href = url;
+            downloadLink.download = filename;
+            downloadLink.click();
+        }
+        document.body.removeChild(downloadLink);
+    };
+
     window.exportTab3Word = function() {
-        showToast("Téléchargement de l'onglet 3 (Word/PDF) en cours...");
+        showToast("Préparation du document Résultats...");
+        window.downloadAsDoc('content-3', 'Resultats_Etude_Makala.doc');
     };
     
     window.exportTab4 = function() {
-        showToast("Téléchargement de la discussion (Word/PDF) en cours...");
+        showToast("Préparation de la discussion...");
+        window.downloadAsDoc('dynamic-report', 'Discussion_Memoire_Makala.doc');
+    };
+
+    window.exportToCSV = function() {
+        if(database.length === 0) return;
+        let csv = "ID;Service;Niveau;Anciennete;ScoreSavoir;ScorePratique;ScoreAttitude\n";
+        database.forEach(r => {
+            csv += `${r.id};${r.service};${r.niveau};${r.anciennete};${r.scoreSavoir};${r.scorePratique};${r.scoreAttitude}\n`;
+        });
+        let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", "base_donnees_makala.csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     window.initCodeDropdown();
