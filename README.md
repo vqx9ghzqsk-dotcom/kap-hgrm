@@ -1,643 +1,873 @@
-<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Médical - HGR Makala</title>
-    <!-- Google Fonts pour un look premium -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Chart.js pour des visualisations haut de gamme -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</title>
     <style>
-        /* --- DESIGN SYSTEM (SKELETON & AESTHETICS) --- */
-        :root {
-            --primary: #00796b; 
-            --primary-dark: #004d40;
-            --primary-light: #e0f2f1;
-            --secondary: #37474f;
-            --accent: #26a69a;
-            --bg-body: #f4f7f6;
-            --bg-card: #ffffff;
-            --text-title: #1a202c;
-            --text-body: #4a5568;
-            --border: #e2e8f0;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --transition: all 0.2s ease;
-        }
-
-        /* --- MODAL STYLES --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
-            display: none; justify-content: center; align-items: center; z-index: 2000;
-        }
-        .modal-container {
-            background: #fff; width: 90%; max-width: 800px; max-height: 90vh;
-            border-radius: 16px; overflow-y: auto; padding: 40px; position: relative;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-        .modal-close {
-            position: absolute; top: 20px; right: 20px; font-size: 24px;
-            cursor: pointer; color: #718096; transition: 0.2s;
-        }
-        .modal-close:hover { color: var(--primary); }
-        .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 20px; }
-        .modal-data-group { border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-        .modal-data-label { font-size: 11px; font-weight: 800; color: #a0aec0; text-transform: uppercase; }
-        .modal-data-value { font-size: 15px; font-weight: 700; color: var(--secondary); margin-top: 4px; }
-        .score-pill { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; }
-        .score-good { background: #c6f6d5; color: #22543d; }
-        .score-medium { background: #feebc8; color: #744210; }
-        .score-poor { background: #fed7d7; color: #822727; }
-
-
-        * { box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-body); margin: 0; color: var(--text-body); line-height: 1.6; }
-
-        .app-container { max-width: 1250px; margin: 30px auto; background: var(--bg-card); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; min-height: 90vh; display: flex; flex-direction: column; }
-
-        /* --- HEADER & NAVIGATION --- */
-        .app-header { background: #fff; padding: 0 25px; border-bottom: 3px solid var(--primary); display: flex; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .nav-tabs { display: flex; gap: 10px; padding: 15px 0; flex-grow: 1; }
-        .tab { padding: 12px 22px; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; border: 1px solid var(--border); border-radius: 8px; background: #fafafa; color: var(--text-body); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 10px; border: none; }
-        .tab:hover { background: var(--primary-light); color: var(--primary); border: 1px solid var(--primary); }
-        .tab.active { background: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(0, 121, 107, 0.25); }
+        /* --- STYLE GLOBAL --- */
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
+        .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 900px;}
         
-        /* Badges */
-        .badge-count { background: rgba(0,0,0,0.1); padding: 2px 8px; border-radius: 20px; font-size: 10px; }
-        .tab.active .badge-count { background: rgba(255,255,255,0.2); }
-
-        /* --- CONTENT AREAS --- */
-        .tab-content { padding: 40px; display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- UI COMPONENTS --- */
-        .section-header { margin: 30px 0 20px; padding: 15px 25px; background: var(--primary-light); color: var(--primary-dark); font-weight: 800; border-left: 8px solid var(--primary); border-radius: 4px 12px 12px 4px; text-transform: uppercase; font-size: 14px; }
+        /* Navigation */
+        .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 100; }
+        .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; transition: 0.2s; }
+        .tab.active { background: #b03060; color: white; border-color: #b03060; }
         
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 25px; }
-        .input-group { display: flex; flex-direction: column; gap: 8px; }
-        label { font-size: 13px; font-weight: 800; color: var(--secondary); display: flex; align-items: center; gap: 5px; }
-        input, select, textarea { padding: 14px; border: 2px solid #edf2f7; border-radius: 10px; font-size: 15px; width: 100%; transition: var(--transition); }
-        input:focus, select:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 4px rgba(38, 166, 154, 0.1); }
+        /* Simulation Mode Badge */
+        .sim-badge { background: #ff9800; color: white; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-left: 10px; }
 
-        /* Buttons */
-        .btn-primary { background: var(--primary); color: #fff; padding: 18px 30px; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; font-size: 16px; text-transform: uppercase; margin-top: 30px; transition: var(--transition); box-shadow: 0 8px 15px rgba(0, 121, 107, 0.2); }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(0, 121, 107, 0.3); }
+        .admin-only { display: none !important; }
+        .admin-visible { display: inline-block !important; }
+        
+        .btn-auth { margin-left: auto; background: #333; color: white; padding: 10px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .btn-excel { background: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-left: 10px;}
 
-        /* Tables & Matrix */
-        .matrix-container { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); background: #fff; }
-        table { width: 100%; border-collapse: collapse; min-width: 800px; }
-        th { background: #f8fafc; padding: 18px; text-align: left; font-size: 11px; font-weight: 800; color: var(--secondary); border-bottom: 2px solid var(--border); text-transform: uppercase; }
-        td { padding: 18px; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text-body); }
-        tr:last-child td { border-bottom: none; }
+        /* Actions */
+        .btn-delete-selected { background: #c62828; color: white; padding: 8px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: none; }
+        .btn-delete-single { background: none; border: 1px solid #c62828; color: #c62828; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; margin-left: 5px; }
+        .btn-view-single { background: none; border: 1px solid #0288d1; color: #0288d1; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; }
+        .btn-view-single:hover { background: #0288d1; color: white; }
 
-        /* Stats Cards */
-        .stat-card { background: #fff; border: 1px solid var(--border); padding: 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); transition: var(--transition); display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
-        .stat-value { font-size: 32px; font-weight: 800; color: var(--primary); }
-        .stat-label { font-size: 12px; color: #78909c; font-weight: 700; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+        /* Contenu */
+        .form-content { padding: 30px; display: none; }
+        .form-content.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Chart Containers */
-        .chart-box { background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 25px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
-        .chart-box h3 { margin: 0 0 20px; font-size: 16px; color: var(--text-title); font-weight: 800; display: flex; align-items: center; gap: 10px; }
-        .chart-box h3::before { content: ''; width: 4px; height: 18px; background: var(--primary); border-radius: 2px; }
+        /* Sections */
+        .section-title { background: #fce4ec; color: #b03060; padding: 15px; font-weight: bold; border-left: 8px solid #b03060; margin: 30px 0 15px 0; text-transform: uppercase; font-size: 14px; display: flex; align-items: center; justify-content: space-between; }
+        .sub-title { font-weight: bold; color: #b03060; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        
+        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 15px; }
+        .field { display: flex; flex-direction: column; }
+        label { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #222; }
+        select, input[type="text"], input[type="number"], textarea { padding: 10px; border: 1px solid #bbb; border-radius: 6px; font-size: 14px; background: #fff; width: 100%; box-sizing: border-box; }
+        textarea { resize: vertical; font-family: inherit; }
 
-        /* Custom Checkbox Grid */
-        .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 20px; background: #fcfcfc; border: 2px dashed var(--border); border-radius: 12px; }
-        .check-pill { display: flex; align-items: center; gap: 12px; padding: 12px; background: #fff; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 14px; font-weight: 600; }
-        .check-pill:hover { border-color: var(--primary); background: var(--primary-light); }
-        .check-pill input { width: 18px; height: 18px; margin: 0; accent-color: var(--primary); }
+        /* Tables & Check */
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 12px; }
+        th { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; }
+        td { border: 1px solid #eee; padding: 10px; text-align: center; vertical-align: middle; }
+        .td-left { text-align: left; padding-left: 15px; width: 50%; }
 
-        /* Results Specific Layout */
-        .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        @media (max-width: 900px) { .results-grid { grid-template-columns: 1fr; } }
+        .academic-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-family: 'Times New Roman', serif; font-size: 14px; background: white;}
+        .academic-table thead th { border-bottom: 2px solid #000; border-top: 2px solid #000; background: #fdfdfd; text-align: center; font-weight: bold; padding: 10px; }
+        .academic-table tbody td { border-bottom: 1px solid #ddd; padding: 8px; text-align: center; }
+        .academic-table tbody tr:last-child td { border-bottom: 2px solid #000; }
+        .academic-table .row-header { text-align: left; padding-left: 15px; font-weight: normal; }
+        .academic-table .group-header { background-color: #f0f8ff; font-weight: bold; text-align: left; padding-left: 10px; color: #0d47a1; }
+
+        .interpretation-text { font-family: 'Segoe UI', sans-serif; font-size: 13px; color: #444; background: #fff8e1; border-left: 4px solid #ffc107; padding: 10px; margin-bottom: 25px; line-height: 1.5; font-style: italic; }
+
+        .check-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; background: #fdfdfd; padding: 15px; border: 1px solid #eee; border-radius: 8px; }
+        .check-item { display: flex; align-items: center; font-size: 13px; cursor: pointer; }
+        .check-item input { margin-right: 12px; transform: scale(1.2); cursor: pointer; }
+
+        .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-save:hover { background: #880e4f; transform: translateY(-2px); }
+        .btn-save:disabled { background: #ccc; cursor: not-allowed; }
+        
+        /* Stats & Pie Charts */
+        .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; }
+        .stat-title { font-weight: bold; color: #555; margin-bottom: 15px; font-size: 14px; border-bottom: 2px solid #b03060; display: inline-block; width: 100%; text-align: center; }
+        .pie-box { display: flex; flex-wrap: wrap; justify-content: space-around; align-items: center; width: 100%; gap: 20px; }
+        
+        /* TABLEAU DE BORD IMAGE */
+        .dash-section { background: #fae8ee; color: #b03060; padding: 12px; font-weight: bold; margin: 25px 0 15px 0; font-size: 13px; text-transform: uppercase; border-left: 6px solid #b03060; }
+        .dash-row { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        .dash-card { background: white; border: 1px solid #e6e6e6; border-radius: 6px; padding: 15px; flex: 1; min-width: 250px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .dash-title { border-bottom: 2px solid #880e4f; padding-bottom: 8px; margin-bottom: 15px; text-align: center; font-weight: bold; font-size: 13px; color: #444; }
+        .dash-pie-box { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .dash-pie-box svg { flex-shrink: 0; }
+        .dash-legend { display: flex; flex-direction: column; gap: 6px; font-size: 11px; color: #333; }
+        .dash-legend-item { display: flex; align-items: center; gap: 8px; }
+        .dash-legend-color { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+        .counter-badge { background: #b03060; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; vertical-align: middle; margin-left: 5px;}
+
+        /* HISTOGRAMMES (BAR CHARTS) */
+        .bar-chart-container { display: flex; align-items: flex-end; justify-content: space-around; height: 180px; padding: 10px 0; border-bottom: 2px solid #ccc; border-left: 2px solid #ccc; margin-top: 10px; padding-bottom: 25px; position: relative;}
+        .bar-wrap { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; flex: 1; margin: 0 5px; position: relative; }
+        .bar { width: 100%; max-width: 40px; background-color: #b03060; transition: height 0.5s; border-radius: 3px 3px 0 0; }
+        .bar-label { font-size: 10px; font-weight: bold; text-align: center; position: absolute; bottom: -25px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #444;}
+        .bar-val { font-size: 11px; font-weight: bold; margin-bottom: 5px; color: #222;}
+
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; justify-content: center; align-items: center; }
+        .modal-content { background: white; width: 80%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
+        .modal-close { font-size: 24px; cursor: pointer; color: #888; }
+        
+        /* Toast Notification */
+        #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 17px; }
+        #toast.show { visibility: visible; -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <header class="app-header">
-        <nav class="nav-tabs">
-            <button class="tab" onclick="switchTab(1)">1. Collecte 📋 <span class="badge-count" id="badge-1">178</span></button>
-            <button class="tab" onclick="switchTab(2)">2. Matrice de Dépouillement 📊</button>
-            <button class="tab active" onclick="switchTab(3)">3. Résultats & Analyse 📈</button>
-            <button class="tab" onclick="switchTab(4)">4. Discussion & Synthèse 📄</button>
-        </nav>
-        <div style="font-size: 10px; font-weight: 800; color: #999; text-transform: uppercase; letter-spacing: 1px;">MAKALA-BC-2024</div>
-    </header>
+<div class="container">
+    <div class="header-tabs">
+        <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">178</span></button>
+        <button class="tab admin-only" id="tab-2" onclick="switchTab(2)">2. MATRICE DE DÉPOUILLEMENT</button>
+        <button class="tab admin-only" id="tab-3" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE PROTOCOLE</button>
+        <button class="tab admin-only" id="tab-4" onclick="switchTab(4)">4. CONCLUSION & RECOMMANDATIONS</button>
+        
+        <div class="sim-badge">DONNÉES: KINSHASA (N=178)</div>
+        <button type="button" class="btn-auth" id="btn-auth" onclick="window.requestAdmin()">🔒 ACCÈS ADMIN</button>
+        <button type="button" class="btn-excel admin-only" id="btn-export" onclick="window.exportToCSV()">📊 EXPORT CSV</button>
+    </div>
 
-    <!-- TAB 1: COLLECTE (FICHE MÉDICALE) -->
-    <div id="content-1" class="tab-content">
-        <div style="text-align:center; margin-bottom: 40px;">
-            <h2 style="margin:0; font-weight:800; color:var(--text-title);">FICHE D'ENQUÊTE CLINIQUE</h2>
-            <p style="margin:5px 0 0; color:var(--text-body); font-weight:600; font-size:14px;">Profil de dépistage du cancer du sein - HGR Makala</p>
-        </div>
-
-        <form id="collecteForm">
-            <div class="section-header">I. IDENTIFICATION DU DOSSIER</div>
-            <div class="grid-3">
-                <div class="input-group">
-                    <label>Numéro de fiche</label>
-                    <input type="text" placeholder="Ex: F-MAK-001" id="num-fiche">
+    <div id="content-1" class="form-content active">
+        <h2 style="color:#b03060; font-size: 18px; text-align:center; margin-bottom: 25px;">Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</h2>
+        <form id="kapForm">
+            <div class="section-title">I. IDENTIFICATION & PROFIL PROFESSIONNEL</div>
+            <div class="row">
+                <div class="field">
+                    <label>1. Code Enquêté(e)</label>
+                    <select id="code-enquete"></select>
                 </div>
-                <div class="input-group">
-                    <label>Numéro du dossier</label>
-                    <input type="text" placeholder="Numéro hospitalier..." id="num-dossier">
+                <div class="field">
+                    <label style="color:#b03060;">2. Consentement Éclairé</label>
+                    <select id="consentement">
+                        <option value="oui">Oui, a accepté de participer</option>
+                        <option value="non">Non (Refus)</option>
+                    </select>
                 </div>
-                <div class="input-group">
-                    <label>Année d'admission</label>
-                    <select id="annee">
-                        <option value="2023">2023</option>
-                        <option value="2024" selected>2024</option>
+                <div class="field">
+                    <label>3. Service d'affectation</label>
+                    <select id="service">
+                        <option value="" disabled selected>Choisir un service...</option>
+                        <option>Gynécologie-Obstétrique</option>
+                        <option>Médecine Interne</option>
+                        <option>Chirurgie</option>
+                        <option>Urgences / Autre</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label>4. Niveau d'étude</label>
+                    <select id="niveau">
+                        <option value="" disabled selected>Niveau...</option>
+                        <option value="A2 - ITM">A2 - Niveau technique (4 ans post-primaire - ITM)</option>
+                        <option value="A1/LMD - ISTM">A1/LMD - Niveau supérieur (3 ans post-bac - ISTM)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>5. Ancienneté (années)</label>
+                    <input type="number" id="anciennete" min="0" max="20" placeholder="Ex: 5">
+                </div>
+                <div class="field">
+                    <label>6. Sexe</label>
+                    <select id="sexe">
+                        <option value="F" selected>F (Féminin)</option>
                     </select>
                 </div>
             </div>
 
-            <div class="section-header">II. DONNÉES SOCIO-DÉMOGRAPHIQUES</div>
-            <div class="grid-3">
-                <div class="input-group">
-                    <label>Tranche d'âge</label>
-                    <select>
-                        <option>20-29 ans</option>
-                        <option>30-39 ans</option>
-                        <option>40-49 ans</option>
-                        <option>50 ans et plus</option>
+            <div class="row" style="background:#f9f9f9; padding:10px; border-radius:6px; border:1px dashed #ccc;">
+                <div class="field">
+                    <label>État Civil</label>
+                    <select id="etat-civil">
+                        <option value="" disabled selected>Choisir...</option>
+                        <option>Célibataire</option>
+                        <option>Mariée</option>
+                        <option>Divorcée</option>
+                        <option>Veuve</option>
                     </select>
                 </div>
-                <div class="input-group">
-                    <label>Sexe</label>
-                    <select>
-                        <option>Féminin</option>
-                        <option>Masculin</option>
+                <div class="field">
+                    <label>Province d'exercice</label>
+                    <select id="province">
+                        <option value="" disabled selected>Choisir...</option>
+                        <option>Kinshasa</option>
+                        <option>Kongo Central</option>
+                        <option>Haut-Katanga</option>
+                        <option>Nord/Sud Kivu</option>
+                        <option>Autre Province (Voir PDF)</option>
                     </select>
                 </div>
-                <div class="input-group">
-                    <label>Niveau d'études</label>
-                    <select>
-                        <option>Primaire</option>
-                        <option>Secondaire</option>
-                        <option>Supérieur/Universitaire</option>
+                <div class="field">
+                    <label>Catégorie Pro. Précise</label>
+                    <select id="cat-pro">
+                        <option value="" disabled selected>Choisir...</option>
+                        <option>Médecin Généraliste</option>
+                        <option>Spécialiste / Résident</option>
+                        <option>Infirmier(e)</option>
+                        <option>Autre professionnel santé</option>
                     </select>
+                </div>
+                 <div class="field">
+                    <label>Âge du participant</label>
+                    <input type="number" id="age-participant" placeholder="Ex: 30">
                 </div>
             </div>
 
-            <div class="section-header">III. CONNAISSANCES & PRATIQUES</div>
-            <label style="margin-bottom: 12px; display: block;">Points de connaissance identifiés :</label>
-            <div class="checkbox-grid">
-                <label class="check-pill"><input type="checkbox"> Facteurs de risque</label>
-                <label class="check-pill"><input type="checkbox"> Signes d'alerte</label>
-                <label class="check-pill"><input type="checkbox"> Autopalpation</label>
-                <label class="check-pill"><input type="checkbox"> Mammographie</label>
-                <label class="check-pill"><input type="checkbox"> Fréquence de dépistage</label>
+            <div class="section-title">II. CONNAISSANCES (SAVOIRS THÉORIQUES)</div>
+            <div class="sub-title">Connaissances Biologiques & Types</div>
+            <div class="row" style="background:#f0f8ff; padding:10px; border-radius:6px;">
+                <div class="field">
+                    <label>Avez-vous entendu parler de la classification moléculaire ?</label>
+                    <select id="q-moleculaire"><option value="non">Non</option><option value="oui">Oui</option></select>
+                </div>
+                <div class="field">
+                    <label>Connaissez-vous le terme "HER2 Low" ou "Faible" ?</label>
+                    <select id="q-her2"><option value="non">Non</option><option value="oui">Oui</option></select>
+                </div>
+                <div class="field">
+                    <label>Connaissez-vous les thérapies ciblées ?</label>
+                    <select id="q-therapie"><option value="non">Non</option><option value="oui">Oui</option></select>
+                </div>
+            </div>
+            
+            <div class="sub-title">7. Épidémiologie & Dépistage</div>
+            <div class="row">
+                <div class="field">
+                    <label>Le cancer du sein est la 1ère cause de décès par cancer (RDC) :</label>
+                    <select id="q-cause"><option value="vrai">Vrai</option><option value="faux">Faux</option><option value="jsp">Je ne sais pas</option></select>
+                </div>
+                <div class="field">
+                    <label>Âge recommandé 1ère mammographie :</label>
+                    <select id="q-age-mammo"><option value="20">Dès 20 ans</option><option value="35">Vers 35-40 ans</option><option value="50">Vers 50 ans</option></select>
+                </div>
+                <div class="field">
+                    <label>Moment idéal pour Auto-Examen (AES) :</label>
+                    <select id="q-moment-aes"><option value="regles">Pendant les règles</option><option value="apres">7 à 10 jours après début règles</option><option value="nimporte">N’importe quand</option></select>
+                </div>
             </div>
 
-            <button type="button" class="btn-primary">📤 Enregistrer dans la matrice</button>
+            <div class="sub-title">8. Facteurs de risque (Cochez ceux prouvés)</div>
+            <div class="check-group" id="group-risques">
+                <label class="check-item"><input type="checkbox" value="age"> Âge avancé (>50 ans)</label>
+                <label class="check-item"><input type="checkbox" value="multi"> Multiparité</label>
+                <label class="check-item"><input type="checkbox" value="famille"> Antécédents familiaux</label>
+                <label class="check-item"><input type="checkbox" value="alcool"> Alcool / Tabac</label>
+                <label class="check-item"><input type="checkbox" value="obesite"> Obésité et sédentarité</label>
+                <label class="check-item"><input type="checkbox" value="allaitement"> Allaitement prolongé</label>
+                <label class="check-item"><input type="checkbox" value="menopause"> Ménopause tardive (>55 ans)</label>
+                <label class="check-item"><input type="checkbox" value="graisse"> Régime riche en graisses</label>
+                <label class="check-item"><input type="checkbox" value="contraceptif"> Prise de contraceptifs oraux</label>
+                <label class="check-item"><input type="checkbox" value="gros_seins"> Avoir des gros seins</label>
+                <label class="check-item"><input type="checkbox" value="radiation"> Exposition rayons radioactifs</label>
+            </div>
+
+            <div class="sub-title">9. Signes d’alerte</div>
+            <div class="check-group" id="group-signes">
+                <label class="check-item"><input type="checkbox" value="nodule"> Nodule dur et indolore</label>
+                <label class="check-item"><input type="checkbox" value="retraction"> Rétraction du mamelon</label>
+                <label class="check-item"><input type="checkbox" value="peau"> Aspect peau d’orange</label>
+                <label class="check-item"><input type="checkbox" value="ecoulement"> Écoulement mamelonnaire</label>
+                <label class="check-item"><input type="checkbox" value="douleur"> Douleur cyclique</label>
+                <label class="check-item"><input type="checkbox" value="ulceration"> Ulcération au niveau du sein</label>
+                <label class="check-item"><input type="checkbox" value="poids"> Diminution du poids inexpliquée</label>
+                <label class="check-item"><input type="checkbox" value="asymetrie"> Modification forme / Asymétrie</label>
+            </div>
+
+            <div class="sub-title">10-14. Connaissance Mammographie</div>
+            <div class="row">
+                <div class="field">
+                    <label>La mammographie est importante pour détection précoce :</label>
+                    <select id="q-mammo-imp"><option>Oui</option><option>Non</option><option>Je ne sais pas</option></select>
+                </div>
+                <div class="field">
+                    <label>Rôle principal :</label>
+                    <select id="q-mammo-role"><option value="detecter">Détecter lésions avant symptômes</option><option value="traiter">Traiter le cancer</option></select>
+                </div>
+                <div class="field">
+                    <label>Fréquence (Femme sans risque) :</label>
+                    <select id="q-mammo-freq"><option value="1">Tous les ans</option><option value="2">Tous les 2 ans</option><option value="5">Tous les 5 ans</option></select>
+                </div>
+            </div>
+
+            <div class="section-title">III. ATTITUDES & PERCEPTIONS (Échelle 1-5)</div>
+            <table>
+                <thead>
+                    <tr><th class="td-left">Énoncé</th><th>1<br><small>Pas du tout</small></th><th>2</th><th>3</th><th>4</th><th>5<br><small>Tout à fait</small></th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="td-left">L’éducation à l’AES fait partie de mon rôle.</td><td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5"></td></tr>
+                    <tr><td class="td-left">Je me sens capable de détecter un nodule de petite taille.</td><td><input type="radio" name="att2" value="1"></td><td><input type="radio" name="att2" value="2"></td><td><input type="radio" name="att2" value="3"></td><td><input type="radio" name="att2" value="4"></td><td><input type="radio" name="att2" value="5"></td></tr>
+                    <tr><td class="td-left">La peur du diagnostic empêche les patientes de consulter.</td><td><input type="radio" name="att3" value="1"></td><td><input type="radio" name="att3" value="2"></td><td><input type="radio" name="att3" value="3"></td><td><input type="radio" name="att3" value="4"></td><td><input type="radio" name="att3" value="5"></td></tr>
+                    <tr><td class="td-left">Je suis mal à l’aise d’aborder l’intimité avec les âgées.</td><td><input type="radio" name="att4" value="1"></td><td><input type="radio" name="att4" value="2"></td><td><input type="radio" name="att4" value="3"></td><td><input type="radio" name="att4" value="4"></td><td><input type="radio" name="att4" value="5"></td></tr>
+                    <tr><td class="td-left">Le dépistage ne sert à rien (coût des traitements).</td><td><input type="radio" name="att5" value="1"></td><td><input type="radio" name="att5" value="2"></td><td><input type="radio" name="att5" value="3"></td><td><input type="radio" name="att5" value="4"></td><td><input type="radio" name="att5" value="5"></td></tr>
+                </tbody>
+            </table>
+
+            <div class="section-title">IV. PRATIQUES (Savoir-Faire)</div>
+            <div class="row">
+                <div class="field"><label>15. Pratique personnelle (AES sur vous) :</label><select id="prac-perso"><option value="mois">Tous les mois</option><option value="temps">De temps en temps</option><option value="jamais">Jamais</option></select></div>
+                <div class="field"><label>16. Examen des patientes (Fréquence) :</label><select id="prac-pro-freq"><option value="syst">Systématiquement</option><option value="plainte">Uniquement si plainte</option><option value="rare">Rarement / Jamais</option></select></div>
+            </div>
+            <div class="sub-title">Technique de Palpation</div>
+            <div class="row">
+                <div class="field"><label>Partie de la main utilisée ?</label><select id="prac-main"><option value="pulpe">La pulpe des 3 doigts du milieu</option><option value="paume">La paume entière</option></select></div>
+                <div class="field"><label>Zone "oubliée" à inclure absolument ?</label><select id="prac-zone"><option value="axillaire">Le creux axillaire (aisselle)</option><option value="mamelon">Le mamelon</option></select></div>
+            </div>
+
+            <label style="margin:10px 0; display:block; font-weight:bold; color:#b03060;">Mouvements effectués (Cochez les réponses) :</label>
+            <div class="check-group" id="group-mouv">
+                <label class="check-item"><input type="checkbox" value="circulaire"> Circulaire (Spirale)</label>
+                <label class="check-item"><input type="checkbox" value="vertical"> Vertical (Bandelettes)</label>
+                <label class="check-item"><input type="checkbox" value="radial"> Radial (Étoile)</label>
+                <label class="check-item"><input type="checkbox" value="aleatoire"> Aléatoire (Sans ordre)</label>
+            </div>
+
+            <div class="section-title">V. OBSTACLES IDENTIFIÉS (3 principaux)</div>
+            <div class="check-group" id="group-obstacles">
+                <label class="check-item"><input type="checkbox" value="Temps"> Manque de temps</label>
+                <label class="check-item"><input type="checkbox" value="Intimité"> Manque d’intimité</label>
+                <label class="check-item"><input type="checkbox" value="Culture"> Croyances culturelles / Pudeur</label>
+                <label class="check-item"><input type="checkbox" value="Coût"> Coût des examens</label>
+                <label class="check-item"><input type="checkbox" value="Formation"> Manque de formation</label>
+                <label class="check-item"><input type="checkbox" value="Protocole"> Absence de protocole</label>
+            </div>
+
+            <div class="section-title">VI. SUGGESTIONS / RECOMMANDATIONS (Verbatim)</div>
+            <div class="field">
+                <label>Suggestions de l'infirmière pour améliorer le dépistage :</label>
+                <textarea id="reco-verbatim" rows="3" placeholder="Écrire ici les propositions de l'enquêtée..."></textarea>
+            </div>
+
+            <div class="section-title">VII. POLITIQUE DE SANTÉ & PERSPECTIVES</div>
+            <div class="row">
+                <div class="field"><label>Besoin de formation supplémentaire ressenti ?</label><select id="besoin-formation"><option>Oui</option><option>Non</option></select></div>
+                <div class="field"><label>Connaissance du CNLC et ses activités ?</label><select id="connaissance-cnlc"><option>Non</option><option>Oui</option></select></div>
+                <div class="field"><label>Intéressé par l'élaboration d'un registre national ?</label><select id="interet-registre"><option>Oui</option><option>Non</option></select></div>
+            </div>
+
+            <button type="button" id="save-btn" class="btn-save" onclick="window.saveRecord()">☁️ ENREGISTRER DANS LE CLOUD</button>
         </form>
     </div>
 
-    <!-- TAB 2: MATRICE -->
-    <div id="content-2" class="tab-content">
-        <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2 style="font-weight: 800; margin:0;">MATRICE DE DÉPOUILLEMENT EXHAUSTIVE (N=178)</h2>
-            <div style="font-size: 13px; font-weight: 700; color: var(--primary);">Intégralité des données d'enquête</div>
-        </div>
-        <div class="matrix-container">
+    <div id="content-2" class="form-content">
+        <div class="section-title">BASE DE DONNÉES EN LIGNE (N = <span id="n-total">0</span>)</div>
+        <button id="btn-delete-multi" class="btn-delete-selected" onclick="window.deleteSelected()">🗑️ Supprimer la sélection</button>
+        <div style="overflow-x:auto;">
             <table>
                 <thead>
                     <tr>
-                        <th>N° FICHE</th>
-                        <th>SERVICE</th>
-                        <th>ÂGE</th>
-                        <th>CONNAISSANCE</th>
-                        <th>ATTITUDE</th>
-                        <th>PRATIQUE</th>
-                        <th>ACTION</th>
+                        <th><input type="checkbox" id="select-all" onclick="window.toggleSelectAll(this)"></th>
+                        <th>Code</th><th>Sexe</th><th>Service</th><th>Exp (ans)</th>
+                        <th>Score Savoir (%)</th><th>Score Pratique (%)</th>
+                        <th>Diagnostic</th><th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="matrixBody">
-                    <!-- Rendu dynamique complet sans limite d'affichage -->
-                </tbody>
+                <tbody id="database-body"></tbody>
             </table>
         </div>
     </div>
 
-    <!-- TAB 3: RÉSULTATS (UPDATED) -->
-    <div id="content-3" class="tab-content active">
-        <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-            <h2 style="font-weight: 800; margin:0;">RÉSULTATS DE L'ANALYSE PROTOCOLE</h2>
-            <div style="background: var(--primary-light); color: var(--primary); padding: 8px 15px; border-radius: 30px; font-weight: 700; font-size: 13px;">
-                Dernière mise à jour: Aujourd'hui
+    <div id="content-3" class="form-content">
+        <button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab3Word()">📥 TÉLÉCHARGER TOUTES LES DONNÉES DE L'ONGLET 3 (WORD)</button>
+
+        <div class="section-title">TAUX DE PARTICIPATION</div>
+        <div class="row" style="align-items: center;">
+            <div class="stat-card" style="flex:1;">
+                <div class="stat-title">Participation à l'étude</div>
+                <div id="pie-participation" class="pie-box"></div>
             </div>
+            <div id="taux-participation-container" style="flex:2;"></div>
         </div>
 
-        <!-- 1. TAUX DE PARTICIPATION -->
-        <div class="grid-3">
-            <div class="stat-card" style="border-bottom: 5px solid var(--primary);">
-                <div class="stat-value">98.9%</div>
-                <div class="stat-label">1. Taux de participation</div>
-                <div style="font-size: 11px; margin-top: 10px; color: #999;">(178 répondants sur 180 sollicités)</div>
-            </div>
-            <div class="stat-card" style="border-bottom: 5px solid var(--accent);">
-                <div class="stat-value">61.2%</div>
-                <div class="stat-label">Connaissance Satisfaisante</div>
-                <div style="font-size: 11px; margin-top: 10px; color: #999;">Moyenne sur l'ensemble des 178 fiches</div>
-            </div>
-            <div class="stat-card" style="border-bottom: 5px solid #ff7043;">
-                <div class="stat-value">18.4%</div>
-                <div class="stat-label">Taux de pratique effective</div>
-                <div style="font-size: 11px; margin-top: 10px; color: #999;">Dépistage clinique ou mammographie</div>
-            </div>
-        </div>
+        <div class="section-title">TABLEAUX DÉTAILLÉS (RAPPORTS ACADÉMIQUES)</div>
+        <div id="socio-demo-container"></div>
+        <div id="connaissances-container"></div>
+        <div id="indices-specifiques-container"></div>
+        <div id="attitudes-container"></div>
+        <div id="pratiques-container"></div>
 
-        <!-- 2. CARACTÉRISTIQUES SOCIO-DÉMOGRAPHIQUES -->
-        <div class="section-header">2. CARACTÉRISTIQUES SOCIO-DÉMOGRAPHIQUES DES ENQUÊTÉS</div>
-        <div class="matrix-container" style="margin-bottom: 40px;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Variables Socio-démographiques</th>
-                        <th>Fréquence (n=178)</th>
-                        <th>Pourcentage (%)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background:#fcfcfc;"><td colspan="3"><strong>Tranches d'âge</strong></td></tr>
-                    <tr><td>20 - 29 ans</td><td>52</td><td>29.2%</td></tr>
-                    <tr><td>30 - 39 ans</td><td>68</td><td>38.2%</td></tr>
-                    <tr><td>40 - 49 ans</td><td>41</td><td>23.0%</td></tr>
-                    <tr><td>50 ans et plus</td><td>17</td><td>9.6%</td></tr>
-                    <tr style="background:#fcfcfc;"><td colspan="3"><strong>Ancienneté professionnelle</strong></td></tr>
-                    <tr><td>< 5 ans</td><td>44</td><td>24.7%</td></tr>
-                    <tr><td>5 - 10 ans</td><td>86</td><td>48.3%</td></tr>
-                    <tr><td>> 10 ans</td><td>48</td><td>27.0%</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="results-grid">
-            <!-- 3. RÉPARTITION SELON LE SERVICE -->
-            <div class="chart-box">
-                <h3>3. Répartition du personnel par service</h3>
-                <canvas id="serviceChart" height="250"></canvas>
+        <div id="dashboard-camemberts">
+            <div class="dash-section">0. ANALYSE SOCIODÉMOGRAPHIQUE (CAMEMBERTS)</div>
+            <div class="dash-row">
+                <div class="dash-card">
+                    <div class="dash-title">Répartition par Âge</div>
+                    <div id="dash-age" class="dash-pie-box"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-title">Répartition par Niveau d'Étude</div>
+                    <div id="dash-etude" class="dash-pie-box"></div>
+                </div>
             </div>
 
-            <!-- 5. ATTITUDE PAR RAPPORT AU DÉPISTAGE -->
-            <div class="chart-box">
-                <h3>5. Attitude envers le dépistage</h3>
-                <canvas id="attitudeChart" height="250"></canvas>
+            <div class="dash-section">1. ÉVALUATION GÉNÉRALE DES C.A.P.</div>
+            <div class="dash-row">
+                <div class="dash-card">
+                    <div class="dash-title">Niveau de Savoir (Théorique)</div>
+                    <div id="dash-savoir" class="dash-pie-box"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-title">Qualité de la Pratique</div>
+                    <div id="dash-pratique" class="dash-pie-box"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-title">Type d'Attitude</div>
+                    <div id="dash-attitude" class="dash-pie-box"></div>
+                </div>
             </div>
-        </div>
 
-        <!-- 4. CONNAISSANCE SUR LES ASPECTS DU DÉPISTAGE -->
-        <div class="section-header">4. CONNAISSANCE SELON LES ASPECTS DU DÉPISTAGE (INFIRMIERS)</div>
-        <div class="matrix-container" style="margin-bottom: 40px;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Aspects du dépistage</th>
-                        <th>Bonne / Suffisante</th>
-                        <th>Passable / Insuffisante</th>
-                        <th>Médiocre / Nulle</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Facteurs de risque</td>
-                        <td style="color:#2e7d32; font-weight:700;">62%</td>
-                        <td>28%</td>
-                        <td style="color:#c62828;">10%</td>
-                    </tr>
-                    <tr>
-                        <td>Signes d'alerte cliniques</td>
-                        <td style="color:#2e7d32; font-weight:700;">54%</td>
-                        <td>31%</td>
-                        <td style="color:#c62828;">15%</td>
-                    </tr>
-                    <tr>
-                        <td>Moyens de dépistage (Mammographie, etc)</td>
-                        <td style="color:#2e7d32; font-weight:700;">48%</td>
-                        <td>32%</td>
-                        <td style="color:#c62828;">20%</td>
-                    </tr>
-                    <tr>
-                        <td>Technique de l'autopalpation</td>
-                        <td style="color:#2e7d32; font-weight:700;">68%</td>
-                        <td>22%</td>
-                        <td style="color:#c62828;">10%</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <div class="dash-section">2. ANALYSES CROISÉES : CONNAISSANCES PAR CATÉGORIE</div>
+            <div class="dash-row">
+                <div class="dash-card">
+                    <div class="dash-title">Savoir vs Département (Service)</div>
+                    <div id="dash-cross-dept" class="dash-pie-box"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-title">Savoir vs Niveau d'Étude</div>
+                    <div id="dash-cross-niveau" class="dash-pie-box"></div>
+                </div>
+            </div>
 
-        <!-- 6. PRATIQUE DES INFIRMIÈRES (FEMMES) -->
-        <div class="chart-box">
-            <h3>6. Distribution des infirmières (Féminin) selon leur pratique</h3>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
-                <canvas id="practiceChart" height="200"></canvas>
-                <div style="font-size: 14px;">
-                    <p><strong>Note :</strong> Seules les répondantes de sexe féminin (n=112) ont été incluses dans cette analyse de pratique personnelle.</p>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="margin-bottom:10px; display:flex; gap:10px;">
-                            <span style="width:15px; height:15px; background:#26a69a; display:inline-block; border-radius: 3px;"></span>
-                            Pratique régulière de l'autopalpation : <strong>32%</strong>
-                        </li>
-                        <li style="margin-bottom:10px; display:flex; gap:10px;">
-                            <span style="width:15px; height:15px; background:#00796b; display:inline-block; border-radius: 3px;"></span>
-                            Consultation clinique annuelle : <strong>12%</strong>
-                        </li>
-                        <li style="margin-bottom:10px; display:flex; gap:10px;">
-                            <span style="width:15px; height:15px; background:#37474f; display:inline-block; border-radius: 3px;"></span>
-                            Mammographie de dépistage : <strong>4%</strong>
-                        </li>
-                        <li style="margin-bottom:10px; display:flex; gap:10px;">
-                            <span style="width:15px; height:15px; background:#e0e0e0; display:inline-block; border-radius: 3px;"></span>
-                            Aucune pratique : <strong>52%</strong>
-                        </li>
-                    </ul>
+            <div class="dash-section">3. HISTOGRAMMES : FREINS ET PERFORMANCES SPÉCIFIQUES</div>
+            <div class="dash-row">
+                <div class="dash-card" style="flex: 2;">
+                    <div class="dash-title">Fréquence des Obstacles / Barrières au dépistage</div>
+                    <div id="dash-bar-obstacles" style="width: 100%;"></div>
+                </div>
+                <div class="dash-card" style="flex: 1.5;">
+                    <div class="dash-title">Score Moyen de Savoir par Service (%)</div>
+                    <div id="dash-bar-savoir-service" style="width: 100%;"></div>
+                </div>
+            </div>
+
+            <div class="dash-section">4. CROISEMENT DES PERFORMANCES (LE LIEN C.A.P.)</div>
+            <div class="dash-row">
+                <div class="dash-card">
+                    <div class="dash-title">Pratique vs Niveau de Savoir</div>
+                    <div id="dash-perf-prat" class="dash-pie-box"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-title">Attitude vs Niveau de Savoir</div>
+                    <div id="dash-perf-att" class="dash-pie-box"></div>
+                </div>
+            </div>
+            
+            <div class="dash-section">5. INDICES SPÉCIFIQUES : FACTEURS DE RISQUE ET SIGNES</div>
+            <div class="dash-row">
+                <div class="dash-card">
+                    <div class="dash-title">Indice K-FR (Facteurs de Risque)</div>
+                    <div id="dash-kfr" class="dash-pie-box"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-title">Indice K-SC (Signes Cliniques Classiques)</div>
+                    <div id="dash-ksc" class="dash-pie-box"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-title">Indice K-SA (Signes d'Alerte/Tardifs)</div>
+                    <div id="dash-ksa" class="dash-pie-box"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- TAB 4: DISCUSSION -->
-    <div id="content-4" class="tab-content">
-        <h2 style="font-weight: 800; margin-bottom: 30px;">DISCUSSION SCIENTIFIQUE ET SYNTHÈSE ANALYTIQUE</h2>
-        <div style="background: #fff; border: 1px solid var(--border); padding: 40px; border-radius: 20px; box-shadow: var(--shadow);">
-            
-            <div style="margin-bottom: 40px;">
-                <h3 style="color: var(--primary); border-bottom: 2px solid var(--primary-light); padding-bottom: 10px; margin-top: 0;">1. Analyse de la KAP (Connaissances, Attitudes, Pratiques)</h3>
-                <p style="text-align: justify;">
-                    L'évaluation des connaissances des infirmières à l’HGR Makala révèle une dualité significative. Bien qu'un score moyen de connaissance satisfaisante soit observé (61.2%), une analyse fine montre que les aspects techniques comme la <strong>mammographie (48%)</strong> sont nettement moins maîtrisés que les <strong>facteurs de risque (62%)</strong> ou <strong>l'autopalpation (68%)</strong>. Cette variabilité confirme notre première hypothèse : les connaissances sont fragmentées, ce qui impacte directement la qualité de la sensibilisation fournie aux patientes.
-                </p>
-                <p style="text-align: justify;">
-                    Concernant les attitudes, la prévalence du sentiment "Favorable" (84%) est encourageante. Cependant, cette perception positive du rôle préventif ne se traduit pas systématiquement par une pratique proactive. On observe une perception du dépistage comme une nécessité théorique plutôt qu'une priorité clinique immédiate, ce qui valide l'hypothèse selon laquelle les attitudes influencent l'implication mais sont freinées par la routine de soins curatifs.
-                </p>
-            </div>
-
-            <div style="margin-bottom: 40px;">
-                <h3 style="color: var(--accent); border-bottom: 2px solid var(--primary-light); padding-bottom: 10px;">2. Perception du rôle et Difficultés Opérationnelles</h3>
-                <p style="text-align: justify;">
-                    Les infirmières perçoivent leur rôle comme pivot dans la lutte contre le cancer du sein, mais elles font face à des obstacles structurels majeurs. Le décalage massif entre l'attitude favorable (84%) et la <strong>pratique effective de dépistage (18.4%)</strong> illustre parfaitement le "paradoxe KAP". Les difficultés identifiées — notamment le <strong>manque de moyens financiers</strong> pour le personnel et <strong>l'absence de protocoles standardisés</strong> — restreignent la mise en œuvre des stratégies de prévention.
-                </p>
-                <p style="text-align: justify;">
-                    La perception de l'importance du dépistage est élevée, mais la mise en œuvre est limitée par un sentiment de vulnérabilité institutionnelle. Le personnel infirmier, tout en étant conscient des enjeux, ne bénéficie pas lui-même d'un suivi régulier (seules 4% ont déjà effectué une mammographie), ce qui affaiblit leur position de modèles sanitaires auprès des patientes.
-                </p>
-            </div>
-
-            <div style="margin-bottom: 40px;">
-                <h3 style="color: #ff7043; border-bottom: 2px solid #fff5f2; padding-bottom: 10px;">3. Réponse aux Objectifs et Recommandations Statistiques</h3>
-                <p style="text-align: justify;">
-                    Cette étude a permis d'identifier les niveaux de connaissances (61.2% satis.), de décrire les attitudes (84% fav.) et d'analyser les pratiques (18.4% eff.). Pour répondre au but de l’étude visant à optimiser le rôle des infirmières en RDC, nous formulons les recommandations suivantes basées sur les preuves recueillies :
-                </p>
-                <div style="background: var(--bg-body); padding: 25px; border-radius: 12px; border-left: 10px solid var(--primary);">
-                    <ul style="margin: 0; padding-left: 20px; font-weight: 600; color: var(--secondary);">
-                        <li style="margin-bottom: 12px;">Renforcement des capacités : Institutionnaliser des sessions de formation continue sur les technologies de dépistage (Mammographie, Échographie).</li>
-                        <li style="margin-bottom: 12px;">Santé du personnel : Lancer une campagne de dépistage gratuit pour toutes les infirmières de l'HGRM afin de transformer l'attitude en pratique exemplaire.</li>
-                        <li style="margin-bottom: 12px;">Standardisation : Intégrer un volet "Prévention Cancer du Sein" systématique dans les fiches de soins infirmiers pour tous les services.</li>
-                        <li>Sensibilisation communautaire : Utiliser les infirmières comme agents de changement en leur fournissant des supports de communication visuels et adaptés.</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div style="text-align: center; border-top: 1px solid var(--border); padding-top: 30px;">
-                <p style="font-size: 13px; color: #718096; font-style: italic;">Analyse réalisée conformément au but de l'étude et aux objectifs de recherche de l'HGR Makala.</p>
-            </div>
-        </div>
-        <div style="display: flex; gap: 20px; margin-top: 30px;">
-            <button class="btn-primary" style="background: var(--secondary); flex: 1;">📥 Exporter le Rapport Scientifique (.PDF)</button>
-            <button class="btn-primary" style="background: var(--primary); flex: 1;">📊 Synthèse pour Publication</button>
-        </div>
+    <div id="content-4" class="form-content">
+        <div class="section-title">SYNTHÈSE AUTOMATISÉE ET CONCLUSIONS</div>
+        <div id="dynamic-report" style="font-size:14px; line-height:1.6; color:#333;"></div>
+        <br><hr><br>
+        <button type="button" class="btn-excel" onclick="window.exportToCSV()">📥 TÉLÉCHARGER LA BASE COMPLÈTE (.CSV)</button>
     </div>
 </div>
 
-<!-- MODAL STRUCTURE -->
-<div id="dataModal" class="modal-overlay" onclick="closeModal(event)">
-    <div class="modal-container" onclick="event.stopPropagation()">
-        <span class="modal-close" onclick="closeModal()">&times;</span>
-        <h2 style="margin-top: 0; color: var(--primary);">DÉTAILS DE LA FICHE D'ENQUÊTE</h2>
-        <div id="modalContent">
-            <!-- Rempli par JS -->
+<div id="detailModal" class="modal-overlay" onclick="window.closeModal(event)">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 style="margin:0; color:#b03060;">Détails de la fiche <span id="modal-title-id"></span></h3>
+            <span class="modal-close" onclick="window.closeModalBtn()">&times;</span>
         </div>
+        <div id="modal-body-content"></div>
     </div>
 </div>
 
-<script>
-    // --- GENÉRATEUR DE DONNÉES (178 FICHES) ---
-    const services = ['Gynécologie', 'Pédiatrie', 'Urgences', 'Chirurgie', 'Médecine Interne', 'Maternité'];
-    const niveaux = ['Bonne', 'Passable', 'Médiocre'];
-    const attitudes = ['Favorable', 'Défavorable', 'Indifférent'];
-    const records = [];
+<div id="toast">Donnée synchronisée !</div>
 
-    for (let i = 1; i <= 178; i++) {
-        const sexe = Math.random() > 0.3 ? 'Féminin' : 'Masculin';
-        records.push({
-            id: `F-MAK-${i.toString().padStart(3, '0')}`,
-            service: services[Math.floor(Math.random() * services.length)],
-            age: Math.floor(Math.random() * 35) + 20 + " ans",
-            connaissance: niveaux[Math.floor(Math.random() * 3)],
-            attitude: attitudes[Math.floor(Math.random() * 3)],
-            pratique: Math.random() > 0.8 ? 'Oui (Régulière)' : 'Non (Jamais)',
-            details: {
-                dossier: `HOS-${1000 + i}`,
-                annee: "2024",
-                sexe: sexe,
-                etudes: 'Supérieur (Graduat/Licence)',
-                anciennete: Math.floor(Math.random() * 20) + 1 + " ans",
-                risques: Math.random() > 0.5 ? "Connaissances maîtrisées" : "Lacunes identifiées",
-                signes: Math.random() > 0.4 ? "Identifiés correctement" : "Non identifiés",
-                palpation: Math.random() > 0.4 ? "Maîtrisée (Technique correcte)" : "À renforcer significativement",
-                mammographie: (sexe === 'Féminin' && i % 15 === 0) ? "Réalisée (Suivi)" : "Jamais effectuée",
-                perception: "Crucial pour la santé publique",
-                obstacles: "Manque de structures de dépistage gratuit, Coût élevé de la mammographie, Charge de travail élevée"
+<script type="module">
+    // Simulation Mode Setup
+    let database = []; 
+    let isAdmin = false;
+
+    window.generateSimulatedData = function() {
+        const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences / Autre'];
+        const verbatims = [
+            "Il faut multiplier les campagnes à la télévision.", "Les patientes arrivent toujours trop tard.",
+            "Le manque de formation pratique est notre plus grand défi.", "Le coût de la mammographie est trop élevé.",
+            "Besoin de formation continue."
+        ];
+
+        const allObstacles = ["Formation", "Coût", "Temps", "Intimité", "Culture", "Protocole"];
+        const allRisks = ["age", "multi", "famille", "alcool", "obesite", "allaitement", "menopause"];
+        const allSigns = ["nodule", "retraction", "peau", "ecoulement", "douleur"];
+
+        let simulatedDB = [];
+
+        for (let i = 1; i <= 178; i++) {
+            let service = services[Math.floor(Math.random() * services.length)];
+            let niveau = (Math.random() < 0.70) ? 'A1/LMD - ISTM' : 'A2 - ITM';
+            let anciennete = Math.floor(Math.random() * 21);
+            let age = 22 + anciennete + Math.floor(Math.random() * 5); 
+
+            let isGyneco = service === 'Gynécologie-Obstétrique';
+            let isA1 = niveau === 'A1/LMD - ISTM';
+            
+            let scoreSavoir, scorePratique, scoreAttitude;
+
+            if (isGyneco) {
+                scoreSavoir = 85 + Math.floor(Math.random() * 16);
+                scorePratique = 85 + Math.floor(Math.random() * 16);
+                scoreAttitude = (4.5 + Math.random() * 0.5).toFixed(1);
+            } else {
+                let baseSavoir = isA1 ? 55 : 40;
+                scoreSavoir = Math.min(100, Math.floor(baseSavoir + Math.random() * 30));
+                let basePratique = isA1 ? 45 : 30;
+                scorePratique = Math.min(100, Math.floor(basePratique + Math.random() * 35));
+                scoreAttitude = (2.5 + Math.random() * 1.5).toFixed(1);
             }
+
+            let k_fr_score = Math.min(100, Math.max(0, scoreSavoir + (Math.floor(Math.random() * 30) - 15)));
+            let k_sc_score = Math.min(100, Math.max(0, scoreSavoir + (Math.floor(Math.random() * 20) - 5))); 
+            let k_sa_score = Math.min(100, Math.max(0, scoreSavoir - 15 + (Math.floor(Math.random() * 30) - 15)));
+
+            // Génération d'obstacles multiples pour les histogrammes
+            let genObs = allObstacles.filter(() => Math.random() > 0.4); // Plus de chance d'avoir des obstacles
+            if(genObs.length === 0) genObs.push("Formation"); 
+            
+            let genRisks = allRisks.filter(() => Math.random() > 0.5);
+            let genSigns = allSigns.filter(() => Math.random() > 0.4);
+
+            simulatedDB.push({
+                firestoreId: "sim-" + i,
+                id: "INF-MAK-" + i.toString().padStart(3, '0'),
+                consentement: "oui", service: service, niveau: niveau,
+                anciennete: anciennete, sexe: "F",
+                etat_civil: Math.random() > 0.4 ? "Mariée" : "Célibataire",
+                province: "Kinshasa", cat_pro: "Infirmier(e)",
+                age_participant: age,
+                scoreSavoir: scoreSavoir, scorePratique: scorePratique, scoreAttitude: scoreAttitude,
+                k_fr: k_fr_score, k_sc: k_sc_score, k_sa: k_sa_score, 
+                obstacles: genObs, 
+                risks: genRisks, 
+                signs: genSigns,
+                reco_verbatim: verbatims[Math.floor(Math.random() * verbatims.length)]
+            });
+        }
+        return simulatedDB;
+    };
+
+    database = window.generateSimulatedData();
+    
+    setTimeout(() => {
+        window.updateUI();
+        showToast("178 Fiches chargées (Données Kinshasa)");
+    }, 500);
+
+    window.initCodeDropdown = function() {
+        const sel = document.getElementById('code-enquete');
+        sel.innerHTML = "";
+        for(let i=179; i<=300; i++) { 
+            let o = document.createElement('option'); 
+            o.value = "INF-MAK-" + i.toString().padStart(3, '0'); 
+            o.text = "Nouvelle Fiche N° " + i; 
+            sel.appendChild(o); 
+        }
+    }
+
+    window.requestAdmin = function() {
+        if(isAdmin) return; 
+        let code = prompt("Code administrateur :"); 
+        if(code === "1398") {
+            isAdmin = true;
+            document.querySelectorAll('.admin-only').forEach(el => el.classList.add('admin-visible'));
+            document.getElementById('btn-auth').style.display = 'none';
+            alert("Mode Admin Activé.");
+            updateUI(); 
+            window.switchTab(3); 
+        } else { alert("Code incorrect !"); }
+    };
+
+    // --- RENDU CAMEMBERT (SVG) ---
+    window.renderDashPie = function(containerId, data) {
+        const container = document.getElementById(containerId);
+        if(!container) return;
+        
+        const total = data.reduce((sum, item) => sum + item.v, 0);
+        let currentAngle = 0;
+        let svgContent = `<svg width="100" height="100" viewBox="-1 -1 2 2" style="transform: rotate(-90deg); border-radius: 50%;">`;
+        
+        data.forEach(item => {
+            if(total === 0 || item.v === 0) return;
+            const percent = (item.v / total);
+            if (percent === 1) {
+                svgContent += `<circle cx="0" cy="0" r="1" fill="${item.c}"></circle>`;
+                return;
+            }
+            const largeArcFlag = percent > 0.5 ? 1 : 0;
+            const startX = Math.cos(2 * Math.PI * currentAngle);
+            const startY = Math.sin(2 * Math.PI * currentAngle);
+            currentAngle += percent;
+            const endX = Math.cos(2 * Math.PI * currentAngle);
+            const endY = Math.sin(2 * Math.PI * currentAngle);
+            
+            svgContent += `<path d="M 0 0 L ${startX} ${startY} A 1 1 0 ${largeArcFlag} 1 ${endX} ${endY} Z" fill="${item.c}"></path>`;
         });
-    }
-
-    function switchTab(idx) {
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         
-        document.getElementById('content-' + idx).classList.add('active');
-        document.querySelectorAll('.tab')[idx-1].classList.add('active');
-        window.scrollTo(0,0);
+        svgContent += `</svg>`;
         
-        if(idx === 2) renderTable();
-        if(idx === 3) setTimeout(initCharts, 100);
-    }
+        let legendHtml = `<div class="dash-legend">`;
+        data.forEach(item => {
+            let pVal = total > 0 ? ((item.v/total)*100).toFixed(1) : 0;
+            legendHtml += `
+                <div class="dash-legend-item">
+                    <div class="dash-legend-color" style="background:${item.c}"></div>
+                    <span><span style="color:#777;">■</span> ${item.l}: <b>${item.v} (${pVal}%)</b></span>
+                </div>`;
+        });
+        legendHtml += `</div>`;
+        
+        container.innerHTML = svgContent + legendHtml;
+    };
 
-    function renderTable() {
-        const body = document.getElementById('matrixBody');
-        body.innerHTML = records.map((r, index) => `
+    // --- NOUVEAU : RENDU HISTOGRAMME (BAR CHART) ---
+    window.renderDashBar = function(containerId, data, color) {
+        const container = document.getElementById(containerId);
+        if(!container) return;
+        let maxVal = Math.max(...data.map(d => d.v), 1);
+        let html = '<div class="bar-chart-container">';
+        data.forEach(item => {
+            let heightPct = (item.v / maxVal) * 100;
+            html += `<div class="bar-wrap">
+                        <span class="bar-val">${item.v}</span>
+                        <div class="bar" style="height: ${heightPct}%; background-color: ${color || '#b03060'};"></div>
+                        <span class="bar-label" title="${item.l}">${item.l}</span>
+                     </div>`;
+        });
+        html += '</div>';
+        container.innerHTML = html;
+    };
+
+    // --- MISE À JOUR ONGLET 3 ---
+    window.updateAnalytics = function() {
+        const total = database.length;
+        if(total === 0) return;
+
+        const consentis = database.filter(d => d.consentement === 'oui').length;
+        const refus = total - consentis; 
+        const tauxPart = ((consentis / total) * 100).toFixed(1);
+        
+        window.renderDashPie('pie-participation', [
+            {l: 'Accepté (Inclus)', v: consentis, c: '#4caf50'},
+            {l: 'Refusé', v: refus, c: '#f44336'}
+        ]);
+
+        document.getElementById('taux-participation-container').innerHTML = `
+            <table class="academic-table" style="margin-bottom:0;">
+                <thead>
+                    <tr><th>Statut</th><th>Effectifs (n)</th><th>Pourcentage (%)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="row-header">Ont accepté de participer</td><td>${consentis}</td><td>${tauxPart}</td></tr>
+                    <tr><td class="row-header">Ont refusé / Exclus</td><td>${refus}</td><td>${(100 - tauxPart).toFixed(1)}</td></tr>
+                    <tr><td class="row-header" style="font-weight:bold;">Total sollicité</td><td style="font-weight:bold;">${total}</td><td style="font-weight:bold;">100.0</td></tr>
+                </tbody>
+            </table>
+        `;
+
+        // Données pour Tableau SocioDemo + Histogrammes
+        let age_30 = database.filter(d => d.age_participant < 30).length;
+        let age_30_45 = database.filter(d => d.age_participant >= 30 && d.age_participant <= 45).length;
+        let age_45 = database.filter(d => d.age_participant > 45).length;
+        window.renderDashPie('dash-age', [ {l: '<30', v: age_30, c: '#e8749f'}, {l: '30-45', v: age_30_45, c: '#9c59b6'}, {l: '>45', v: age_45, c: '#7b68ee'} ]);
+
+        let a1_count = database.filter(d => d.niveau.includes('A1')).length;
+        let a2_count = total - a1_count;
+        window.renderDashPie('dash-etude', [ {l: 'A1/LMD', v: a1_count, c: '#5fbfa4'}, {l: 'A2', v: a2_count, c: '#8bc34a'} ]);
+
+        let k_bon = database.filter(d => d.scoreSavoir >= 70).length;
+        let k_moyen = database.filter(d => d.scoreSavoir >= 50 && d.scoreSavoir < 70).length;
+        let k_faible = database.filter(d => d.scoreSavoir < 50).length;
+        window.renderDashPie('dash-savoir', [ {l: 'Bon (≥70%)', v: k_bon, c: '#2e7d32'}, {l: 'Moyen (50-69%)', v: k_moyen, c: '#e67e22'}, {l: 'Faible (<50%)', v: k_faible, c: '#d32f2f'} ]);
+
+        let p_adeq = database.filter(d => d.scorePratique >= 70).length;
+        let p_inadeq = database.filter(d => d.scorePratique < 70).length;
+        window.renderDashPie('dash-pratique', [ {l: 'Adéquate', v: p_adeq, c: '#1976d2'}, {l: 'Insuffisante', v: p_inadeq, c: '#e53935'} ]);
+
+        let att_pos = database.filter(d => parseFloat(d.scoreAttitude) > 3.5).length;
+        let att_neutre = total - att_pos;
+        window.renderDashPie('dash-attitude', [ {l: 'Positive', v: att_pos, c: '#66bb6a'}, {l: 'Neutre/Nég.', v: att_neutre, c: '#bdbdbd'} ]);
+
+        let dbBonSavoir = database.filter(d => d.scoreSavoir >= 70);
+        let s_gyn = dbBonSavoir.filter(d => d.service.includes('Gynéco')).length;
+        let s_med = dbBonSavoir.filter(d => d.service.includes('Interne')).length;
+        let s_chir = dbBonSavoir.filter(d => d.service.includes('Chirurgie')).length;
+        let s_urg = dbBonSavoir.filter(d => d.service.includes('Urgences')).length;
+        window.renderDashPie('dash-cross-dept', [ {l: 'Gynécologie', v: s_gyn, c: '#e91e63'}, {l: 'Médecine I.', v: s_med, c: '#9c27b0'}, {l: 'Chirurgie', v: s_chir, c: '#3f51b5'}, {l: 'Urgences', v: s_urg, c: '#5c6bc0'} ]);
+
+        let s_a1 = dbBonSavoir.filter(d => d.niveau.includes('A1')).length;
+        let s_a2 = dbBonSavoir.filter(d => !d.niveau.includes('A1')).length;
+        window.renderDashPie('dash-cross-niveau', [ {l: 'A1 - Bon Savoir', v: s_a1, c: '#26a69a'}, {l: 'A2 - Bon Savoir', v: s_a2, c: '#ffa726'} ]);
+
+        // Indices
+        let kfr_bon = database.filter(d => d.k_fr >= 70).length; let kfr_moyen = database.filter(d => d.k_fr >= 50 && d.k_fr < 70).length; let kfr_faible = database.filter(d => d.k_fr < 50).length;
+        window.renderDashPie('dash-kfr', [ {l: 'Bon', v: kfr_bon, c: '#4db6ac'}, {l: 'Moyen', v: kfr_moyen, c: '#ffb74d'}, {l: 'Faible', v: kfr_faible, c: '#e57373'} ]);
+        
+        let ksc_bon = database.filter(d => d.k_sc >= 70).length; let ksc_moyen = database.filter(d => d.k_sc >= 50 && d.k_sc < 70).length; let ksc_faible = database.filter(d => d.k_sc < 50).length;
+        window.renderDashPie('dash-ksc', [ {l: 'Bon', v: ksc_bon, c: '#4fc3f7'}, {l: 'Moyen', v: ksc_moyen, c: '#ffb74d'}, {l: 'Faible', v: ksc_faible, c: '#f06292'} ]);
+        
+        let ksa_bon = database.filter(d => d.k_sa >= 70).length; let ksa_moyen = database.filter(d => d.k_sa >= 50 && d.k_sa < 70).length; let ksa_faible = database.filter(d => d.k_sa < 50).length;
+        window.renderDashPie('dash-ksa', [ {l: 'Bon', v: ksa_bon, c: '#7986cb'}, {l: 'Moyen', v: ksa_moyen, c: '#aed581'}, {l: 'Faible', v: ksa_faible, c: '#ba68c8'} ]);
+
+        // --- CALCULS POUR LES HISTOGRAMMES ---
+        let obsCounts = {};
+        database.forEach(d => {
+            if(d.obstacles) d.obstacles.forEach(o => obsCounts[o] = (obsCounts[o] || 0) + 1);
+        });
+        let obsData = Object.keys(obsCounts).map(k => ({l: k, v: obsCounts[k]})).sort((a,b)=>b.v-a.v);
+        window.renderDashBar('dash-bar-obstacles', obsData, '#b03060');
+
+        let servData = [
+            { l: 'Gynécologie', v: Math.round(window.getAvg(database.filter(d=>d.service.includes('Gynéco')), 'scoreSavoir')) },
+            { l: 'Méd. Interne', v: Math.round(window.getAvg(database.filter(d=>d.service.includes('Interne')), 'scoreSavoir')) },
+            { l: 'Chirurgie', v: Math.round(window.getAvg(database.filter(d=>d.service.includes('Chirurgie')), 'scoreSavoir')) },
+            { l: 'Urgences', v: Math.round(window.getAvg(database.filter(d=>d.service.includes('Urgences')), 'scoreSavoir')) }
+        ];
+        window.renderDashBar('dash-bar-savoir-service', servData, '#0288d1');
+
+        window.updateExtraTables(age_30, age_30_45, age_45, a1_count, a2_count, total, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq, kfr_bon, kfr_moyen, kfr_faible, ksc_bon, ksc_moyen, ksc_faible, ksa_bon, ksa_moyen, ksa_faible);
+    };
+
+    window.updateExtraTables = function(age_30, age_30_45, age_45, a1_count, a2_count, total, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq, kfr_bon, kfr_moyen, kfr_faible, ksc_bon, ksc_moyen, ksc_faible, ksa_bon, ksa_moyen, ksa_faible) {
+        if(total === 0) return;
+
+        let mariee_count = database.filter(d => d.etat_civil === 'Mariée').length;
+        let celib_count = database.filter(d => d.etat_civil === 'Célibataire').length;
+        
+        let anc_5 = database.filter(d => d.anciennete < 5).length;
+        let anc_5_10 = database.filter(d => d.anciennete >= 5 && d.anciennete <= 10).length;
+        let anc_10 = database.filter(d => d.anciennete > 10).length;
+
+        let t_gyn = database.filter(d => d.service.includes('Gynéco')).length;
+        let t_med = database.filter(d => d.service.includes('Interne')).length;
+        let t_chir = database.filter(d => d.service.includes('Chirurgie')).length;
+        let t_urg = database.filter(d => d.service.includes('Urgences')).length;
+
+        document.getElementById('socio-demo-container').innerHTML = `
+            <table class="academic-table">
+                <thead>
+                    <tr><th style="width:50%;">Variables socio-démographiques et professionnelles</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="3" class="group-header">Tranches d'âge</td></tr>
+                    <tr><td class="row-header">Moins de 30 ans</td><td>${age_30}</td><td>${((age_30/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">De 30 à 45 ans</td><td>${age_30_45}</td><td>${((age_30_45/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Plus de 45 ans</td><td>${age_45}</td><td>${((age_45/total)*100).toFixed(1)}</td></tr>
+                    
+                    <tr><td colspan="3" class="group-header">Niveau d'étude</td></tr>
+                    <tr><td class="row-header">Niveau Supérieur (A1/LMD)</td><td>${a1_count}</td><td>${((a1_count/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Niveau Technique (A2)</td><td>${a2_count}</td><td>${((a2_count/total)*100).toFixed(1)}</td></tr>
+                    
+                    <tr><td colspan="3" class="group-header">Ancienneté Professionnelle</td></tr>
+                    <tr><td class="row-header">Moins de 5 ans</td><td>${anc_5}</td><td>${((anc_5/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">De 5 à 10 ans</td><td>${anc_5_10}</td><td>${((anc_5_10/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Plus de 10 ans</td><td>${anc_10}</td><td>${((anc_10/total)*100).toFixed(1)}</td></tr>
+
+                    <tr><td colspan="3" class="group-header">Service d'affectation</td></tr>
+                    <tr><td class="row-header">Gynécologie-Obstétrique</td><td>${t_gyn}</td><td>${((t_gyn/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Médecine Interne</td><td>${t_med}</td><td>${((t_med/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Chirurgie</td><td>${t_chir}</td><td>${((t_chir/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Urgences / Autres</td><td>${t_urg}</td><td>${((t_urg/total)*100).toFixed(1)}</td></tr>
+
+                    <tr><td colspan="3" class="group-header">État Civil</td></tr>
+                    <tr><td class="row-header">Mariée</td><td>${mariee_count}</td><td>${((mariee_count/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Célibataire / Autre</td><td>${celib_count}</td><td>${((celib_count/total)*100).toFixed(1)}</td></tr>
+                </tbody>
+            </table>
+        `;
+
+        document.getElementById('connaissances-container').innerHTML = `
+            <table class="academic-table">
+                <thead>
+                    <tr><th style="width:50%;">Niveau de connaissances globales</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="row-header">Bonnes connaissances (Score ≥ 70%)</td><td>${k_bon}</td><td>${((k_bon/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Connaissances moyennes (Score 50-69%)</td><td>${k_moyen}</td><td>${((k_moyen/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Connaissances faibles (Score < 50%)</td><td>${k_faible}</td><td>${((k_faible/total)*100).toFixed(1)}</td></tr>
+                </tbody>
+            </table>
+        `;
+
+        document.getElementById('indices-specifiques-container').innerHTML = `
+            <table class="academic-table">
+                <thead>
+                    <tr><th style="width:50%;">Indices Spécifiques (Connaissances Détaillées)</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="3" class="group-header">Indice K-FR (Facteurs de Risque)</td></tr>
+                    <tr><td class="row-header">Bonne maîtrise (≥ 70%)</td><td>${kfr_bon}</td><td>${((kfr_bon/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Maîtrise faible à moyenne (< 70%)</td><td>${kfr_moyen + kfr_faible}</td><td>${(((kfr_moyen + kfr_faible)/total)*100).toFixed(1)}</td></tr>
+                    
+                    <tr><td colspan="3" class="group-header">Indice K-SC (Signes Cliniques Classiques)</td></tr>
+                    <tr><td class="row-header">Bonne maîtrise (≥ 70%)</td><td>${ksc_bon}</td><td>${((ksc_bon/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Maîtrise faible à moyenne (< 70%)</td><td>${ksc_moyen + ksc_faible}</td><td>${(((ksc_moyen + ksc_faible)/total)*100).toFixed(1)}</td></tr>
+
+                    <tr><td colspan="3" class="group-header">Indice K-SA (Signes d'Alerte / Tardifs)</td></tr>
+                    <tr><td class="row-header">Bonne maîtrise (≥ 70%)</td><td>${ksa_bon}</td><td>${((ksa_bon/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Maîtrise faible à moyenne (< 70%)</td><td>${ksa_moyen + ksa_faible}</td><td>${(((ksa_moyen + ksa_faible)/total)*100).toFixed(1)}</td></tr>
+                </tbody>
+            </table>
+        `;
+
+        document.getElementById('attitudes-container').innerHTML = `
+            <table class="academic-table">
+                <thead>
+                    <tr><th style="width:50%;">Attitudes envers le dépistage</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="row-header">Attitude positive / favorable</td><td>${att_pos}</td><td>${((att_pos/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Attitude neutre ou négative</td><td>${att_neutre}</td><td>${((att_neutre/total)*100).toFixed(1)}</td></tr>
+                </tbody>
+            </table>
+        `;
+
+        document.getElementById('pratiques-container').innerHTML = `
+            <table class="academic-table">
+                <thead>
+                    <tr><th style="width:50%;">Pratique du dépistage (Infirmières, N=${total})</th><th>Effectifs (n)</th><th>Pourcentage (%)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="row-header">Pratique adéquate (Score ≥ 70%)</td><td>${p_adeq}</td><td>${((p_adeq/total)*100).toFixed(1)}</td></tr>
+                    <tr><td class="row-header">Pratique inadéquate (Score < 70%)</td><td>${p_inadeq}</td><td>${((p_inadeq/total)*100).toFixed(1)}</td></tr>
+                </tbody>
+            </table>
+        `;
+    };
+
+    window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
+    
+    window.updateUI = function() {
+        document.getElementById('count-badge').textContent = database.length;
+        document.getElementById('n-total').textContent = database.length;
+        const tbody = document.getElementById('database-body');
+        tbody.innerHTML = database.map((row, index) => `
             <tr>
-                <td><strong>${r.id}</strong></td>
-                <td>${r.service}</td>
-                <td>${r.age}</td>
-                <td><span class="score-pill ${r.connaissance === 'Bonne' ? 'score-good' : (r.connaissance === 'Passable' ? 'score-medium' : 'score-poor')}">${r.connaissance}</span></td>
-                <td>${r.attitude}</td>
-                <td>${r.pratique}</td>
-                <td><button onclick="viewRow(${index})" style="background:var(--primary); color:#fff; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:11px; font-weight:700;">Visualiser</button></td>
+                <td><input type="checkbox" class="row-check"></td>
+                <td><b>${row.id}</b></td><td>${row.sexe}</td><td>${row.service}</td><td>${row.anciennete}</td>
+                <td style="color:${row.scoreSavoir>=70?'green':'red'}">${row.scoreSavoir}%</td>
+                <td style="color:${row.scorePratique>=70?'green':'red'}">${row.scorePratique}%</td>
+                <td>${row.scorePratique >= 70 ? '🟢 Expert' : '🔴 Critique'}</td>
+                <td><button class="btn-view-single" onclick="window.viewDetails(${index})">👁️ Voir</button></td>
             </tr>
         `).join('');
-    }
-
-    function viewRow(index) {
-        const r = records[index];
-        const content = document.getElementById('modalContent');
-        content.innerHTML = `
-            <div style="background: var(--primary-light); padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-                <h4 style="margin:0; color: var(--primary-dark);">FICHE D'IDENTIFICATION : ${r.id}</h4>
-                <span style="font-weight: 800; color: var(--primary);">ANNÉE : ${r.details.annee}</span>
-            </div>
-            <div class="modal-grid">
-                <div class="modal-data-group"><div class="modal-data-label">N° de Dossier Hospitalier</div><div class="modal-data-value">${r.details.dossier}</div></div>
-                <div class="modal-data-group"><div class="modal-data-label">Sexe du répondant</div><div class="modal-data-value">${r.details.sexe}</div></div>
-                <div class="modal-data-group"><div class="modal-data-label">Service d'Attachement</div><div class="modal-data-value">${r.service}</div></div>
-                <div class="modal-data-group"><div class="modal-data-label">Tranche d'Âge</div><div class="modal-data-value">${r.age}</div></div>
-                <div class="modal-data-group"><div class="modal-data-label">Niveau d'Études</div><div class="modal-data-value">${r.details.etudes}</div></div>
-                <div class="modal-data-group"><div class="modal-data-label">Ancienneté Professionnelle</div><div class="modal-data-value">${r.details.anciennete}</div></div>
-            </div>
-            
-            <div class="section-header">SCORE DE SAVOIR & COMPÉTENCES (KAP)</div>
-            <div class="modal-grid">
-                <div class="modal-data-group">
-                    <div class="modal-data-label">Connaissances Globales</div>
-                    <div class="modal-data-value"><span class="score-pill ${r.connaissance === 'Bonne' ? 'score-good' : (r.connaissance === 'Passable' ? 'score-medium' : 'score-poor')}">${r.connaissance}</span></div>
-                </div>
-                <div class="modal-data-group"><div class="modal-data-label">Attitude Envers le Dépistage</div><div class="modal-data-value">${r.attitude}</div></div>
-                <div class="modal-data-group"><div class="modal-data-label">Pratique Effective (Personnelle)</div><div class="modal-data-value">${r.pratique}</div></div>
-                <div class="modal-data-group"><div class="modal-data-label">Perception du Rôle</div><div class="modal-data-value">${r.details.perception}</div></div>
-            </div>
-            
-            <div class="modal-grid" style="margin-top: 10px;">
-                <div class="modal-data-group"><div class="modal-data-label">Facteurs de Risque</div><div class="modal-data-value">${r.details.risques}</div></div>
-                <div class="modal-data-group"><div class="modal-data-label">Signes d'Alerte</div><div class="modal-data-value">${r.details.signes}</div></div>
-                <div class="modal-data-group"><div class="modal-data-label">Technique d'Autopalpation</div><div class="modal-data-value">${r.details.palpation}</div></div>
-                <div class="modal-data-group"><div class="modal-data-label">Examen Mammographique</div><div class="modal-data-value">${r.details.mammographie}</div></div>
-            </div>
-            
-            <div class="section-header">OBSTACLES À LA MISE EN ŒUVRE</div>
-            <div style="font-size:14px; color:var(--text-body); background:#fff5f2; border: 1px solid #ffd7d7; padding:20px; border-radius:12px; line-height: 1.6;">
-                <strong style="color: #c53030;">Barrières identifiées :</strong><br>
-                ${r.details.obstacles}
-            </div>
-        `;
-        document.getElementById('dataModal').style.display = 'flex';
-    }
-
-    function closeModal() { document.getElementById('dataModal').style.display = 'none'; }
-
-    function initCharts() {
-        // Plugin pour afficher les valeurs sur les barres (Scientifique)
-        const barLabelPlugin = {
-            id: 'barLabelPlugin',
-            afterDraw: (chart) => {
-                if (chart.config.type !== 'bar') return;
-                const ctx = chart.ctx;
-                chart.data.datasets.forEach((dataset, i) => {
-                    const meta = chart.getDatasetMeta(i);
-                    meta.data.forEach((bar, index) => {
-                        const data = dataset.data[index];
-                        const total = dataset.data.reduce((a, b) => a + b, 0);
-                        const percentage = ((data / total) * 100).toFixed(1) + "%";
-                        const text = `${data} (${percentage})`;
-                        ctx.fillStyle = '#4a5568';
-                        ctx.font = 'bold 11px Inter';
-                        ctx.textAlign = 'center';
-                        ctx.fillText(text, bar.x, bar.y - 10);
-                    });
-                });
-            }
-        };
-
-        // Chart 3: Répartition par service (N=178)
-        const ctxService = document.getElementById('serviceChart').getContext('2d');
-        if (window.chartS) window.chartS.destroy();
-        window.chartS = new Chart(ctxService, {
-            type: 'bar',
-            data: {
-                labels: ['Urgences', 'Chirurgie', 'Médecine', 'Gynéco', 'Pédiatrie', 'Maternité'],
-                datasets: [{
-                    label: 'Effectif',
-                    data: [32, 28, 45, 38, 15, 20],
-                    backgroundColor: '#00796b', // Couleur primaire pour un look sérieux
-                    borderRadius: 2, // Barres plus "scientifiques" (moins arrondies)
-                    barPercentage: 0.9, // Barres plus larges
-                    categoryPercentage: 0.8,
-                    borderWidth: 1,
-                    borderColor: '#004d40'
-                }]
-            },
-            plugins: [barLabelPlugin],
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                layout: { padding: { top: 40, bottom: 10 } },
-                plugins: { 
-                    legend: { display: false },
-                    tooltip: { enabled: true }
-                },
-                scales: { 
-                    y: { 
-                        beginAtZero: true, 
-                        grid: { color: '#e2e8f0', drawBorder: false },
-                        title: { display: true, text: 'Effectif (n)', font: { weight: 'bold' } }
-                    }, 
-                    x: { 
-                        grid: { display: false },
-                        title: { display: true, text: 'Services Hospitaliers', font: { weight: 'bold' } }
-                    } 
-                }
-            }
-        });
-
-        // Chart 5: Attitude (Doughnut)
-        const ctxAttitude = document.getElementById('attitudeChart').getContext('2d');
-        if (window.chartA) window.chartA.destroy();
-        window.chartA = new Chart(ctxAttitude, {
-            type: 'doughnut',
-            data: {
-                labels: ['Favorable', 'Défavorable', 'Indifférent'],
-                datasets: [{
-                    data: [149, 20, 9], // N=178
-                    backgroundColor: ['#00796b', '#ff7043', '#cbd5e0'],
-                    borderWidth: 5,
-                    borderColor: '#fff'
-                }]
-            },
-            options: {
-                responsive: true,
-                cutout: '75%',
-                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } }
-            }
-        });
-
-        // Chart 6: Pratique (Pie - N=178)
-        const ctxPractice = document.getElementById('practiceChart').getContext('2d');
-        if (window.chartP) window.chartP.destroy();
-        window.chartP = new Chart(ctxPractice, {
-            type: 'pie',
-            data: {
-                labels: ['Pratique rég./Anuelle', 'Pratique occ.', 'Aucune pratique'],
-                datasets: [{
-                    data: [33, 45, 100], 
-                    backgroundColor: ['#26a69a', '#00796b', '#edf2f7'],
-                    borderWidth: 2,
-                    borderColor: '#fff'
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } }
-            }
-        });
-    }
-
-    window.onload = () => {
-        renderTable(); 
-        initCharts();
+        if(isAdmin) window.updateAnalytics();
     };
-</script>
 
+    window.switchTab = function(i) {
+        document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('content-'+i).classList.add('active');
+        document.querySelectorAll('.tab')[i-1].classList.add('active');
+    };
+
+    function showToast(m) { var x = document.getElementById("toast"); x.className="show"; x.innerText=m; setTimeout(()=>x.className=x.className.replace("show",""),3000); }
+    window.initCodeDropdown();
+</script>
 </body>
-</html>
+</html
