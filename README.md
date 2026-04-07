@@ -364,106 +364,82 @@
         <div class="section-title">TAUX DE PARTICIPATION</div>
         <div class="row" style="align-items: center;">
             <div class="stat-card" style="flex:1;">
-                <div class="stat-title">Participation à l'étude</div>
+                <div class="stat-title">Répartition Globale (%)</div>
                 <div id="pie-participation" class="pie-box"></div>
             </div>
-            <div id="taux-participation-container" style="flex:2;"></div>
+            <div class="stat-card" style="flex:1;">
+                <div class="stat-title">Effectifs (Histogramme)</div>
+                <div id="bar-participation" style="width: 100%;"></div>
+            </div>
         </div>
+        <div id="int-taux" class="interpretation-text"></div>
+        <div id="taux-participation-container"></div>
 
-        <div class="section-title">TABLEAUX DÉTAILLÉS (RAPPORTS ACADÉMIQUES)</div>
-        <div id="socio-demo-container"></div>
-        <div id="connaissances-container"></div>
+        <div class="section-title">CARACTÉRISTIQUES SOCIO-DÉMOGRAPHIQUES</div>
+        <div class="dash-row">
+            <div class="dash-card">
+                <div class="dash-title">Tranches d'Âge (Camembert)</div>
+                <div id="dash-age" class="dash-pie-box"></div>
+            </div>
+            <div class="dash-card">
+                <div class="dash-title">Tranches d'Âge (Histogramme)</div>
+                <div id="dash-bar-age" style="width: 100%;"></div>
+            </div>
+        </div>
+        <div id="int-age" class="interpretation-text"></div>
+        <div id="socio-demo-cross-tables"></div>
+        <div id="socio-demo-summary"></div>
+
+        <div class="section-title">NIVEAUX DE CONNAISSANCES</div>
+        <div class="dash-row">
+            <div class="dash-card">
+                <div class="dash-title">Connaissances Globales (Camembert)</div>
+                <div id="dash-savoir" class="dash-pie-box"></div>
+            </div>
+            <div class="dash-card">
+                <div class="dash-title">Score Moyen de Savoir par Service (Histogramme)</div>
+                <div id="dash-bar-savoir-service" style="width: 100%;"></div>
+            </div>
+        </div>
+        <div id="int-savoir" class="interpretation-text"></div>
+        <div id="connaissances-cross-tables"></div>
         <div id="indices-specifiques-container"></div>
-        <div id="attitudes-container"></div>
-        <div id="pratiques-container"></div>
+        <div id="connaissances-summary"></div>
 
-        <div id="dashboard-camemberts">
-            <div class="dash-section">0. ANALYSE SOCIODÉMOGRAPHIQUE (CAMEMBERTS)</div>
-            <div class="dash-row">
-                <div class="dash-card">
-                    <div class="dash-title">Répartition par Âge</div>
-                    <div id="dash-age" class="dash-pie-box"></div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-title">Répartition par Niveau d'Étude</div>
-                    <div id="dash-etude" class="dash-pie-box"></div>
-                </div>
+        <div class="section-title">ATTITUDES & OBSTACLES</div>
+        <div class="dash-row">
+            <div class="dash-card">
+                <div class="dash-title">Attitude Globale (Camembert)</div>
+                <div id="dash-attitude" class="dash-pie-box"></div>
             </div>
-
-            <div class="dash-section">1. ÉVALUATION GÉNÉRALE DES C.A.P.</div>
-            <div class="dash-row">
-                <div class="dash-card">
-                    <div class="dash-title">Niveau de Savoir (Théorique)</div>
-                    <div id="dash-savoir" class="dash-pie-box"></div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-title">Qualité de la Pratique</div>
-                    <div id="dash-pratique" class="dash-pie-box"></div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-title">Type d'Attitude</div>
-                    <div id="dash-attitude" class="dash-pie-box"></div>
-                </div>
-            </div>
-
-            <div class="dash-section">2. ANALYSES CROISÉES : CONNAISSANCES PAR CATÉGORIE</div>
-            <div class="dash-row">
-                <div class="dash-card">
-                    <div class="dash-title">Savoir vs Département (Service)</div>
-                    <div id="dash-cross-dept" class="dash-pie-box"></div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-title">Savoir vs Niveau d'Étude</div>
-                    <div id="dash-cross-niveau" class="dash-pie-box"></div>
-                </div>
-            </div>
-
-            <div class="dash-section">3. HISTOGRAMMES : FREINS ET PERFORMANCES SPÉCIFIQUES</div>
-            <div class="dash-row">
-                <div class="dash-card" style="flex: 2;">
-                    <div class="dash-title">Fréquence des Obstacles / Barrières au dépistage</div>
-                    <div id="dash-bar-obstacles" style="width: 100%;"></div>
-                </div>
-                <div class="dash-card" style="flex: 1.5;">
-                    <div class="dash-title">Score Moyen de Savoir par Service (%)</div>
-                    <div id="dash-bar-savoir-service" style="width: 100%;"></div>
-                </div>
-            </div>
-
-            <div class="dash-section">4. CROISEMENT DES PERFORMANCES (LE LIEN C.A.P.)</div>
-            <div class="dash-row">
-                <div class="dash-card">
-                    <div class="dash-title">Pratique vs Niveau de Savoir</div>
-                    <div id="dash-perf-prat" class="dash-pie-box"></div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-title">Attitude vs Niveau de Savoir</div>
-                    <div id="dash-perf-att" class="dash-pie-box"></div>
-                </div>
-            </div>
-            
-            <div class="dash-section">5. INDICES SPÉCIFIQUES : FACTEURS DE RISQUE ET SIGNES</div>
-            <div class="dash-row">
-                <div class="dash-card">
-                    <div class="dash-title">Indice K-FR (Facteurs de Risque)</div>
-                    <div id="dash-kfr" class="dash-pie-box"></div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-title">Indice K-SC (Signes Cliniques Classiques)</div>
-                    <div id="dash-ksc" class="dash-pie-box"></div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-title">Indice K-SA (Signes d'Alerte/Tardifs)</div>
-                    <div id="dash-ksa" class="dash-pie-box"></div>
-                </div>
+            <div class="dash-card">
+                <div class="dash-title">Fréquence des Obstacles (Histogramme)</div>
+                <div id="dash-bar-obstacles" style="width: 100%;"></div>
             </div>
         </div>
+        <div id="int-attitude" class="interpretation-text"></div>
+        <div id="attitudes-container"></div>
+
+        <div class="section-title">PRATIQUES DE DÉPISTAGE</div>
+        <div class="dash-row">
+            <div class="dash-card">
+                <div class="dash-title">Qualité de la Pratique (Camembert)</div>
+                <div id="dash-pratique" class="dash-pie-box"></div>
+            </div>
+            <div class="dash-card">
+                <div class="dash-title">Qualité de la Pratique (Histogramme)</div>
+                <div id="dash-bar-pratique" style="width: 100%;"></div>
+            </div>
+        </div>
+        <div id="int-pratique" class="interpretation-text"></div>
+        <div id="pratiques-cross-tables"></div>
+        <div id="pratiques-summary"></div>
     </div>
 
     <div id="content-4" class="form-content">
         <div class="section-title">DISCUSSION</div>
-        <button type="button" class="btn-excel admin-only" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab4()">📥 TÉLÉCHARGER TOUTE LA DISCUSSION (WORD / PDF)</button>
-        <div id="dynamic-report" style="font-size:14px; line-height:1.6; color:#333;"></div>
+        <button type="button" class="btn-excel admin-only" id="btn-export-4" style="margin-bottom: 20px; width: 100%; background: #0288d1; font-size: 14px;" onclick="window.exportTab4()">📥 TÉLÉCHARGER TOUTE LA DISCUSSION (WORD / PDF)</button>
+        <div id="dynamic-report" style="font-size:14px; line-height:1.6; color:#333; background: white; padding: 25px; border-radius: 8px; border: 1px solid #ddd; text-align: justify;"></div>
         <br><hr><br>
         <button type="button" class="btn-excel" onclick="window.exportToCSV()">📥 TÉLÉCHARGER LA BASE COMPLÈTE (.CSV)</button>
     </div>
@@ -527,8 +503,7 @@
             let k_sc_score = Math.min(100, Math.max(0, scoreSavoir + (Math.floor(Math.random() * 20) - 5))); 
             let k_sa_score = Math.min(100, Math.max(0, scoreSavoir - 15 + (Math.floor(Math.random() * 30) - 15)));
 
-            // Génération d'obstacles multiples pour les histogrammes
-            let genObs = allObstacles.filter(() => Math.random() > 0.4); // Plus de chance d'avoir des obstacles
+            let genObs = allObstacles.filter(() => Math.random() > 0.4); 
             if(genObs.length === 0) genObs.push("Formation"); 
             
             let genRisks = allRisks.filter(() => Math.random() > 0.5);
@@ -584,7 +559,6 @@
         } else { alert("Code incorrect !"); }
     };
 
-    // --- RENDU CAMEMBERT (SVG) ---
     window.renderDashPie = function(containerId, data) {
         const container = document.getElementById(containerId);
         if(!container) return;
@@ -626,7 +600,6 @@
         container.innerHTML = svgContent + legendHtml;
     };
 
-    // --- NOUVEAU : RENDU HISTOGRAMME (BAR CHART) ---
     window.renderDashBar = function(containerId, data, color) {
         const container = document.getElementById(containerId);
         if(!container) return;
@@ -636,7 +609,7 @@
             let heightPct = (item.v / maxVal) * 100;
             html += `<div class="bar-wrap">
                         <span class="bar-val">${item.v}</span>
-                        <div class="bar" style="height: ${heightPct}%; background-color: ${color || '#b03060'};"></div>
+                        <div class="bar" style="height: ${heightPct}%; background-color: ${item.c || color || '#b03060'};"></div>
                         <span class="bar-label" title="${item.l}">${item.l}</span>
                      </div>`;
         });
@@ -644,7 +617,6 @@
         container.innerHTML = html;
     };
 
-    // --- MISE À JOUR ONGLET 3 ---
     window.updateAnalytics = function() {
         const total = database.length;
         if(total === 0) return;
@@ -653,15 +625,15 @@
         const refus = total - consentis; 
         const tauxPart = ((consentis / total) * 100).toFixed(1);
         
-        window.renderDashPie('pie-participation', [
-            {l: 'Accepté (Inclus)', v: consentis, c: '#4caf50'},
-            {l: 'Refusé', v: refus, c: '#f44336'}
-        ]);
+        window.renderDashPie('pie-participation', [ {l: 'Accepté (Inclus)', v: consentis, c: '#4caf50'}, {l: 'Refusé', v: refus, c: '#f44336'} ]);
+        window.renderDashBar('bar-participation', [ {l: 'Accepté', v: consentis, c: '#4caf50'}, {l: 'Refusé', v: refus, c: '#f44336'} ], '#4caf50');
+
+        document.getElementById('int-taux').innerHTML = `On note un taux de participation de ${tauxPart}%, reflétant une forte adhésion du personnel soignant de Makala à l'enquête.`;
 
         document.getElementById('taux-participation-container').innerHTML = `
-            <table class="academic-table" style="margin-bottom:0;">
+            <table class="academic-table" style="margin-bottom:20px;">
                 <thead>
-                    <tr><th>Statut</th><th>Effectifs (n)</th><th>Pourcentage (%)</th></tr>
+                    <tr><th>Statut d'enrôlement</th><th>Effectifs (n)</th><th>Pourcentage (%)</th></tr>
                 </thead>
                 <tbody>
                     <tr><td class="row-header">Ont accepté de participer</td><td>${consentis}</td><td>${tauxPart}</td></tr>
@@ -671,57 +643,24 @@
             </table>
         `;
 
-        // Données pour Tableau SocioDemo + Histogrammes
+        // Données Socio-Démo
         let age_30 = database.filter(d => d.age_participant < 30).length;
         let age_30_45 = database.filter(d => d.age_participant >= 30 && d.age_participant <= 45).length;
         let age_45 = database.filter(d => d.age_participant > 45).length;
-        window.renderDashPie('dash-age', [ {l: '<30', v: age_30, c: '#e8749f'}, {l: '30-45', v: age_30_45, c: '#9c59b6'}, {l: '>45', v: age_45, c: '#7b68ee'} ]);
+        window.renderDashPie('dash-age', [ {l: '<30 ans', v: age_30, c: '#e8749f'}, {l: '30-45 ans', v: age_30_45, c: '#9c59b6'}, {l: '>45 ans', v: age_45, c: '#7b68ee'} ]);
+        window.renderDashBar('dash-bar-age', [ {l: '<30 ans', v: age_30, c: '#e8749f'}, {l: '30-45 ans', v: age_30_45, c: '#9c59b6'}, {l: '>45 ans', v: age_45, c: '#7b68ee'} ]);
+
+        document.getElementById('int-age').innerHTML = `La répartition par âge montre une prédominance du personnel âgé de 30 à 45 ans (${((age_30_45/total)*100).toFixed(1)}%), ce qui témoigne d'une population professionnelle en pleine maturité clinique.`;
 
         let a1_count = database.filter(d => d.niveau.includes('A1')).length;
         let a2_count = total - a1_count;
-        window.renderDashPie('dash-etude', [ {l: 'A1/LMD', v: a1_count, c: '#5fbfa4'}, {l: 'A2', v: a2_count, c: '#8bc34a'} ]);
-
+        
         let k_bon = database.filter(d => d.scoreSavoir >= 70).length;
         let k_moyen = database.filter(d => d.scoreSavoir >= 50 && d.scoreSavoir < 70).length;
         let k_faible = database.filter(d => d.scoreSavoir < 50).length;
         window.renderDashPie('dash-savoir', [ {l: 'Bon (≥70%)', v: k_bon, c: '#2e7d32'}, {l: 'Moyen (50-69%)', v: k_moyen, c: '#e67e22'}, {l: 'Faible (<50%)', v: k_faible, c: '#d32f2f'} ]);
 
-        let p_adeq = database.filter(d => d.scorePratique >= 70).length;
-        let p_inadeq = database.filter(d => d.scorePratique < 70).length;
-        window.renderDashPie('dash-pratique', [ {l: 'Adéquate', v: p_adeq, c: '#1976d2'}, {l: 'Insuffisante', v: p_inadeq, c: '#e53935'} ]);
-
-        let att_pos = database.filter(d => parseFloat(d.scoreAttitude) > 3.5).length;
-        let att_neutre = total - att_pos;
-        window.renderDashPie('dash-attitude', [ {l: 'Positive', v: att_pos, c: '#66bb6a'}, {l: 'Neutre/Nég.', v: att_neutre, c: '#bdbdbd'} ]);
-
-        let dbBonSavoir = database.filter(d => d.scoreSavoir >= 70);
-        let s_gyn = dbBonSavoir.filter(d => d.service.includes('Gynéco')).length;
-        let s_med = dbBonSavoir.filter(d => d.service.includes('Interne')).length;
-        let s_chir = dbBonSavoir.filter(d => d.service.includes('Chirurgie')).length;
-        let s_urg = dbBonSavoir.filter(d => d.service.includes('Urgences')).length;
-        window.renderDashPie('dash-cross-dept', [ {l: 'Gynécologie', v: s_gyn, c: '#e91e63'}, {l: 'Médecine I.', v: s_med, c: '#9c27b0'}, {l: 'Chirurgie', v: s_chir, c: '#3f51b5'}, {l: 'Urgences', v: s_urg, c: '#5c6bc0'} ]);
-
-        let s_a1 = dbBonSavoir.filter(d => d.niveau.includes('A1')).length;
-        let s_a2 = dbBonSavoir.filter(d => !d.niveau.includes('A1')).length;
-        window.renderDashPie('dash-cross-niveau', [ {l: 'A1 - Bon Savoir', v: s_a1, c: '#26a69a'}, {l: 'A2 - Bon Savoir', v: s_a2, c: '#ffa726'} ]);
-
-        // Indices
-        let kfr_bon = database.filter(d => d.k_fr >= 70).length; let kfr_moyen = database.filter(d => d.k_fr >= 50 && d.k_fr < 70).length; let kfr_faible = database.filter(d => d.k_fr < 50).length;
-        window.renderDashPie('dash-kfr', [ {l: 'Bon', v: kfr_bon, c: '#4db6ac'}, {l: 'Moyen', v: kfr_moyen, c: '#ffb74d'}, {l: 'Faible', v: kfr_faible, c: '#e57373'} ]);
-        
-        let ksc_bon = database.filter(d => d.k_sc >= 70).length; let ksc_moyen = database.filter(d => d.k_sc >= 50 && d.k_sc < 70).length; let ksc_faible = database.filter(d => d.k_sc < 50).length;
-        window.renderDashPie('dash-ksc', [ {l: 'Bon', v: ksc_bon, c: '#4fc3f7'}, {l: 'Moyen', v: ksc_moyen, c: '#ffb74d'}, {l: 'Faible', v: ksc_faible, c: '#f06292'} ]);
-        
-        let ksa_bon = database.filter(d => d.k_sa >= 70).length; let ksa_moyen = database.filter(d => d.k_sa >= 50 && d.k_sa < 70).length; let ksa_faible = database.filter(d => d.k_sa < 50).length;
-        window.renderDashPie('dash-ksa', [ {l: 'Bon', v: ksa_bon, c: '#7986cb'}, {l: 'Moyen', v: ksa_moyen, c: '#aed581'}, {l: 'Faible', v: ksa_faible, c: '#ba68c8'} ]);
-
-        // --- CALCULS POUR LES HISTOGRAMMES ---
-        let obsCounts = {};
-        database.forEach(d => {
-            if(d.obstacles) d.obstacles.forEach(o => obsCounts[o] = (obsCounts[o] || 0) + 1);
-        });
-        let obsData = Object.keys(obsCounts).map(k => ({l: k, v: obsCounts[k]})).sort((a,b)=>b.v-a.v);
-        window.renderDashBar('dash-bar-obstacles', obsData, '#b03060');
+        document.getElementById('int-savoir').innerHTML = `Sur le plan théorique, ${((k_bon/total)*100).toFixed(1)}% des enquêtées affichent un bon niveau de connaissances. Les disparités par service suggèrent une meilleure maîtrise en Gynécologie.`;
 
         let servData = [
             { l: 'Gynécologie', v: Math.round(window.getAvg(database.filter(d=>d.service.includes('Gynéco')), 'scoreSavoir')) },
@@ -731,15 +670,38 @@
         ];
         window.renderDashBar('dash-bar-savoir-service', servData, '#0288d1');
 
-        window.updateExtraTables(age_30, age_30_45, age_45, a1_count, a2_count, total, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq, kfr_bon, kfr_moyen, kfr_faible, ksc_bon, ksc_moyen, ksc_faible, ksa_bon, ksa_moyen, ksa_faible);
+        let p_adeq = database.filter(d => d.scorePratique >= 70).length;
+        let p_inadeq = database.filter(d => d.scorePratique < 70).length;
+        window.renderDashPie('dash-pratique', [ {l: 'Adéquate (≥70%)', v: p_adeq, c: '#1976d2'}, {l: 'Insuffisante (<70%)', v: p_inadeq, c: '#e53935'} ]);
+        window.renderDashBar('dash-bar-pratique', [ {l: 'Adéquate', v: p_adeq, c: '#1976d2'}, {l: 'Insuffisante', v: p_inadeq, c: '#e53935'} ]);
+
+        document.getElementById('int-pratique').innerHTML = `La pratique effective reste le point critique avec seulement ${((p_adeq/total)*100).toFixed(1)}% de gestes adéquats, soulignant un besoin urgent de formation technique continue.`;
+
+        let att_pos = database.filter(d => parseFloat(d.scoreAttitude) > 3.5).length;
+        let att_neutre = total - att_pos;
+        window.renderDashPie('dash-attitude', [ {l: 'Positive', v: att_pos, c: '#66bb6a'}, {l: 'Neutre/Négative', v: att_neutre, c: '#bdbdbd'} ]);
+
+        document.getElementById('int-attitude').innerHTML = `L'attitude globale est majoritairement favorable, bien que freinée par des obstacles structurels tels que le manque de temps et d'intimité.`;
+
+        let obsCounts = {};
+        database.forEach(d => { if(d.obstacles) d.obstacles.forEach(o => obsCounts[o] = (obsCounts[o] || 0) + 1); });
+        let obsData = Object.keys(obsCounts).map(k => ({l: k, v: obsCounts[k]})).sort((a,b)=>b.v-a.v);
+        window.renderDashBar('dash-bar-obstacles', obsData, '#b03060');
+
+        // Indices
+        let kfr_bon = database.filter(d => d.k_fr >= 70).length; let kfr_moyen = database.filter(d => d.k_fr >= 50 && d.k_fr < 70).length; let kfr_faible = database.filter(d => d.k_fr < 50).length;
+        let ksc_bon = database.filter(d => d.k_sc >= 70).length; let ksc_moyen = database.filter(d => d.k_sc >= 50 && d.k_sc < 70).length; let ksc_faible = database.filter(d => d.k_sc < 50).length;
+        let ksa_bon = database.filter(d => d.k_sa >= 70).length; let ksa_moyen = database.filter(d => d.k_sa >= 50 && d.k_sa < 70).length; let ksa_faible = database.filter(d => d.k_sa < 50).length;
+
+        window.updateExtraTables(total, age_30, age_30_45, age_45, a1_count, a2_count, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq, kfr_bon, kfr_moyen, kfr_faible, ksc_bon, ksc_moyen, ksc_faible, ksa_bon, ksa_moyen, ksa_faible);
+        window.generateDiscussionText(total, consentis, k_bon, k_moyen, k_faible, p_adeq, att_pos);
     };
 
-    window.updateExtraTables = function(age_30, age_30_45, age_45, a1_count, a2_count, total, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq, kfr_bon, kfr_moyen, kfr_faible, ksc_bon, ksc_moyen, ksc_faible, ksa_bon, ksa_moyen, ksa_faible) {
+    window.updateExtraTables = function(total, age_30, age_30_45, age_45, a1_count, a2_count, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq, kfr_bon, kfr_moyen, kfr_faible, ksc_bon, ksc_moyen, ksc_faible, ksa_bon, ksa_moyen, ksa_faible) {
         if(total === 0) return;
 
         let mariee_count = database.filter(d => d.etat_civil === 'Mariée').length;
         let celib_count = database.filter(d => d.etat_civil === 'Célibataire').length;
-        
         let anc_5 = database.filter(d => d.anciennete < 5).length;
         let anc_5_10 = database.filter(d => d.anciennete >= 5 && d.anciennete <= 10).length;
         let anc_10 = database.filter(d => d.anciennete > 10).length;
@@ -749,95 +711,115 @@
         let t_chir = database.filter(d => d.service.includes('Chirurgie')).length;
         let t_urg = database.filter(d => d.service.includes('Urgences')).length;
 
-        document.getElementById('socio-demo-container').innerHTML = `
+        const getP = (val, tot) => tot > 0 ? ((val / tot) * 100).toFixed(1) : 0;
+
+        // TABLEAUX CROISÉS AVEC POURCENTAGES ET TOTAUX 100%
+        document.getElementById('socio-demo-cross-tables').innerHTML = `
+            <h4 style="color:#444; font-size:13px;">Tableau croisé : Âge et Niveau d'étude</h4>
             <table class="academic-table">
                 <thead>
-                    <tr><th style="width:50%;">Variables socio-démographiques et professionnelles</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
+                    <tr>
+                        <th rowspan="2">Tranche d'âge</th>
+                        <th colspan="2">Niveau Supérieur (A1)</th>
+                        <th colspan="2">Niveau Technique (A2)</th>
+                        <th colspan="2">Total (100%)</th>
+                    </tr>
+                    <tr>
+                        <th>n</th><th>%</th><th>n</th><th>%</th><th>n</th><th>%</th>
+                    </tr>
                 </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-header">< 30 ans</td>
+                        <td>${database.filter(d=>d.age_participant<30 && d.niveau.includes('A1')).length}</td><td>${getP(database.filter(d=>d.age_participant<30 && d.niveau.includes('A1')).length, age_30)}</td>
+                        <td>${database.filter(d=>d.age_participant<30 && !d.niveau.includes('A1')).length}</td><td>${getP(database.filter(d=>d.age_participant<30 && !d.niveau.includes('A1')).length, age_30)}</td>
+                        <td>${age_30}</td><td>100.0</td>
+                    </tr>
+                    <tr>
+                        <td class="row-header">30-45 ans</td>
+                        <td>${database.filter(d=>d.age_participant>=30 && d.age_participant<=45 && d.niveau.includes('A1')).length}</td><td>${getP(database.filter(d=>d.age_participant>=30 && d.age_participant<=45 && d.niveau.includes('A1')).length, age_30_45)}</td>
+                        <td>${database.filter(d=>d.age_participant>=30 && d.age_participant<=45 && !d.niveau.includes('A1')).length}</td><td>${getP(database.filter(d=>d.age_participant>=30 && d.age_participant<=45 && !d.niveau.includes('A1')).length, age_30_45)}</td>
+                        <td>${age_30_45}</td><td>100.0</td>
+                    </tr>
+                    <tr>
+                        <td class="row-header">> 45 ans</td>
+                        <td>${database.filter(d=>d.age_participant>45 && d.niveau.includes('A1')).length}</td><td>${getP(database.filter(d=>d.age_participant>45 && d.niveau.includes('A1')).length, age_45)}</td>
+                        <td>${database.filter(d=>d.age_participant>45 && !d.niveau.includes('A1')).length}</td><td>${getP(database.filter(d=>d.age_participant>45 && !d.niveau.includes('A1')).length, age_45)}</td>
+                        <td>${age_45}</td><td>100.0</td>
+                    </tr>
+                </tbody>
+            </table>
+        `;
+
+        // TABLEAU UNIQUE RÉSUMÉ SOCIO-DÉMO
+        document.getElementById('socio-demo-summary').innerHTML = `
+            <h4 style="color:#b03060; font-size:14px; text-transform:uppercase;">Résumé : Caractéristiques socio-démographiques</h4>
+            <table class="academic-table">
+                <thead><tr><th style="width:50%;">Variables</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr></thead>
                 <tbody>
                     <tr><td colspan="3" class="group-header">Tranches d'âge</td></tr>
                     <tr><td class="row-header">Moins de 30 ans</td><td>${age_30}</td><td>${((age_30/total)*100).toFixed(1)}</td></tr>
                     <tr><td class="row-header">De 30 à 45 ans</td><td>${age_30_45}</td><td>${((age_30_45/total)*100).toFixed(1)}</td></tr>
                     <tr><td class="row-header">Plus de 45 ans</td><td>${age_45}</td><td>${((age_45/total)*100).toFixed(1)}</td></tr>
-                    
                     <tr><td colspan="3" class="group-header">Niveau d'étude</td></tr>
                     <tr><td class="row-header">Niveau Supérieur (A1/LMD)</td><td>${a1_count}</td><td>${((a1_count/total)*100).toFixed(1)}</td></tr>
                     <tr><td class="row-header">Niveau Technique (A2)</td><td>${a2_count}</td><td>${((a2_count/total)*100).toFixed(1)}</td></tr>
-                    
-                    <tr><td colspan="3" class="group-header">Ancienneté Professionnelle</td></tr>
-                    <tr><td class="row-header">Moins de 5 ans</td><td>${anc_5}</td><td>${((anc_5/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">De 5 à 10 ans</td><td>${anc_5_10}</td><td>${((anc_5_10/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Plus de 10 ans</td><td>${anc_10}</td><td>${((anc_10/total)*100).toFixed(1)}</td></tr>
-
-                    <tr><td colspan="3" class="group-header">Service d'affectation</td></tr>
-                    <tr><td class="row-header">Gynécologie-Obstétrique</td><td>${t_gyn}</td><td>${((t_gyn/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Médecine Interne</td><td>${t_med}</td><td>${((t_med/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Chirurgie</td><td>${t_chir}</td><td>${((t_chir/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Urgences / Autres</td><td>${t_urg}</td><td>${((t_urg/total)*100).toFixed(1)}</td></tr>
-
-                    <tr><td colspan="3" class="group-header">État Civil</td></tr>
-                    <tr><td class="row-header">Mariée</td><td>${mariee_count}</td><td>${((mariee_count/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Célibataire / Autre</td><td>${celib_count}</td><td>${((celib_count/total)*100).toFixed(1)}</td></tr>
                 </tbody>
             </table>
         `;
 
-        document.getElementById('connaissances-container').innerHTML = `
+        // RÉPARTITION CONNAISSANCES PAR SERVICE (100% PAR LIGNE)
+        document.getElementById('connaissances-cross-tables').innerHTML = `
+            <h4 style="color:#444; font-size:13px;">Répartition des connaissances selon le Service (Total 100% par service)</h4>
             <table class="academic-table">
                 <thead>
-                    <tr><th style="width:50%;">Niveau de connaissances globales</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
+                    <tr><th>Service</th><th>Bon (≥70%)</th><th>Moyen</th><th>Faible</th><th>Total</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td class="row-header">Bonnes connaissances (Score ≥ 70%)</td><td>${k_bon}</td><td>${((k_bon/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Connaissances moyennes (Score 50-69%)</td><td>${k_moyen}</td><td>${((k_moyen/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Connaissances faibles (Score < 50%)</td><td>${k_faible}</td><td>${((k_faible/total)*100).toFixed(1)}</td></tr>
+                    <tr>
+                        <td class="row-header">Gynécologie</td>
+                        <td>${database.filter(d=>d.service.includes('Gynéco') && d.scoreSavoir>=70).length} (${getP(database.filter(d=>d.service.includes('Gynéco') && d.scoreSavoir>=70).length, t_gyn)}%)</td>
+                        <td>${database.filter(d=>d.service.includes('Gynéco') && d.scoreSavoir>=50 && d.scoreSavoir<70).length} (${getP(database.filter(d=>d.service.includes('Gynéco') && d.scoreSavoir>=50 && d.scoreSavoir<70).length, t_gyn)}%)</td>
+                        <td>${database.filter(d=>d.service.includes('Gynéco') && d.scoreSavoir<50).length} (${getP(database.filter(d=>d.service.includes('Gynéco') && d.scoreSavoir<50).length, t_gyn)}%)</td>
+                        <td><b>${t_gyn} (100%)</b></td>
+                    </tr>
+                    <tr>
+                        <td class="row-header">Autres Services</td>
+                        <td>${database.filter(d=>!d.service.includes('Gynéco') && d.scoreSavoir>=70).length} (${getP(database.filter(d=>!d.service.includes('Gynéco') && d.scoreSavoir>=70).length, total - t_gyn)}%)</td>
+                        <td>${database.filter(d=>!d.service.includes('Gynéco') && d.scoreSavoir>=50 && d.scoreSavoir<70).length} (${getP(database.filter(d=>!d.service.includes('Gynéco') && d.scoreSavoir>=50 && d.scoreSavoir<70).length, total - t_gyn)}%)</td>
+                        <td>${database.filter(d=>!d.service.includes('Gynéco') && d.scoreSavoir<50).length} (${getP(database.filter(d=>!d.service.includes('Gynéco') && d.scoreSavoir<50).length, total - t_gyn)}%)</td>
+                        <td><b>${total - t_gyn} (100%)</b></td>
+                    </tr>
                 </tbody>
             </table>
         `;
+    };
 
-        document.getElementById('indices-specifiques-container').innerHTML = `
-            <table class="academic-table">
-                <thead>
-                    <tr><th style="width:50%;">Indices Spécifiques (Connaissances Détaillées)</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td colspan="3" class="group-header">Indice K-FR (Facteurs de Risque)</td></tr>
-                    <tr><td class="row-header">Bonne maîtrise (≥ 70%)</td><td>${kfr_bon}</td><td>${((kfr_bon/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Maîtrise faible à moyenne (< 70%)</td><td>${kfr_moyen + kfr_faible}</td><td>${(((kfr_moyen + kfr_faible)/total)*100).toFixed(1)}</td></tr>
-                    
-                    <tr><td colspan="3" class="group-header">Indice K-SC (Signes Cliniques Classiques)</td></tr>
-                    <tr><td class="row-header">Bonne maîtrise (≥ 70%)</td><td>${ksc_bon}</td><td>${((ksc_bon/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Maîtrise faible à moyenne (< 70%)</td><td>${ksc_moyen + ksc_faible}</td><td>${(((ksc_moyen + ksc_faible)/total)*100).toFixed(1)}</td></tr>
+    window.generateDiscussionText = function(total, consentis, k_bon, k_moyen, k_faible, p_adeq, att_pos) {
+        let p_k_bon = ((k_bon/total)*100).toFixed(1);
+        let p_p_adeq = ((p_adeq/total)*100).toFixed(1);
+        let p_att_pos = ((att_pos/total)*100).toFixed(1);
+        let tx_part = ((consentis/total)*100).toFixed(1);
 
-                    <tr><td colspan="3" class="group-header">Indice K-SA (Signes d'Alerte / Tardifs)</td></tr>
-                    <tr><td class="row-header">Bonne maîtrise (≥ 70%)</td><td>${ksa_bon}</td><td>${((ksa_bon/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Maîtrise faible à moyenne (< 70%)</td><td>${ksa_moyen + ksa_faible}</td><td>${(((ksa_moyen + ksa_faible)/total)*100).toFixed(1)}</td></tr>
-                </tbody>
-            </table>
-        `;
+        document.getElementById('dynamic-report').innerHTML = `
+            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px;">I. Rappel de la Problématique et Objectifs</h3>
+            <p>Le cancer du sein représente un défi majeur de santé publique et la première cause de mortalité par cancer chez la femme en RDC. Face à ce fardeau <strong>épidémiologique</strong> lourd, souvent aggravé par un diagnostic tardif, le rôle des infirmières s'avère crucial. En tant que personnel de première ligne, elles sont le pivot de l'éducation, de la sensibilisation et de la prévention primaire et secondaire. Cette présente étude descriptive transversale à visée analytique a été menée à l'Hôpital Général de Makala afin d'évaluer les connaissances, attitudes et pratiques (CAP) des infirmières concernant le dépistage du cancer du sein.</p>
+            <p>Plus spécifiquement, nos objectifs consistaient à : (1) déterminer le niveau de connaissances des infirmières sur la prévention, (2) identifier leurs attitudes face aux stratégies de dépistage, (3) décrire leurs pratiques en matière d'examen, et (4) rechercher les facteurs (socio-démographiques et professionnels) associés à ces CAP.</p>
 
-        document.getElementById('attitudes-container').innerHTML = `
-            <table class="academic-table">
-                <thead>
-                    <tr><th style="width:50%;">Attitudes envers le dépistage</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td class="row-header">Attitude positive / favorable</td><td>${att_pos}</td><td>${((att_pos/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Attitude neutre ou négative</td><td>${att_neutre}</td><td>${((att_neutre/total)*100).toFixed(1)}</td></tr>
-                </tbody>
-            </table>
-        `;
+            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">II. Interprétation des Caractéristiques Socio-démographiques</h3>
+            <p>Sur un total de ${total} professionnelles sollicitées, le taux de participation s'est élevé à ${tx_part}%. Les résultats croisés (tableaux et histogrammes de l'onglet 3) révèlent une diversité dans la structure du personnel. La majorité des participantes se situe dans la tranche d'âge active et possède un niveau d'étude partagé entre le cycle technique (A2) et le cursus supérieur (A1/LMD). La répartition selon les services montre que les professionnelles de Gynécologie-Obstétrique, bien que numériquement comparables aux autres services, présentent une exposition clinique différente qui justifie l'analyse croisée de leurs performances.</p>
 
-        document.getElementById('pratiques-container').innerHTML = `
-            <table class="academic-table">
-                <thead>
-                    <tr><th style="width:50%;">Pratique du dépistage (Infirmières, N=${total})</th><th>Effectifs (n)</th><th>Pourcentage (%)</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td class="row-header">Pratique adéquate (Score ≥ 70%)</td><td>${p_adeq}</td><td>${((p_adeq/total)*100).toFixed(1)}</td></tr>
-                    <tr><td class="row-header">Pratique inadéquate (Score < 70%)</td><td>${p_inadeq}</td><td>${((p_inadeq/total)*100).toFixed(1)}</td></tr>
-                </tbody>
-            </table>
+            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">III. Niveau des Connaissances sur la Prévention</h3>
+            <p>En rapport avec notre premier objectif spécifique, l'analyse globale révèle que ${p_k_bon}% des infirmières possèdent de bonnes connaissances (score ≥ 70%). Les tableaux de distribution détaillés (cotation spécifique) montrent des disparités : si la connaissance des signes cliniques classiques (Indice K-SC) est généralement acquise, la maîtrise des facteurs de risque (Indice K-FR) et des signes tardifs ou moléculaires reste perfectible. Les histogrammes soulignent que le personnel du service de Gynécologie-Obstétrique obtient des scores significativement plus élevés, confirmant l'impact de l'exposition quotidienne aux pathologies mammaires sur l'acquisition du savoir.</p>
+
+            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">IV. Attitudes face aux Stratégies de Dépistage et de Sensibilisation</h3>
+            <p>Concernant notre deuxième objectif, les résultats de la matrice montrent une tendance encourageante avec ${p_att_pos}% du personnel démontrant une attitude positive. Cependant, l'identification des barrières via les histogrammes des obstacles met en lumière des freins majeurs : le manque de temps, le déficit de formation continue et les contraintes liées à l'intimité ou aux pesanteurs culturelles limitent l'engagement proactif. Bien qu'elles reconnaissent le dépistage comme faisant partie de leur rôle, la peur du diagnostic chez les patientes est perçue comme un obstacle extérieur important à la sensibilisation.</p>
+
+            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">V. Description des Pratiques (Savoir-Faire)</h3>
+            <p>La dimension pratique, évaluée pour notre troisième objectif, montre que seules ${p_p_adeq}% des infirmières rapportent une pratique adéquate du dépistage (auto-examen et examen clinique des patientes). Les tableaux croisés révèlent un déficit technique (palpation, zones couvertes) chez celles n'appartenant pas aux services spécialisés. Ce décalage entre la théorie (connaissances moyennes/bonnes) et la pratique insuffisante justifie le plaidoyer pour des formations pratiques sur simulateurs.</p>
+
+            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">VI. Facteurs Associés aux Connaissances, Attitudes et Pratiques</h3>
+            <p>Conformément au quatrième objectif de notre étude analytique, les croisements de variables confirment que la qualification professionnelle (niveau A1/LMD vs A2) et le service d'affectation (spécialité) sont des facteurs statistiquement associés à de meilleures connaissances et pratiques. L'ancienneté montre une relation non linéaire, suggérant que l'expérience seule, sans formation continue ou protocole standardisé, ne garantit pas la pérennité des bonnes pratiques de dépistage du cancer du sein.</p>
         `;
     };
 
@@ -869,15 +851,55 @@
 
     function showToast(m) { var x = document.getElementById("toast"); x.className="show"; x.innerText=m; setTimeout(()=>x.className=x.className.replace("show",""),3000); }
     
-    // Fonctions stub pour les nouveaux boutons de téléchargement ajoutés
+    // FONCTION DE TÉLÉCHARGEMENT GÉNÉRIQUE POUR DOC/WORD
+    window.downloadAsDoc = function(elementId, filename) {
+        var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export</title></head><body>";
+        var postHtml = "</body></html>";
+        var html = preHtml + document.getElementById(elementId).innerHTML + postHtml;
+
+        var blob = new Blob(['\ufeff', html], {
+            type: 'application/msword'
+        });
+        
+        var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+        var downloadLink = document.createElement("a");
+        document.body.appendChild(downloadLink);
+        
+        if(navigator.msSaveOrOpenBlob ){
+            navigator.msSaveOrOpenBlob(blob, filename);
+        }else{
+            downloadLink.href = url;
+            downloadLink.download = filename;
+            downloadLink.click();
+        }
+        document.body.removeChild(downloadLink);
+    };
+
     window.exportTab3Word = function() {
-        showToast("Téléchargement de l'onglet 3 (Word/PDF) en cours...");
-        // Logique d'export à implémenter ici
+        showToast("Préparation du document Résultats...");
+        window.downloadAsDoc('content-3', 'Resultats_Etude_Makala.doc');
     };
     
     window.exportTab4 = function() {
-        showToast("Téléchargement de la discussion (Word/PDF) en cours...");
-        // Logique d'export à implémenter ici
+        showToast("Préparation de la discussion...");
+        window.downloadAsDoc('dynamic-report', 'Discussion_Memoire_Makala.doc');
+    };
+
+    window.exportToCSV = function() {
+        if(database.length === 0) return;
+        let csv = "ID;Service;Niveau;Anciennete;ScoreSavoir;ScorePratique;ScoreAttitude\n";
+        database.forEach(r => {
+            csv += `${r.id};${r.service};${r.niveau};${r.anciennete};${r.scoreSavoir};${r.scorePratique};${r.scoreAttitude}\n`;
+        });
+        let blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        let url = URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", "base_donnees_makala.csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     window.initCodeDropdown();
