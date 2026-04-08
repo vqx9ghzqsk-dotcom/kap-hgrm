@@ -452,7 +452,7 @@
         <div id="table-correlation-formation"></div>
     </div>
 
-<div id="onglet-4-discussion" style="padding: 20px; line-height: 1.6; color: #333;">
+<div id="content-4" class="form-content" style="padding: 20px; line-height: 1.6; color: #333;">
     <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">
         Discussion et Analyse Approfondie des Résultats
     </h2>
@@ -486,7 +486,7 @@
         <strong>Concordances :</strong> Comme attendu, la corrélation entre les effectifs médicaux présents et le flux de traitement des patients reste forte. Nos données sont en parfaite adéquation avec le consensus scientifique stipulant qu'un ratio optimal soignant/patient est la clé de voûte de la sécurité des soins.
     </p>
     <p>
-        <strong>Écarts constatés :</strong> En revanche, nous notons une divergence intéressante concernant le service <strong>[Insérer le nom d'un service, ex: de pédiatrie / chirurgie]</strong>. Contrairement aux modèles théoriques prédictifs qui anticipaient une baisse de performance lors des pics saisonniers, ce service a maintenu ses indicateurs dans le vert. Cet écart s'explique très probablement par la mise en place d'une cellule de pré-triage autonome, une initiative locale qui a permis de désengorger efficacement les files d'attente avant même l'admission administrative.
+        <strong>Écarts constatés :</strong> En revanche, nous notons une divergence intéressante concernant le service <strong>[Insérer le nom d'un service, ex: de pédiatrie / chirurgie]</strong>. Contrairement aux modèles théoriques prédictifs qui anticipaient une baisse de performance lors des pics saisonniers, ce service a maintained ses indicateurs dans le vert. Cet écart s'explique très probablement par la mise en place d'une cellule de pré-triage autonome, une initiative locale qui a permis de désengorger efficacement les files d'attente avant même l'admission administrative.
     </p>
 
     <h3 style="color: #2980b9; margin-top: 30px;">5. Implications Opérationnelles pour l'Hôpital</h3>
@@ -509,6 +509,8 @@
     <br>
     <hr style="border: 0; border-top: 1px solid #ddd;">
 </div>
+
+<div id="dynamic-report" style="display: none;"></div>
 
 <div id="detailModal" class="modal-overlay" onclick="window.closeModal(event)">
     <div class="modal-content">
@@ -1055,7 +1057,7 @@
     
     window.exportTab4 = function() {
         showToast("Préparation de la discussion...");
-        window.downloadAsDoc('dynamic-report', 'Discussion_Memoire_Makala.doc');
+        window.downloadAsDoc('content-4', 'Discussion_Memoire_Makala.doc');
     };
 
     window.exportToCSV = function() {
