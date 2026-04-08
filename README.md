@@ -457,55 +457,33 @@
         Discussion et Analyse Approfondie des Résultats
     </h2>
     <p style="font-size: 1.1em; margin-bottom: 20px;">
-        Cette section propose une lecture analytique détaillée des données collectées. Elle met en perspective nos observations quantitatives et qualitatives avec les standards actuels de gestion hospitalière, afin d'en tirer des conclusions opérationnelles viables.
+        Cette section propose une lecture analytique détaillée des données collectées à l'Hôpital Général de Référence de Makala (HGRM) sur notre échantillon de 178 infirmières. Elle met en perspective nos observations quantitatives avec les questions de recherche et hypothèses de notre protocole, afin d'identifier les points forts et les axes d'amélioration pour optimiser leur rôle dans la prise en charge et la sensibilisation.
     </p>
 
-    <h3 style="color: #2980b9; margin-top: 30px;">1. Synthèse des Résultats Principaux</h3>
+    <h3 style="color: #2980b9; margin-top: 30px;">1. Connaissances des infirmières sur la prévention (Objectif 1)</h3>
     <p>
-        L'analyse de nos données met en évidence plusieurs tendances majeures. Tout d'abord, nous observons <strong>[Insérer ici tes données existantes : ex. une baisse/hausse de X% des délais de prise en charge]</strong>. En parallèle, les indicateurs de satisfaction des patients montrent une dynamique contrastée, avec une note moyenne globale de <strong>[Insérer donnée]</strong>. Enfin, la charge de travail perçue par le personnel soignant a connu une variation significative, particulièrement dans les services de première ligne (urgences, réanimation). Ces trois axes constituent le cœur de notre évaluation.
+        Notre première hypothèse postulait que <em>les infirmières congolaises possèdent des connaissances variables sur la prévention du cancer du sein, influençant leurs pratiques</em>. L'analyse de nos données confirme cette variabilité. Nous observons un niveau de maîtrise théorique globalement perfectible : bien que <strong>60,1 %</strong> des enquêtées affichent un bon niveau de connaissances globales sur le dépistage précoce, d'importantes disparités subsistent selon le domaine d'expertise et le service d'affectation (notamment une meilleure maîtrise dans les services spécialisés comme la Gynécologie). Ces lacunes ciblées soulignent la nécessité de renforcer la formation théorique continue.
     </p>
 
-    <h3 style="color: #2980b9; margin-top: 30px;">2. Interprétation des Observations</h3>
+    <h3 style="color: #2980b9; margin-top: 30px;">2. Attitudes et perception de la prévention (Objectif 2)</h3>
     <p>
-        L'interprétation de ces chiffres révèle une réalité de terrain complexe. L'évolution des délais de prise en charge suggère que les récents protocoles de triage sont efficaces d'un point de vue purement chronométrique. Cependant, cette optimisation temporelle ne se traduit pas systématiquement par une amélioration du ressenti patient. 
-    </p>
-    <p>
-        La stagnation ou la baisse relative de la satisfaction globale peut s'expliquer par un effet de "déshumanisation" perçue : le patient est traité plus vite, mais interagit moins longtemps avec le corps médical, générant ainsi de l'anxiété. Concernant la charge de travail du personnel, les pics d'activité recensés soulignent une tension structurelle, où les équipes compensent les failles du système de flux par un investissement personnel accru, ce qui augmente le risque d'épuisement professionnel (burn-out).
+        En réponse à notre deuxième question de recherche visant à comprendre comment les infirmières perçoivent le rôle de la prévention dans leur pratique quotidienne, les résultats montrent une dynamique contrastée, validant notre deuxième hypothèse (<em>les attitudes envers la prévention impactent l'implication et la communication avec les patientes</em>). L'adhésion théorique à l'importance du dépistage est confirmée par une attitude globale positive chez <strong>55,1 %</strong> du personnel. Cependant, une proportion significative affiche une attitude neutre ou négative, souvent freinée par la peur du diagnostic chez les patientes et l'inconfort d'aborder des sujets intimes, ce qui limite la communication proactive.
     </p>
 
-    <h3 style="color: #2980b9; margin-top: 30px;">3. Mise en Perspective avec la Littérature Médicale</h3>
+    <h3 style="color: #2980b9; margin-top: 30px;">3. Pratiques actuelles et difficultés rencontrées (Objectif 3)</h3>
     <p>
-        Nos résultats s'inscrivent dans une dynamique largement documentée par la littérature récente sur le management de la santé. Selon les études de l'OMS (2023) et les travaux sur le "Lean Healthcare", la réduction mécanique des temps d'attente est souvent le premier levier activé par les centres hospitaliers. 
-    </p>
-    <p>
-        De plus, les travaux de <em>Smith et al. (2022)</em> sur la psychologie des patients en milieu hospitalier confirment que la qualité de la communication médicale a un impact pondéré supérieur à la rapidité des soins dans l'évaluation de l'expérience patient. Nos données reflètent fidèlement ce paradigme : l'efficience technique ne suffit plus si elle n'est pas couplée à une intelligence relationnelle.
+        L'analyse des pratiques constitue le point critique de notre étude. Conformément à notre troisième hypothèse postulant que <em>les pratiques sont limitées par divers facteurs, notamment le manque de ressources et de formation</em>, nos résultats révèlent que l'application concrète des mesures de prévention est majoritairement insuffisante. Seulement <strong>43,3 %</strong> des infirmières rapportent une pratique adéquate (maîtrise de l'auto-examen et examen clinique des patientes), tandis que la majorité (<strong>56,7 %</strong>) présente une pratique insuffisante. Les principales difficultés rapportées pour la mise en œuvre de ces stratégies incluent le manque de temps, l'absence de protocoles clairs, les contraintes culturelles et le manque criant de formation technique pratique.
     </p>
 
-    <h3 style="color: #2980b9; margin-top: 30px;">4. Analyse des Écarts et Concordances</h3>
-    <p>
-        <strong>Concordances :</strong> Comme attendu, la corrélation entre les effectifs médicaux présents et le flux de traitement des patients reste forte. Nos données sont en parfaite adéquation avec le consensus scientifique stipulant qu'un ratio optimal soignant/patient est la clé de voûte de la sécurité des soins.
-    </p>
-    <p>
-        <strong>Écarts constatés :</strong> En revanche, nous notons une divergence intéressante concernant le service <strong>[Insérer le nom d'un service, ex: de pédiatrie / chirurgie]</strong>. Contrairement aux modèles théoriques prédictifs qui anticipaient une baisse de performance lors des pics saisonniers, ce service a maintained ses indicateurs dans le vert. Cet écart s'explique très probablement par la mise en place d'une cellule de pré-triage autonome, une initiative locale qui a permis de désengorger efficacement les files d'attente avant même l'admission administrative.
-    </p>
-
-    <h3 style="color: #2980b9; margin-top: 30px;">5. Implications Opérationnelles pour l'Hôpital</h3>
+    <h3 style="color: #2980b9; margin-top: 30px;">4. Recommandations et Perspectives (Objectif 4)</h3>
     <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #27ae60; margin: 15px 0;">
-        <p>Au vu de ces analyses, plusieurs actions concrètes peuvent être déployées au sein de l'établissement :</p>
+        <p>Au vu de ces analyses et pour répondre à notre objectif principal, plusieurs recommandations s'imposent pour renforcer le rôle des infirmières dans la lutte contre le cancer du sein à l'HGRM :</p>
         <ul>
-            <li><strong>Refonte de l'accueil :</strong> Intégrer des postes d'infirmiers d'orientation dont le rôle principal est la communication et la réassurance, et non plus seulement le triage purement médical.</li>
-            <li><strong>Digitalisation transparente :</strong> Déployer des écrans de suivi anonymisés en salle d'attente pour que les patients puissent visualiser l'évolution de la file active, réduisant ainsi le stress lié à l'inconnu.</li>
-            <li><strong>Soutien au personnel :</strong> Ajuster les plannings de rotation lors des pics épidémiologiques identifiés dans l'étude, et mettre en place des temps d'échange post-garde pour limiter la charge mentale des équipes.</li>
+            <li><strong>Renforcement ciblé des capacités :</strong> Mettre en place des programmes de formation continue axés non seulement sur les connaissances théoriques, mais surtout sur la pratique clinique (techniques de palpation sur simulateurs) et la communication interpersonnelle avec les patientes.</li>
+            <li><strong>Standardisation et ressources :</strong> Élaborer, afficher et distribuer des protocoles de dépistage standardisés et adaptés au contexte local, tout en allouant les ressources nécessaires.</li>
+            <li><strong>Aménagement de l'environnement :</strong> Restructurer les espaces de consultation pour garantir une intimité totale, encourageant ainsi l'examen clinique des seins tout en levant les barrières liées à la pudeur et aux croyances culturelles.</li>
         </ul>
     </div>
-
-    <h3 style="color: #2980b9; margin-top: 30px;">6. Limites de l'Étude et Perspectives</h3>
-    <p>
-        Il est essentiel de nuancer nos conclusions à la lumière des limites inhérentes à notre démarche. Premièrement, cette étude repose sur un échantillon temporel restreint de <strong>[Insérer durée, ex: 6 mois]</strong>, ce qui ne permet pas d'absorber l'intégralité des variations cycliques annuelles. 
-    </p>
-    <p>
-        Deuxièmement, les questionnaires de satisfaction sont soumis à un biais d'auto-sélection : les patients ayant vécu des expériences extrêmes (très positives ou très négatives) sont statistiquement plus enclins à répondre. Enfin, l'étude se cantonne à un centre hospitalier unique, rendant la généralisation de certains résultats délicate. Les recherches futures devront intégrer des comparaisons multicentriques et analyser l'impact financier des mesures d'amélioration proposées.
-    </p>
     <br>
     <hr style="border: 0; border-top: 1px solid #ddd;">
 </div>
@@ -977,24 +955,17 @@
         let tx_part = ((consentis/total)*100).toFixed(1);
 
         document.getElementById('dynamic-report').innerHTML = `
-            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px;">I. Rappel de la Problématique et Objectifs</h3>
-            <p>Le cancer du sein représente un défi majeur de santé publique et la première cause de mortalité par cancer chez la femme en RDC. Face à ce fardeau <strong>épidémiologique</strong> lourd, souvent aggravé par un diagnostic tardif, le rôle des infirmières s'avère crucial. En tant que personnel de première ligne, elles sont le pivot de l'éducation, de la sensibilisation et de la prévention primaire et secondaire. Cette présente étude descriptive transversale à visée analytique a été menée à l'Hôpital Général de Makala afin d'évaluer les connaissances, attitudes et pratiques (CAP) des infirmières concernant le dépistage du cancer du sein.</p>
-            <p>Plus spécifiquement, nos objectifs consistaient à : (1) déterminer le niveau de connaissances des infirmières sur la prévention, (2) identifier leurs attitudes face aux stratégies de dépistage, (3) décrire leurs pratiques en matière d'examen, et (4) rechercher les facteurs (socio-démographiques et professionnels) associés à ces CAP.</p>
+            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px;">I. But de l'étude et Analyse Globale</h3>
+            <p>Le but principal de notre étude était d'analyser les connaissances, attitudes et pratiques des infirmières en République démocratique du Congo concernant la prévention du cancer du sein, afin d’identifier les points forts et les axes d’amélioration pour optimiser leur rôle dans la prise en charge et la sensibilisation. L'analyse des données recueillies à l'HGRM (N=${total}) permet de valider de manière probante nos hypothèses de recherche initiales.</p>
 
-            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">II. Interprétation des Caractéristiques Socio-démographiques</h3>
-            <p>Sur un total de ${total} professionnelles sollicitées, le taux de participation s'est élevé à ${tx_part}%. Les résultats croisés (tableaux et histogrammes de l'onglet 3) révèlent une diversité dans la structure du personnel. La majorité des participantes se situe dans la tranche d'âge active et possède un niveau d'étude partagé entre le cycle technique (A2) et le cursus supérieur (A1/LMD). La répartition selon les services montre que les professionnelles de Gynécologie-Obstétrique, bien que numériquement comparables aux autres services, présentent une exposition clinique différente qui justifie l'analyse croisée de leurs performances.</p>
+            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">II. Identifier les niveaux de connaissances (Objectif 1)</h3>
+            <p>En rapport avec notre premier objectif spécifique, l'analyse révèle que ${p_k_bon}% des infirmières possèdent de bonnes connaissances (score ≥ 70%). Ce résultat confirme notre première hypothèse : les infirmières congolaises possèdent des connaissances variables sur la prévention du cancer du sein. Bien qu'une base théorique soit présente (60,1% dans l'échantillon global), ces variations (notamment selon le service) justifient une révision de la formation théorique continue pour harmoniser les savoirs.</p>
 
-            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">III. Niveau des Connaissances sur la Prévention</h3>
-            <p>En rapport avec notre premier objectif spécifique, l'analyse globale révèle que ${p_k_bon}% des infirmières possèdent de bonnes connaissances (score ≥ 70%). Les tableaux de distribution détaillés (cotation spécifique) montrent des disparités : si la connaissance des signes cliniques classiques (Indice K-SC) est généralement acquise, la maîtrise des facteurs de risque (Indice K-FR) et des signes tardifs ou moléculaires reste perfectible. Les histogrammes soulignent que le personnel du service de Gynécologie-Obstétrique obtient des scores significativement plus élevés, confirmant l'impact de l'exposition quotidienne aux pathologies mammaires sur l'acquisition du savoir.</p>
+            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">III. Décrire les attitudes et la perception (Objectif 2)</h3>
+            <p>Concernant notre deuxième objectif, visant à décrire les attitudes et la perception de l'importance de la prévention, les résultats montrent que ${p_att_pos}% du personnel démontre une attitude positive. Ces données valident notre seconde hypothèse affirmant que les attitudes envers la prévention impactent leur implication. L'effort doit désormais se porter sur l'accompagnement psychologique des soignants pour améliorer leur communication avec les patientes, souvent entravée par la peur du diagnostic.</p>
 
-            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">IV. Attitudes face aux Stratégies de Dépistage et de Sensibilisation</h3>
-            <p>Concernant notre deuxième objectif, les résultats de la matrice montrent une tendance encourageante avec ${p_att_pos}% du personnel démontrant une attitude positive. Cependant, l'identification des barrières via les histogrammes des obstacles met en lumière des freins majeurs : le manque de temps, le déficit de formation continue et les contraintes liées à l'intimité ou aux pesanteurs culturelles limitent l'engagement proactif. Bien qu'elles reconnaissent le dépistage comme faisant partie de leur rôle, la peur du diagnostic chez les patientes est perçue comme un obstacle extérieur important à la sensibilisation.</p>
-
-            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">V. Description des Pratiques (Savoir-Faire)</h3>
-            <p>La dimension pratique, évaluée pour notre troisième objectif, montre que seules ${p_p_adeq}% des infirmières rapportent une pratique adéquate du dépistage (auto-examen et examen clinique des patientes). Les tableaux croisés révèlent un déficit technique (palpation, zones couvertes) chez celles n'appartenant pas aux services spécialisés. Ce décalage entre la théorie (connaissances moyennes/bonnes) et la pratique insuffisante justifie le plaidoyer pour des formations pratiques sur simulateurs.</p>
-
-            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">VI. Facteurs Associés aux Connaissances, Attitudes et Pratiques</h3>
-            <p>Conformément au quatrième objectif de notre étude analytique, les croisements de variables confirment que la qualification professionnelle (niveau A1/LMD vs A2) et le service d'affectation (spécialité) sont des facteurs statistiquement associés à de meilleures connaissances et pratiques. L'ancienneté montre une relation non linéaire, suggérant que l'expérience seule, sans formation continue ou protocole standardisé, ne garantit pas la pérennité des bonnes pratiques de dépistage du cancer du sein.</p>
+            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">IV. Analyser les pratiques actuelles et les obstacles (Objectif 3)</h3>
+            <p>L'analyse des pratiques (troisième objectif) est révélatrice des failles du système : seules ${p_p_adeq}% des infirmières rapportent une pratique adéquate. Ce chiffre critique (reflétant une pratique insuffisante pour la majorité) valide pleinement notre troisième hypothèse : les pratiques des infirmières sont limitées par divers facteurs, notamment le manque de ressources, de protocoles clairs et de formation pratique adéquate.</p>
         `;
     };
 
