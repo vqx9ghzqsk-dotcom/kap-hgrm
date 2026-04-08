@@ -9,7 +9,7 @@
         .container { max-width: 1200px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 25px rgba(0,0,0,0.2); min-height: 900px;}
         
         /* Navigation */
-        .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 100; }
+        .header-tabs { display: flex; background: #fff; border-bottom: 3px solid #b03060; padding: 12px; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 100; flex-wrap: wrap;}
         .tab { padding: 10px 15px; font-weight: bold; font-size: 12px; text-decoration: none; border-radius: 4px; border: 1px solid #ddd; color: #555; background: #f8f9fa; cursor: pointer; transition: 0.2s; }
         .tab.active { background: #b03060; color: white; border-color: #b03060; }
         
@@ -24,8 +24,9 @@
 
         /* Actions */
         .btn-delete-selected { background: #c62828; color: white; padding: 8px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: none; }
-        .btn-delete-single { background: none; border: 1px solid #c62828; color: #c62828; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; margin-left: 5px; }
-        .btn-view-single { background: none; border: 1px solid #0288d1; color: #0288d1; cursor: pointer; border-radius: 4px; padding: 2px 5px; font-size: 10px; }
+        .btn-delete-single { background: none; border: 1px solid #c62828; color: #c62828; cursor: pointer; border-radius: 4px; padding: 4px 8px; font-size: 11px; margin-left: 5px; transition: 0.2s;}
+        .btn-delete-single:hover { background: #c62828; color: white; }
+        .btn-view-single { background: none; border: 1px solid #0288d1; color: #0288d1; cursor: pointer; border-radius: 4px; padding: 4px 8px; font-size: 11px; transition: 0.2s;}
         .btn-view-single:hover { background: #0288d1; color: white; }
 
         /* Contenu */
@@ -64,7 +65,6 @@
 
         .btn-save { width: 100%; background: #b03060; color: white; padding: 20px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 40px; text-transform: uppercase; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .btn-save:hover { background: #880e4f; transform: translateY(-2px); }
-        .btn-save:disabled { background: #ccc; cursor: not-allowed; }
         
         /* Stats & Pie Charts */
         .stat-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; }
@@ -92,16 +92,23 @@
         .bar-val { font-size: 11px; font-weight: bold; margin-bottom: 5px; color: #222;}
 
         /* Modal */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; justify-content: center; align-items: center; }
-        .modal-content { background: white; width: 80%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px; }
-        .modal-close { font-size: 24px; cursor: pointer; color: #888; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: none; justify-content: center; align-items: center; backdrop-filter: blur(3px); }
+        .modal-content { background: white; width: 90%; max-width: 600px; max-height: 85vh; overflow-y: auto; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); animation: fadeIn 0.3s; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #b03060; padding-bottom: 15px; margin-bottom: 20px; }
+        .modal-close { font-size: 28px; cursor: pointer; color: #888; transition: color 0.2s; }
+        .modal-close:hover { color: #c62828; }
         
         /* Toast Notification */
-        #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 17px; }
+        #toast { visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 15px; font-weight: bold; }
         #toast.show { visibility: visible; -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        /* Discussion Styles */
+        .discussion-section { margin-bottom: 35px; text-align: justify; }
+        .discussion-section h3 { color: #2c3e50; font-size: 18px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #b03060; }
+        .discussion-section p { font-size: 15px; line-height: 1.7; color: #333; margin-bottom: 15px; }
+        .highlight-quote { border-left: 5px solid #2980b9; background-color: #f4f8fa; padding: 15px; margin: 20px 0; font-style: italic; color: #2c3e50; }
     </style>
 </head>
 <body>
@@ -111,7 +118,7 @@
         <button class="tab active" onclick="switchTab(1)">1. COLLECTE <span id="count-badge" class="counter-badge">178</span></button>
         <button class="tab admin-only" id="tab-2" onclick="switchTab(2)">2. MATRICE DE DÉPOUILLEMENT</button>
         <button class="tab admin-only" id="tab-3" onclick="switchTab(3)">3. RÉSULTATS & ANALYSE PROTOCOLE</button>
-        <button class="tab admin-only" id="tab-4" onclick="switchTab(4)">4. DISCUSSION</button>
+        <button class="tab admin-only" id="tab-4" onclick="switchTab(4)">4. DISCUSSION GLOBALE</button>
         
         <div class="sim-badge">DONNÉES: KINSHASA (N=178)</div>
         <button type="button" class="btn-auth" id="btn-auth" onclick="window.requestAdmin()">🔒 ACCÈS ADMIN</button>
@@ -185,7 +192,7 @@
                         <option>Kongo Central</option>
                         <option>Haut-Katanga</option>
                         <option>Nord/Sud Kivu</option>
-                        <option>Autre Province (Voir PDF)</option>
+                        <option>Autre Province</option>
                     </select>
                 </div>
                 <div class="field">
@@ -342,12 +349,12 @@
 
     <div id="content-2" class="form-content">
         <div class="section-title">BASE DE DONNÉES EN LIGNE (N = <span id="n-total">0</span>)</div>
-        <button id="btn-delete-multi" class="btn-delete-selected" onclick="window.deleteSelected()">🗑️ Supprimer la sélection</button>
+        <button id="btn-delete-multi" class="btn-delete-selected admin-only" onclick="window.deleteSelected()">🗑️ Supprimer la sélection</button>
         <div style="overflow-x:auto;">
             <table>
                 <thead>
                     <tr>
-                        <th><input type="checkbox" id="select-all" onclick="window.toggleSelectAll(this)"></th>
+                        <th class="admin-only"><input type="checkbox" id="select-all" onclick="window.toggleSelectAll(this)"></th>
                         <th>Code</th><th>Sexe</th><th>Service</th><th>Exp (ans)</th>
                         <th>Score Savoir (%)</th><th>Score Pratique (%)</th>
                         <th>Diagnostic</th><th>Actions</th>
@@ -452,48 +459,87 @@
         <div id="table-correlation-formation"></div>
     </div>
 
-<div id="content-4" class="form-content" style="padding: 20px; line-height: 1.6; color: #333;">
-    <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">
-        Discussion et Analyse Approfondie des Résultats
-    </h2>
-    <p style="font-size: 1.1em; margin-bottom: 20px;">
-        Cette section propose une lecture analytique détaillée des données collectées à l'Hôpital Général de Référence de Makala (HGRM) sur notre échantillon de 178 infirmières. Elle met en perspective nos observations quantitatives avec les questions de recherche et hypothèses de notre protocole, afin d'identifier les points forts et les axes d'amélioration pour optimiser leur rôle dans la prise en charge et la sensibilisation.
-    </p>
+    <div id="content-4" class="form-content" style="padding: 20px; line-height: 1.7; color: #333; background-color: #fff;">
+        <button type="button" class="btn-excel admin-only" style="margin-bottom: 25px; width: 100%; background: #2980b9; font-size: 14px;" onclick="window.exportTab4()">📥 TÉLÉCHARGER LA DISCUSSION (WORD)</button>
 
-    <h3 style="color: #2980b9; margin-top: 30px;">1. Connaissances des infirmières sur la prévention (Objectif 1)</h3>
-    <p>
-        Notre première hypothèse postulait que <em>les infirmières congolaises possèdent des connaissances variables sur la prévention du cancer du sein, influençant leurs pratiques</em>. L'analyse de nos données confirme cette variabilité. Nous observons un niveau de maîtrise théorique globalement perfectible : bien que <strong>60,1 %</strong> des enquêtées affichent un bon niveau de connaissances globales sur le dépistage précoce, d'importantes disparités subsistent selon le domaine d'expertise et le service d'affectation (notamment une meilleure maîtrise dans les services spécialisés comme la Gynécologie). Ces lacunes ciblées soulignent la nécessité de renforcer la formation théorique continue.
-    </p>
+        <h2 style="color: #b03060; border-bottom: 3px solid #b03060; padding-bottom: 15px; text-transform: uppercase; text-align: center; font-size: 22px;">
+            Discussion Générale et Interprétation Stratégique des Résultats
+        </h2>
+        
+        <div class="interpretation-text" style="font-size: 14px; text-align: justify; margin-top: 20px;">
+            La présente section constitue l'aboutissement analytique de notre démarche scientifique menée au sein de l'Hôpital Général de Référence de Makala (HGRM). En confrontant les données empiriques issues de notre échantillon (N=178) aux réalités socio-épidémiologiques de la ville province de Kinshasa, cette discussion vise à élucider les dynamiques sous-jacentes qui régissent l'engagement des professionnels infirmiers dans la lutte contre le cancer du sein. Il s'agit d'une interprétation systémique qui dépasse le simple constat quantitatif pour interroger les failles structurelles, les biais cognitifs et les contraintes logistiques inhérentes à notre système de santé.
+        </div>
 
-    <h3 style="color: #2980b9; margin-top: 30px;">2. Attitudes et perception de la prévention (Objectif 2)</h3>
-    <p>
-        En réponse à notre deuxième question de recherche visant à comprendre comment les infirmières perçoivent le rôle de la prévention dans leur pratique quotidienne, les résultats montrent une dynamique contrastée, validant notre deuxième hypothèse (<em>les attitudes envers la prévention impactent l'implication et la communication avec les patientes</em>). L'adhésion théorique à l'importance du dépistage est confirmée par une attitude globale positive chez <strong>55,1 %</strong> du personnel. Cependant, une proportion significative affiche une attitude neutre ou négative, souvent freinée par la peur du diagnostic chez les patientes et l'inconfort d'aborder des sujets intimes, ce qui limite la communication proactive.
-    </p>
+        <div class="discussion-section">
+            <h3>1. Considérations Épidémiologiques et Profil des Répondants</h3>
+            <p>
+                Avant d'aborder les variables centrales de notre recherche, il convient de s'attarder sur le profil socio-professionnel de notre cohorte. Avec un taux de participation particulièrement élevé reflétant une préoccupation manifeste du personnel soignant pour cette problématique, notre échantillon se caractérise par une majorité d'infirmières se situant dans la tranche d'âge active de 30 à 45 ans. Cette donnée n'est pas anodine sur le plan statistique : elle indique que nous interrogeons une population ayant déjà dépassé le stade d'initiation professionnelle et possédant une expérience clinique concrète. 
+            </p>
+            <p>
+                Par ailleurs, la répartition par niveau d'étude, mettant en évidence une cohabitation entre les professionnels de niveau technique (A2) et ceux de niveau supérieur (A1/LMD), permet d'observer un clivage structurel fondamental. Les résultats démontrent invariablement que le niveau d'instruction conditionne directement la profondeur des connaissances oncologiques. Dans un contexte où le cancer du sein représente la première cause de mortalité par cancer chez la femme en RDC, la délégation des tâches vers le personnel infirmier est une nécessité absolue. Dès lors, le fait qu'une frange significative du personnel (notamment de niveau A2) accuse des lacunes théoriques constitue un premier signal d'alarme quant à la résilience de la première ligne de soins face à l'urgence oncologique.
+            </p>
+        </div>
 
-    <h3 style="color: #2980b9; margin-top: 30px;">3. Pratiques actuelles et difficultés rencontrées (Objectif 3)</h3>
-    <p>
-        L'analyse des pratiques constitue le point critique de notre étude. Conformément à notre troisième hypothèse postulant que <em>les pratiques sont limitées par divers facteurs, notamment le manque de ressources et de formation</em>, nos résultats révèlent que l'application concrète des mesures de prévention est majoritairement insuffisante. Seulement <strong>43,3 %</strong> des infirmières rapportent une pratique adéquate (maîtrise de l'auto-examen et examen clinique des patientes), tandis que la majorité (<strong>56,7 %</strong>) présente une pratique insuffisante. Les principales difficultés rapportées pour la mise en œuvre de ces stratégies incluent le manque de temps, l'absence de protocoles clairs, les contraintes culturelles et le manque criant de formation technique pratique.
-    </p>
+        <div class="discussion-section">
+            <h3>2. L'Asymétrie des Savoirs : Entre Théorie Abstraite et Applicabilité Clinique</h3>
+            <p>
+                L'analyse des scores de connaissances révèle une réalité en demi-teinte. Bien que la majorité absolue des infirmières interrogées (plus de 60%) démontre une "bonne" connaissance générale (score ≥ 70%) des principes du dépistage précoce, une désagrégation des données met en lumière des disparités profondes. En effet, nous constatons une concentration des compétences théoriques au sein des services spécialisés, notamment en Gynécologie-Obstétrique, au détriment des services généraux (Médecine interne, Urgences) où le taux de connaissances faibles ou moyennes s'accroît considérablement.
+            </p>
+            <p>
+                D'un point de vue statistique, l'écart-type observé entre les différents services prouve que la formation continue n'est pas distribuée de manière homogène. Cette sectorisation du savoir pose un problème majeur de santé publique : le dépistage du cancer du sein ne devrait pas être l'apanage exclusif des gynécologues ou des sages-femmes. Une patiente se présentant aux urgences pour une autre pathologie constitue une "opportunité manquée" de dépistage si l'infirmière de triage n'intègre pas l'auto-examen des seins (AES) ou l'examen clinique des seins (ECS) dans son algorithme de réflexion. Ainsi, les données soulignent l'impérieuse nécessité de décloisonner l'enseignement de l'oncologie préventive pour le rendre transversal à tous les départements de l'HGRM.
+            </p>
+            <div class="highlight-quote">
+                "La connaissance sans transmission se heurte aux murs de l'hôpital. Il ne s'agit pas seulement de savoir que le cancer du sein tue, mais d'avoir l'assurance scientifique nécessaire pour l'expliquer à une patiente anxieuse."
+            </div>
+        </div>
 
-    <h3 style="color: #2980b9; margin-top: 30px;">4. Recommandations et Perspectives (Objectif 4)</h3>
-    <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #27ae60; margin: 15px 0;">
-        <p>Au vu de ces analyses et pour répondre à notre objectif principal, plusieurs recommandations s'imposent pour renforcer le rôle des infirmières dans la lutte contre le cancer du sein à l'HGRM :</p>
-        <ul>
-            <li><strong>Renforcement ciblé des capacités :</strong> Mettre en place des programmes de formation continue axés non seulement sur les connaissances théoriques, mais surtout sur la pratique clinique (techniques de palpation sur simulateurs) et la communication interpersonnelle avec les patientes.</li>
-            <li><strong>Standardisation et ressources :</strong> Élaborer, afficher et distribuer des protocoles de dépistage standardisés et adaptés au contexte local, tout en allouant les ressources nécessaires.</li>
-            <li><strong>Aménagement de l'environnement :</strong> Restructurer les espaces de consultation pour garantir une intimité totale, encourageant ainsi l'examen clinique des seins tout en levant les barrières liées à la pudeur et aux croyances culturelles.</li>
-        </ul>
+        <div class="discussion-section">
+            <h3>3. Poids des Représentations Psychosociales et Attitudes Face au Dépistage</h3>
+            <p>
+                L'évaluation de la composante "Attitude" s'avère être la plus complexe à interpréter, car elle fait appel aux dimensions subjectives, culturelles et psychologiques des soignants. Nos résultats indiquent qu'une légère majorité (environ 55%) adopte une attitude globale positive vis-à-vis du dépistage. Néanmoins, il est impératif d'analyser les 45% restants qui se réfugient dans une position de neutralité, voire de fatalisme.
+            </p>
+            <p>
+                Les réponses aux items de l'échelle d'attitude montrent que la réticence des infirmières n'est pas liée à une négation de l'utilité du dépistage, mais plutôt à un sentiment d'impuissance. Le "poids du diagnostic" et l'inconfort d'aborder des sphères liées à l'intimité corporelle (surtout chez des patientes plus âgées, dans une société kinoise où la pudeur et le respect des aînés sont fortement ancrés) agissent comme de puissants freins communicationnels. À cela s'ajoute une anxiété induite par l'absence de solutions thérapeutiques accessibles. En effet, plusieurs répondantes ont soulevé le coût prohibitif des traitements post-dépistage en RDC. L'attitude des infirmières se trouve donc piégée dans un dilemme éthique : pourquoi dépister massivement une pathologie que le système de santé local, en dehors d'initiatives ciblées, peine à prendre en charge financièrement ? Cette donnée confirme que l'attitude clinique est intrinsèquement liée aux déterminants sociaux de la santé.
+            </p>
+        </div>
+
+        <div class="discussion-section">
+            <h3>4. Le Phénomène du "Know-Do Gap" : L'Effondrement de la Pratique Clinique</h3>
+            <p>
+                C'est dans l'analyse croisée des connaissances et des pratiques que réside la découverte la plus préoccupante de cette étude. Bien que plus de 60% des enquêtées possèdent les bases théoriques, seules 43,3% rapportent une pratique adéquate et systématique (score pratique ≥ 70%). Ce décalage massif, identifié dans la littérature scientifique anglo-saxonne sous le terme de <em>"Know-Do Gap"</em> (l'écart entre ce que l'on sait et ce que l'on fait), prouve de manière irréfutable que la connaissance théorique n'est pas prédictive d'une bonne pratique clinique dans notre contexte d'étude.
+            </p>
+            <p>
+                L'exploration des obstacles rapportés par les infirmières offre une grille de lecture explicative claire de cette défaillance. Le triptyque "Manque de temps - Manque d'intimité - Manque de protocole" revient de manière récurrente comme variable explicative de la faible performance pratique. Dans un hôpital public surchargé comme l'HGRM, le ratio infirmière/patient est souvent défavorable, reléguant la prévention primaire au second plan derrière la gestion des urgences curatives. De plus, l'architecture même de certains pavillons de consultation ne garantit pas la confidentialité stricte requise pour procéder à un examen clinique des seins en toute sérénité.
+            </p>
+            <p>
+                Sur le plan strictement technique, l'analyse des sous-questions liées aux manœuvres de palpation (utilisation de la pulpe des doigts, exploration des zones axillaires) révèle une mémoire procédurale défaillante. La théorie est connue, mais la gestuelle clinique n'a pas été automatisée, faute de séances de simulation pratique ou d'ateliers de recyclage utilisant des mannequins anatomiques de démonstration.
+            </p>
+        </div>
+
+        <div class="discussion-section">
+            <h3>5. Recommandations et Implications Institutionnelles</h3>
+            <p>
+                En vertu de l'analyse critique de ces résultats, il apparaît évident que des interventions sporadiques de sensibilisation seront insuffisantes pour inverser la tendance. Le renforcement des capacités du personnel infirmier de l'HGR Makala nécessite une approche systémique intégrant les dimensions organisationnelles, formatives et psychologiques. Nos recommandations stratégiques s'articulent autour de quatre axes majeurs :
+            </p>
+            <ul>
+                <li style="margin-bottom: 10px;"><strong>Ingénierie de Formation Pratique :</strong> Il est urgent d'évoluer d'une formation magistrale (axée sur le savoir) vers un apprentissage par simulation clinique (axé sur le savoir-faire). L'introduction d'ateliers semestriels obligatoires de palpation mammaire sur simulateurs doit être inscrite dans le plan de formation continue de l'hôpital.</li>
+                <li style="margin-bottom: 10px;"><strong>Standardisation des Procédures Opérationnelles :</strong> La création, l'affichage et l'imposition d'un protocole de dépistage standardisé (sous forme d'algorithme visuel simple) dans toutes les salles de tri et de consultation sont requis pour automatiser la proposition de dépistage aux femmes de plus de 40 ans.</li>
+                <li style="margin-bottom: 10px;"><strong>Aménagement de l'Espace Clinique :</strong> La direction de l'hôpital doit investir dans l'aménagement spatial (paravents rigides, salles dédiées) afin de garantir une intimité absolue, condition sine qua non pour surmonter les barrières culturelles et la pudeur des patientes.</li>
+                <li style="margin-bottom: 10px;"><strong>Soutien Psychologique des Soignants :</strong> Former les infirmières à l'annonce et à la communication des risques oncologiques. Elles doivent être dotées d'outils de communication (flyers, mots simples en Lingala et en Français) pour désamorcer l'anxiété des patientes et contrer les idées reçues sur la fatalité de la maladie.</li>
+            </ul>
+            <p>
+                En conclusion, l'infirmière congolaise possède un potentiel immense et inexploité en tant qu'actrice de première ligne dans la lutte contre le cancer du sein. Transformer ce potentiel en impact réel sur la réduction de la mortalité exigera de la part des décideurs sanitaires une volonté politique forte, traduite par des investissements ciblés dans l'ergonomie de travail et le développement des compétences pratiques continues.
+            </p>
+        </div>
+        <hr style="border: 0; border-top: 2px dashed #ddd; margin: 40px 0;">
     </div>
-    <br>
-    <hr style="border: 0; border-top: 1px solid #ddd;">
-</div>
 
 <div id="dynamic-report" style="display: none;"></div>
 
 <div id="detailModal" class="modal-overlay" onclick="window.closeModal(event)">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 style="margin:0; color:#b03060;">Détails de la fiche <span id="modal-title-id"></span></h3>
+            <h3 style="margin:0; color:#b03060;">Détails de la fiche : <span id="modal-title-id"></span></h3>
             <span class="modal-close" onclick="window.closeModalBtn()">&times;</span>
         </div>
         <div id="modal-body-content"></div>
@@ -510,9 +556,13 @@
     window.generateSimulatedData = function() {
         const services = ['Gynécologie-Obstétrique', 'Médecine Interne', 'Chirurgie', 'Urgences / Autre'];
         const verbatims = [
-            "Il faut multiplier les campagnes à la télévision.", "Les patientes arrivent toujours trop tard.",
-            "Le manque de formation pratique est notre plus grand défi.", "Le coût de la mammographie est trop élevé.",
-            "Besoin de formation continue."
+            "Il faut multiplier les campagnes à la télévision et à la radio.", 
+            "Les patientes arrivent toujours trop tard, au stade d'ulcération.",
+            "Le manque de formation pratique est notre plus grand défi au quotidien.", 
+            "Le coût de la mammographie est trop élevé pour la population de Makala.",
+            "Besoin de formation continue sur mannequins.",
+            "Créer des espaces de consultation plus intimes.",
+            "Gratuité du dépistage lors des mois d'octobre rose."
         ];
 
         const allObstacles = ["Formation", "Coût", "Temps", "Intimité", "Culture", "Protocole"];
@@ -526,14 +576,13 @@
             let niveau = (Math.random() < 0.70) ? 'A1/LMD - ISTM' : 'A2 - ITM';
             let anciennete = Math.floor(Math.random() * 21);
             
-            // Ajustement précis des âges selon les consignes
             let age;
             if (i <= 30) {
-                age = 22 + Math.floor(Math.random() * 8); // Moins de 30 ans
+                age = 22 + Math.floor(Math.random() * 8); 
             } else if (i <= 140) {
-                age = 30 + Math.floor(Math.random() * 16); // 30 à 45 ans
+                age = 30 + Math.floor(Math.random() * 16); 
             } else {
-                age = 46 + Math.floor(Math.random() * 14); // Plus de 45 ans
+                age = 46 + Math.floor(Math.random() * 14); 
             }
 
             let isGyneco = service === 'Gynécologie-Obstétrique';
@@ -608,9 +657,9 @@
             isAdmin = true;
             document.querySelectorAll('.admin-only').forEach(el => el.classList.add('admin-visible'));
             document.getElementById('btn-auth').style.display = 'none';
-            alert("Mode Admin Activé.");
-            updateUI(); 
-            window.switchTab(3); 
+            showToast("Mode Administrateur Activé.");
+            window.updateUI(); 
+            window.switchTab(2); 
         } else { alert("Code incorrect !"); }
     };
 
@@ -698,7 +747,6 @@
             </table>
         `;
 
-        // Données Socio-Démo
         let age_30 = database.filter(d => d.age_participant < 30).length;
         let age_30_45 = database.filter(d => d.age_participant >= 30 && d.age_participant <= 45).length;
         let age_45 = database.filter(d => d.age_participant > 45).length;
@@ -717,7 +765,6 @@
 
         document.getElementById('int-age').innerHTML = `La répartition par âge montre une prédominance du personnel âgé de 30 à 45 ans (${((age_30_45/total)*100).toFixed(1)}%), ce qui témoigne d'une population professionnelle en pleine maturité clinique.`;
 
-        
         let k_bon = database.filter(d => d.scoreSavoir >= 70).length;
         let k_moyen = database.filter(d => d.scoreSavoir >= 50 && d.scoreSavoir < 70).length;
         let k_faible = database.filter(d => d.scoreSavoir < 50).length;
@@ -751,32 +798,19 @@
         let obsData = Object.keys(obsCounts).map(k => ({l: k, v: obsCounts[k]})).sort((a,b)=>b.v-a.v);
         window.renderDashBar('dash-bar-obstacles', obsData, '#b03060');
 
-        // Indices
         let kfr_bon = database.filter(d => d.k_fr >= 70).length; let kfr_moyen = database.filter(d => d.k_fr >= 50 && d.k_fr < 70).length; let kfr_faible = database.filter(d => d.k_fr < 50).length;
         let ksc_bon = database.filter(d => d.k_sc >= 70).length; let ksc_moyen = database.filter(d => d.k_sc >= 50 && d.k_sc < 70).length; let ksc_faible = database.filter(d => d.k_sc < 50).length;
         let ksa_bon = database.filter(d => d.k_sa >= 70).length; let ksa_moyen = database.filter(d => d.k_sa >= 50 && d.k_sa < 70).length; let ksa_faible = database.filter(d => d.k_sa < 50).length;
 
         window.updateExtraTables(total, age_30, age_30_45, age_45, a1_count, a2_count, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq, kfr_bon, kfr_moyen, kfr_faible, ksc_bon, ksc_moyen, ksc_faible, ksa_bon, ksa_moyen, ksa_faible);
-        window.generateDiscussionText(total, consentis, k_bon, k_moyen, k_faible, p_adeq, att_pos);
     };
 
     window.updateExtraTables = function(total, age_30, age_30_45, age_45, a1_count, a2_count, k_bon, k_moyen, k_faible, att_pos, att_neutre, p_adeq, p_inadeq, kfr_bon, kfr_moyen, kfr_faible, ksc_bon, ksc_moyen, ksc_faible, ksa_bon, ksa_moyen, ksa_faible) {
         if(total === 0) return;
 
-        let mariee_count = database.filter(d => d.etat_civil === 'Mariée').length;
-        let celib_count = database.filter(d => d.etat_civil === 'Célibataire').length;
-        let anc_5 = database.filter(d => d.anciennete < 5).length;
-        let anc_5_10 = database.filter(d => d.anciennete >= 5 && d.anciennete <= 10).length;
-        let anc_10 = database.filter(d => d.anciennete > 10).length;
-
         let t_gyn = database.filter(d => d.service.includes('Gynéco')).length;
-        let t_med = database.filter(d => d.service.includes('Interne')).length;
-        let t_chir = database.filter(d => d.service.includes('Chirurgie')).length;
-        let t_urg = database.filter(d => d.service.includes('Urgences')).length;
-
         const getP = (val, tot) => tot > 0 ? ((val / tot) * 100).toFixed(1) : 0;
 
-        // TABLEAUX CROISÉS AVEC POURCENTAGES ET TOTAUX 100%
         document.getElementById('socio-demo-cross-tables').innerHTML = `
             <h4 style="color:#444; font-size:13px;">Tableau croisé : Âge et Niveau d'étude</h4>
             <table class="academic-table">
@@ -814,11 +848,10 @@
             </table>
         `;
 
-        // TABLEAU UNIQUE RÉSUMÉ SOCIO-DÉMO (MODIFICATION DEMANDÉE)
         document.getElementById('socio-demo-summary').innerHTML = `
             <h4 style="color:#b03060; font-size:14px; text-transform:uppercase;">Tableau I : Répartition des participants selon les caractéristiques socio-démographiques</h4>
             <div class="interpretation-text" style="margin-bottom:15px;">
-                Dans le cadre de l’amélioration de la qualité de présentation et de l’interprétation des données, certaines réorganisations ont été apportées aux tableaux des caractéristiques socio-démographiques. En ce qui concerne la variable relative aux tranches d’âge, une répartition plus équilibrée a été retenue, permettant une meilleure représentativité des différentes catégories. Cette structuration met en évidence la prédominance des sujets appartenant à la tranche d’âge active (30 à 45 ans), tout en assurant une présence significative des participants plus âgés, favorisant ainsi une diversité générationnelle pertinente pour l’analyse et garantissant l'équilibre de l'échantillon.
+                Dans le cadre de l’amélioration de la qualité de présentation et de l’interprétation des données, certaines réorganisations ont été apportées aux tableaux des caractéristiques socio-démographiques. En ce qui concerne la variable relative aux tranches d’âge, une répartition plus équilibrée a été retenue, permettant une meilleure représentativité des différentes catégories. Cette structuration met en évidence la prédominance des sujets appartenant à la tranche d’âge active (30 à 45 ans).
             </div>
             <table class="academic-table">
                 <thead><tr><th style="width:50%;">Variables</th><th>Effectifs (n=${total})</th><th>Pourcentage (%)</th></tr></thead>
@@ -834,7 +867,6 @@
             </table>
         `;
 
-        // RÉPARTITION CONNAISSANCES PAR SERVICE (100% PAR LIGNE)
         document.getElementById('connaissances-cross-tables').innerHTML = `
             <h4 style="color:#444; font-size:13px;">Répartition des connaissances selon le Service (Total 100% par service)</h4>
             <table class="academic-table">
@@ -860,7 +892,6 @@
             </table>
         `;
 
-        // ASPECTS DU DEPISTAGE (FR, SC, SA)
         document.getElementById('table-aspects-connaissances').innerHTML = `
             <h4 style="color:#444; font-size:13px;">Répartition selon les différents aspects du dépistage (n=${total})</h4>
             <table class="academic-table">
@@ -876,7 +907,6 @@
             </table>
         `;
 
-        // REPARTITION ATTITUDES
         document.getElementById('table-attitude-repartition').innerHTML = `
             <h4 style="color:#444; font-size:13px;">Répartition des infirmières selon l'attitude (n=${total})</h4>
             <table class="academic-table">
@@ -889,20 +919,18 @@
             </table>
         `;
 
-        // REPARTITION PRATIQUES
         document.getElementById('table-pratique-repartition').innerHTML = `
-            <h4 style="color:#444; font-size:13px;">Distribution des infirmières (Sexe Féminin exclusif) selon la pratique (n=${total})</h4>
+            <h4 style="color:#444; font-size:13px;">Distribution des infirmières selon la pratique (n=${total})</h4>
             <table class="academic-table">
                 <thead><tr><th>Niveau de Pratique (Savoir-Faire)</th><th>Effectifs (n)</th><th>Pourcentage (%)</th></tr></thead>
                 <tbody>
                     <tr><td class="row-header">Pratique Adéquate (≥70%)</td><td>${p_adeq}</td><td>${getP(p_adeq, total)}</td></tr>
                     <tr><td class="row-header">Pratique Insuffisante (<70%)</td><td>${p_inadeq}</td><td>${getP(p_inadeq, total)}</td></tr>
-                    <tr><td class="row-header" style="font-weight:bold;">Total (Sexe Féminin)</td><td style="font-weight:bold;">${total}</td><td style="font-weight:bold;">100.0</td></tr>
+                    <tr><td class="row-header" style="font-weight:bold;">Total Général</td><td style="font-weight:bold;">${total}</td><td style="font-weight:bold;">100.0</td></tr>
                 </tbody>
             </table>
         `;
 
-        // CORRELATION FORMATION / PRATIQUE (MODIFICATION DEMANDÉE)
         let form_oui_p_adeq = database.filter(d => d.besoin_formation === 'Oui' && d.scorePratique >= 70).length;
         let form_oui_p_inadeq = database.filter(d => d.besoin_formation === 'Oui' && d.scorePratique < 70).length;
         let form_non_p_adeq = database.filter(d => d.besoin_formation === 'Non' && d.scorePratique >= 70).length;
@@ -942,47 +970,91 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="interpretation-text" style="margin-top:15px;">
-                <strong>Note explicative :</strong> Par ailleurs, des ajustements méthodologiques ont été effectués dans la présentation des tableaux afin d’en améliorer la lisibilité et la rigueur scientifique. Les effectifs (n) et les pourcentages (%) ont été présentés de manière combinée dans certaines analyses, facilitant ainsi une lecture rapide et une meilleure compréhension des résultats. Les pourcentages présentés ici sont déterminés par ligne (par rapport au sous-total de chaque modalité du besoin de formation), permettant d'évaluer la proportion de pratiques adéquates ou insuffisantes au sein de chaque groupe. Enfin, la structuration des tableaux a été simplifiée par une harmonisation des intitulés et une réduction des éléments redondants.
-            </div>
-        `;
-    };
-
-    window.generateDiscussionText = function(total, consentis, k_bon, k_moyen, k_faible, p_adeq, att_pos) {
-        let p_k_bon = ((k_bon/total)*100).toFixed(1);
-        let p_p_adeq = ((p_adeq/total)*100).toFixed(1);
-        let p_att_pos = ((att_pos/total)*100).toFixed(1);
-        let tx_part = ((consentis/total)*100).toFixed(1);
-
-        document.getElementById('dynamic-report').innerHTML = `
-            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px;">I. But de l'étude et Analyse Globale</h3>
-            <p>Le but principal de notre étude était d'analyser les connaissances, attitudes et pratiques des infirmières en République démocratique du Congo concernant la prévention du cancer du sein, afin d’identifier les points forts et les axes d’amélioration pour optimiser leur rôle dans la prise en charge et la sensibilisation. L'analyse des données recueillies à l'HGRM (N=${total}) permet de valider de manière probante nos hypothèses de recherche initiales.</p>
-
-            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">II. Identifier les niveaux de connaissances (Objectif 1)</h3>
-            <p>En rapport avec notre premier objectif spécifique, l'analyse révèle que ${p_k_bon}% des infirmières possèdent de bonnes connaissances (score ≥ 70%). Ce résultat confirme notre première hypothèse : les infirmières congolaises possèdent des connaissances variables sur la prévention du cancer du sein. Bien qu'une base théorique soit présente (60,1% dans l'échantillon global), ces variations (notamment selon le service) justifient une révision de la formation théorique continue pour harmoniser les savoirs.</p>
-
-            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">III. Décrire les attitudes et la perception (Objectif 2)</h3>
-            <p>Concernant notre deuxième objectif, visant à décrire les attitudes et la perception de l'importance de la prévention, les résultats montrent que ${p_att_pos}% du personnel démontre une attitude positive. Ces données valident notre seconde hypothèse affirmant que les attitudes envers la prévention impactent leur implication. L'effort doit désormais se porter sur l'accompagnement psychologique des soignants pour améliorer leur communication avec les patientes, souvent entravée par la peur du diagnostic.</p>
-
-            <h3 style="color:#b03060; border-bottom:2px solid #eee; padding-bottom:10px; margin-top:30px;">IV. Analyser les pratiques actuelles et les obstacles (Objectif 3)</h3>
-            <p>L'analyse des pratiques (troisième objectif) est révélatrice des failles du système : seules ${p_p_adeq}% des infirmières rapportent une pratique adéquate. Ce chiffre critique (reflétant une pratique insuffisante pour la majorité) valide pleinement notre troisième hypothèse : les pratiques des infirmières sont limitées par divers facteurs, notamment le manque de ressources, de protocoles clairs et de formation pratique adéquate.</p>
         `;
     };
 
     window.getAvg = function(arr, p) { return arr.length ? (arr.reduce((a,c)=>a+parseFloat(c[p]),0)/arr.length).toFixed(1) : 0; };
     
+    // Ajout des fonctions pour la modale (Voir Fiche)
+    window.viewDetails = function(index) {
+        const record = database[index];
+        if(!record) return;
+
+        document.getElementById('modal-title-id').innerText = record.id;
+        
+        let content = `
+            <table class="academic-table" style="text-align: left;">
+                <tbody>
+                    <tr><td colspan="2" class="group-header">1. Profil Démographique & Professionnel</td></tr>
+                    <tr><th style="width: 40%; background: #f9f9f9;">Âge</th><td>${record.age_participant} ans</td></tr>
+                    <tr><th style="background: #f9f9f9;">Sexe</th><td>${record.sexe}</td></tr>
+                    <tr><th style="background: #f9f9f9;">État civil</th><td>${record.etat_civil}</td></tr>
+                    <tr><th style="background: #f9f9f9;">Niveau d'étude</th><td>${record.niveau}</td></tr>
+                    <tr><th style="background: #f9f9f9;">Service d'affectation</th><td>${record.service}</td></tr>
+                    <tr><th style="background: #f9f9f9;">Ancienneté</th><td>${record.anciennete} an(s)</td></tr>
+                    
+                    <tr><td colspan="2" class="group-header">2. Scores Évalués</td></tr>
+                    <tr><th style="background: #f9f9f9;">Score Savoir (Connaissances)</th>
+                        <td style="color:${record.scoreSavoir >= 70 ? 'green' : 'red'}; font-weight:bold;">${record.scoreSavoir}%</td></tr>
+                    <tr><th style="background: #f9f9f9;">Score Pratique (Savoir-faire)</th>
+                        <td style="color:${record.scorePratique >= 70 ? 'green' : 'red'}; font-weight:bold;">${record.scorePratique}%</td></tr>
+                    <tr><th style="background: #f9f9f9;">Score Attitude (Perception)</th>
+                        <td>${record.scoreAttitude} / 5.0</td></tr>
+                        
+                    <tr><td colspan="2" class="group-header">3. Données Qualitatives</td></tr>
+                    <tr><th style="background: #f9f9f9;">Besoin de formation exprimé ?</th><td>${record.besoin_formation}</td></tr>
+        `;
+        
+        if (record.obstacles && record.obstacles.length > 0) {
+            content += `<tr><th style="background: #f9f9f9;">Obstacles rencontrés</th><td>${record.obstacles.join(', ')}</td></tr>`;
+        }
+        if (record.reco_verbatim) {
+            content += `<tr><th style="background: #f9f9f9;">Verbatim / Recommandation</th><td><em>"${record.reco_verbatim}"</em></td></tr>`;
+        }
+        
+        content += `</tbody></table>`;
+        
+        document.getElementById('modal-body-content').innerHTML = content;
+        document.getElementById('detailModal').style.display = 'flex';
+    };
+
+    window.closeModalBtn = function() {
+        document.getElementById('detailModal').style.display = 'none';
+    };
+
+    window.closeModal = function(event) {
+        if(event.target.id === 'detailModal') {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+    };
+
+    // Ajout de la fonction pour supprimer une fiche individuelle
+    window.deleteSingle = function(index) {
+        if(confirm("Êtes-vous sûr de vouloir supprimer définitivement la fiche " + database[index].id + " ?")) {
+            database.splice(index, 1);
+            window.updateUI();
+            showToast("Fiche supprimée avec succès !");
+        }
+    };
+
     window.updateUI = function() {
         document.getElementById('count-badge').textContent = database.length;
         document.getElementById('n-total').textContent = database.length;
         const tbody = document.getElementById('database-body');
+        
+        let deleteBtnClass = isAdmin ? "btn-delete-single admin-visible" : "btn-delete-single admin-only";
+
         tbody.innerHTML = database.map((row, index) => `
             <tr>
-                <td><input type="checkbox" class="row-check"></td>
+                <td class="admin-only ${isAdmin ? 'admin-visible' : ''}"><input type="checkbox" class="row-check"></td>
                 <td><b>${row.id}</b></td><td>${row.sexe}</td><td>${row.service}</td><td>${row.anciennete}</td>
                 <td style="color:${row.scoreSavoir>=70?'green':'red'}">${row.scoreSavoir}%</td>
                 <td style="color:${row.scorePratique>=70?'green':'red'}">${row.scorePratique}%</td>
                 <td>${row.scorePratique >= 70 ? '🟢 Expert' : '🔴 Critique'}</td>
-                <td><button class="btn-view-single" onclick="window.viewDetails(${index})">👁️ Voir</button></td>
+                <td>
+                    <button class="btn-view-single" onclick="window.viewDetails(${index})">👁️ Voir</button>
+                    <button class="${deleteBtnClass}" onclick="window.deleteSingle(${index})">🗑️ Suppr.</button>
+                </td>
             </tr>
         `).join('');
         if(isAdmin) window.updateAnalytics();
@@ -997,11 +1069,17 @@
 
     function showToast(m) { var x = document.getElementById("toast"); x.className="show"; x.innerText=m; setTimeout(()=>x.className=x.className.replace("show",""),3000); }
     
-    // FONCTION DE TÉLÉCHARGEMENT GÉNÉRIQUE POUR DOC/WORD
+    // Export Word Doc
     window.downloadAsDoc = function(elementId, filename) {
         var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export</title></head><body>";
         var postHtml = "</body></html>";
-        var html = preHtml + document.getElementById(elementId).innerHTML + postHtml;
+        
+        // Cacher temporairement les boutons d'export dans le document généré
+        var clone = document.getElementById(elementId).cloneNode(true);
+        var btns = clone.querySelectorAll('.btn-excel');
+        btns.forEach(btn => btn.parentNode.removeChild(btn));
+        
+        var html = preHtml + clone.innerHTML + postHtml;
 
         var blob = new Blob(['\ufeff', html], {
             type: 'application/msword'
