@@ -386,6 +386,16 @@
                 <div id="dash-bar-age" style="width: 100%;"></div>
             </div>
         </div>
+        <div class="dash-row">
+            <div class="dash-card">
+                <div class="dash-title">Répartition selon le Grade (Niveau)</div>
+                <div id="dash-grade" class="dash-pie-box"></div>
+            </div>
+            <div class="dash-card">
+                <div class="dash-title">Répartition par Service d'affectation</div>
+                <div id="dash-service" class="dash-pie-box"></div>
+            </div>
+        </div>
         <div id="int-age" class="interpretation-text"></div>
         <div id="socio-demo-cross-tables"></div>
         <div id="socio-demo-summary"></div>
@@ -403,6 +413,7 @@
         </div>
         <div id="int-savoir" class="interpretation-text"></div>
         <div id="connaissances-cross-tables"></div>
+        <div id="table-aspects-connaissances"></div>
         <div id="indices-specifiques-container"></div>
         <div id="connaissances-summary"></div>
 
@@ -418,6 +429,7 @@
             </div>
         </div>
         <div id="int-attitude" class="interpretation-text"></div>
+        <div id="table-attitude-repartition"></div>
         <div id="attitudes-container"></div>
 
         <div class="section-title">PRATIQUES DE DÉPISTAGE</div>
@@ -432,8 +444,12 @@
             </div>
         </div>
         <div id="int-pratique" class="interpretation-text"></div>
+        <div id="table-pratique-repartition"></div>
         <div id="pratiques-cross-tables"></div>
         <div id="pratiques-summary"></div>
+
+        <div class="section-title">CORRÉLATION FORMATION ET PRATIQUE</div>
+        <div id="table-correlation-formation"></div>
     </div>
 
     <div id="content-4" class="form-content">
@@ -522,7 +538,8 @@
                 obstacles: genObs, 
                 risks: genRisks, 
                 signs: genSigns,
-                reco_verbatim: verbatims[Math.floor(Math.random() * verbatims.length)]
+                reco_verbatim: verbatims[Math.floor(Math.random() * verbatims.length)],
+                besoin_formation: Math.random() > 0.15 ? "Oui" : "Non"
             });
         }
         return simulatedDB;
@@ -650,10 +667,18 @@
         window.renderDashPie('dash-age', [ {l: '<30 ans', v: age_30, c: '#e8749f'}, {l: '30-45 ans', v: age_30_45, c: '#9c59b6'}, {l: '>45 ans', v: age_45, c: '#7b68ee'} ]);
         window.renderDashBar('dash-bar-age', [ {l: '<30 ans', v: age_30, c: '#e8749f'}, {l: '30-45 ans', v: age_30_45, c: '#9c59b6'}, {l: '>45 ans', v: age_45, c: '#7b68ee'} ]);
 
-        document.getElementById('int-age').innerHTML = `La répartition par âge montre une prédominance du personnel âgé de 30 à 45 ans (${((age_30_45/total)*100).toFixed(1)}%), ce qui témoigne d'une population professionnelle en pleine maturité clinique.`;
-
         let a1_count = database.filter(d => d.niveau.includes('A1')).length;
         let a2_count = total - a1_count;
+        window.renderDashPie('dash-grade', [ {l: 'Niveau Supérieur (A1)', v: a1_count, c: '#4db6ac'}, {l: 'Niveau Technique (A2)', v: a2_count, c: '#ffb74d'} ]);
+
+        let t_gyn = database.filter(d => d.service.includes('Gynéco')).length;
+        let t_med = database.filter(d => d.service.includes('Interne')).length;
+        let t_chir = database.filter(d => d.service.includes('Chirurgie')).length;
+        let t_urg = database.filter(d => d.service.includes('Urgences')).length;
+        window.renderDashPie('dash-service', [ {l: 'Gynécologie', v: t_gyn, c: '#ba68c8'}, {l: 'Méd. Interne', v: t_med, c: '#64b5f6'}, {l: 'Chirurgie', v: t_chir, c: '#ff8a65'}, {l: 'Urgences', v: t_urg, c: '#a1887f'} ]);
+
+        document.getElementById('int-age').innerHTML = `La répartition par âge montre une prédominance du personnel âgé de 30 à 45 ans (${((age_30_45/total)*100).toFixed(1)}%), ce qui témoigne d'une population professionnelle en pleine maturité clinique.`;
+
         
         let k_bon = database.filter(d => d.scoreSavoir >= 70).length;
         let k_moyen = database.filter(d => d.scoreSavoir >= 50 && d.scoreSavoir < 70).length;
@@ -792,6 +817,92 @@
                     </tr>
                 </tbody>
             </table>
+        `;
+
+        // ASPECTS DU DEPISTAGE (FR, SC, SA)
+        document.getElementById('table-aspects-connaissances').innerHTML = `
+            <h4 style="color:#444; font-size:13px;">Répartition selon les différents aspects du dépistage (n=${total})</h4>
+            <table class="academic-table">
+                <thead>
+                    <tr><th>Domaine de connaissance</th><th>Bon (≥70%) n(%)</th><th>Moyen (50-69%) n(%)</th><th>Faible (<50%) n(%)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="row-header">Savoir Global sur le dépistage</td><td>${k_bon} (${getP(k_bon, total)}%)</td><td>${k_moyen} (${getP(k_moyen, total)}%)</td><td>${k_faible} (${getP(k_faible, total)}%)</td></tr>
+                    <tr><td class="row-header">Facteurs de Risque (K-FR)</td><td>${kfr_bon} (${getP(kfr_bon, total)}%)</td><td>${kfr_moyen} (${getP(kfr_moyen, total)}%)</td><td>${kfr_faible} (${getP(kfr_faible, total)}%)</td></tr>
+                    <tr><td class="row-header">Signes Cliniques (K-SC)</td><td>${ksc_bon} (${getP(ksc_bon, total)}%)</td><td>${ksc_moyen} (${getP(ksc_moyen, total)}%)</td><td>${ksc_faible} (${getP(ksc_faible, total)}%)</td></tr>
+                    <tr><td class="row-header">Signes d'Alerte (K-SA)</td><td>${ksa_bon} (${getP(ksa_bon, total)}%)</td><td>${ksa_moyen} (${getP(ksa_moyen, total)}%)</td><td>${ksa_faible} (${getP(ksa_faible, total)}%)</td></tr>
+                </tbody>
+            </table>
+        `;
+
+        // REPARTITION ATTITUDES
+        document.getElementById('table-attitude-repartition').innerHTML = `
+            <h4 style="color:#444; font-size:13px;">Répartition des infirmières selon l'attitude (n=${total})</h4>
+            <table class="academic-table">
+                <thead><tr><th>Attitude globale face au dépistage</th><th>Effectifs (n)</th><th>Pourcentage (%)</th></tr></thead>
+                <tbody>
+                    <tr><td class="row-header">Attitude Positive (>3.5/5)</td><td>${att_pos}</td><td>${getP(att_pos, total)}</td></tr>
+                    <tr><td class="row-header">Attitude Neutre ou Négative (≤3.5/5)</td><td>${att_neutre}</td><td>${getP(att_neutre, total)}</td></tr>
+                    <tr><td class="row-header" style="font-weight:bold;">Total Général</td><td style="font-weight:bold;">${total}</td><td style="font-weight:bold;">100.0</td></tr>
+                </tbody>
+            </table>
+        `;
+
+        // REPARTITION PRATIQUES
+        document.getElementById('table-pratique-repartition').innerHTML = `
+            <h4 style="color:#444; font-size:13px;">Distribution des infirmières (Sexe Féminin exclusif) selon la pratique (n=${total})</h4>
+            <table class="academic-table">
+                <thead><tr><th>Niveau de Pratique (Savoir-Faire)</th><th>Effectifs (n)</th><th>Pourcentage (%)</th></tr></thead>
+                <tbody>
+                    <tr><td class="row-header">Pratique Adéquate (≥70%)</td><td>${p_adeq}</td><td>${getP(p_adeq, total)}</td></tr>
+                    <tr><td class="row-header">Pratique Insuffisante (<70%)</td><td>${p_inadeq}</td><td>${getP(p_inadeq, total)}</td></tr>
+                    <tr><td class="row-header" style="font-weight:bold;">Total (Sexe Féminin)</td><td style="font-weight:bold;">${total}</td><td style="font-weight:bold;">100.0</td></tr>
+                </tbody>
+            </table>
+        `;
+
+        // CORRELATION FORMATION / PRATIQUE
+        let form_oui_p_adeq = database.filter(d => d.besoin_formation === 'Oui' && d.scorePratique >= 70).length;
+        let form_oui_p_inadeq = database.filter(d => d.besoin_formation === 'Oui' && d.scorePratique < 70).length;
+        let form_non_p_adeq = database.filter(d => d.besoin_formation === 'Non' && d.scorePratique >= 70).length;
+        let form_non_p_inadeq = database.filter(d => d.besoin_formation === 'Non' && d.scorePratique < 70).length;
+        let t_form_oui = form_oui_p_adeq + form_oui_p_inadeq;
+        let t_form_non = form_non_p_adeq + form_non_p_inadeq;
+
+        document.getElementById('table-correlation-formation').innerHTML = `
+            <h4 style="color:#444; font-size:13px;">Tableau Croisé : Volonté de formation et Qualité de la pratique sur le terrain</h4>
+            <table class="academic-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Besoin de formation exprimé</th>
+                        <th colspan="2">Pratique Adéquate (≥70%)</th>
+                        <th colspan="2">Pratique Insuffisante (<70%)</th>
+                        <th rowspan="2">Total</th>
+                    </tr>
+                    <tr><th>n</th><th>% (ligne)</th><th>n</th><th>% (ligne)</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-header">Favorable à la formation (Oui)</td>
+                        <td>${form_oui_p_adeq}</td><td>${getP(form_oui_p_adeq, t_form_oui)}</td>
+                        <td>${form_oui_p_inadeq}</td><td>${getP(form_oui_p_inadeq, t_form_oui)}</td>
+                        <td>${t_form_oui}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-header">Non Favorable (Non)</td>
+                        <td>${form_non_p_adeq}</td><td>${getP(form_non_p_adeq, t_form_non)}</td>
+                        <td>${form_non_p_inadeq}</td><td>${getP(form_non_p_inadeq, t_form_non)}</td>
+                        <td>${t_form_non}</td>
+                    </tr>
+                    <tr>
+                        <td class="row-header" style="font-weight:bold;">Total Général</td>
+                        <td style="font-weight:bold;">${p_adeq}</td><td style="font-weight:bold;">${getP(p_adeq, total)}</td>
+                        <td style="font-weight:bold;">${p_inadeq}</td><td style="font-weight:bold;">${getP(p_inadeq, total)}</td>
+                        <td style="font-weight:bold;">${total}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="interpretation-text">Ce tableau permet de vérifier si l'attitude proactive envers la formation continue se traduit par de meilleures pratiques cliniques lors du dépistage.</div>
         `;
     };
 
