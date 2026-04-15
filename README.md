@@ -1110,12 +1110,12 @@
         const btnExcel = element.querySelector('.btn-excel');
         if (btnExcel) btnExcel.style.display = 'none';
 
-        // Options pour avoir une qualité identique à l'écran
+        // Options corrigées pour supprimer le flou
         const opt = {
             margin:       10,
             filename:     'Resultats_Onglet_3.pdf',
-            image:        { type: 'jpeg', quality: 1 },
-          html2canvas:  { scale: 2, useCORS: true }, // scale: 2 donne une image très nette
+            image:        { type: 'png' }, // Utilisation du PNG pour éviter la compression floue
+            html2canvas:  { scale: 4, useCORS: true }, // Scale à 4 pour une image très haute résolution
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
