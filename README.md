@@ -3,6 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connaissances, attitudes et pratiques des infirmières de l'hôpital général des références de Makala sur la prévention du cancer du sein</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         /* --- STYLE GLOBAL --- */
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
@@ -239,7 +240,7 @@
                     <select id="q-age-mammo"><option value="20">Dès 20 ans</option><option value="35">Vers 35-40 ans</option><option value="50">Vers 50 ans</option></select>
                 </div>
                 <div class="field">
-                    <label>Moment idéal pour Auto-Examen (AES) :</label>
+                    <label>Moment idéal pour Auto-Examen (Auto examen des seins) :</label>
                     <select id="q-moment-aes"><option value="regles">Pendant les règles</option><option value="apres">7 à 10 jours après début règles</option><option value="nimporte">N’importe quand</option></select>
                 </div>
             </div>
@@ -293,7 +294,7 @@
                     <tr><th class="td-left">Énoncé</th><th>1<br><small>Pas du tout</small></th><th>2</th><th>3</th><th>4</th><th>5<br><small>Tout à fait</small></th></tr>
                 </thead>
                 <tbody>
-                    <tr><td class="td-left">L’éducation à l’AES fait partie de mon rôle.</td><td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5"></td></tr>
+                    <tr><td class="td-left">L’éducation à l’Auto examen des seins fait partie de mon rôle.</td><td><input type="radio" name="att1" value="1"></td><td><input type="radio" name="att1" value="2"></td><td><input type="radio" name="att1" value="3"></td><td><input type="radio" name="att1" value="4"></td><td><input type="radio" name="att1" value="5"></td></tr>
                     <tr><td class="td-left">Je me sens capable de détecter un nodule de petite taille.</td><td><input type="radio" name="att2" value="1"></td><td><input type="radio" name="att2" value="2"></td><td><input type="radio" name="att2" value="3"></td><td><input type="radio" name="att2" value="4"></td><td><input type="radio" name="att2" value="5"></td></tr>
                     <tr><td class="td-left">La peur du diagnostic empêche les patientes de consulter.</td><td><input type="radio" name="att3" value="1"></td><td><input type="radio" name="att3" value="2"></td><td><input type="radio" name="att3" value="3"></td><td><input type="radio" name="att3" value="4"></td><td><input type="radio" name="att3" value="5"></td></tr>
                     <tr><td class="td-left">Je suis mal à l’aise d’aborder l’intimité avec les âgées.</td><td><input type="radio" name="att4" value="1"></td><td><input type="radio" name="att4" value="2"></td><td><input type="radio" name="att4" value="3"></td><td><input type="radio" name="att4" value="4"></td><td><input type="radio" name="att4" value="5"></td></tr>
@@ -303,7 +304,7 @@
 
             <div class="section-title">IV. PRATIQUES (Savoir-Faire)</div>
             <div class="row">
-                <div class="field"><label>15. Pratique personnelle (AES sur vous) :</label><select id="prac-perso"><option value="mois">Tous les mois</option><option value="temps">De temps en temps</option><option value="jamais">Jamais</option></select></div>
+                <div class="field"><label>15. Pratique personnelle (Auto examen des seins sur vous) :</label><select id="prac-perso"><option value="mois">Tous les mois</option><option value="temps">De temps en temps</option><option value="jamais">Jamais</option></select></div>
                 <div class="field"><label>16. Examen des patientes (Fréquence) :</label><select id="prac-pro-freq"><option value="syst">Systématiquement</option><option value="plainte">Uniquement si plainte</option><option value="rare">Rarement / Jamais</option></select></div>
             </div>
             <div class="sub-title">Technique de Palpation</div>
@@ -486,7 +487,7 @@
                 L'analyse des scores de connaissances révèle une réalité en demi-teinte. Bien que la majorité absolue des infirmières interrogées (plus de 60%) démontre une "bonne" connaissance générale (score ≥ 70%) des principes du dépistage précoce, une désagrégation des données met en lumière des disparités profondes. En effet, nous constatons une concentration des compétences théoriques au sein des services spécialisés, notamment en Gynécologie-Obstétrique, au détriment des services généraux (Médecine interne, Urgences) où le taux de connaissances faibles ou moyennes s'accroît considérablement.
             </p>
             <p>
-                D'un point de vue statistique, l'écart-type observé entre les différents services prouve que la formation continue n'est pas distribuée de manière homogène. Cette sectorisation du savoir pose un problème majeur de santé publique : le dépistage du cancer du sein ne devrait pas être l'apanage exclusif des gynécologues ou des sages-femmes. Une patiente se présentant aux urgences pour une autre pathologie constitue une "opportunité manquée" de dépistage si l'infirmière de triage n'intègre pas l'auto-examen des seins (AES) ou l'examen clinique des seins (ECS) dans son algorithme de réflexion. Ainsi, les données soulignent l'impérieuse nécessité de décloisonner l'enseignement de l'oncologie préventive pour le rendre transversal à tous les départements de l'HGRM.
+                D'un point de vue statistique, l'écart-type observé entre les différents services prouve que la formation continue n'est pas distribuée de manière homogène. Cette sectorisation du savoir pose un problème majeur de santé publique : le dépistage du cancer du sein ne devrait pas être l'apanage exclusif des gynécologues ou des sages-femmes. Une patiente se présentant aux urgences pour une autre pathologie constitue une "opportunité manquée" de dépistage si l'infirmière de triage n'intègre pas l'auto-examen des seins (Auto examen des seins) ou l'examen clinique des seins (ECS) dans son algorithme de réflexion. Ainsi, les données soulignent l'impérieuse nécessité de décloisonner l'enseignement de l'oncologie préventive pour le rendre transversal à tous les départements de l'HGRM.
             </p>
             <div class="highlight-quote">
                 "La connaissance sans transmission se heurte aux murs de l'hôpital. Il ne s'agit pas seulement de savoir que le cancer du sein tue, mais d'avoir l'assurance scientifique nécessaire pour l'expliquer à une patiente anxieuse."
@@ -1100,8 +1101,30 @@
     };
 
     window.exportTab3Word = function() {
-        showToast("Préparation du document Résultats...");
-        window.downloadAsDoc('content-3', 'Resultats_Etude_Makala.doc');
+        showToast("Création du PDF en cours, veuillez patienter...");
+        
+        // On cible l'onglet 3
+        const element = document.getElementById('content-3');
+        
+        // On cache le bouton bleu pour qu'il ne soit pas imprimé sur le PDF
+        const btnExcel = element.querySelector('.btn-excel');
+        if (btnExcel) btnExcel.style.display = 'none';
+
+        // Options pour avoir une qualité identique à l'écran
+        const opt = {
+            margin:       10,
+            filename:     'Resultats_Onglet_3.pdf',
+            image:        { type: 'jpeg', quality: 1 },
+          html2canvas:  { scale: 2, useCORS: true }, // scale: 2 donne une image très nette
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Génération et téléchargement du PDF
+        html2pdf().set(opt).from(element).save().then(() => {
+            // On remet le bouton bleu à sa place une fois le PDF téléchargé
+            if (btnExcel) btnExcel.style.display = 'block';
+            showToast("PDF téléchargé !");
+        });
     };
     
     window.exportTab4 = function() {
